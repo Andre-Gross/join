@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+}
+
+
+button {
+    border: unset;
+}
+
+
+input {
+    border: 1.5px solid #e8e8e8;
+    border-radius: 8px;
+}
+
+
+textarea {
+    border: 1.5px solid #e8e8e8;
+    border-radius: 8px;
+    resize: none !important;
+}
