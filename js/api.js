@@ -5,8 +5,7 @@ let loggedInUser = '1';
 async function loadData() {
     let response = await fetch(BASE_URL + '.json');
     let responseAsJSON = await response.json();
-    console.log(responseAsJSON.users['1'].login.locked);
-    return responseAsJSON.users['1'].login.locked;
+    return responseAsJSON;
 }
 
 
