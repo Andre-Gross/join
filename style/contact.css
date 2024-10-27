@@ -1,0 +1,24 @@
+
+#idContactMain{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#idContactAlph{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#idGreyLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d1d1d1;
+    height: 1px;
+    width: 80%;
+}
