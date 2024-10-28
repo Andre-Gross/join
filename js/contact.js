@@ -3,7 +3,7 @@ const BASE_URL = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.
 let names = [];
 let emails = [];
 let phones = [];
-let user = 1;
+let user = 2;
 
 async function contactMain() {
   await getContacts();
