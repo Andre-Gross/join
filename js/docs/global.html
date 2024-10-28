@@ -183,6 +183,278 @@
     
 
     
+    <h4 class="name" id="displayUserName"><span class="type-signature">(async) </span>displayUserName<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Zeigt den Benutzernamen und eine entsprechende Begrüßung basierendauf der aktuellen Tageszeit an.Ablauf:- Ruft die Benutzer-ID aus der URL ab und verwendet sie, um den Benutzernamen  aus Firebase zu laden.- Bestimmt die Begrüßung basierend auf der aktuellen Uhrzeit.- Zeigt den Benutzernamen und die Begrüßung im HTML-Dokument an.Fehler oder fehlende Daten führen dazu, dass der Benutzer als "Gast" begrüßt wird.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="welcome.js.html">welcome.js</a>, <a href="welcome.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Zeigt die Begrüßung und den Benutzernamen auf der Seite an.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getQueryParam"><span class="type-signature"></span>getQueryParam<span class="signature">(name)</span><span class="type-signature"> &rarr; {string|null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Extrahiert den URL-Parameter.Diese Funktion wird verwendet, um spezifische Parameter wie die Benutzer-IDaus der URL abzurufen, um dann personalisierte Informationen anzuzeigen.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Der Name des URL-Parameters, der abgerufen werden soll.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="welcome.js.html">welcome.js</a>, <a href="welcome.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Der Wert des URL-Parameters oder `null`, wenn er nicht vorhanden ist.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="guestLogIn"><span class="type-signature"></span>guestLogIn<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
@@ -513,6 +785,98 @@
     
 
     
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="event:DOMContentLoaded">DOMContentLoaded</h4>
+    
+
+    
+
+
+
+<div class="description">
+    Initialisiert die Begrüßungsanzeige und zeigt den Benutzernamen basierendauf der in Firebase gespeicherten Benutzer-ID an, die als URL-Parameter übergeben wurde.Die Begrüßung wird je nach aktueller Tageszeit dynamisch angepasst und angezeigt.Diese Funktion wird ausgeführt, sobald das `DOMContentLoaded`-Ereignis ausgelöst wird,d.h., wenn die HTML-Struktur vollständig geladen ist.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="welcome.js.html">welcome.js</a>, <a href="welcome.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
 </article>
 
 </section>
@@ -523,13 +887,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#loggedInUser">loggedInUser</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:DOMContentLoaded">DOMContentLoaded</a></li></ul><h3>Global</h3><ul><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#getQueryParam">getQueryParam</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#loggedInUser">loggedInUser</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 28 2024 21:42:45 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Oct 28 2024 22:04:22 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>
