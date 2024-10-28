@@ -3,11 +3,19 @@
  * (Name, E-Mail, Passwort, Bestätigung des Passworts und Einwilligung in die AGB)
  * validiert und anschließend an eine Firebase-Datenbank gesendet werden.
  * 
- * Die Funktion zeigt bei Fehlern Warnungen an, z. B. wenn die Passwörter
- * nicht übereinstimmen oder die AGB nicht akzeptiert wurden.
+ * Die Funktion führt folgende Schritte durch:
+ * - Überprüft, ob die Allgemeinen Geschäftsbedingungen (AGB) akzeptiert wurden.
+ * - Prüft, ob das eingegebene Passwort und die Bestätigung übereinstimmen.
+ * - Verifiziert, ob die E-Mail bereits in der Datenbank existiert.
+ * - Sendet die Daten an Firebase, falls die E-Mail noch nicht existiert,
+ *   und erstellt ein neues Benutzerobjekt mit einem leeren Kontakt-Array und den Login-Daten.
  * 
+ * Bei fehlerhaften Eingaben oder wenn die E-Mail bereits existiert, wird eine
+ * entsprechende Warnmeldung angezeigt.
+ *
+ * @async
  * @function signUp
- * @returns {void} Zeigt entweder eine Erfolgsmeldung oder eine Fehlermeldung an.
+ * @returns {void} Zeigt eine Erfolgsmeldung bei erfolgreicher Registrierung oder eine Fehlermeldung bei fehlerhaften Eingaben.
  */
 async function signUp() {
   const [name, email, password, confirmPassword, agreeTerms] = [
@@ -38,7 +46,7 @@ async function signUp() {
 
     // Prüfen, ob eine E-Mail bereits existiert
     const emailExists = Object.values(users || {}).some(
-      (user) => user.login.email === email
+      (user) => user && user.login && user.login.email === email
     );
 
     if (emailExists) {
@@ -52,13 +60,12 @@ async function signUp() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          contacts: [],
-          login: { email, locked: true, password },
+          contacts: [], // Leeres Array für Kontakte
+          login: { email, name, password }, // Nur Login-Daten
         }),
       }
     );
-    alert("Deine Registrierung war erfogreich!");
+    alert("Deine Registrierung war erfolgreich!");
   } catch (error) {
     alert("Du scheinst schon registriert zu sein, versuche dich bitte anzumelden.");
   }
