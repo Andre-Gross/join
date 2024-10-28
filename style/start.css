@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -37,7 +36,7 @@ h2 {
     max-height: 515px;
     border: none;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 30px; 
+    border-radius: 30px;
     padding: 32px 0;
     background-color: white;
     margin: 1rem auto;
@@ -302,6 +301,7 @@ footer a:hover {
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
