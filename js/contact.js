@@ -1,64 +1,54 @@
-function contactMain() {
+const BASE_URL = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users";
+
+let names = [];
+let emails = [];
+let phones = [];
+let user = 1;
+
+async function contactMain() {
+  await getContacts();
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
-  contactMain.innerHTML += getContactMain();
+  for (let i = 0; i < names.length; i++) {
+  contactMain.innerHTML += getContactMain(i);}
+  contactMain.innerHTML += getAddContactBtn();
 }
 
-function getContactMain() {
+
+async function getContacts() {
+    let contactsResponse = await getData(`/${user}/contacts.json`);
+    let contactArray = contactsResponse;
+  
+    for (let index = 0; index < contactArray.length; index++) {
+      names.push(contactArray[index].name);
+      emails.push(contactArray[index].email); 
+      phones.push(contactArray[index].phone);
+    }
+  }
+
+
+async function getData(path = "") {
+    let response = await fetch(BASE_URL + path);
+    return (responseToJson = await response.json());
+}
+
+
+function getContactMain(i) {
   return `
 <div id="idContactAlph">
-<p>A</p>
-<div id="idGreyLine"></div>
-<p>B</p>
-<div id="idGreyLine"></div>
-<p>C</p>
-<div id="idGreyLine"></div>
-<p>D</p>
-<div id="idGreyLine"></div>
-<p>E</p>
-<div id="idGreyLine"></div>
-<p>F</p>
-<div id="idGreyLine"></div>
-<p>G</p>
-<div id="idGreyLine"></div>
-<p>H</p>
-<div id="idGreyLine"></div>
-<p>J</p>
-<div id="idGreyLine"></div>
-<p>K</p>
-<div id="idGreyLine"></div>
-<p>L</p>
-<div id="idGreyLine"></div>
-<p>M</p>
-<div id="idGreyLine"></div>
-<p>N</p>
-<div id="idGreyLine"></div>
-<p>O</p>
-<div id="idGreyLine"></div>
-<p>P</p>
-<div id="idGreyLine"></div>
-<p>Q</p>
-<div id="idGreyLine"></div>
-<p>R</p>
-<div id="idGreyLine"></div>
-<p>S</p>
-<div id="idGreyLine"></div>
-<p>T</p>
-<div id="idGreyLine"></div>
-<p>U</p>
-<div id="idGreyLine"></div>
-<p>V</p>
-<div id="idGreyLine"></div>
-<p>W</p>
-<div id="idGreyLine"></div>
-<p>X</p>
-<div id="idGreyLine"></div>
-<p>Y</p>
-<div id="idGreyLine"></div>
-<p>Z</p>
-<div id="idGreyLine"></div>
-</div>
-<button>
-<img src="" alt="">
-</button>`;
+<h4>${names[i]}</h4>
+<h5>${emails[i]}</h5>
+</div>`;
+}
+
+function getAddContactBtn() {
+    return `
+    <div id="idAddContact" onclick="addContact()">
+    <img id="idImgAddContact"src="assets/img/person_add.png" alt=""></div>
+    `
+}
+
+
+function addContact(){
+    console.log("function addContact in Progress");
 }
