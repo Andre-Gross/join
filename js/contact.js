@@ -1,7 +1,4 @@
 
-
-const BASE_URL = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users";
-
 let user = 1;
 let names = [];
 let emails = [];
@@ -19,7 +16,7 @@ async function contactMain() {
 
 
 async function getContacts() {
-    let contactsResponse = await getData(`/${user}/contacts.json`);
+    let contactsResponse = await getData(`users/${user}/contacts.json`);
     let contactArray = contactsResponse;
   
     for (let index = 0; index < contactArray.length; index++) {
