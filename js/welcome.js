@@ -1,58 +1,22 @@
-/**
- * Initialisiert die Begrüßungsanzeige und zeigt den Benutzernamen basierend
- * auf der in Firebase gespeicherten Benutzer-ID an, die als URL-Parameter übergeben wurde.
- * Die Begrüßung wird je nach aktueller Tageszeit dynamisch angepasst und angezeigt.
- * 
- * Diese Funktion wird ausgeführt, sobald das `DOMContentLoaded`-Ereignis ausgelöst wird,
- * d.h., wenn die HTML-Struktur vollständig geladen ist.
- * 
- * @event DOMContentLoaded
- */
 document.addEventListener('DOMContentLoaded', () => {
-    /**
-     * Extrahiert den URL-Parameter.
-     * Diese Funktion wird verwendet, um spezifische Parameter wie die Benutzer-ID
-     * aus der URL abzurufen, um dann personalisierte Informationen anzuzeigen.
-     * 
-     * @function getQueryParam
-     * @param {string} name - Der Name des URL-Parameters, der abgerufen werden soll.
-     * @returns {string|null} Der Wert des URL-Parameters oder `null`, wenn er nicht vorhanden ist.
-     */
-    function getQueryParam(name) {
-        const params = new URLSearchParams(window.location.search);
-        return params.get(name);
-    }
-
-    /**
-     * Zeigt den Benutzernamen und eine entsprechende Begrüßung basierend
-     * auf der aktuellen Tageszeit an.
-     * 
-     * Ablauf:
-     * - Ruft die Benutzer-ID aus der URL ab und verwendet sie, um den Benutzernamen
-     *   aus Firebase zu laden.
-     * - Bestimmt die Begrüßung basierend auf der aktuellen Uhrzeit.
-     * - Zeigt den Benutzernamen und die Begrüßung im HTML-Dokument an.
-     * 
-     * Fehler oder fehlende Daten führen dazu, dass der Benutzer als "Gast" begrüßt wird.
-     * 
-     * @async
-     * @function displayUserName
-     * @returns {void} Zeigt die Begrüßung und den Benutzernamen auf der Seite an.
-     */
     async function displayUserName() {
-        const userId = getQueryParam('userId');
+        const userId = sessionStorage.getItem('loggedInUser'); // Holt die User-ID aus `sessionStorage`
+        console.log("Abgerufene Benutzer-ID:", userId); // Debug: Prüfen, ob die Benutzer-ID korrekt ist
         let name = 'Gast';
 
-        if (userId) {
+        if (userId && userId !== 'guest') { // Überprüfen, dass es sich nicht um einen Gastzugang handelt
             try {
                 const response = await fetch(
                     `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`
                 );
                 const user = await response.json();
+                console.log("Benutzerdaten:", user); // Debug: Struktur der Benutzerdaten prüfen
 
-                // Benutzername abrufen, falls vorhanden
+                // Bevorzugt den Namen im `login`-Objekt
                 if (user && user.login && user.login.name) {
                     name = user.login.name;
+                    // Speichere den Namen in sessionStorage
+                    sessionStorage.setItem('loggedInUserName', name);
                 }
             } catch (error) {
                 console.error("Fehler beim Abrufen des Benutzernamens:", error);
@@ -80,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('userName').textContent = name.charAt(0).toUpperCase() + name.slice(1);
     }
 
+    // Rufe die Funktion auf, um den Benutzernamen anzuzeigen
     displayUserName();
 
     // Startet die Fade-Out-Animation nach 1,5 Sekunden
