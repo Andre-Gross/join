@@ -36,12 +36,18 @@ async function getData(path = "") {
 
 function getContactMain(i) {
     return `
-    <div id="idContactAlph">
-    <h4>${names[i]}</h4>
-    <h5>${emails[i]}</h5>
+    <div id="idNameMailshort" onclick="openContact()">
+        <div id="idShortName">
+            <p id="idShortAlph">MM</p>
+        </div>
+        <div id="idNameMail">
+            <p id="idName">${names[i]}</p>
+            <p id="idMail">${emails[i]}</p>
+        </div>
     </div>
     `
 }
+
 
 function getAddContactBtn() {
     return `
@@ -55,6 +61,7 @@ function addContact() {
     console.log("function addContact in Progress");
 }
 
+
 async function sortContacts() {
     let contacts = names.map((name, index) => ({
         name,
@@ -67,4 +74,9 @@ async function sortContacts() {
     names = contacts.map(contact => contact.name);
     emails = contacts.map(contact => contact.email);
     phones = contacts.map(contact => contact.phone);
+}
+
+
+function openContact() {
+    console.log("function Open Contact is in Progress");
 }
