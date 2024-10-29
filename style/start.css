@@ -13,22 +13,26 @@ body {
     min-height: 515px;
 }
 
+body.index-page {
+    background-color: #253345;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 515px;
+    max-width: 396px;
+    overflow: hidden;
+}
+
+
+
+body.fade-out {
+    opacity: 0;
+}
+
 h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
 }
 
-.logo {
-    font-size: 2rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-}
-
-.logo span {
-    color: #0dcaf0;
-}
 
 .card {
     width: 90%;
@@ -67,6 +71,8 @@ h2 {
     width: 100%;
     border-radius: 8px;
     padding: 0.75rem;
+
+
     margin-top: 0.5rem;
     background-color: transparent;
     border: 1px solid #6c757d;
@@ -196,6 +202,7 @@ footer a:hover {
     gap: 16px;
     margin-bottom: 24px;
 }
+
 
 .grid-2 {
     grid-template-columns: repeat(2, 1fr);
