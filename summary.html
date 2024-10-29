@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,13 @@
     <link rel="stylesheet" href="./style/start.css">
     <link rel="stylesheet" href="./style/assets.css">
 </head>
+
 <body>
     <div class="container">
-        <header class="header">
-            <div class="logo.container">
-                <img class="logo" src="./assets/logos/Capa 2 small.png" alt="Join">
-            </div>
-            <div class="profile-icon">SM</div>
-        </header>
-        
         <main class="main">
             <h1 class="title">Join 360</h1>
             <p class="subtitle">Key Metrics at a Glance</p>
-            
+
             <div class="grid grid-2">
                 <div class="metric-card">
                     <div class="icon grey"></div>
@@ -36,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="urgent-card">
                 <div class="icon grey"></div>
                 <div class="urgent-info">
@@ -48,7 +43,7 @@
                     <div class="upcoming">Upcoming Deadline</div>
                 </div>
             </div>
-            
+
             <div class="grid grid-3">
                 <div class="metric-card">
                     <div class="count">5</div>
@@ -64,10 +59,12 @@
                 </div>
             </div>
         </main>
-        </div>
-    
-        <div w3-include-html="./templates/templates.html"></div>
-        <script src="./templates/templates.js"></script>
+    </div>
+
+    <div w3-include-html="./templates.html"></div>
+    <script src="./templates/templates.js"></script>
+    <script src="./js/api.js"></script>
 
 </body>
+
 </html>
