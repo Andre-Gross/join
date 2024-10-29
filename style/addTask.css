@@ -1,5 +1,73 @@
-arrow-drop-input {
-    background-image: url('../assets/img/addTask/arrow-drop.png');
-    background-position: 10px 10px;
-    background-repeat: no-repeat;
+.dropdown-container {
+    position: relative;
+}
+
+
+/* Dropdown-Styling */
+.contact-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-color: white;
+    border: 1.5px solid #e8e8e8;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+
+/* Styling für die einzelnen Kontaktoptionen */
+.contact-item {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.contact-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+.contact-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+.arrow-input {
+    border: 1.5px solid #e8e8e8;
+    border-left: none;
+    border-radius: 8px;
+
+    aspect-ratio: 1/1;
+}
+
+
+.prio-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+
+/* Grundstil für Schaltflächen */
+.prio-btn .btn {
+    border: 1.5px solid #e8e8e8;
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Stil für die aktiv ausgewählte Schaltfläche */
+.btn-selected {
+    background-color: #d1d1d1 !important; /* Hintergrundfarbe für die ausgewählte Schaltfläche */
 }

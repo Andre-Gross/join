@@ -7,9 +7,17 @@
     <title>Add task</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/addTask.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=PT+Sans&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+
     <script src="js/api.js"></script>
+    <script src="js/addTask.js"></script>
 
 </head>
 
@@ -17,22 +25,42 @@
     <h1 class="m-2">Add Task</h1>
 
     <div class="d-flex">
-        <form action="" class="d-flex flex-column m-2 w-100">
+        <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false">
             <label for="iTitle">Title</label>
             <input id="iTitle" type="text" placeholder="Enter a title">
             <label for="taDescription">Description</label>
             <textarea id="taDescription" placeholder="Enter a Description"></textarea>
             <label for="navAssignedTo">Assigned to</label>
-            <div>
-                <input type="text" class="arrow-drop-input w-100" placeholder="Select contacts to assign">
-            </div>
 
-            <label for="iDueDate">Due date</label>
-            <input type="date">
+            <div class="dropdown-container">
+                <div class="input-group">
+                    <input id="navAssignedTo" type="text" class="form-control border-end-0"
+                        placeholder="Select contacts to assign" oninput="filterContacts()">
+                    <div class="arrow-input d-flex justify-content-center align-items-center">
+                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class="" onclick="showContactsDropdown()">
+                        <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
+                            onclick="hideContactsDropdown()">
+                    </div>
+                </div>
+                <div id="contactDropdown" class="contact-dropdown d-none"></div>
+            </div>
+            <label for="iDate">Due to</label>
+            <input id="iDate" type="date">
+
             <label for="iPrio">Prio</label>
-            <div>
-
+            <div id="priorityButtons" class="prio-btn">
+                <button id="urgent" type="button" class="btn btn-outline-danger" onclick="selectPriority('urgent')">
+                    Urgent <img src="#" alt="Urgent">
+                </button>
+                <button id="medium" type="button" class="btn btn-outline-warning" onclick="selectPriority('medium')">
+                    Medium <img src="#" alt="Medium">
+                </button>
+                <button id="low" type="button" class="btn btn-outline-success" onclick="selectPriority('low')">
+                    Low <img src="#" alt="Low">
+                </button>
             </div>
+            <input type="submit" value="Submit">
+
         </form>
     </div>
 </body>
