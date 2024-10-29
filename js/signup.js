@@ -11,7 +11,7 @@
  *   und erstellt ein neues Benutzerobjekt mit einem leeren Kontakt-Array und den Login-Daten.
  * 
  * Bei fehlerhaften Eingaben oder wenn die E-Mail bereits existiert, wird eine
- * entsprechende Warnmeldung angezeigt.
+ * entsprechende Warnmeldung angezeigt und der Nutzer zur Login-Seite weitergeleitet.
  *
  * @async
  * @function signUp
@@ -30,12 +30,10 @@ async function signUp() {
   );
 
   // Überprüfung, ob die AGB akzeptiert wurden
-  if (!agreeTerms)
-    return alert("Bitte stimme den Allgemeinen Geschäftsbedingungen zu.");
+  if (!agreeTerms) return alert("Bitte stimme den Allgemeinen Geschäftsbedingungen zu.");
 
   // Überprüfung, ob das Passwort und die Passwortbestätigung übereinstimmen
-  if (password !== confirmPassword)
-    return alert("Die Passwörter stimmen nicht überein.");
+  if (password !== confirmPassword) return alert("Die Passwörter stimmen nicht überein.");
 
   try {
     // Überprüfen, ob die E-Mail bereits existiert
@@ -50,7 +48,9 @@ async function signUp() {
     );
 
     if (emailExists) {
-      return alert("Diese E-Mail-Adresse ist bereits registriert.");
+      alert("Diese E-Mail-Adresse ist bereits registriert.");
+      window.location.href = 'login.html'; // Weiterleitung zur Login-Seite
+      return;
     }
 
     // Wenn die E-Mail noch nicht existiert, Benutzer erstellen
@@ -66,7 +66,9 @@ async function signUp() {
       }
     );
     alert("Deine Registrierung war erfolgreich!");
+    window.location.href = 'login.html'; // Weiterleitung zur Login-Seite
   } catch (error) {
-    alert("Du scheinst schon registriert zu sein, versuche dich bitte anzumelden.");
+    console.error("Fehler bei der Registrierung:", error);
+    alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
   }
 }
