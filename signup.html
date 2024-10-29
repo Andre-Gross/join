@@ -28,31 +28,30 @@
                         <h2 class="text-center mb-4">Registrierung</h2>
                         <form onsubmit="event.preventDefault(); signUp();">
                             <div class="mb-3">
-                                <input type="text" id="name" class="form-control" placeholder="Name" required>
+                                <input type="text" id="name" class="form-control" placeholder="Name" required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="email" id="email" class="form-control" placeholder="Email" required>
+                                <input type="email" id="email" class="form-control" placeholder="Email" required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="password" id="password" class="form-control" placeholder="Passwort"
-                                    required>
+                                <input type="password" id="password" class="form-control" placeholder="Passwort" required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Passwort wiederholen" required>
+                                <input type="password" id="confirmPassword" class="form-control" placeholder="Passwort wiederholen" required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required onclick="checkFormValidity()">
                                 <label class="form-check-label" for="agreeTerms">Ich stimme den Datenschutzbestimmungen zu</label>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Registrieren</button>
+                                <button type="submit" class="btn btn-primary" id="registerButton" disabled>Registrieren</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </main>
+        
 
         <footer class="row p-3 text-center">
             <div class="col">
