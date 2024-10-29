@@ -72,3 +72,16 @@ async function signUp() {
     alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
   }
 }
+
+
+function checkFormValidity() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  const agreeTerms = document.getElementById("agreeTerms").checked;
+
+  // Button aktivieren, wenn alle Felder ausgefüllt und die Checkbox angehakt ist
+  const isFormValid = name && email && password && confirmPassword && agreeTerms;
+  document.getElementById("registerButton").disabled = !isFormValid;
+}
