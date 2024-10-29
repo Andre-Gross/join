@@ -1,13 +1,4 @@
 /**
- * Globale Variable zur Speicherung der Benutzer-ID des aktuell eingeloggenen Benutzers.
- * Sie wird während des Login-Prozesses gesetzt und ermöglicht der Anwendung,
- * auf die spezifischen Daten des Benutzers zuzugreifen.
- * 
- * @type {string|null}
- */
-let loggedInUser = null;
-
-/**
  * Loggt den Benutzer basierend auf E-Mail und Passwort ein.
  * Wenn die Anmeldedaten korrekt sind, wird die Benutzer-ID als `loggedInUser` gespeichert
  * und der Benutzer wird zur 'welcome.html'-Seite weitergeleitet, wobei die Benutzer-ID als URL-Parameter übergeben wird.
@@ -21,7 +12,7 @@ function logIn() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users.json')
+    fetch(`${BASE_URL}users.json`)
         .then(response => response.json())
         .then(users => {
             let userFound = false;
@@ -30,10 +21,11 @@ function logIn() {
                 if (user && user.login && user.login.email === email && user.login.password === password) {
                     userFound = true;
 
-                    // Benutzer-ID speichern
+                    // Benutzer-ID speichern (Zugriff auf die globale Variable in api.js)
                     loggedInUser = key;
                     console.log("Eingeloggte Benutzer-ID:", loggedInUser);
 
+                    // Weiterleitung zur Begrüßungsseite mit Benutzer-ID als URL-Parameter
                     window.location.href = `welcome.html?userId=${encodeURIComponent(loggedInUser)}`;
                     break;
                 }
@@ -47,6 +39,7 @@ function logIn() {
             alert("Fehler beim Login. Bitte versuche es erneut.");
         });
 }
+
 
 /**
  * Ermöglicht den Gastzugang, ohne dass eine Registrierung erforderlich ist.
