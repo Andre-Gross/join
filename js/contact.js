@@ -24,6 +24,7 @@ async function getContacts() {
       emails.push(contactArray[index].email); 
       phones.push(contactArray[index].phone);
     }
+    await sortContacts();
   }
 
 
@@ -34,11 +35,12 @@ async function getData(path = "") {
 
 
 function getContactMain(i) {
-  return `
-<div id="idContactAlph">
-<h4>${names[i]}</h4>
-<h5>${emails[i]}</h5>
-</div>`;
+    return `
+    <div id="idContactAlph">
+    <h4>${names[i]}</h4>
+    <h5>${emails[i]}</h5>
+    </div>
+    `
 }
 
 function getAddContactBtn() {
@@ -49,6 +51,20 @@ function getAddContactBtn() {
 }
 
 
-function addContact(){
+function addContact() {
     console.log("function addContact in Progress");
+}
+
+async function sortContacts() {
+    let contacts = names.map((name, index) => ({
+        name,
+        email: emails[index],
+        phone: phones[index]
+    }));
+    
+    contacts.sort((a, b) => a.name.localeCompare(b.name));
+    
+    names = contacts.map(contact => contact.name);
+    emails = contacts.map(contact => contact.email);
+    phones = contacts.map(contact => contact.phone);
 }
