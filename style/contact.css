@@ -41,5 +41,46 @@
     background-color: #2A3747;
     cursor: pointer;
     border-radius: 100px;
-    border: red solid 1px;
+}
+
+#idShortName{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    width: 42px;
+    height: 42px;
+    border-radius: 100px;
+}
+
+#idNameMailshort{
+    display: flex;
+    justify-content: center;
+    align-items: column;
+    cursor: pointer;
+    gap: 42px;
+}
+
+#idName{
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+}
+
+#idMail{
+    display: flex;
+    justify-content: flex-start;
+    color: #017CEE;
+
+}
+
+#idShortAlph{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+}
+
+#idNameMail{
+    width: 200px;
 }
