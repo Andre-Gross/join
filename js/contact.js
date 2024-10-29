@@ -1,4 +1,4 @@
-<script src="js/api.js"></script>
+
 
 const BASE_URL = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users";
 
