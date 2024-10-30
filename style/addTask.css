@@ -48,6 +48,11 @@
 }
 
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url(../assets/icons/calendar.png);
+}
+
+
 .prio-btn {
     width: 100%;
     display: flex;

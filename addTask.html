@@ -25,11 +25,11 @@
     <h1 class="m-2">Add Task</h1>
 
     <div class="d-flex">
-        <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false">
+        <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false;">
             <label for="iTitle">Title</label>
-            <input id="iTitle" type="text" placeholder="Enter a title">
+            <input required id="iTitle" type="text" placeholder="Enter a title">
             <label for="taDescription">Description</label>
-            <textarea id="taDescription" placeholder="Enter a Description"></textarea>
+            <textarea required id="taDescription" placeholder="Enter a Description"></textarea>
             <label for="navAssignedTo">Assigned to</label>
 
             <div class="dropdown-container">
@@ -45,7 +45,7 @@
                 <div id="contactDropdown" class="contact-dropdown d-none"></div>
             </div>
             <label for="iDate">Due to</label>
-            <input id="iDate" type="date">
+            <input required id="iDate" type="date">
 
             <label for="iPrio">Prio</label>
             <div id="priorityButtons" class="prio-btn">

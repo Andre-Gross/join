@@ -8,25 +8,26 @@ async function filterContacts() {
 
     dropdown.innerHTML = "";
 
-    const filteredContacts = contacts.filter(contact =>
+    // Filtere Kontakte nur, wenn eine Eingabe vorhanden ist, ansonsten alle Kontakte anzeigen
+    const filteredContacts = input ? contacts.filter(contact =>
         contact.name.toLowerCase().includes(input)
-    );
+    ) : contacts;
 
-    if (input && filteredContacts.length > 0) {
+    // Zeige Kontakte im Dropdown an, wenn gefilterte oder alle Kontakte vorhanden sind
+    if (filteredContacts.length > 0) {
+        showContactsDropdown(); // Dropdown anzeigen
         filteredContacts.forEach(contact => {
             const contactItem = document.createElement("div");
             contactItem.className = "contact-item";
-
             contactItem.innerHTML = `
-                        ${contact.name}
-                        <input type="checkbox" id="contact_${contact.name.replace(/\s+/g, '_')}">
-                    `;
+                ${contact.name}
+                <input type="checkbox" id="contact_${contact.name.replace(/\s+/g, '_')}">
+            `;
             contactItem.onclick = () => selectContact(contact);
             dropdown.appendChild(contactItem);
         });
-        dropdown.style.display = "block";
     } else {
-        dropdown.style.display = "none";
+        hideContactsDropdown(); // Dropdown ausblenden, wenn keine Kontakte übrig sind
     }
 }
 
