@@ -5,65 +5,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join 360 Summary</title>
-    <link rel="stylesheet" href="./style/start.css">
+    <link rel="stylesheet" href="./style/summary.css">
+    <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <main class="main">
-            <h1 class="title">Join 360</h1>
-            <p class="subtitle">Key Metrics at a Glance</p>
-
-            <div class="grid grid-2">
-                <div class="metric-card">
-                    <div class="icon grey"></div>
-                    <div class="metric-content">
-                        <div class="count">1</div>
-                        <div class="label">To-do</div>
-                    </div>
-                </div>
-                <div class="metric-card">
-                    <div class="icon grey"></div>
-                    <div class="metric-content">
-                        <div class="count">1</div>
-                        <div class="label">Done</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="urgent-card">
-                <div class="icon grey"></div>
-                <div class="urgent-info">
-                    <div class="count">1</div>
-                    <div class="label">Urgent</div>
-                </div>
-                <div class="deadline">
-                    <div class="date">October 16, 2022</div>
-                    <div class="upcoming">Upcoming Deadline</div>
-                </div>
-            </div>
-
-            <div class="grid grid-3">
-                <div class="metric-card">
-                    <div class="count">5</div>
-                    <div class="label">Tasks in Board</div>
-                </div>
-                <div class="metric-card">
-                    <div class="count">2</div>
-                    <div class="label">Tasks in Progress</div>
-                </div>
-                <div class="metric-card">
-                    <div class="count">2</div>
-                    <div class="label">Awaiting feedback</div>
-                </div>
-            </div>
-        </main>
+    <div class="welcome-container">
+        <div id="greeting"></div>
+        <div id="userName" class="text-primary"></div>
     </div>
 
+
+    <main class="main">
+        <h1 class="title">Join 360</h1>
+        <p class="subtitle">Key Metrics at a Glance</p>
+
+        <div class="grid grid-2">
+            <div class="metric-card">
+                <div class="icon grey"></div>
+                <div class="metric-content">
+                    <div class="count">1</div>
+                    <div class="label">To-do</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="icon grey"></div>
+                <div class="metric-content">
+                    <div class="count">1</div>
+                    <div class="label">Done</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="urgent-card">
+            <div class="icon grey"></div>
+            <div class="urgent-info">
+                <div class="count">1</div>
+                <div class="label">Urgent</div>
+            </div>
+            <div class="deadline">
+                <div class="date">October 16, 2022</div>
+                <div class="upcoming">Upcoming Deadline</div>
+            </div>
+        </div>
+
+        <div class="grid grid-3">
+            <div class="metric-card">
+                <div class="count">5</div>
+                <div class="label">Tasks in Board</div>
+            </div>
+            <div class="metric-card">
+                <div class="count">2</div>
+                <div class="label">Tasks in Progress</div>
+            </div>
+            <div class="metric-card">
+                <div class="count">2</div>
+                <div class="label">Awaiting feedback</div>
+            </div>
+        </div>
+    </main>
+
     <div w3-include-html="./templates.html"></div>
+
     <script src="./templates/templates.js"></script>
     <script src="./js/api.js"></script>
+    <script src="./js/summary.js"></script>
 
 </body>
 
