@@ -58,5 +58,12 @@ function getInitialsFromName(name) {
     }
 }
 
+const link = document.createElement('link');
+link.rel = 'icon';
+link.href = './assets/favicon/fav.ico';
+link.type = 'image/x-icon';
+document.head.appendChild(link);
+
+
 // Rufe `includeHTML` auf
 includeHTML();
