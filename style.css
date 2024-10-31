@@ -1,6 +1,21 @@
-body {
+* {
     margin: 0;
-    font-family: "Inter", serif !important;    
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('./font/Inter/Inter-VariableFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #e7e7e7;
+    font-family: 'Inter';
+    font-weight: normal;
+    font-style: normal;
 }
 
 
