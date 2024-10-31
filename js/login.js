@@ -22,7 +22,7 @@ function logIn() {
                     sessionStorage.setItem('loggedInUser', key);
                     
                     // Weiterleitung zur gewünschten Seite
-                    window.location.href = 'welcome.html';
+                    window.location.href = 'summary.html';
                     return;
                 }
             }
@@ -43,5 +43,5 @@ function guestLogIn() {
     // Setzt eine spezielle Gast-Benutzer-ID in sessionStorage
     sessionStorage.setItem('loggedInUser', 'guest');
     
-    window.location.href = 'welcome.html?userId=guest'; // Leitet mit Gast-ID weiter
+    window.location.href = 'summary.html?userId=guest'; // Leitet mit Gast-ID weiter
 }
