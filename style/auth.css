@@ -1,0 +1,69 @@
+.card {
+    width: 90%;
+    max-width: 396px;
+    max-height: 515px;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 30px;
+    padding: 32px 0;
+    background-color: white;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    opacity: 1;
+    overflow: hidden;
+}
+
+
+.btn-primary {
+    background-color: #212529;
+    border-color: #212529;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #424649;
+}
+
+.btn-outline-secondary {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.75rem;
+
+
+    margin-top: 0.5rem;
+    background-color: transparent;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+    border-color: #212529;
+}
+
+.form-control {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ced4da;
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+}
+
+.login-container,
+.signup-container {
+    text-align: center;
+}
+
