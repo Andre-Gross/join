@@ -1,0 +1,36 @@
+.title{
+    font-size: 47px;
+    font-weight: 700;
+    color: #000000;
+}
+h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.login-container h2,
+.signup-container h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #212529;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #2A3647;
+    font-weight: 400;
+    line-height: 24px;
+
+}
+
+#greeting {
+    font-size: 36px;
+    font-weight: 400;
+    color: #2A3647;
+}	
+
+#userName {
+    font-weight: 700;
+    font-size: 47px;
+    color: #29ABE2;
+}
