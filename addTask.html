@@ -25,10 +25,10 @@
 
     <div class="d-flex">
         <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false;">
-            <label for="iTitle">Title</label>
-            <input required id="iTitle" type="text" placeholder="Enter a title">
-            <label for="taDescription">Description</label>
-            <textarea required id="taDescription" placeholder="Enter a Description"></textarea>
+            <label for="inputTitle">Title</label>
+            <input required id="inputTitle" type="text" placeholder="Enter a title">
+            <label for="textareaDescription">Description</label>
+            <textarea required id="textareaDescription" placeholder="Enter a Description"></textarea>
             <label for="navAssignedTo">Assigned to</label>
 
             <div class="dropdown-container">
@@ -43,15 +43,15 @@
                 </div>
                 <div id="contactDropdown" class="contact-dropdown d-none"></div>
             </div>
-            <label for="iDate">Due to</label>
-            <input required id="iDate" type="date">
+            <label for="inputDate">Due to</label>
+            <input required id="inputDate" type="date">
 
-            <label for="iPrio">Prio</label>
+            <label for="priorityButtons">Prio</label>
             <div id="priorityButtons" class="prio-btn">
                 <button id="urgent" type="button" class="btn btn-outline-danger" onclick="selectPriority('urgent')">
                     Urgent <img src="#" alt="Urgent">
                 </button>
-                <button id="medium" type="button" class="btn btn-outline-warning" onclick="selectPriority('medium')">
+                <button id="medium" type="button" class="btn btn-outline-warning btn-selected" onclick="selectPriority('medium')">
                     Medium <img src="#" alt="Medium">
                 </button>
                 <button id="low" type="button" class="btn btn-outline-success" onclick="selectPriority('low')">
