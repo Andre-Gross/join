@@ -70,7 +70,7 @@ function getaddContact() {
     return `
     <div>
         <div>
-            <img alt="x_mark" onclick="contactMain()">
+            <img alt="x" onclick="contactMain()">
             <h1>Add contact</h1>
             <h3>Tasks are better with a team!</h3>
             <div id="blueline"><div>
@@ -146,11 +146,11 @@ function getEditContactBtn() {
     return `
     <div>
         <div>
-            <img alt="Edit">
+            <img alt="pencil">
             <p>Edit</p>
         </div>
         <div>
-            <img alt="Delete">
+            <img alt="bin">
             <p>Delete</p>
         </div>
     </div>
