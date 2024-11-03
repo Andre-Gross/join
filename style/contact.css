@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border: black solid 4px;
 }
 
 #idContactAlph{
@@ -13,7 +12,7 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    border: red solid 1px;
+
 }
 
 #idGreyLine{
@@ -23,13 +22,12 @@
     background-color: #d1d1d1;
     height: 1px;
     width: 80%;
-    border: red solid 1px;
+    /* saved for later*/
 }
 
 #idImgAddContact{
     width: 32px;
     height: 32px;
-    border: red solid 1px;
 }
 
 #idAddContact{

@@ -36,7 +36,7 @@ async function getData(path = "") {
 
 function getContactMain(i) {
     return `
-    <div id="idNameMailshort" onclick="openContact()">
+    <div id="idNameMailshort" onclick="openContact(${i})">
         <div id="idShortName">
             <p id="idShortAlph">MM</p>
         </div>
@@ -77,6 +77,21 @@ async function sortContacts() {
 }
 
 
-function openContact() {
+async function openContact(i) {
     console.log("function Open Contact is in Progress");
+    let contactMain = document.getElementById("idContactMain");
+    contactMain.innerHTML = "";
+    contactMain.innerHTML += getContactView(i);
+    contactMain.innerHTML += getEditContactBtn();
+}
+
+function getEditContactBtn(){
+    console.log("function Edit Contact is in Progress");
+}
+
+function getContactView(){
+    return`
+    
+    
+    `
 }
