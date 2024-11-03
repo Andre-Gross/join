@@ -62,9 +62,34 @@ function getAddContactBtn() {
 
 
 function addContact() {
-    console.log("function addContact in Progress");
+    let addContact = document.getElementById("idContactMain");
+    addContact.innerHTML += getaddContact();
 }
 
+function getaddContact() {
+    return `
+    <div>
+        <div>
+            <img alt="x_mark" onclick="contactMain()">
+            <h1>Add contact</h1>
+            <h3>Tasks are better with a team!</h3>
+            <div id="blueline"><div>
+        </div>
+        <img>
+        <div>
+            <div>
+                <input type="text" name="name" placeholder="Name">
+                <input type="email" name="email" placeholder="Email">
+                <input type="number" name="phone" placeholder="Phone">
+            </div>
+            <div onclick="submitAddContact()">
+                <p>Create Contact</p>
+                <img alt="check">
+            </div>
+        </div>
+    </div>
+    `
+}
 
 async function sortContacts() {
     let contacts = names.map((name, index) => ({
@@ -81,7 +106,7 @@ async function sortContacts() {
 }
 
 
-async function openContact(i) {
+function openContact(i) {
     let openContact = document.getElementById("idContactMain");
     openContact.innerHTML = "";
     openContact.innerHTML += getContactView(i);
@@ -89,7 +114,7 @@ async function openContact(i) {
 
 
 function getContactView(i){
-    return`
+    return `
     <div>
         <h1>Contacts</h1><img alt="return" onclick="contactMain()">
         <h3>Better with a team</h3>
@@ -129,5 +154,17 @@ function getEditContactBtn() {
             <p>Delete</p>
         </div>
     </div>
+    `
+}
+
+
+function submitAddContact(){
+    console.log("Submit new Contact in Progress");
+}
+
+
+function notifSucess(){
+    return `
+    <div>Contact successfully created</div>
     `
 }
