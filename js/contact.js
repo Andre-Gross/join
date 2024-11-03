@@ -66,6 +66,7 @@ function addContact() {
     addContact.innerHTML += getaddContact();
 }
 
+
 function getaddContact() {
     return `
     <div>
