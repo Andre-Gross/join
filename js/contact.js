@@ -6,6 +6,9 @@ let phones = [];
 
 
 async function contactMain() {
+  names = [];
+  emails = [];
+  phones = [];
   await getContacts();
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
@@ -78,20 +81,41 @@ async function sortContacts() {
 
 
 async function openContact(i) {
-    console.log("function Open Contact is in Progress");
-    let contactMain = document.getElementById("idContactMain");
-    contactMain.innerHTML = "";
-    contactMain.innerHTML += getContactView(i);
-    contactMain.innerHTML += getEditContactBtn();
+    let openContact = document.getElementById("idContactMain");
+    openContact.innerHTML = "";
+    openContact.innerHTML += getContactView(i);
 }
 
-function getEditContactBtn(){
-    console.log("function Edit Contact is in Progress");
-}
 
-function getContactView(){
+function getContactView(i){
     return`
-    
-    
+    <div>
+    <h1>Contacts</h1><img alt="return" onclick="contactMain()">
+    <h3>Better with a team</h3>
+    <div id="idblueLine"></div>
+        <div id="idShortName">
+        <p id="idShortAlph">MM</p>
+        </div>
+        <h1>${names[i]}</h1>
+        <h3>Contact Information</h3>
+        <h3>Email<h3>
+        <p id="idMail">${emails[i]}</p>
+        <h3>Phone<h3>
+        <p>${phones[i]}</p>
+        <div id="idEditDeleteBtn">
+        <img alt="editContact" onclick="EditContactBtn()">
+        </div>
+    </div>
     `
+}
+
+
+function EditContactBtn() {
+    let EditContactBtn = document.getElementById("idEditDeleteBtn");
+    EditContactBtn.innerHTML = "";
+    EditContactBtn.innerHTML += getEditContactBtn();
+}
+
+function getEditContactBtn() {
+
 }
