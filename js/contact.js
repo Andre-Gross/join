@@ -13,8 +13,9 @@ async function contactMain() {
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
   for (let i = 0; i < names.length; i++) {
-  contactMain.innerHTML += getContactMain(i);}
-  contactMain.innerHTML += getAddContactBtn();
+    contactMain.innerHTML += getContactMain(i);
+  }
+    contactMain.innerHTML += getAddContactBtn();
 }
 
 
@@ -90,21 +91,21 @@ async function openContact(i) {
 function getContactView(i){
     return`
     <div>
-    <h1>Contacts</h1><img alt="return" onclick="contactMain()">
-    <h3>Better with a team</h3>
-    <div id="idblueLine"></div>
-        <div id="idShortName">
-        <p id="idShortAlph">MM</p>
-        </div>
-        <h1>${names[i]}</h1>
-        <h3>Contact Information</h3>
-        <h3>Email<h3>
-        <p id="idMail">${emails[i]}</p>
-        <h3>Phone<h3>
-        <p>${phones[i]}</p>
-        <div id="idEditDeleteBtn">
-        <img alt="editContact" onclick="EditContactBtn()">
-        </div>
+        <h1>Contacts</h1><img alt="return" onclick="contactMain()">
+        <h3>Better with a team</h3>
+        <div id="idblueLine"></div>
+            <div id="idShortName">
+                <p id="idShortAlph">MM</p>
+            </div>
+            <h1>${names[i]}</h1>
+            <h3>Contact Information</h3>
+            <h3>Email<h3>
+            <p id="idMail">${emails[i]}</p>
+            <h3>Phone<h3>
+            <p>${phones[i]}</p>
+            <div id="idEditDeleteBtn">
+                <img alt="editContact" onclick="EditContactBtn()">
+            </div>
     </div>
     `
 }
@@ -112,10 +113,21 @@ function getContactView(i){
 
 function EditContactBtn() {
     let EditContactBtn = document.getElementById("idEditDeleteBtn");
-    EditContactBtn.innerHTML = "";
     EditContactBtn.innerHTML += getEditContactBtn();
 }
 
-function getEditContactBtn() {
 
+function getEditContactBtn() {
+    return `
+    <div>
+        <div>
+            <img alt="Edit">
+            <p>Edit</p>
+        </div>
+        <div>
+            <img alt="Delete">
+            <p>Delete</p>
+        </div>
+    </div>
+    `
 }
