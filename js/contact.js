@@ -131,23 +131,23 @@ function getContactView(i){
             <h3>Phone<h3>
             <p>${phones[i]}</p>
             <div id="idEditDeleteBtn">
-                <img alt="editContact" onclick="editContactBtn()">
+                <img alt="editContact" onclick="editContactBtn(${i})">
             </div>
     </div>
     `
 }
 
 
-function editContactBtn() {
+function editContactBtn(i) {
     let editContactBtn = document.getElementById("idEditDeleteBtn");
-    editContactBtn.innerHTML += getEditContactBtn();
+    editContactBtn.innerHTML += getEditContactBtn(i);
 }
 
 
-function getEditContactBtn() {
+function getEditContactBtn(i) {
     return `
     <div>
-        <div onclick="editContact()">
+        <div onclick="editContact(${i})">
             <img alt="pencil">
             <p>Edit</p>
         </div>
@@ -162,7 +162,6 @@ function getEditContactBtn() {
 
 function editContact(i) {
     let editContact = document.getElementById("idContactMain");
-    editContact.innerHTML = "";
     editContact.innerHTML += getEditContact(i);
 }
 
@@ -175,14 +174,23 @@ function getEditContact(i) {
             <div id="idShortName">
                 <p id="idShortAlph">MM</p>
             </div>
+            <div>
+                <input value="${names[i]}" type="text" name="name" placeholder="Name">
+                <input value="${emails[i]}" type="email" name="email" placeholder="Email">
+                <input value="${phones[i]}" type="Tel" name="phone" placeholder="Phone">
+            </div>
             <h1>${names[i]}</h1>
             <h3>Contact Information</h3>
             <h3>Email<h3>
             <p id="idMail">${emails[i]}</p>
             <h3>Phone<h3>
             <p>${phones[i]}</p>
-            <div id="idEditDeleteBtn">
-                <img alt="editContact" onclick="editContactBtn()">
+            <div id="idDeleteBtn" onclick="deleteContact()">
+            <p>Delete</p>
+            </div>
+            <div id="idSaveBtn" onclick="saveContact()">
+                <p>Save</p>
+                <img alt="saveContact" >
             </div>
     </div>
     `
@@ -205,4 +213,9 @@ function notifSucess(){
 
 function deleteContact(){
     console.log("Delete Contact in Progress");
+}
+
+
+function saveContact(){
+    console.log("Save Contact in Progress");
 }
