@@ -81,7 +81,7 @@ function getaddContact() {
             <div>
                 <input type="text" name="name" placeholder="Name">
                 <input type="email" name="email" placeholder="Email">
-                <input type="number" name="phone" placeholder="Phone">
+                <input type="Tel" name="phone" placeholder="Phone">
             </div>
             <div onclick="submitAddContact()">
                 <p>Create Contact</p>
@@ -91,6 +91,7 @@ function getaddContact() {
     </div>
     `
 }
+
 
 async function sortContacts() {
     let contacts = names.map((name, index) => ({
@@ -130,30 +131,59 @@ function getContactView(i){
             <h3>Phone<h3>
             <p>${phones[i]}</p>
             <div id="idEditDeleteBtn">
-                <img alt="editContact" onclick="EditContactBtn()">
+                <img alt="editContact" onclick="editContactBtn()">
             </div>
     </div>
     `
 }
 
 
-function EditContactBtn() {
-    let EditContactBtn = document.getElementById("idEditDeleteBtn");
-    EditContactBtn.innerHTML += getEditContactBtn();
+function editContactBtn() {
+    let editContactBtn = document.getElementById("idEditDeleteBtn");
+    editContactBtn.innerHTML += getEditContactBtn();
 }
 
 
 function getEditContactBtn() {
     return `
     <div>
-        <div>
+        <div onclick="editContact()">
             <img alt="pencil">
             <p>Edit</p>
         </div>
-        <div>
+        <div onclick="deleteContact()">
             <img alt="bin">
             <p>Delete</p>
         </div>
+    </div>
+    `
+}
+
+
+function editContact(i) {
+    let editContact = document.getElementById("idContactMain");
+    editContact.innerHTML = "";
+    editContact.innerHTML += getEditContact(i);
+}
+
+
+function getEditContact(i) {
+    return `
+    <div>
+        <h1>Edit contact</h1><img alt="return" onclick="contactMain()">
+        <div id="idblueLine"></div>
+            <div id="idShortName">
+                <p id="idShortAlph">MM</p>
+            </div>
+            <h1>${names[i]}</h1>
+            <h3>Contact Information</h3>
+            <h3>Email<h3>
+            <p id="idMail">${emails[i]}</p>
+            <h3>Phone<h3>
+            <p>${phones[i]}</p>
+            <div id="idEditDeleteBtn">
+                <img alt="editContact" onclick="editContactBtn()">
+            </div>
     </div>
     `
 }
@@ -166,6 +196,13 @@ function submitAddContact(){
 
 function notifSucess(){
     return `
-    <div>Contact successfully created</div>
+    <div>
+    <p>Contact successfully created</p>
+    </div>
     `
+}
+
+
+function deleteContact(){
+    console.log("Delete Contact in Progress");
 }
