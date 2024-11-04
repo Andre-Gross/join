@@ -56,7 +56,7 @@ function getContactMain(i) {
 function getAddContactBtn() {
     return `
     <div id="idAddContact" onclick="addContact()">
-    <img id="idImgAddContact"src="assets/img/person_add.png" alt=""></div>
+    <img id="idImgAddContact" src="assets/img/svg/person_add.svg" alt=""></div>
     `
 }
 
@@ -71,7 +71,7 @@ function getaddContact() {
     return `
     <div>
         <div>
-            <img alt="x" onclick="contactMain()">
+            <img src="assets/img/svg/close.svg" alt="x" onclick="contactMain()">
             <h1>Add contact</h1>
             <h3>Tasks are better with a team!</h3>
             <div id="blueline"><div>
@@ -118,7 +118,7 @@ function openContact(i) {
 function getContactView(i){
     return `
     <div>
-        <h1>Contacts</h1><img alt="return" onclick="contactMain()">
+        <h1>Contacts</h1> <img src="assets/img/svg/arrow-left-line.svg" alt="return" onclick="contactMain()">
         <h3>Better with a team</h3>
         <div id="idblueLine"></div>
             <div id="idShortName">
@@ -131,7 +131,7 @@ function getContactView(i){
             <h3>Phone<h3>
             <p>${phones[i]}</p>
             <div id="idEditDeleteBtn">
-                <img alt="editContact" onclick="editContactBtn(${i})">
+                <img src="assets/img/svg/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">
             </div>
     </div>
     `

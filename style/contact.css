@@ -82,3 +82,14 @@
 #idNameMail{
     width: 200px;
 }
+
+#idEditDeleteBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    background-color: #2A3747;
+    cursor: pointer;
+    border-radius: 100px;
+}
