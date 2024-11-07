@@ -7,27 +7,49 @@ let contactsInitialized = false;
 async function filterContacts() {
     const input = document.getElementById("navAssignedTo").value.toLowerCase();
     const dropdown = document.getElementById("contactDropdown");
-    let contacts = await loadContacts();
+    let contacts = await getContactsAsArray();
 
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
 
     if (filteredContacts.length > 0) {
         showAssignedToDropdown();
-        for (i = 0; i < contacts.length; i++) {
+        for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
-            const item = document.getElementById(`item_${contact.name.replace(/\s+/g, '_')}`)
+            const item = document.getElementById(`item_${contact.name.replace(/\s+/g, '_')}`);
             item.classList.add("d-none");
 
-            for (y = 0; y < filteredContacts.length; y++) {
-                if (filteredContacts[y].name == contact.name) {
+            for (let y = 0; y < filteredContacts.length; y++) {
+                if (filteredContacts[y].name === contact.name) {
                     item.classList.remove("d-none");
                     break;
                 }
             }
         }
     } else {
-        hideAssignedToDropdown()();
+        hideAssignedToDropdown();
     }
+}
+
+
+async function getContactsAsArray() {
+    let contacts = await getContacts();
+    if (Array.isArray(contacts)) {
+    } else {
+        contacts = Object.values(contacts);
+    }
+    return contacts
+}
+
+
+async function getNamesOfContacts() {
+    let contacts = await getContactsAsArray();
+    let namesOfContacts = [];
+    for (let i=0; i<contacts.length; i++) {
+        const name = contacts[i].name;
+        namesOfContacts.push(name);
+        console.log(name)
+    }
+    return namesOfContacts;
 }
 
 
@@ -69,7 +91,7 @@ function hideAssignedToDropdown() {
  */
 async function createAssignedToDropdown() {
     const dropdown = document.getElementById("contactDropdown");
-    let contacts = await loadContacts();
+    let contacts = await getContactsAsArray();
 
     dropdown.innerHTML = "";
 
