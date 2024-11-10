@@ -1,45 +1,35 @@
-
-let user = 1;
 let names = [];
 let emails = [];
 let phones = [];
-
 
 async function contactMain() {
   names = [];
   emails = [];
   phones = [];
-  await getContacts();
+  await loadContacts();
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
+
   for (let i = 0; i < names.length; i++) {
     contactMain.innerHTML += getContactMain(i);
   }
-    contactMain.innerHTML += getAddContactBtn();
+  contactMain.innerHTML += getAddContactBtn();
 }
 
+async function loadContacts() {
+  let loadContacts = await getContacts();
+  let contactsArray = Object.values(loadContacts);
 
-async function getContacts() {
-    let contactsResponse = await getData(`users/${user}/contacts.json`);
-    let contactArray = contactsResponse;
-  
-    for (let index = 0; index < contactArray.length; index++) {
-      names.push(contactArray[index].name);
-      emails.push(contactArray[index].email); 
-      phones.push(contactArray[index].phone);
-    }
-    await sortContacts();
+  for (let index = 0; index < contactsArray.length; index++) {
+    emails.push(contactsArray[index].email);
+    names.push(contactsArray[index].name);
+    phones.push(contactsArray[index].phone);
   }
-
-
-async function getData(path = "") {
-    let response = await fetch(BASE_URL + path);
-    return (responseToJson = await response.json());
+  await sortContacts();
 }
-
 
 function getContactMain(i) {
-    return `
+  return `
     <div id="idNameMailshort" onclick="openContact(${i})">
         <div id="idShortName">
             <p id="idShortAlph">MM</p>
@@ -49,26 +39,23 @@ function getContactMain(i) {
             <p id="idMail">${emails[i]}</p>
         </div>
     </div>
-    `
+    `;
 }
-
 
 function getAddContactBtn() {
-    return `
+  return `
     <div id="idAddContact" onclick="addContact()">
     <img id="idImgAddContact" src="assets/img/svg/person_add.svg" alt=""></div>
-    `
+    `;
 }
-
 
 function addContact() {
-    let addContact = document.getElementById("idContactMain");
-    addContact.innerHTML += getaddContact();
+  let addContact = document.getElementById("idContactMain");
+  addContact.innerHTML += getaddContact();
 }
 
-
 function getaddContact() {
-    return `
+  return `
     <div>
         <div>
             <img src="assets/img/svg/close.svg" alt="x" onclick="contactMain()">
@@ -89,34 +76,31 @@ function getaddContact() {
             </div>
         </div>
     </div>
-    `
+    `;
 }
-
 
 async function sortContacts() {
-    let contacts = names.map((name, index) => ({
-        name,
-        email: emails[index],
-        phone: phones[index]
-    }));
-    
-    contacts.sort((a, b) => a.name.localeCompare(b.name));
-    
-    names = contacts.map(contact => contact.name);
-    emails = contacts.map(contact => contact.email);
-    phones = contacts.map(contact => contact.phone);
-}
+  let contacts = names.map((name, index) => ({
+    name,
+    email: emails[index],
+    phone: phones[index],
+  }));
 
+  contacts.sort((a, b) => a.name.localeCompare(b.name));
+
+  names = contacts.map((contact) => contact.name);
+  emails = contacts.map((contact) => contact.email);
+  phones = contacts.map((contact) => contact.phone);
+}
 
 function openContact(i) {
-    let openContact = document.getElementById("idContactMain");
-    openContact.innerHTML = "";
-    openContact.innerHTML += getContactView(i);
+  let openContact = document.getElementById("idContactMain");
+  openContact.innerHTML = "";
+  openContact.innerHTML += getContactView(i);
 }
 
-
-function getContactView(i){
-    return `
+function getContactView(i) {
+  return `
     <div>
         <h1>Contacts</h1> <img src="assets/img/svg/arrow-left-line.svg" alt="return" onclick="contactMain()">
         <h3>Better with a team</h3>
@@ -134,18 +118,16 @@ function getContactView(i){
                 <img src="assets/img/svg/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">
             </div>
     </div>
-    `
+    `;
 }
-
 
 function editContactBtn(i) {
-    let editContactBtn = document.getElementById("idEditDeleteBtn");
-    editContactBtn.innerHTML += getEditContactBtn(i);
+  let editContactBtn = document.getElementById("idEditDeleteBtn");
+  editContactBtn.innerHTML += getEditContactBtn(i);
 }
 
-
 function getEditContactBtn(i) {
-    return `
+  return `
     <div>
         <div onclick="editContact(${i})">
             <img alt="pencil">
@@ -156,18 +138,16 @@ function getEditContactBtn(i) {
             <p>Delete</p>
         </div>
     </div>
-    `
+    `;
 }
-
 
 function editContact(i) {
-    let editContact = document.getElementById("idContactMain");
-    editContact.innerHTML += getEditContact(i);
+  let editContact = document.getElementById("idContactMain");
+  editContact.innerHTML += getEditContact(i);
 }
 
-
 function getEditContact(i) {
-    return `
+  return `
     <div>
         <h1>Edit contact</h1><img alt="return" onclick="contactMain()">
         <div id="idblueLine"></div>
@@ -193,29 +173,25 @@ function getEditContact(i) {
                 <img alt="saveContact" >
             </div>
     </div>
-    `
+    `;
 }
 
-
-function submitAddContact(){
-    console.log("Submit new Contact in Progress");
+function submitAddContact() {
+  console.log("Submit new Contact in Progress");
 }
 
-
-function notifSucess(){
-    return `
+function notifSucess() {
+  return `
     <div>
     <p>Contact successfully created</p>
     </div>
-    `
+    `;
 }
 
-
-function deleteContact(){
-    console.log("Delete Contact in Progress");
+function deleteContact() {
+  console.log("Delete Contact in Progress");
 }
 
-
-function saveContact(){
-    console.log("Save Contact in Progress");
+function saveContact() {
+  console.log("Save Contact in Progress");
 }
