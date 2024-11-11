@@ -12,7 +12,7 @@
 }
 
 body {
-    background-color: #e7e7e7;
+    background-color: #f0f0f0;
     font-family: 'Inter';
     font-weight: normal;
     font-style: normal;
@@ -25,7 +25,7 @@ button {
 
 
 input {
-    border: 1.5px solid #e8e8e8;
+    border: 1.5px solid #d1d1d1;
     border-radius: 8px;
 }
 
@@ -34,4 +34,16 @@ textarea {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
     resize: none !important;
+}
+
+
+input:focus,
+textarea:focus {
+  border-color: #6596ab;
+  outline: none;
+}
+
+
+.invalid-border {
+  border-color: #c9999f !important;
 }
