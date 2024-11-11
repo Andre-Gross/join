@@ -101,8 +101,11 @@ function openContact(i) {
 
 function getContactView(i) {
   return `
-    <div>
-        <h1>Contacts</h1> <img src="assets/img/svg/arrow-left-line.svg" alt="return" onclick="contactMain()">
+    <div id="idContactView">
+        <div id="idheadContactView">
+        <h1 id="idh1Contacts">Contacts</h1> 
+        <img src="assets/img/svg/arrow-left-line.svg" alt="return" onclick="contactMain()">
+        </div>
         <h3>Better with a team</h3>
         <div id="idblueLine"></div>
             <div id="idShortName">
@@ -110,9 +113,9 @@ function getContactView(i) {
             </div>
             <h1>${names[i]}</h1>
             <h3>Contact Information</h3>
-            <h3>Email<h3>
+            <h3>Email</h3>
             <p id="idMail">${emails[i]}</p>
-            <h3>Phone<h3>
+            <h3>Phone</h3>
             <p>${phones[i]}</p>
             <div id="idEditDeleteBtn">
                 <img src="assets/img/svg/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">

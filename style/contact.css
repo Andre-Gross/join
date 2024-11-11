@@ -36,11 +36,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background-color: #2A3747;
     cursor: pointer;
     border-radius: 100px;
+    z-index: 1;
+    position: fixed;
+    bottom: 82px;
+    right: 16px;
 }
 
 #idShortName{
@@ -89,9 +93,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background-color: #2A3747;
     cursor: pointer;
     border-radius: 100px;
+    z-index: 1;
+    position: fixed;
+    bottom: 82px;
+    right: 16px;
+}
+
+#idheadContactView{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-direction: row;
+    width: 100%;
+    padding-top: 36px;
+}
+
+#idh1Contacts{
+    font-weight: 700;
+}
+
+#idContactView{
+    width: 100%;
 }
