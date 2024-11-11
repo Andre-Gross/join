@@ -1,5 +1,26 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
-let loggedInUser = '1';
+let loggedInUser = '';
+
+
+async function getLoggedInUser() {
+    let response = await fetch(BASE_URL + 'users/.json');
+    let responseAsJSON = await response.json();
+    loggedInUser = responseAsJSON['loggedInUser'];
+}
+
+
+async function putLoggedInUser(user) {
+    fetch(BASE_URL + '/users/loggedInUser.json', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      })
+        .then(response => response.json())
+        .then(data => console.log('Profil erfolgreich aktualisiert:', data))
+        .catch(error => console.error('Fehler beim Aktualisieren des Profils:', error));
+}
 
 
 /**
@@ -86,3 +107,6 @@ async function tryPostTaskToDatabase(data) {
     }
     alert("Aufgabe erfolgreich hinzugefügt.");
 }
+
+
+getLoggedInUser();
