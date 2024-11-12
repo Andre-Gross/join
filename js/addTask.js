@@ -1,5 +1,78 @@
 let contactsInitialized = false;
 
+
+/**
+ * This function prepare the information of the addTask-form and post it to the database.
+ * 
+ * @param {string} boardId - That includes the ID of the board, where the datas should be post.
+ */
+async function submitTaskForm(boardId) {
+    const title = document.getElementById("inputTitle").value.trim();
+    const description = document.getElementById("textareaDescription").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const priority = document.querySelector('.btn-selected')?.id;
+
+    const assignedTo = readAssignedTo();
+
+    if (checkAllInputsHasContent(title, description, dueDate, priority, assignedTo)) {
+        const data = {
+            title: title,
+            description: description,
+            finishedUntil: dueDate,
+            priority: priority,
+            assignedTo: assignedTo 
+        };
+        await postTaskToDatabase(boardId, data);
+
+        emptyAddTaskInputs();
+    }
+}
+
+
+/**
+ * That function read the information, for which contact the task is assigned to.
+ * 
+ * @returns {string} - The person(s), which are assigned to to do the task.
+ */
+function readAssignedTo() {
+    const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => checkbox.id);
+    return assignedTo;
+}
+
+
+/**
+ * This function, check if all inputs of the addTask-form includes content.
+ * 
+ * @param {string} title - Title of the task
+ * @param {string} description - description of the task
+ * @param {Date} dueDate - Date, until the task should be finished
+ * @param {string} priority - Priority, how important the task is
+ * @param {Array} assignedTo - The person(s), who are assigned to do the task
+ * @returns {boolean} - Giv the feedback if all inputs contain informations. 
+ */
+function checkAllInputsHasContent(title, description, dueDate, priority, assignedTo) {
+    if (title == '' || description == '' || dueDate == '' || priority == '' || assignedTo.length == 0) {
+        alert("Bitte fülle alle Felder aus.");
+        return false;
+    } else {
+        return true
+    }
+}
+
+
+/**
+ * This function reset the form of addTask
+ */
+function emptyAddTaskInputs() {
+    document.getElementById("iTitle").value = '';
+    document.getElementById("taDescription").value = '';
+    document.getElementById('iDate').value = '';
+    document.querySelector('.btn-selected')?.classList.remove('btn-selected');
+    document.document.getElementById('medium').classList.add('btn-selected');
+}
+
+
 /**
  * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
  * 
@@ -156,73 +229,3 @@ function getSelectedPriority() {
 }
 
 
-/**
- * This function prepare the information of the addTask-form and post it to the database.
- * 
- * @param {string} boardId - That includes the ID of the board, where the datas should be post.
- */
-async function submitTaskForm(boardId) {
-    const title = document.getElementById("inputTitle").value.trim();
-    const description = document.getElementById("textareaDescription").value.trim();
-    const dueDate = document.getElementById('inputDate').value;
-    const priority = document.querySelector('.btn-selected')?.id;
-
-    const assignedTo = readAssignedTo();
-
-    if (checkAllInputsHasContent(title, description, dueDate, priority, assignedTo)) {
-        const data = {
-            title: title,
-            description: description,
-            finishedUntil: dueDate,
-            priority: priority,
-            assignedTo: assignedTo 
-        };
-        await postTaskToDatabase(boardId, data);
-
-        emptyAddTaskInputs();
-    }
-}
-
-
-/**
- * That function read the information, for which contact the task is assigned to.
- * 
- * @returns {string} - The person(s), which are assigned to to do the task.
- */
-function readAssignedTo() {
-    const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => checkbox.id);
-    return assignedTo;
-}
-
-
-/**
- * This function, check if all inputs of the addTask-form includes content.
- * 
- * @param {string} title - Title of the task
- * @param {string} description - description of the task
- * @param {Date} dueDate - Date, until the task should be finished
- * @param {string} priority - Priority, how important the task is
- * @param {Array} assignedTo - The person(s), who are assigned to do the task
- * @returns {boolean} - Giv the feedback if all inputs contain informations. 
- */
-function checkAllInputsHasContent(title, description, dueDate, priority, assignedTo) {
-    if (title == '' || description == '' || dueDate == '' || priority == '' || assignedTo.length == 0) {
-        alert("Bitte fülle alle Felder aus.");
-        return false;
-    } else {
-        return true
-    }
-}
-
-
-/**
- * This function reset the form of addTask
- */
-function emptyAddTaskInputs() {
-    document.getElementById("iTitle").value = '';
-    document.getElementById("taDescription").value = '';
-    document.getElementById('iDate').value = '';
-    document.querySelector('.btn-selected')?.classList.remove('btn-selected');
-    document.document.getElementById('medium').classList.add('btn-selected');
-}
