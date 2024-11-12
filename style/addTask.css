@@ -71,13 +71,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .prio-btn .btn {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
+    background-color: #ffffff !important;
+
 
     display: flex;
+    flex: 1;
     align-items: center;
     gap: 5px;
 }
 
-/* Stil für die aktiv ausgewählte Schaltfläche */
+
 .btn-selected {
-    background-color: #d1d1d1 !important; /* Hintergrundfarbe für die ausgewählte Schaltfläche */
+    background-color: #d1d1d1 !important;
 }
