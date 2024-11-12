@@ -104,6 +104,11 @@ async function filterContacts() {
 }
 
 
+/**
+ * This function returns the contacts of the loggedInUser as Array
+ * 
+ * @returns {Array} - This array contains the contacts of the loggedInUser
+ */
 async function getContactsAsArray() {
     let contacts = await getContacts();
     if (Array.isArray(contacts)) {
@@ -114,6 +119,11 @@ async function getContactsAsArray() {
 }
 
 
+/**
+ * This function returns the name of the contacts of the aktive user as array.
+ * 
+ * @returns {Array} - This array contains the names of the contacts of the active user.
+ */
 async function getNamesOfContacts() {
     let contacts = await getContactsAsArray();
     let namesOfContacts = [];
