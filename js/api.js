@@ -24,6 +24,18 @@ async function putLoggedInUser(user) {
 
 
 /**
+ * This function returns the datas of all tasks. 
+ * 
+ * @returns {object} - This object includes the datas of all tasks.
+ */
+async function getTasks() {
+    let response = await fetch(BASE_URL + 'tasks/.json');
+    let responseAsJSON = await response.json();
+    return responseAsJSON;
+}
+
+
+/**
  * This function returns the contacts of the user as JSON
  * 
  * @returns {JSON} - This object includes all datas of all contacts of the user.
