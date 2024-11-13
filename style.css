@@ -47,3 +47,56 @@ textarea:focus {
 .invalid-border {
   border-color: #c9999f !important;
 }
+
+
+a {
+    color: #29abe1;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.rectangular-clear-button {
+    background-color: transparent;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.rectangular-blue-button {
+    background-color: #29abe1;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.round-blue-button {
+    background-color: #29abe1;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name-circle {
+    background-color: #d1d1d1;
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    color: #333;
+}
