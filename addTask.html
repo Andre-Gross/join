@@ -14,23 +14,23 @@
 
     <script src="js/api.js"></script>
     <script src="js/addTask.js"></script>
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body onload="">
     <h1 class="m-2">Add Task</h1>
 
     <div class="d-flex">
         <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false;">
             <label for="inputTitle">Title</label>
-            <input required id="inputTitle" type="text" placeholder="Enter a title">
+            <input required id="inputTitle" class="" type="text" placeholder="Enter a title" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
             <label for="textareaDescription">Description</label>
-            <textarea required id="textareaDescription" placeholder="Enter a Description"></textarea>
+            <textarea required id="textareaDescription" placeholder="Enter a Description" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
             <label for="navAssignedTo">Assigned to</label>
 
             <div class="dropdown-container">
                 <div class="input-group">
-                    <input id="navAssignedTo" type="text" class="form-control border-end-0"
-                        placeholder="Select contacts to assign" oninput="filterContacts()">
+                    <input id="navAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign" oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
                     <div class="arrow-input d-flex justify-content-center align-items-center">
                         <img id="arrowDown" src="assets/icons/arrow-drop.png" class="" onclick="showAssignedToDropdown()">
                         <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
@@ -58,6 +58,11 @@
 
         </form>
     </div>
+
+    
+    <div w3-include-html="./templates/templates.html"></div>
+
+    <script src="./js/templates.js"></script>
 
 </body>
 
