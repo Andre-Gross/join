@@ -7,7 +7,7 @@ async function contactMain() {
   emails = [];
   phones = [];
   await loadContacts();
-  let contactMain = document.getElementById("ContactMain");
+  let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
   for (let i = 0; i < names.length; i++) {
@@ -45,12 +45,12 @@ function getContactMain(i) {
 function getAddContactBtn() {
   return `
     <div id="idAddContact" onclick="addContact()">
-    <img id="idImgAddContact" src="assets/img/svg/person_add.svg" alt=""></div>
+    <img id="idImgAddContact" src="assets/img/contacts/person-add.svg" alt=""></div>
     `;
 }
 
 function addContact() {
-  let addContact = document.getElementById("ContactMain");
+  let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getaddContact();
 }
 
@@ -58,12 +58,12 @@ function getaddContact() {
   return `
     <div>
         <div>
-            <img src="assets/img/svg/close.svg" alt="x" onclick="contactMain()">
+            <img src="assets/img/general/Vector.svg" alt="x" onclick="contactMain()">
             <h1>Add contact</h1>
             <h3>Tasks are better with a team!</h3>
             <div id="blueline"><div>
         </div>
-        <img>
+        <img src="assets/img/contacts/person.svg">
         <div>
             <div>
                 <input type="text" name="name" placeholder="Name">
@@ -72,7 +72,7 @@ function getaddContact() {
             </div>
             <div onclick="submitAddContact()">
                 <p>Create Contact</p>
-                <img alt="check">
+                <img src="assets/img/contacts/check.svg" alt="check">
             </div>
         </div>
     </div>
@@ -94,17 +94,17 @@ async function sortContacts() {
 }
 
 function openContact(i) {
-  let openContact = document.getElementById("ContactMain");
+  let openContact = document.getElementById("idContactMain");
   openContact.innerHTML = "";
   openContact.innerHTML += getContactView(i);
 }
 
 function getContactView(i) {
   return `
-    <div id="idContactView">
+    <div ="idContactMain>
         <div id="idheadContactView">
         <h1 id="idh1Contacts">Contacts</h1> 
-        <img src="assets/img/svg/arrow-left-line.svg" alt="return" onclick="contactMain()">
+        <img src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
         </div>
         <h3>Better with a team</h3>
         <div id="idblueLine"></div>
@@ -118,7 +118,7 @@ function getContactView(i) {
             <h3>Phone</h3>
             <p>${phones[i]}</p>
             <div id="idEditDeleteBtn">
-                <img src="assets/img/svg/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">
+                <img src="assets/img/contacts/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">
             </div>
     </div>
     `;
@@ -133,11 +133,11 @@ function getEditContactBtn(i) {
   return `
     <div>
         <div onclick="editContact(${i})">
-            <img alt="pencil">
+            <img src="assets/img/contacts/pen.svg" alt="pencil">
             <p>Edit</p>
         </div>
         <div onclick="deleteContact()">
-            <img alt="bin">
+            <img src="assets/img/contacts/bin.svg" alt="bin">
             <p>Delete</p>
         </div>
     </div>
@@ -145,14 +145,14 @@ function getEditContactBtn(i) {
 }
 
 function editContact(i) {
-  let editContact = document.getElementById("ContactMain");
+  let editContact = document.getElementById("idContactMain");
   editContact.innerHTML += getEditContact(i);
 }
 
 function getEditContact(i) {
   return `
     <div>
-        <h1>Edit contact</h1><img alt="return" onclick="contactMain()">
+        <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
         <div id="idblueLine"></div>
             <div id="idShortName">
                 <p id="idShortAlph">MM</p>
@@ -173,7 +173,7 @@ function getEditContact(i) {
             </div>
             <div id="idSaveBtn" onclick="saveContact()">
                 <p>Save</p>
-                <img alt="saveContact" >
+                <img src="assets/img/contacts/check.svg" alt="saveContact" >
             </div>
     </div>
     `;
