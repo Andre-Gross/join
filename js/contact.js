@@ -7,7 +7,7 @@ async function contactMain() {
   emails = [];
   phones = [];
   await loadContacts();
-  let contactMain = document.getElementById("idContactMain");
+  let contactMain = document.getElementById("ContactMain");
   contactMain.innerHTML = "";
 
   for (let i = 0; i < names.length; i++) {
@@ -50,7 +50,7 @@ function getAddContactBtn() {
 }
 
 function addContact() {
-  let addContact = document.getElementById("idContactMain");
+  let addContact = document.getElementById("ContactMain");
   addContact.innerHTML += getaddContact();
 }
 
@@ -94,7 +94,7 @@ async function sortContacts() {
 }
 
 function openContact(i) {
-  let openContact = document.getElementById("idContactMain");
+  let openContact = document.getElementById("ContactMain");
   openContact.innerHTML = "";
   openContact.innerHTML += getContactView(i);
 }
@@ -145,7 +145,7 @@ function getEditContactBtn(i) {
 }
 
 function editContact(i) {
-  let editContact = document.getElementById("idContactMain");
+  let editContact = document.getElementById("ContactMain");
   editContact.innerHTML += getEditContact(i);
 }
 
