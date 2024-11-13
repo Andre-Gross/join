@@ -37,7 +37,7 @@
                             onclick="hideAssignedToDropdown()">
                     </div>
                 </div>
-                <div id="contactDropdown" class="contact-dropdown d-none"></div>
+                <div id="contactDropdown" class="dropdown d-none"></div>
             </div>
             <label for="inputDate">Due to</label>
             <input required id="inputDate" type="date">
@@ -47,19 +47,27 @@
                 <button id="urgent" type="button" class="btn btn-outline-danger" onclick="selectPriority('urgent')">
                     Urgent <img src="#" alt="Urgent">
                 </button>
-                <button id="medium" type="button" class="btn btn-outline-warning btn-selected" onclick="selectPriority('medium')">
+                <button id="medium" type="button" class="btn btn-outline-warning btn-selected"
+                    onclick="selectPriority('medium')">
                     Medium <img src="#" alt="Medium">
                 </button>
                 <button id="low" type="button" class="btn btn-outline-success" onclick="selectPriority('low')">
                     Low <img src="#" alt="Low">
                 </button>
             </div>
-            <input type="submit" value="Submit">
 
+            <div class="dropdown-container d-flex flex-column">
+                <label for="inputCategory">Categorie</label>
+                <input type="text" id="inputCategory" placeholder="Select task category" readonly
+                    onclick="toggleDisplayNoneBlock(document.getElementById('categoryDropdown'))" />
+                <div id="categoryDropdown" class="d-none dropdown" onclick="closeDropdown(this)">
+                    <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">Technical Task</div>
+                    <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story</div>
+                </div>
         </form>
     </div>
 
-    
+
     <div w3-include-html="./templates/templates.html"></div>
 
     <script src="./js/templates.js"></script>

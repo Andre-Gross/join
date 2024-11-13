@@ -3,12 +3,13 @@ body {
     max-width: 100vw;
 }
 
+
 .dropdown-container {
     position: relative;
 }
 
 
-.contact-dropdown {
+.dropdown {
     position: absolute;
     top: 100%;
     left: 0;

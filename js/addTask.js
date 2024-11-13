@@ -239,3 +239,7 @@ function getSelectedPriority() {
 }
 
 
+function selectCategory(category, element) {
+    document.getElementById('inputCategory').value = category;
+    toggleDisplayNoneBlock(element);
+}

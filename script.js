@@ -8,3 +8,15 @@ function addInvalidBorder(element) {
         element.classList.add("invalid-border");
     }
 }
+
+
+function toggleDisplayNoneBlock(element) {
+    let eleClass = element.classList;
+    if (eleClass.contains("d-none")){
+        eleClass.remove("d-none");
+        eleClass.add("d-block");
+    } else {
+        eleClass.remove("d-block");
+        eleClass.add("d-none");
+    }
+}
