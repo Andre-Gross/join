@@ -1,0 +1,87 @@
+.board-header {
+    padding: 1rem;
+    background-color: white;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+.form-control {
+    width: 80%;
+    height: 30px;
+}
+.search-container input {
+    padding-right: 40px;
+}
+
+.search-container .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.board-section {
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.task-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.badge.user-story {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.badge.technical-task {
+    background-color: #20c997;
+    color: white;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #dee2e6;
+    padding: 0.5rem;
+}
+
+.bottom-nav .nav-item {
+    text-align: center;
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.bottom-nav .nav-item.active {
+    color: var(--primary-blue);
+}
+
+.add-button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
