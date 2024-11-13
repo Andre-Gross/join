@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/addTask.css">
 
-    <link rel="stylesheet" href="./style/font.css">
-
     <script src="js/api.js"></script>
     <script src="js/addTask.js"></script>
     <script src="script.js"></script>
@@ -23,16 +21,20 @@
     <div class="d-flex">
         <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false;">
             <label for="inputTitle">Title</label>
-            <input required id="inputTitle" class="" type="text" placeholder="Enter a title" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+            <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
+                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
             <label for="textareaDescription">Description</label>
-            <textarea required id="textareaDescription" placeholder="Enter a Description" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
+            <textarea required id="textareaDescription" placeholder="Enter a Description"
+                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
             <label for="navAssignedTo">Assigned to</label>
 
             <div class="dropdown-container">
                 <div class="input-group">
-                    <input id="navAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign" oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+                    <input id="navAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
+                        oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
                     <div class="arrow-input d-flex justify-content-center align-items-center">
-                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class="" onclick="showAssignedToDropdown()">
+                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class=""
+                            onclick="showAssignedToDropdown()">
                         <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
                             onclick="hideAssignedToDropdown()">
                     </div>
@@ -64,6 +66,8 @@
                     <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">Technical Task</div>
                     <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story</div>
                 </div>
+            </div>
+            <input type="submit" value="Submit">
         </form>
     </div>
 
