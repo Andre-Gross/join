@@ -34,13 +34,11 @@ async function putLoggedInUser(user) {
     fetch(BASE_URL + '/users/loggedInUser.json', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
-      })
+    })
         .then(response => response.json())
-        .then(data => console.log('Profil erfolgreich aktualisiert:', data))
-        .catch(error => console.error('Fehler beim Aktualisieren des Profils:', error));
 }
 
 
@@ -82,8 +80,6 @@ async function putNextStatus(status = 'To do') {
         body: JSON.stringify(status)
     })
         .then(response => response.json())
-        .then(data => console.log('Profil erfolgreich aktualisiert:', data))
-        .catch(error => console.error('Fehler beim Aktualisieren des Profils:', error));
 }
 
 
