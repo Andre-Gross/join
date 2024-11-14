@@ -62,7 +62,7 @@ async function getTasks() {
  * @returns {string} - This string contains the staus of the next task
  */
 async function getNextStatus() {
-    let response = await fetch(BASE_URL + 'tasks/.json');
+    let response = await fetch(BASE_URL + '.json');
     let responseAsJSON = await response.json();
     return responseAsJSON['nextStatus'];
 }
@@ -74,13 +74,13 @@ async function getNextStatus() {
  * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
  */
 async function putNextStatus(status = 'To do') {
-    fetch(BASE_URL + '/tasks/nextStatus.json', {
+    fetch(BASE_URL + '/nextStatus.json', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(status)
-      })
+    })
         .then(response => response.json())
         .then(data => console.log('Profil erfolgreich aktualisiert:', data))
         .catch(error => console.error('Fehler beim Aktualisieren des Profils:', error));
