@@ -1,14 +1,16 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
-let loggedInUser = '';
+let loggedInUser = await getLoggedInUser;
 
 
 /**
  * This function returns the loggedInUser from the database.
+ * 
+ * @returns {string} - the value of the loggedInUser in the database 
  */
 async function getLoggedInUser() {
     let response = await fetch(BASE_URL + 'users/.json');
     let responseAsJSON = await response.json();
-    loggedInUser = responseAsJSON['loggedInUser'];
+    return responseAsJSON['loggedInUser'];
 }
 
 /**
@@ -79,7 +81,6 @@ async function putNextStatus(status = 'To do') {
  * @returns {JSON} - This object includes all datas of all contacts of the user.
  */
 async function getContacts() {
-    await getLoggedInUser();
     let response = await fetch(BASE_URL + 'users/' + loggedInUser + '/contacts' + '.json');
     let responseAsJSON = await response.json();
     return responseAsJSON;
