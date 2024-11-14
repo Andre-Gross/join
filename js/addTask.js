@@ -11,6 +11,7 @@ async function submitTaskForm(boardId) {
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
     const priority = document.querySelector('.btn-selected')?.id;
+    const category = document.getElementById("inputCategory").value
 
     const assignedTo = readAssignedTo();
 
