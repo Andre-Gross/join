@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="style/addTask.css">
 
     <script src="js/api.js"></script>
-    <script src="js/addTask.js"></script>
     <script src="script.js"></script>
+    <script src="js/addTask.js"></script>
 </head>
 
 <body onload="">
@@ -23,14 +23,15 @@
             <label for="inputTitle">Title</label>
             <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
                 onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+
             <label for="textareaDescription">Description</label>
             <textarea required id="textareaDescription" placeholder="Enter a Description"
                 onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
-            <label for="navAssignedTo">Assigned to</label>
 
+            <label for="dropAssignedTo">Assigned to</label>
             <div class="dropdown-container">
                 <div class="input-group">
-                    <input id="navAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
+                    <input id="dropAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
                         oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
                     <div class="arrow-input d-flex justify-content-center align-items-center">
                         <img id="arrowDown" src="assets/icons/arrow-drop.png" class=""
@@ -41,6 +42,7 @@
                 </div>
                 <div id="contactDropdown" class="dropdown d-none"></div>
             </div>
+
             <label for="inputDate">Due to</label>
             <input required id="inputDate" type="date">
 
@@ -63,12 +65,20 @@
                 <input type="text" id="inputCategory" placeholder="Select task category" readonly
                     onclick="toggleDisplayNoneBlock(document.getElementById('categoryDropdown'))" />
                 <div id="categoryDropdown" class="d-none dropdown" onclick="closeDropdown(this)">
-                    <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">Technical Task</div>
-                    <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story</div>
+                    <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">
+                        Technical Task</div>
+                    <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story
+                    </div>
                 </div>
             </div>
-            <button type="button" onclick="emptyAddTaskInputs()">Clear</button>
-            <input type="submit" value="Submit">
+                </div>
+                <div id="contactDropdown" class="dropdown d-none"></div>
+            </div>
+
+            <div class="d-flex w-100">
+                <button type="button" onclick="emptyAddTaskInputs()">Clear</button>
+                <input type="submit" value="Submit">
+            </div>
         </form>
     </div>
 
