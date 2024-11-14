@@ -2,13 +2,20 @@ let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.ap
 let loggedInUser = '';
 
 
+/**
+ * This function returns the loggedInUser from the database.
+ */
 async function getLoggedInUser() {
     let response = await fetch(BASE_URL + 'users/.json');
     let responseAsJSON = await response.json();
     loggedInUser = responseAsJSON['loggedInUser'];
 }
 
-
+/**
+ * This function set who is the loggedInUser to the Database
+ * 
+ * @param {string} user - the user who shall be the new loggedInUser
+ */
 async function putLoggedInUser(user) {
     fetch(BASE_URL + '/users/loggedInUser.json', {
         method: 'PUT',
