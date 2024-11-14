@@ -6,7 +6,7 @@ let contactsInitialized = false;
  * 
  * @param {string} boardId - That includes the ID of the board, where the datas should be post.
  */
-async function submitTaskForm(boardId) {
+async function submitTaskForm() {
     const title = document.getElementById("inputTitle").value.trim();
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
