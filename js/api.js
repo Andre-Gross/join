@@ -1,5 +1,4 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
-let loggedInUser = await getLoggedInUser;
 
 
 /**
@@ -12,6 +11,19 @@ async function getLoggedInUser() {
     let responseAsJSON = await response.json();
     return responseAsJSON['loggedInUser'];
 }
+
+
+/*
+ * This function set value if the loggedInUser of the database in the global variable if loggedInUser.
+ * 
+ */
+async function setLoggedInUser() {
+    loggedInUser = await getLoggedInUser();
+}
+
+
+setLoggedInUser();
+
 
 /**
  * This function set who is the loggedInUser to the Database
