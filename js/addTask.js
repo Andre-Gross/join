@@ -3,7 +3,7 @@ let dataSubtasks = [];
 
 
 /**
- * This function prepare the information of the addTask-form and post it to the database.
+ * This function prepare the information of the addTask-form with another function and post it to the database.
  * 
  * @param {string} boardId - That includes the ID of the board, where the datas should be post.
  */
