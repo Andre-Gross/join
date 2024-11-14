@@ -86,6 +86,11 @@
     <div w3-include-html="./templates/templates.html"></div>
 
     <script src="./js/templates.js"></script>
+    <script>
+        window.addEventListener("beforeunload", async function () {
+            await putNextStatus('To do');
+        });
+    </script>
 
 </body>
 
