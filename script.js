@@ -20,3 +20,15 @@ function toggleDisplayNoneBlock(element) {
         eleClass.add("d-none");
     }
 }
+
+
+function toggleDisplayNoneFlex(element) {
+    let eleClass = element.classList;
+    if (eleClass.contains("d-none")){
+        eleClass.remove("d-none");
+        eleClass.add("d-flex");
+    } else {
+        eleClass.remove("d-flex");
+        eleClass.add("d-none");
+    }
+}
