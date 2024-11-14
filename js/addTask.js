@@ -91,6 +91,7 @@ function emptyAddTaskInputs() {
     document.getElementById('inputDate').value = '';
     document.querySelector('.btn-selected')?.classList.remove('btn-selected');
     document.document.getElementById('medium').classList.add('btn-selected');
+    dataSubtasks = [];
 }
 
 
