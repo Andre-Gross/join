@@ -62,7 +62,7 @@
 
             <div class="dropdown-container d-flex flex-column">
                 <label for="inputCategory">Categorie</label>
-                <input type="text" id="inputCategory" placeholder="Select task category" readonly
+                <input required readonly type="text" id="inputCategory" placeholder="Select task category"
                     onclick="toggleDisplayNoneBlock(document.getElementById('categoryDropdown'))" />
                 <div id="categoryDropdown" class="d-none dropdown" onclick="closeDropdown(this)">
                     <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">
