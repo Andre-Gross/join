@@ -36,6 +36,37 @@ async function getTasks() {
 
 
 /**
+ * This function return the status of the next task.
+ * 
+ * @returns {string} - This string contains the staus of the next task
+ */
+async function getNextStatus() {
+    let response = await fetch(BASE_URL + 'tasks/.json');
+    let responseAsJSON = await response.json();
+    return responseAsJSON['nextStatus'];
+}
+
+
+/**
+ * This string put the staus of the next task to the database
+ * 
+ * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ */
+async function putNextStatus(status = 'To do') {
+    fetch(BASE_URL + '/tasks/nextStatus.json', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(status)
+      })
+        .then(response => response.json())
+        .then(data => console.log('Profil erfolgreich aktualisiert:', data))
+        .catch(error => console.error('Fehler beim Aktualisieren des Profils:', error));
+}
+
+
+/**
  * This function returns the contacts of the user as JSON
  * 
  * @returns {JSON} - This object includes all datas of all contacts of the user.
