@@ -65,9 +65,9 @@ function checkAllInputsHasContent(title, description, dueDate, priority, assigne
  * This function reset the form of addTask
  */
 function emptyAddTaskInputs() {
-    document.getElementById("iTitle").value = '';
-    document.getElementById("taDescription").value = '';
-    document.getElementById('iDate').value = '';
+    document.getElementById("inputTitle").value = '';
+    document.getElementById("textareaDescription").value = '';
+    document.getElementById('inputDate').value = '';
     document.querySelector('.btn-selected')?.classList.remove('btn-selected');
     document.document.getElementById('medium').classList.add('btn-selected');
 }
