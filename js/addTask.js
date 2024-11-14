@@ -100,7 +100,7 @@ function emptyAddTaskInputs() {
  * 
  */
 async function filterContacts() {
-    const input = document.getElementById("navAssignedTo").value.toLowerCase();
+    const input = document.getElementById("dropAssignedTo").value.toLowerCase();
     const dropdown = document.getElementById("contactDropdown");
     let contacts = await getContactsAsArray();
 
@@ -149,10 +149,9 @@ async function getContactsAsArray() {
 async function getNamesOfContacts() {
     let contacts = await getContactsAsArray();
     let namesOfContacts = [];
-    for (let i=0; i<contacts.length; i++) {
+    for (let i = 0; i < contacts.length; i++) {
         const name = contacts[i].name;
         namesOfContacts.push(name);
-        console.log(name)
     }
     return namesOfContacts;
 }
