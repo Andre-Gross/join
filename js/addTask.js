@@ -1,4 +1,5 @@
 let contactsInitialized = false;
+let dataSubtasks = [];
 
 
 /**
