@@ -265,3 +265,32 @@ function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
     toggleDisplayNoneBlock(element);
 }
+
+
+/**
+ * This function returns the tasks as Array
+ * 
+ * @returns {Array} - This array contains the tasks
+ */
+async function getTasksAsArray() {
+    let tasks = await getTasks();
+    if (Array.isArray(tasks)) {
+    } else {
+        tasks = Object.values(tasks);
+    }
+    return tasks
+}
+
+
+/**
+ * This function returns the titles of the tasks.
+ * 
+ * @returns {Array} - This array contains the titles of the tasks.
+ */
+async function getTitlesOfTasks() {
+    let tasks = await getTasksAsArray();
+    let titlesOfTasks = [];
+    for (let i = 0; i < tasks.length; i++) {
+        const title = tasks[i].title;
+        titlesOfTasks.push(title);
+    }
