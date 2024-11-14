@@ -294,3 +294,5 @@ async function getTitlesOfTasks() {
         const title = tasks[i].title;
         titlesOfTasks.push(title);
     }
+    return titlesOfTasks;
+}
