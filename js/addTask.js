@@ -16,16 +16,9 @@ async function submitTaskForm() {
 
     const assignedTo = readAssignedTo();
 
-    if (checkAllInputsHasContent(title, description, dueDate, priority, assignedTo)) {
-        const data = {
-            title: title,
-            description: description,
-            finishedUntil: dueDate,
-            priority: priority,
-            assignedTo: assignedTo 
-        };
-        await postTaskToDatabase(boardId, data);
-
+    if (checkAllInputsHasContent(title, description, dueDate, priority, category, assignedTo)) {
+        const data = await prepareData(title, description, dueDate, priority, category, assignedTo)
+        await postTaskToDatabase(data);
         emptyAddTaskInputs();
     }
 }
@@ -60,6 +53,32 @@ function checkAllInputsHasContent(title, description, dueDate, priority, assigne
     } else {
         return true
     }
+}
+
+
+/**
+ * 
+ * @param {string} dataTitle - contains the title of the task
+ * @param {string} dataDescription contains the description of the task
+ * @param {Date} dataDueDate - contains the date, when the task shall be finished
+ * @param {string} dataPriority - contains the priority of the task
+ * @param {string} dataCategory - contains if the task is a task is a "Technical Task" or a "User Story"
+ * @param {Array} dataAssignedTo - contains the person(s) which the task is adressed 
+ * @returns {object} - contains the all datas of the task
+ */
+async function prepareData(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+    const data = {
+        title: dataTitle,
+        description: dataDescription,
+        finishedUntil: dataDueDate,
+        priority: dataPriority,
+        assignedTo: dataAssignedTo,
+        category: dataCategory,
+        subtasks: dataSubtasks,
+        status: await getNextStatus(),
+    };
+    dataStatus = 'To do';
+    return data;
 }
 
 
