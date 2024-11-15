@@ -43,47 +43,6 @@ async function putLoggedInUser(user) {
 
 
 /**
- * This function returns the datas of all tasks. 
- * 
- * @returns {object} - This object includes the datas of all tasks.
- */
-async function getTasks() {
-    let response = await fetch(BASE_URL + 'tasks/.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON;
-}
-
-
-/**
- * This function return the status of the next task.
- * 
- * @returns {string} - This string contains the staus of the next task
- */
-async function getNextStatus() {
-    let response = await fetch(BASE_URL + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['nextStatus'];
-}
-
-
-/**
- * This string put the staus of the next task to the database
- * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
- */
-async function putNextStatus(status = 'To do') {
-    fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
-}
-
-
-/**
  * This function returns the contacts of the user as JSON
  * 
  * @returns {JSON} - This object includes all datas of all contacts of the user.
@@ -134,6 +93,47 @@ async function tryPostContactToDatabase(data, user) {
 
 
 /**
+ * This function returns the datas of all tasks. 
+ * 
+ * @returns {object} - This object includes the datas of all tasks.
+ */
+async function getTasks() {
+    let response = await fetch(BASE_URL + 'tasks/.json');
+    let responseAsJSON = await response.json();
+    return responseAsJSON;
+}
+
+
+/**
+ * This function return the status of the next task.
+ * 
+ * @returns {string} - This string contains the staus of the next task
+ */
+async function getNextStatus() {
+    let response = await fetch(BASE_URL + '.json');
+    let responseAsJSON = await response.json();
+    return responseAsJSON['nextStatus'];
+}
+
+
+/**
+ * This string put the staus of the next task to the database
+ * 
+ * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ */
+async function putNextStatus(status = 'To do') {
+    fetch(BASE_URL + '/nextStatus.json', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(status)
+    })
+        .then(response => response.json())
+}
+
+
+/**
  * This function post the datas of task to the database with another function. If the response is an erro, it catch it.
  * 
  * @param {object} data - Datas of the task.
@@ -166,6 +166,38 @@ async function tryPostTaskToDatabase(data) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
     alert("Aufgabe erfolgreich hinzugefügt.");
+}
+
+
+async function deleteTaskInDatabase(id){
+    try {
+        tryDeleteTaskInDatabase(id);
+    } catch (error) {
+        console.error("Fehler beim Löschen der Aufgabe:", error);
+        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+async function tryDeleteTaskInDatabase(id) {
+    const response = await fetch(BASE_URL + `tasks/` + id + `.json`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+    }
+    alert("Aufgabe erfolgreich gelöscht.");
+}
+
+
+async function getIdOfTask(i) {
+    let tasks = await getTasks();
+    let idsOfTasks = Object.keys(tasks);
+    return toString(idsOfTasks[i]);
 }
 
 

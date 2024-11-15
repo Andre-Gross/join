@@ -3,6 +3,17 @@ let dataSubtasks = [];
 
 
 /**
+ * This function set the status of the next task and open the addTask.html
+ * 
+ * @param {string} status - the status of the next task 
+ */
+function addTaskFromBoard(status){
+    putNextStatus(status);
+    document.location.href = "addTask.html";
+}
+
+
+/**
  * This function prepare the information of the addTask-form with another function and post it to the database.
  * 
  * @param {string} boardId - That includes the ID of the board, where the datas should be post.

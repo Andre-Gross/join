@@ -71,6 +71,18 @@
                     </div>
                 </div>
             </div>
+
+            <label for="Subtasks">Assigned to</label>
+            <div class="dropdown-container">
+                <div class="input-group">
+                    <input id="dropAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
+                        oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+                    <div class="arrow-input d-flex justify-content-center align-items-center">
+                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class=""
+                            onclick="showAssignedToDropdown()">
+                        <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
+                            onclick="hideAssignedToDropdown()">
+                    </div>
                 </div>
                 <div id="contactDropdown" class="dropdown d-none"></div>
             </div>
