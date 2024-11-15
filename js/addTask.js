@@ -271,6 +271,12 @@ function getSelectedPriority() {
 }
 
 
+/**
+ * This function set the choosen category in the category input field and close the category dropdown menu.
+ * 
+ * @param {string} category - set the category of the next task as value in the input field
+ * @param {element} element - the element what should be hide
+ */
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
     toggleDisplayNoneBlock(element);
