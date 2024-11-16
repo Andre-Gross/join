@@ -27,59 +27,58 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Loggt den Benutzer basierend auf E-Mail und Passwort ein.
- * Wenn die Anmeldedaten korrekt sind, wird die Benutzer-ID als `loggedInUser` gespeichert
- * und der Benutzer wird zur 'welcome.html'-Seite weitergeleitet, wobei die Benutzer-ID als URL-Parameter übergeben wird.
+ * Logs in the user based on email and password.
+ * If the credentials are correct, the user ID is stored as `loggedInUser` in session storage,
+ * and the user is redirected to 'summary.html'.
  * 
- * Bei inkorrekten Anmeldedaten oder einem Fehler im Abruf wird eine entsprechende Fehlermeldung angezeigt.
+ * If the login fails due to incorrect credentials or a fetch error, an appropriate error message is displayed.
  *
  * @function logIn
- * @returns {void} Zeigt eine Erfolgsmeldung bei erfolgreichem Login oder eine Fehlermeldung bei falschen Anmeldedaten.
+ * @returns {void} Displays a success message on successful login or an error message for incorrect credentials.
  */
 function logIn() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     fetch(`${BASE_URL}users.json`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            return response.json();
+        })
         .then(users => {
-            let userFound = false;
-            for (let key in users) {
+            const userKey = Object.keys(users).find(key => {
                 const user = users[key];
-                if (user &amp;&amp; user.login &amp;&amp; user.login.email === email &amp;&amp; user.login.password === password) {
-                    userFound = true;
+                return user?.login?.email === email &amp;&amp; user?.login?.password === password;
+            });
 
-                    // Benutzer-ID speichern (Zugriff auf die globale Variable in api.js)
-                    loggedInUser = key;
-                    console.log("Eingeloggte Benutzer-ID:", loggedInUser);
+            if (userKey) {
+                // Store the user ID in session storage
+                sessionStorage.setItem('loggedInUser', userKey);
 
-                    // Weiterleitung zur Begrüßungsseite mit Benutzer-ID als URL-Parameter
-                    window.location.href = `welcome.html?userId=${encodeURIComponent(loggedInUser)}`;
-                    break;
-                }
-            }
-            if (!userFound) {
-                alert("Falsche E-Mail oder Passwort.");
+                // Redirect to the summary page
+                window.location.href = 'summary.html';
+            } else {
+                alert("Incorrect email or password.");
             }
         })
-        .catch(error => {
-            console.error("Fehler beim Abrufen der Benutzerdaten:", error);
-            alert("Fehler beim Login. Bitte versuche es erneut.");
-        });
+        .catch(error => console.error("Login error:", error));
 }
 
-
 /**
- * Ermöglicht den Gastzugang, ohne dass eine Registrierung erforderlich ist.
- * Der Benutzer wird sofort zur 'welcome.html'-Seite weitergeleitet, jedoch ohne spezifische Benutzer-ID.
- * Diese Funktion simuliert einen Gastzugang, bei dem keine Daten im `loggedInUser` gespeichert werden.
+ * Allows guest access without requiring registration.
+ * The user is immediately redirected to 'summary.html' with a guest user ID.
+ * 
+ * This function simulates guest access and stores a special guest ID in session storage.
  *
  * @function guestLogIn
- * @returns {void} Zeigt eine Nachricht an, dass der Gastzugang erfolgreich ist, und leitet zur 'welcome.html'-Seite weiter.
+ * @returns {void} Redirects to 'summary.html' with a guest ID.
  */
 function guestLogIn() {
-    alert("Als Gast eingeloggt!");
-    window.location.href = 'welcome.html';
+    // Store a guest user ID in session storage
+    sessionStorage.setItem('loggedInUser', 'guest');
+
+    // Redirect to the summary page with a guest ID
+    window.location.href = 'summary.html?userId=guest';
 }
 </code></pre>
         </article>
@@ -91,13 +90,13 @@ function guestLogIn() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:DOMContentLoaded">DOMContentLoaded</a></li></ul><h3>Global</h3><ul><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#getQueryParam">getQueryParam</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#displayUserInitials">displayUserInitials</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLoggedInUser">getLoggedInUser</a></li><li><a href="global.html#getNamesOfContacts">getNamesOfContacts</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getPriorityClass">getPriorityClass</a></li><li><a href="global.html#getSelectedPriority">getSelectedPriority</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getTitlesOfTasks">getTitlesOfTasks</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#hideAssignedToDropdown">hideAssignedToDropdown</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareData">prepareData</a></li><li><a href="global.html#putLoggedInUser">putLoggedInUser</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#showAssignedToDropdown">showAssignedToDropdown</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Oct 29 2024 08:02:04 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 16 2024 10:10:25 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>
