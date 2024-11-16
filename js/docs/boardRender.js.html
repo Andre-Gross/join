@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: boardRender.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: boardRender.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Fetches tasks from Firebase, clears existing containers, and renders tasks into their respective status containers.
+ * 
+ * @async
+ * @function boardRender
+ * @returns {Promise&lt;void>} Resolves when tasks are successfully rendered or logs an error if something goes wrong.
+ */
+async function boardRender() {
+    const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
+
+    try {
+        // Fetch data from Firebase
+        const response = await fetch(firebaseUrl);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+        const tasksData = await response.json();
+        if (!tasksData) {
+            console.log("No tasks found.");
+            return;
+        }
+
+        // Clear content of all containers
+        ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(containerId => {
+            document.getElementById(containerId).innerHTML = '';
+        });
+
+        // Iterate tasks and add them to the correct container
+        Object.entries(tasksData).forEach(([taskId, task]) => {
+            const taskElement = document.createElement("div");
+            taskElement.classList.add("task");
+            taskElement.innerHTML = `
+                &lt;h4>${task.title}&lt;/h4>
+                &lt;p>${task.description}&lt;/p>
+                &lt;p>Due by: ${task.finishedUntil}&lt;/p>
+                &lt;p>&lt;strong>Priority:&lt;/strong> &lt;span class="${getPriorityClass(task.priority)}">${task.priority}&lt;/span>&lt;/p>
+            `;
+            const containerId = getContainerIdByStatus(task.status);
+            if (containerId) document.getElementById(containerId).appendChild(taskElement);
+        });
+
+        console.log("Tasks rendered successfully.");
+    } catch (error) {
+        console.error("Error loading tasks:", error);
+    }
+}
+
+/**
+ * Gets the CSS class name for the given priority level.
+ * 
+ * @function getPriorityClass
+ * @param {string} priority - The priority level (e.g., "urgent", "medium", "low").
+ * @returns {string} The CSS class name for the priority.
+ */
+function getPriorityClass(priority) {
+    const priorityClasses = {
+        urgent: "priority-high",
+        medium: "priority-medium",
+        low: "priority-low"
+    };
+    return priorityClasses[priority] || "";
+}
+
+/**
+ * Gets the container ID for a given task status.
+ * 
+ * @function getContainerIdByStatus
+ * @param {string} status - The task status (e.g., "To do", "In progress", "Await feedback", "Done").
+ * @returns {string|null} The container ID or null if the status is not recognized.
+ */
+function getContainerIdByStatus(status) {
+    const statusContainers = {
+        "To do": "todo-container",
+        "In progress": "progress-container",
+        "Await feedback": "feedback-container",
+        "Done": "done-container"
+    };
+    return statusContainers[status] || null;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#displayUserInitials">displayUserInitials</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLoggedInUser">getLoggedInUser</a></li><li><a href="global.html#getNamesOfContacts">getNamesOfContacts</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getPriorityClass">getPriorityClass</a></li><li><a href="global.html#getSelectedPriority">getSelectedPriority</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getTitlesOfTasks">getTitlesOfTasks</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#hideAssignedToDropdown">hideAssignedToDropdown</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareData">prepareData</a></li><li><a href="global.html#putLoggedInUser">putLoggedInUser</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#showAssignedToDropdown">showAssignedToDropdown</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 16 2024 10:10:25 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
