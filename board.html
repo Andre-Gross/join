@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="style.css">
+    <script src="./js/boardRender.js"></script>
 </head>
 <body>
     <div class="board-header">
@@ -72,5 +73,12 @@
     <script src="./js/board.js"></script>
     <script src="./js/addTask.js"></script>
     <script src="./script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            boardRender();
+        });
+    </script>
+
 </body>
 </html>
