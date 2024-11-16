@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: templates.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: templates.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Dynamically includes HTML content into elements with the `w3-include-html` attribute.
+ * After inclusion, it fetches the user ID from `sessionStorage` and displays the user's initials.
+ * If no user ID is found, it defaults to displaying "G" for Guest.
+ * 
+ * @async
+ * @function includeHTML
+ * @returns {Promise&lt;void>} Resolves after all HTML content is included and the profile icon is updated.
+ */
+async function includeHTML() {
+    const includeElements = document.querySelectorAll('[w3-include-html]');
+    
+    for (const element of includeElements) {
+        const file = element.getAttribute("w3-include-html");
+        try {
+            const response = await fetch(file);
+            if (response.ok) {
+                element.innerHTML = await response.text();
+            } else {
+                element.innerHTML = "Page not found.";
+            }
+        } catch (error) {
+            console.error("Error loading file:", file, error);
+            element.innerHTML = "Page not found.";
+        }
+    }
+
+    const userId = sessionStorage.getItem('loggedInUser');
+    if (userId) {
+        displayUserInitials(userId);
+    } else {
+        console.warn("No user ID found. Defaulting to 'G' for Guest.");
+        document.getElementById('profile-icon-container').innerHTML = `&lt;div class="profile-icon-circle">G&lt;/div>`;
+    }
+}
+
+/**
+ * Fetches the user's name using their ID and displays their initials in the profile icon container.
+ * If no name is found or an error occurs, defaults to "G" for Guest.
+ * 
+ * @function displayUserInitials
+ * @param {string} userId - The ID of the logged-in user.
+ * @returns {void} Updates the profile icon with the user's initials.
+ */
+function displayUserInitials(userId) {
+    const profileIcon = document.getElementById('profile-icon-container');
+
+    if (!profileIcon) {
+        console.warn("The 'profile-icon-container' element was not found.");
+        return;
+    }
+
+    fetch(`${BASE_URL}users/${userId}.json`)
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            return response.json();
+        })
+        .then(user => {
+            let name = "Guest";
+            if (user?.login?.name) {
+                name = user.login.name;
+                sessionStorage.setItem('loggedInUserName', name);
+            }
+
+            const initials = getInitialsFromName(name);
+            profileIcon.innerHTML = `&lt;div class="profile-icon-circle">${initials}&lt;/div>`;
+        })
+        .catch(error => {
+            console.error("Error fetching user name:", error);
+            profileIcon.innerHTML = `&lt;div class="profile-icon-circle">G&lt;/div>`;
+        });
+}
+
+/**
+ * Generates initials from a given name.
+ * - If the name has one word, returns the first letter in uppercase.
+ * - If the name has multiple words, returns the first letter of the first two words in uppercase.
+ * 
+ * @function getInitialsFromName
+ * @param {string} name - The name from which initials are generated.
+ * @returns {string} The initials in uppercase.
+ */
+function getInitialsFromName(name) {
+    const nameParts = name.trim().split(" ");
+    if (nameParts.length === 1) {
+        return nameParts[0].charAt(0).toUpperCase();
+    }
+    if (nameParts.length >= 2) {
+        return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase();
+    }
+    return "";
+}
+
+// Dynamically add favicon to the document
+const link = document.createElement('link');
+link.rel = 'icon';
+link.href = './assets/favicon/fav.ico';
+link.type = 'image/x-icon';
+document.head.appendChild(link);
+
+// Call `includeHTML` to start the inclusion process
+includeHTML();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#displayUserInitials">displayUserInitials</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLoggedInUser">getLoggedInUser</a></li><li><a href="global.html#getNamesOfContacts">getNamesOfContacts</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getPriorityClass">getPriorityClass</a></li><li><a href="global.html#getSelectedPriority">getSelectedPriority</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getTitlesOfTasks">getTitlesOfTasks</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#hideAssignedToDropdown">hideAssignedToDropdown</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareData">prepareData</a></li><li><a href="global.html#putLoggedInUser">putLoggedInUser</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#showAssignedToDropdown">showAssignedToDropdown</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 16 2024 10:10:25 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
