@@ -7,8 +7,8 @@
     background-color: #1e2736;
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
     box-sizing: border-box;
+    padding: 0;
 }
 
 .nav-item {
@@ -18,10 +18,14 @@
     color: #ffffff;
     text-decoration: none;
     font-size: 12px;
+    padding: 10px 0;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .nav-item.active {
-    color: #4a90e2;
+    background-color: #081831;
+    border-radius: 8px;
 }
 
 .nav-icon {
