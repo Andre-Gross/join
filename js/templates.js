@@ -94,7 +94,7 @@ function getInitialsFromName(name) {
 // Dynamically add favicon to the document
 const link = document.createElement('link');
 link.rel = 'icon';
-link.href = './assets/favicon/fav.ico';
+link.href = './assets/img/general/favicon.svg';
 link.type = 'image/x-icon';
 document.head.appendChild(link);
 
