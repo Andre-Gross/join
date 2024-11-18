@@ -32,7 +32,7 @@ setLoggedInUser();
  * @param {string} user - the user who shall be the new loggedInUser
  */
 async function putLoggedInUser(user) {
-    fetch(BASE_URL + '/users/loggedInUser.json', {
+    await fetch(BASE_URL + '/users/loggedInUser.json', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -123,7 +123,7 @@ async function getNextStatus() {
  * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
  */
 async function putNextStatus(status = 'To do') {
-    fetch(BASE_URL + '/nextStatus.json', {
+    await fetch(BASE_URL + '/nextStatus.json', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
