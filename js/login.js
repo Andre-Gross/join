@@ -1,47 +1,54 @@
 /**
- * Loggt den Benutzer basierend auf E-Mail und Passwort ein.
- * Wenn die Anmeldedaten korrekt sind, wird die Benutzer-ID als `loggedInUser` gespeichert
- * und der Benutzer wird zur 'welcome.html'-Seite weitergeleitet, wobei die Benutzer-ID als URL-Parameter übergeben wird.
+ * Logs in the user based on email and password.
+ * If the credentials are correct, the user ID is stored as `loggedInUser` in session storage,
+ * and the user is redirected to 'summary.html'.
  * 
- * Bei inkorrekten Anmeldedaten oder einem Fehler im Abruf wird eine entsprechende Fehlermeldung angezeigt.
+ * If the login fails due to incorrect credentials or a fetch error, an appropriate error message is displayed.
  *
  * @function logIn
- * @returns {void} Zeigt eine Erfolgsmeldung bei erfolgreichem Login oder eine Fehlermeldung bei falschen Anmeldedaten.
+ * @returns {void} Displays a success message on successful login or an error message for incorrect credentials.
  */
 function logIn() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     fetch(`${BASE_URL}users.json`)
-        .then(response => response.json())
-        .then(users => {
-            for (let key in users) {
-                const user = users[key];
-                if (user && user.login && user.login.email === email && user.login.password === password) {
-                    // Speichere die Benutzer-ID in `sessionStorage`
-                    sessionStorage.setItem('loggedInUser', key);
-                    
-                    // Weiterleitung zur gewünschten Seite
-                    window.location.href = 'summary.html';
-                    return;
-                }
-            }
-            alert("Falsche E-Mail oder Passwort");
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            return response.json();
         })
-        .catch(error => console.error("Fehler beim Login:", error));
+        .then(users => {
+            const userKey = Object.keys(users).find(key => {
+                const user = users[key];
+                return user?.login?.email === email && user?.login?.password === password;
+            });
+
+            if (userKey) {
+                // Store the user ID in session storage
+                sessionStorage.setItem('loggedInUser', userKey);
+
+                // Redirect to the summary page
+                window.location.href = 'summary.html';
+            } else {
+                alert("Incorrect email or password.");
+            }
+        })
+        .catch(error => console.error("Login error:", error));
 }
 
 /**
- * Ermöglicht den Gastzugang, ohne dass eine Registrierung erforderlich ist.
- * Der Benutzer wird sofort zur 'welcome.html'-Seite weitergeleitet, jedoch ohne spezifische Benutzer-ID.
- * Diese Funktion simuliert einen Gastzugang, bei dem keine Daten im `loggedInUser` gespeichert werden.
+ * Allows guest access without requiring registration.
+ * The user is immediately redirected to 'summary.html' with a guest user ID.
+ * 
+ * This function simulates guest access and stores a special guest ID in session storage.
  *
  * @function guestLogIn
- * @returns {void} Zeigt eine Nachricht an, dass der Gastzugang erfolgreich ist, und leitet zur 'welcome.html'-Seite weiter.
+ * @returns {void} Redirects to 'summary.html' with a guest ID.
  */
 function guestLogIn() {
-    // Setzt eine spezielle Gast-Benutzer-ID in sessionStorage
+    // Store a guest user ID in session storage
     sessionStorage.setItem('loggedInUser', 'guest');
-    
-    window.location.href = 'summary.html?userId=guest'; // Leitet mit Gast-ID weiter
+
+    // Redirect to the summary page with a guest ID
+    window.location.href = 'summary.html?userId=guest';
 }

@@ -1,14 +1,28 @@
 // summary.js
+
+/**
+ * Initializes the summary page, displays a personalized greeting based on the user's ID,
+ * and handles the transition from the welcome screen to the main content.
+ *
+ * @async
+ * @function
+ */
 document.addEventListener('DOMContentLoaded', async () => {
-    await includeHTML(); // Warten Sie, bis die Templates geladen sind
+    await includeHTML(); // Wait for templates to load
 
-    // Benutzer-ID aus `sessionStorage` holen
     const userId = sessionStorage.getItem('loggedInUser');
-    console.log("Abgerufene Benutzer-ID:", userId);
+    console.log("Retrieved user ID:", userId);
 
-    // Ihre bestehende Funktion zur Anzeige des Benutzernamens
+    /**
+     * Displays the user's name or a default guest name based on the stored user ID.
+     * Fetches the user's data from Firebase if a valid user ID exists.
+     * 
+     * @async
+     * @function displayUserName
+     * @returns {void} Updates the greeting and username on the page.
+     */
     async function displayUserName() {
-        let name = 'Gast';
+        let name = 'Guest';
 
         if (userId && userId !== 'guest') {
             try {
@@ -16,49 +30,59 @@ document.addEventListener('DOMContentLoaded', async () => {
                     `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`
                 );
                 const user = await response.json();
-                console.log("Benutzerdaten:", user);
+                console.log("User data:", user);
 
-                if (user && user.login && user.login.name) {
+                if (user?.login?.name) {
                     name = user.login.name;
                     sessionStorage.setItem('loggedInUserName', name);
                 }
             } catch (error) {
-                console.error("Fehler beim Abrufen des Benutzernamens:", error);
+                console.error("Error fetching username:", error);
             }
         }
 
-        // Begrüßung basierend auf der Tageszeit
-        const now = new Date();
-        const hour = now.getHours();
-        let greeting = '';
-        if (hour >= 6 && hour < 9) {
-            greeting = 'Moin,';
-        } else if (hour >= 9 && hour < 12) {
-            greeting = 'Guten Morgen,';
-        } else if (hour >= 12 && hour < 17) {
-            greeting = 'Guten Tag,';
-        } else if (hour >= 17 && hour < 22) {
-            greeting = 'Guten Abend,';
-        } else {
-            greeting = 'Gute Nacht,';
-        }
-
-        // Begrüßung und Name auf der Webseite anzeigen
+        const greeting = getGreetingMessage();
         document.getElementById('greeting').textContent = greeting;
-        document.getElementById('userName').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+        document.getElementById('userName').textContent = capitalize(name);
     }
 
-    // Rufe die Funktion auf, um den Benutzernamen anzuzeigen
+    /**
+     * Generates a greeting message based on the current time of day.
+     * 
+     * @function getGreetingMessage
+     * @returns {string} A time-based greeting (e.g., "Good Morning").
+     */
+    function getGreetingMessage() {
+        const hour = new Date().getHours();
+        if (hour >= 6 && hour < 9) return 'Moin,';
+        if (hour >= 9 && hour < 12) return 'Good Morning,';
+        if (hour >= 12 && hour < 17) return 'Good Afternoon,';
+        if (hour >= 17 && hour < 22) return 'Good Evening,';
+        return 'Good Night,';
+    }
+
+    /**
+     * Capitalizes the first letter of a string.
+     * 
+     * @function capitalize
+     * @param {string} str - The string to capitalize.
+     * @returns {string} The capitalized string.
+     */
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Call the function to display the user's name
     displayUserName();
 
-    // Startet die Fade-Out-Animation nach 1 Sekunde
+    // Start the fade-out animation after 1 second
     setTimeout(() => {
         document.querySelector('.welcome-container').classList.add('fade-out');
     }, 1000);
 
-    // Nach Abschluss der Fade-Out-Animation
+    // Handle the end of the fade-out animation
     document.querySelector('.welcome-container').addEventListener('transitionend', () => {
-        document.querySelector('.welcome-container').classList.add('hidden'); // Begrüßungscontainer ausblenden
-        document.querySelector('.main').classList.add('visible'); // Hauptinhalt anzeigen
+        document.querySelector('.welcome-container').classList.add('hidden'); // Hide the welcome container
+        document.querySelector('.main').classList.add('visible'); // Show the main content
     });
 });

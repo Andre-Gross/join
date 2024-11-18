@@ -44,7 +44,7 @@ function getContactMain(i) {
 
 function getAddContactBtn() {
   return `
-    <div id="idAddContact" onclick="addContact()">
+    <div id="idAddContactBtn" onclick="addContact()">
     <img id="idImgAddContact" src="assets/img/contacts/person-add.svg" alt=""></div>
     `;
 }
@@ -56,8 +56,7 @@ function addContact() {
 
 function getaddContact() {
   return `
-    <div>
-        <div>
+        <div id="idAddContact">
             <img src="assets/img/general/Vector.svg" alt="x" onclick="contactMain()">
             <h1>Add contact</h1>
             <h3>Tasks are better with a team!</h3>
@@ -75,7 +74,6 @@ function getaddContact() {
                 <img src="assets/img/contacts/check.svg" alt="check">
             </div>
         </div>
-    </div>
     `;
 }
 

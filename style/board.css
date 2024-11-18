@@ -1,18 +1,19 @@
+/* Header-Bereich */
 .board-header {
     padding: 1rem;
     background-color: white;
     border-bottom: 1px solid #dee2e6;
 }
 
+/* Suchfeld im Header */
 .search-container {
     position: relative;
     width: 100%;
 }
-.form-control {
+
+.search-container input {
     width: 80%;
     height: 30px;
-}
-.search-container input {
     padding-right: 40px;
 }
 
@@ -24,50 +25,47 @@
     color: #6c757d;
 }
 
+/* Board-Abschnitte */
 .board-section {
     border-radius: 8px;
     padding: 1rem;
     margin: 1rem;
 }
 
-.task-card {
+/* Aufgabenkarte */
+.task {
     background: white;
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.badge.user-story {
-    background-color: var(--primary-blue);
-    color: white;
+/* Farbige Prioritäten */
+.priority-high {
+    border-left: 5px solid #ff4d4d; /* Rot */
+    background-color: #ffe6e6; /* Helles Rot */
 }
 
-.badge.technical-task {
-    background-color: #20c997;
-    color: white;
+.priority-medium {
+    border-left: 5px solid #ffc107; /* Gelb */
+    background-color: #fff4cc; /* Helles Gelb */
 }
 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: white;
-    border-top: 1px solid #dee2e6;
-    padding: 0.5rem;
+.priority-low {
+    border-left: 5px solid #28a745; /* Grün */
+    background-color: #e6ffee; /* Helles Grün */
 }
 
-.bottom-nav .nav-item {
-    text-align: center;
-    color: #6c757d;
-    text-decoration: none;
-    font-size: 0.8rem;
+/* Abschnittsüberschrift */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.bottom-nav .nav-item.active {
-    color: var(--primary-blue);
-}
-
+/* Button für neue Aufgaben */
 .add-button {
     position: absolute;
     right: 1rem;
@@ -79,9 +77,8 @@
     color: #6c757d;
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+/* Visuelles Feedback beim Drag-and-Drop */
+.drag-over {
+    border: 2px dashed #29abe1;
+    background-color: #f0f8ff;
 }

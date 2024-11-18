@@ -32,7 +32,11 @@
     height: 32px;
 }
 
-#idAddContact{
+#idAddContactBtn:hover{
+    background-color: #29ABE2;
+}
+
+#idAddContactBtn{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,7 +47,7 @@
     border-radius: 100px;
     z-index: 1;
     position: fixed;
-    bottom: 82px;
+    bottom: 88px;
     right: 16px;
 }
 
@@ -119,4 +123,17 @@
 
 #idContactView{
     width: 100%;
+}
+
+#idAddContact{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: fixed;
+    z-index: 2;
+    border: red solid 1px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }
