@@ -28,6 +28,8 @@ async function boardRender() {
         Object.entries(tasksData).forEach(([taskId, task]) => {
             const taskElement = document.createElement("div");
             taskElement.classList.add("task");
+            taskElement.id = taskId; // Sicherstellen, dass jeder Task eine ID hat
+            taskElement.setAttribute("onclick", `openModal('${taskId}')`); // `onclick` hinzufügen
             taskElement.innerHTML = `
                 <h4>${task.title}</h4>
                 <p>${task.description}</p>
@@ -43,6 +45,41 @@ async function boardRender() {
         console.error("Error loading tasks:", error);
     }
 }
+
+
+
+function ensureTasksHaveOnClick(containerId) {
+    const container = document.getElementById(containerId);
+
+    // MutationObserver, um DOM-Änderungen zu überwachen
+    const observer = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                // Überprüfen, ob das hinzugefügte Element ein HTML-Element ist
+                if (node.nodeType === 1) {
+                    // Eine eindeutige ID vergeben, falls keine existiert
+                    const taskId = node.id || `task-${Date.now()}`;
+                    node.id = taskId;
+
+                    // `onclick`-Attribut mit der ID hinzufügen
+                    node.setAttribute('onclick', `openModal('${taskId}')`);
+                }
+            });
+        });
+    });
+
+    observer.observe(container, { childList: true });
+}
+
+// Funktion, die das Modal öffnet
+function openModal(id) {
+    alert(`Task ${id} geöffnet!`);
+}
+
+// Überwachung für alle Container aktivieren
+['todo-container', 'progress-container', 'feedback-container', 'done-container'].forEach(ensureTasksHaveOnClick);
+
+
 
 /**
  * Gets the CSS class name for the given priority level.
