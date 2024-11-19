@@ -1,5 +1,6 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 let loggedInUser = '';
+let tasksAsArray = [];
 
 
 /**
@@ -105,6 +106,26 @@ async function getTasks() {
 }
 
 
+async function getTasksAsArray() {
+    tasksAsArray = [];
+    let tasksData = await getTasks();
+    for (const KEY in tasksData) {
+        const singleTask = tasksData[KEY];
+        const task = {
+            id: KEY,
+            title: singleTask.title,
+            description: singleTask.description,
+            dueDate: singleTask.dueDate,
+            priority: singleTask.priority,
+            category: singleTask.category
+        };
+        console.log('single task: '. task);
+        tasksAsArray.push(task);
+    }
+    console.log('tasks as array: ', tasks);
+}
+
+
 /**
  * This function return the status of the next task.
  * 
@@ -193,12 +214,3 @@ async function tryDeleteTaskInDatabase(id) {
     }
     alert("Aufgabe erfolgreich gelöscht.");
 }
-
-
-async function getIdOfTask(i) {
-    let tasks = await getTasks();
-    let idsOfTasks = Object.keys(tasks);
-    return toString(idsOfTasks[i]);
-}
-
-
