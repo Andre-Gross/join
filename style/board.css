@@ -38,18 +38,18 @@
 }
 
 .priority-high {
-    border-left: 5px solid #ff4d4d;
-    background-color: #ffe6e6;
+    border-left: 5px solid #ff4d4d; /* Rot */
+    background-color: #ffe6e6; /* Helles Rot */
 }
 
 .priority-medium {
-    border-left: 5px solid #ffc107;
-    background-color: #fff4cc;
+    border-left: 5px solid #ffc107; /* Gelb */
+    background-color: #fff4cc; /* Helles Gelb */
 }
 
 .priority-low {
-    border-left: 5px solid #28a745;
-    background-color: #e6ffee;
+    border-left: 5px solid #28a745; /* Grün */
+    background-color: #e6ffee; /* Helles Grün */
 }
 
 .section-header {
@@ -75,3 +75,42 @@
     background-color: #f0f8ff;
 }
 
+
+
+/* Style für Modalcard */
+
+#modalCard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 30px;
+    box-shadow: 0px 0px 4px 0px #00000029;
+    padding: 32px 24px;
+    background-color: white;
+}
+
+
+#modalCard {
+    box-shadow: 0px 0px 4px 0px #00000029;
+
+}
+
+
+.category-label {
+    border-radius: 8px;
+    padding: 4px 16px;
+    width: max-content;
+    color: white;
+    font-size: 16px;
+}
+
+
+.bc-category-label-technicaltask {
+    background-color: #1FD7C1;
+}
+
+
+.bc-category-label-userstory {
+    background-color: #0038FF;
+}

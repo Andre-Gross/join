@@ -119,10 +119,8 @@ async function getTasksAsArray() {
             priority: singleTask.priority,
             category: singleTask.category
         };
-        console.log('single task: '. task);
         tasksAsArray.push(task);
     }
-    console.log('tasks as array: ', tasks);
 }
 
 

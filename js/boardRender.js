@@ -113,3 +113,49 @@ function getContainerIdByStatus(status) {
     };
     return statusContainers[status] || null;
 }
+
+
+
+
+// Ab hier beginnt der Modal-Card-Code
+
+async function openModal(id) {
+    await getTasksAsArray();
+    const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
+    const singleTask = tasksAsArray[singleTaskID];
+
+    const allKeys = [];
+    for (let i = 0; i < Object.keys(singleTask).length; i++) {
+        const key = Object.keys(singleTask)[i];
+        allKeys.push(key);
+    }
+
+    for (let i = 0; i < allKeys.length; i++) {
+        const element = document.getElementById(`modalCard-${allKeys[i]}`);
+        
+    }
+
+    document.getElementById('modalCard-category').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
+
+
+    toggleDisplayNoneBlock(document.getElementById('board'));
+    toggleDisplayNoneBlock(document.getElementById('modalCard'));
+}
+
+
+function renderModal(KEY) {
+    cons
+}
+
+
+function renderModalCategory(category) {
+    const modalCategory = document.getElementById('modalCard-category');
+    modalCategory.innerHTML = category;
+}
+
+
+function renderModalTitle(Title) {
+    const modalCategory = document.getElementById('modalCard-category');
+    modalCategory.innerHTML = category;
+    modalCategory.classList.add(`bc-category-label-${category.replace(/\s/g, '').toLowerCase()}`);
+}
