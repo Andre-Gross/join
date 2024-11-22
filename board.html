@@ -40,6 +40,8 @@
             <div class="section-header">
                 <h2 class="h6 mb-0">In progress</h2>
                 <button class="btn btn-link p-0">+</button>
+<body onload="openModal('-OBftQqrwnCD0jzRGzOf')">
+    <section id="board">
             </div>
             <div id="progress-container" class="tasks-container">
                 <!-- Tasks will be inserted here by JavaScript -->
@@ -69,33 +71,46 @@
 
 
         <div w3-include-html="./templates/templates.html"></div>
-    </div>
+        </div>
+    </section>
 
 
-    <section id="modalCard" class="d-none" style="margin-bottom: 72px;">
-        <div class="d-flex justify-content-between">
+    <section id="modalCard" class="d-none flex-column" style="margin-bottom: 72px;">
+        <div class="d-flex justify-content-between align-items-center">
             <div id="modalCard-category-value" class="category-label"></div>
-            <div><img src="assets/img/general/cross.svg" alt=""></div>
+            <div id="modulCard-close" class="d-flex justify-content-center align-items-center"
+                onclick="toggleDisplayModal()"><img src="assets/img/general/cross.svg" alt=""></div>
         </div>
         <h2 id="modalCard-title-value"></h2>
         <p id="modalCard-description-value"></p>
         <table>
             <tr>
-                <td>Due date</td>
-                <td id="modalCard-dueDate-value"></td>
+                <td><span class="information-type">Due date:</span></td>
+                <td id="modalCard-finishedUntil-value"></td>
             </tr>
             <tr>
-                <td>Priority</td>
+                <td><span class="information-type">Priority:</span></td>
                 <td id="modalCard-priority-value"></td>
             </tr>
         </table>
         <div>
-            <p>Assigned To:</p>
+            <p class="information-type">Assigned To:</p>
             <div id="modalAssignedToValue" class="d-flex flex-column"></div>
         </div>
         <div>
-            <p>Subtasks</p>
-            <div id="modalSubtasksValue" class="d-flex flex-column"></div>
+            <p class="information-type">Subtasks</p>
+            <div id="modalCard-subtasks-value" class="d-flex flex-column">
+            </div>
+        </div>
+        <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
+            <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
+                <img src="./assets/img/board/bin.svg" alt="delete">
+                <span>Delete</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="assets/img/board/pen.svg" alt="edit">
+                <span>Edit</span>
+            </div>
         </div>
     </section>
 

@@ -113,11 +113,14 @@ async function getTasksAsArray() {
         const singleTask = tasksData[KEY];
         const task = {
             id: KEY,
+            category: singleTask.category,
             title: singleTask.title,
             description: singleTask.description,
-            dueDate: singleTask.dueDate,
+            finishedUntil: singleTask.finishedUntil,
             priority: singleTask.priority,
-            category: singleTask.category
+            assignedTo: singleTask.assignedTo,
+            subtasks: singleTask.subtasks,
+            status: singleTask.status
         };
         tasksAsArray.push(task);
     }

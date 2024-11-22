@@ -123,39 +123,113 @@ async function openModal(id) {
     await getTasksAsArray();
     const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
     const singleTask = tasksAsArray[singleTaskID];
+    const keys = ['category', 'title', 'description', 'finishedUntil'];
 
-    const allKeys = [];
-    for (let i = 0; i < Object.keys(singleTask).length; i++) {
-        const key = Object.keys(singleTask)[i];
-        allKeys.push(key);
-    }
+    renderModal(singleTask, keys);
+    renderDate(singleTask)
 
+    document.getElementById('modalCard-category-value').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
+    renderPriority(singleTask.priority);
+    renderSubtasks(singleTask.subtasks)
+
+    document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
+
+    toggleDisplayModal();
+}
+
+
+function renderModal(singleTask, allKeys) {
     for (let i = 0; i < allKeys.length; i++) {
-        const element = document.getElementById(`modalCard-${allKeys[i]}`);
-        
+        const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
+        element.innerHTML = singleTask[allKeys[i]];
     }
+}
 
-    document.getElementById('modalCard-category').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
+
+function renderDate(singleTask) {
+    let date = singleTask['finishedUntil'];
+    document.getElementById((`modalCard-finishedUntil-value`)).innerHTML = formatDate(date);
+}
 
 
+function formatDate(date) {
+    const [year, month, day] = date.split("-");
+    return `${day}/${month}/${year}`;
+}
+
+
+function renderPriority(priority) {
+    let priorityLabel = document.getElementById('modalCard-priority-value');
+    priorityLabel.innerHTML = priorityLabelHTML(priority)
+}
+
+
+function priorityLabelHTML(priority) {
+    let HTML = `
+    <span>${capitalizeFirstLetter(priority)}<span>
+    <img src="assets/img/general/prio-${priority}.png" alt="">
+    `;
+    return HTML
+}
+
+
+function renderSubtasks(subtasks) {
+    let modalSubtasksValue = document.getElementById('modalCard-subtasks-value');
+    modalSubtasksValue.innerHTML = renderSubtasksHTML(subtasks)
+}
+
+
+function renderSubtasksHTML(subtasks) {
+    let HTML = '';
+    if (subtasks == undefined || subtasks == null || subtasks.length == 0) {
+        HTML = ''
+    } else {
+        for (let i = 0; i < subtasks.length; i++) {
+            const singleSubtask = subtasks[i];
+            HTML += `
+            <div class="d-flex">
+                <label class="custom-checkbox">
+                    <input type="checkbox">
+                    <span class="checkbox-image"></span>
+                </label>
+                <p>${singleSubtask}</p>
+            </div>
+            `
+        }
+    }
+    return HTML;
+}
+
+
+async function deleteTaskOfModalCard(id){
+    deleteTaskInDatabase(id);
+    toggleDisplayModal()
+}
+
+
+function toggleDisplayModal() {
     toggleDisplayNoneBlock(document.getElementById('board'));
-    toggleDisplayNoneBlock(document.getElementById('modalCard'));
+    toggleDisplayNoneFlex(document.getElementById('modalCard'));
 }
 
 
-function renderModal(KEY) {
-    cons
+async function deleteTaskOfModalCard(id) {
+    await deleteTaskInDatabase(id),
+    toggleDisplayModal();
+    await boardRender()
 }
 
 
-function renderModalCategory(category) {
-    const modalCategory = document.getElementById('modalCard-category');
-    modalCategory.innerHTML = category;
-}
 
-
-function renderModalTitle(Title) {
-    const modalCategory = document.getElementById('modalCard-category');
-    modalCategory.innerHTML = category;
-    modalCategory.classList.add(`bc-category-label-${category.replace(/\s/g, '').toLowerCase()}`);
+function readAllKeys(object, without = '') {
+    const allKeys = [];
+    for (let i = 0; i < Object.keys(object).length; i++) {
+        const key = Object.keys(object)[i];
+        if (checkContentOfArray(key, without)) {
+            continue;
+        } else {
+            allKeys.push(key);
+        }
+    }
+    return allKeys;
 }
