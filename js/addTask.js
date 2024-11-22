@@ -1,5 +1,6 @@
 let contactsInitialized = false;
 let dataSubtasks = [];
+let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 
 
 /**
@@ -7,9 +8,25 @@ let dataSubtasks = [];
  * 
  * @param {string} status - the status of the next task 
  */
-function addTaskFromBoard(status){
-    putNextStatus(status);
-    document.location.href = "addTask.html";
+async function addTaskFromBoard(status = 'To do') {
+    if (checkContentOfArray(status, possibleStatuses)) {
+        await putNextStatus(status);
+        document.location.href = "addTask.html";
+    } else {
+        let HTML = 'Bitte geben sie einen gültigen Status ein. Möglich sind ';
+        for (let i = 0; i < possibleStatuses.length; i++) {
+            const singlePossibleStatuses = possibleStatuses[i];
+            HTML += `"` + singlePossibleStatuses + `"`;
+            if (i == possibleStatuses.length - 1) {
+                HTML += '.'
+            } else if (i == possibleStatuses.length - 2) {
+                HTML += ' oder '
+            } else {
+                HTML += ', '
+            }
+        }
+        alert(HTML)
+    }
 }
 
 

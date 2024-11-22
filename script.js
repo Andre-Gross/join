@@ -12,7 +12,7 @@ function addInvalidBorder(element) {
 
 function toggleDisplayNoneBlock(element) {
     let eleClass = element.classList;
-    if (eleClass.contains("d-none")){
+    if (eleClass.contains("d-none")) {
         eleClass.remove("d-none");
         eleClass.add("d-block");
     } else {
@@ -24,12 +24,24 @@ function toggleDisplayNoneBlock(element) {
 
 function toggleDisplayNoneFlex(element) {
     let eleClass = element.classList;
-    if (eleClass.contains("d-none")){
+    if (eleClass.contains("d-none")) {
         eleClass.remove("d-none");
         eleClass.add("d-flex");
     } else {
         eleClass.remove("d-flex");
         eleClass.add("d-none");
+    }
+}
+
+
+function checkContentOfArray(key, arrayToCheck) {
+    for (i = 0; i < arrayToCheck.length; i++) {
+        const checkValue = arrayToCheck[i];
+        if (key == checkValue) {
+            return true;
+        } if (i == arrayToCheck.length - 1) {
+            return false;
+        }
     }
 }
 
