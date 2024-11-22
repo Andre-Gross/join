@@ -1,8 +1,8 @@
-.title{
+h1{
+    font-weight: 700;
     font-size: 47px;
-    font-weight: bold;
-    color: #000000;
-}
+    }
+
 h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
 }

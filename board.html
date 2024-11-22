@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Board</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style/board.css">
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
@@ -66,11 +68,42 @@
     </div>
 
 
-    <div w3-include-html="./templates/templates.html"></div>
+        <div w3-include-html="./templates/templates.html"></div>
+    </div>
+
+
+    <section id="modalCard" class="d-none" style="margin-bottom: 72px;">
+        <div class="d-flex justify-content-between">
+            <div id="modalCard-category-value" class="category-label"></div>
+            <div><img src="assets/img/general/cross.svg" alt=""></div>
+        </div>
+        <h2 id="modalCard-title-value"></h2>
+        <p id="modalCard-description-value"></p>
+        <table>
+            <tr>
+                <td>Due date</td>
+                <td id="modalCard-dueDate-value"></td>
+            </tr>
+            <tr>
+                <td>Priority</td>
+                <td id="modalCard-priority-value"></td>
+            </tr>
+        </table>
+        <div>
+            <p>Assigned To:</p>
+            <div id="modalAssignedToValue" class="d-flex flex-column"></div>
+        </div>
+        <div>
+            <p>Subtasks</p>
+            <div id="modalSubtasksValue" class="d-flex flex-column"></div>
+        </div>
+    </section>
+
 
     <script src="./js/templates.js"></script>
     <script src="./js/api.js"></script>
     <script src="./js/board.js"></script>
+    <script src="./js/board-render.js"></script>
     <script src="./js/addTask.js"></script>
     <script src="./script.js"></script>
 
@@ -81,4 +114,5 @@
     </script>
 
 </body>
+
 </html>
