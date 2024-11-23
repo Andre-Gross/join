@@ -118,6 +118,11 @@
 }
 
 
+#modalCard {
+    gap: 16px;
+}
+
+
 #modulCard-close img {
     width: 13.5px;
     height: 13.5px;
@@ -151,6 +156,16 @@
 }
 
 
+#modalCard tr:first-child td {
+    padding-bottom: 16px;
+}
+
+
+#modalCard td:first-child {
+    width: 108px;
+}
+
+
 .information-type {
     color: #42526E;
     /* font-family: 'Open Sans'; */
@@ -158,6 +173,16 @@
     font-weight: 700;
     line-height: 19.2px;
     text-align: left;
+}
+
+
+#modalCard-subtasks-value {
+    margin-top: 8px;
+}
+
+
+#modalCard-subtasks-value div {
+    gap: 16px;
 }
 
 
@@ -189,6 +214,11 @@
     /* Bild für die aktivierte Checkbox */
     transform: scale(1.1);
     /* Optionaler Effekt */
+}
+
+
+#modalCard p {
+    margin-bottom: 0;
 }
 
 

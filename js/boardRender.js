@@ -187,8 +187,8 @@ function renderSubtasksHTML(subtasks) {
         for (let i = 0; i < subtasks.length; i++) {
             const singleSubtask = subtasks[i];
             HTML += `
-            <div class="d-flex">
-                <label class="custom-checkbox">
+            <div class="d-flex align-items-center">
+                <label class="custom-checkbox d-flex align-items-center">
                     <input type="checkbox">
                     <span class="checkbox-image"></span>
                 </label>
