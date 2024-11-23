@@ -12,62 +12,62 @@
     <link rel="stylesheet" href="style.css">
     <script src="./js/boardRender.js"></script>
 </head>
-<body>
-    <div class="board-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1 class="h4 mb-0">Board</h1>
-            <button class="add-button">+</button>
-        </div>
-        <div class="search-container mt-3">
-            <input type="text" class="form-control" placeholder="Find Task">
-            <img src="./assets/img/svg/search.svg" alt="search icon" class="search-icon">
-        </div>
-       
-    </div>
 
-    <div class="container-fluid">
-        <div class="board-section">
-            <div class="section-header">
-                <h2 class="h6 mb-0">To do</h2>
-                <button class="btn btn-link p-0">+</button>
-            </div>
-            <div id="todo-container" class="tasks-container">
-                <div class="text-center text-muted">No tasks To do</div>
-            </div>
-        </div>
-
-        <div class="board-section">
-            <div class="section-header">
-                <h2 class="h6 mb-0">In progress</h2>
-                <button class="btn btn-link p-0">+</button>
 <body onload="openModal('-OBftQqrwnCD0jzRGzOf')">
     <section id="board">
+        <div class="board-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0">Board</h1>
+                <button class="add-button">+</button>
             </div>
-            <div id="progress-container" class="tasks-container">
-                <!-- Tasks will be inserted here by JavaScript -->
+            <div class="search-container mt-3">
+                <input type="text" class="form-control" placeholder="Find Task">
+                <img src="./assets/img/svg/search.svg" alt="search icon" class="search-icon">
             </div>
+
         </div>
 
-        <div class="board-section">
-            <div class="section-header">
-                <h2 class="h6 mb-0">Await feedback</h2>
-                <button class="btn btn-link p-0">+</button>
+        <div class="container-fluid">
+            <div class="board-section">
+                <div class="section-header">
+                    <h2 class="h6 mb-0">To do</h2>
+                    <button class="btn btn-link p-0">+</button>
+                </div>
+                <div id="todo-container" class="tasks-container">
+                    <div class="text-center text-muted">No tasks To do</div>
+                </div>
             </div>
-            <div id="feedback-container" class="tasks-container">
-                <!-- Tasks will be inserted here by JavaScript -->
-            </div>
-        </div>
 
-        <div class="board-section">
-            <div class="section-header">
-                <h2 class="h6 mb-0">Done</h2>
-                <button class="btn btn-link p-0">+</button>
+            <div class="board-section">
+                <div class="section-header">
+                    <h2 class="h6 mb-0">In progress</h2>
+                    <button class="btn btn-link p-0">+</button>
+                </div>
+                <div id="progress-container" class="tasks-container">
+                    <!-- Tasks will be inserted here by JavaScript -->
+                </div>
             </div>
-            <div id="done-container" class="tasks-container">
-                <!-- Aufgaben werden hier durch JavaScript eingefügt -->
+
+            <div class="board-section">
+                <div class="section-header">
+                    <h2 class="h6 mb-0">Await feedback</h2>
+                    <button class="btn btn-link p-0">+</button>
+                </div>
+                <div id="feedback-container" class="tasks-container">
+                    <!-- Tasks will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <div class="board-section">
+                <div class="section-header">
+                    <h2 class="h6 mb-0">Done</h2>
+                    <button class="btn btn-link p-0">+</button>
+                </div>
+                <div id="done-container" class="tasks-container">
+                    <!-- Aufgaben werden hier durch JavaScript eingefügt -->
+                </div>
             </div>
         </div>
-    </div>
 
 
         <div w3-include-html="./templates/templates.html"></div>
