@@ -40,25 +40,10 @@
                             onclick="hideAssignedToDropdown()">
                     </div>
                 </div>
-                <div id="contactDropdown" class="dropdown d-none"></div>
             </div>
 
             <label for="inputDate">Due to</label>
             <input required id="inputDate" type="date">
-
-            <label for="priorityButtons">Prio</label>
-            <div id="priorityButtons" class="prio-btn">
-                <button id="urgent" type="button" class="btn btn-outline-danger" onclick="selectPriority('urgent')">
-                    Urgent <img src="#" alt="Urgent">
-                </button>
-                <button id="medium" type="button" class="btn btn-outline-warning btn-selected"
-                    onclick="selectPriority('medium')">
-                    Medium <img src="#" alt="Medium">
-                </button>
-                <button id="low" type="button" class="btn btn-outline-success" onclick="selectPriority('low')">
-                    Low <img src="#" alt="Low">
-                </button>
-            </div>
 
             <div class="dropdown-container d-flex flex-column">
                 <label for="inputCategory">Categorie</label>
@@ -69,6 +54,20 @@
                         Technical Task</div>
                     <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story
                     </div>
+        <label for="priorityButtons">Prio</label>
+        <div id="priorityButtons" class="prio-btn">
+            <button id="urgent" type="button" class="btn" onclick="selectPriority('urgent')">
+                Urgent <img id="img-urgent" src="assets/img/addTask/prio-urgent.svg" alt="Urgent">
+            </button>
+            <button id="medium" type="button" class="btn btn-selected btn-selected-medium"
+                onclick="selectPriority('medium')">
+                Medium <img id="img-medium" src="assets/img/addTask/prio-medium-white.svg" alt="Medium">
+            </button>
+            <button id="low" type="button" class="btn" onclick="selectPriority('low')">
+                Low <img id="img-low" src="assets/img/addTask/prio-low.svg" alt="Low">
+            </button>
+        </div>
+
                 </div>
             </div>
 

@@ -39,8 +39,9 @@ async function submitTaskForm() {
     const title = document.getElementById("inputTitle").value.trim();
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
-    const priority = document.querySelector('.btn-selected')?.id;
-    const category = document.getElementById("inputCategory").value
+    const priority = document.querySelector('btn-selected')?.id;
+    const category = document.getElementById("inputCategory").value;
+    // const subtasks = document.getElementById("inputSubtasks").value;
 
     const assignedTo = readAssignedTo();
 
@@ -268,11 +269,20 @@ function selectContact(contact) {
  * @param {string} priority - That includes the name of the selected priority.
  */
 function selectPriority(priority) {
-    document.getElementById("urgent").classList.remove("btn-selected");
-    document.getElementById("medium").classList.remove("btn-selected");
-    document.getElementById("low").classList.remove("btn-selected");
+    let allPriorities = ['urgent', 'medium', 'low']
+
+    for (let i = 0; i < allPriorities.length; i++) {
+        const singlePriority = allPriorities[i];
+        const element = document.getElementById(singlePriority);
+
+        element.classList.remove(`btn-selected`);
+        element.classList.remove(`btn-selected-${singlePriority}`);
+        document.getElementById(`img-${singlePriority}`).src = `assets/img/addTask/prio-${singlePriority}.svg`
+    }
 
     document.getElementById(priority).classList.add("btn-selected");
+    document.getElementById(priority).classList.add(`btn-selected-${priority}`);
+    document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
 }
 
 
