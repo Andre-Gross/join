@@ -47,8 +47,7 @@ async function putLoggedInUser(user) {
  * @returns {JSON} - This object includes all datas of all contacts of the user.
  */
 async function getContacts() {
-    await setLoggedInUser();
-    let response = await fetch(BASE_URL + 'users/' + loggedInUser + '/contacts' + '.json');
+    let response = await fetch(BASE_URL + 'users/' + '/contacts' + '.json');
     let responseAsJSON = await response.json();
     return responseAsJSON;
 }
