@@ -18,42 +18,31 @@
 <body onload="">
     <h1 class="m-2">Add Task</h1>
 
-    <div class="d-flex">
-        <form action="" class="d-flex flex-column m-2 w-100" onsubmit="submitTaskForm('boardId'); return false;">
-            <label for="inputTitle">Title</label>
-            <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
-                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+    <form action="" class="d-flex flex-column m-2" onsubmit="submitTaskForm('boardId'); return false;">
+        <label for="inputTitle">Title</label>
+        <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
+            onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
 
-            <label for="textareaDescription">Description</label>
-            <textarea required id="textareaDescription" placeholder="Enter a Description"
-                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
+        <label for="textareaDescription">Description</label>
+        <textarea required id="textareaDescription" placeholder="Enter a Description"
+            onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
 
-            <label for="dropAssignedTo">Assigned to</label>
-            <div class="dropdown-container">
-                <div class="input-group">
-                    <input id="dropAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
-                        oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
-                    <div class="arrow-input d-flex justify-content-center align-items-center">
-                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class=""
-                            onclick="showAssignedToDropdown()">
-                        <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
-                            onclick="hideAssignedToDropdown()">
-                    </div>
+        <label for="dropAssignedTo">Assigned to</label>
+        <div class="dropdown-container">
+            <div class="input-group">
+                <input id="dropAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
+                    oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+                <div class="arrow-input d-flex justify-content-center align-items-center">
+                    <img id="arrowDown" src="assets/icons/arrow-drop.png" class="" onclick="showAssignedToDropdown()">
+                    <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none" onclick="hideAssignedToDropdown()">
                 </div>
             </div>
+            <div id="contactDropdown" class="dropdown d-none"></div>
+        </div>
 
-            <label for="inputDate">Due to</label>
-            <input required id="inputDate" type="date">
+        <label for="inputDate">Due to</label>
+        <input required id="inputDate" type="date">
 
-            <div class="dropdown-container d-flex flex-column">
-                <label for="inputCategory">Categorie</label>
-                <input required readonly type="text" id="inputCategory" placeholder="Select task category"
-                    onclick="toggleDisplayNoneBlock(document.getElementById('categoryDropdown'))" />
-                <div id="categoryDropdown" class="d-none dropdown" onclick="closeDropdown(this)">
-                    <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">
-                        Technical Task</div>
-                    <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story
-                    </div>
         <label for="priorityButtons">Prio</label>
         <div id="priorityButtons" class="prio-btn">
             <button id="urgent" type="button" class="btn" onclick="selectPriority('urgent')">
@@ -68,30 +57,36 @@
             </button>
         </div>
 
+        <div class="d-flex justify-content-end btn-container">
+            <button class="btn-outline-secondary" type="button" onclick="emptyAddTaskInputs()">Clear</button>
+            <input class="btn-primary" type="submit" value="Create Task">
+        </div>
+
+        <div class="dropdown-container d-flex flex-column">
+            <label for="inputCategory">Categorie</label>
+            <input required readonly type="text" id="inputCategory" placeholder="Select task category"
+                onclick="toggleDisplayNoneBlock(document.getElementById('categoryDropdown'))" />
+            <div id="categoryDropdown" class="d-none dropdown" onclick="closeDropdown(this)">
+                <div onclick="selectCategory('Technical Task', document.getElementById('categoryDropdown'))">
+                    Technical Task</div>
+                <div onclick="selectCategory('User Story', document.getElementById('categoryDropdown'))">User Story
                 </div>
             </div>
+        </div>
 
-            <label for="Subtasks">Assigned to</label>
-            <div class="dropdown-container">
-                <div class="input-group">
-                    <input id="dropAssignedTo" type="text" class="border-end-0" placeholder="Select contacts to assign"
-                        oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
-                    <div class="arrow-input d-flex justify-content-center align-items-center">
-                        <img id="arrowDown" src="assets/icons/arrow-drop.png" class=""
-                            onclick="showAssignedToDropdown()">
-                        <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none"
-                            onclick="hideAssignedToDropdown()">
-                    </div>
+        <label for="Subtasks">Subtasks</label>
+        <div class="dropdown-container">
+            <div class="input-group">
+                <input id="dropSubtasks" type="text" class="border-end-0" placeholder="Select contacts to assign"
+                    oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+                <div class="arrow-input d-flex justify-content-center align-items-center mb-template">
+                    <img id="arrowDown" src="assets/icons/arrow-drop.png" class="" onclick="showAssignedToDropdown()">
+                    <img id="arrowUp" src="assets/icons/arrow-up.png" class="d-none" onclick="hideAssignedToDropdown()">
                 </div>
-                <div id="contactDropdown" class="dropdown d-none"></div>
             </div>
-
-            <div class="d-flex w-100 btn-container">
-                <button class="btn-outline-secondary" type="button" onclick="emptyAddTaskInputs()">Clear</button>
-                <input class="btn-primary" type="submit" value="Create Task">
-            </div>
-        </form>
-    </div>
+            <div id="contactDropdown" class="dropdown d-none"></div>
+        </div>
+    </form>
 
 
     <div w3-include-html="./templates/templates.html"></div>
