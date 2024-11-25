@@ -67,18 +67,36 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .prio-btn .btn {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
-    background-color: #ffffff !important;
+    background-color: #ffffff;
 
 
     display: flex;
     flex: 1;
+    justify-content: center;
     align-items: center;
     gap: 5px;
 }
 
 
 .btn-selected {
-    background-color: #d1d1d1 !important;
+    color: white !important;
+    font-weight: 700;
+}
+
+
+.btn-selected-urgent {
+    background-color: rgba(255, 61, 0, 1) !important;
+}
+
+
+.btn-selected-medium {
+    background-color: rgba(255, 168, 0, 1) !important;
+
+}
+
+
+.btn-selected-low {
+    background-color: rgba(122, 226, 41, 1) !important;
 }
 
 
