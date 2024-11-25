@@ -60,7 +60,7 @@ async function submitTaskForm() {
  */
 function readAssignedTo() {
     const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => checkbox.id);
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformIdToName(checkbox.id));
     return assignedTo;
 }
 
@@ -307,4 +307,9 @@ function getSelectedPriority() {
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
     toggleDisplayNoneBlock(element);
+}
+
+
+function transformIdToName(input) {
+    return input.replace('checkbox_', '').replace(/_/g, ' ');
 }
