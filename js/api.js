@@ -212,6 +212,7 @@ async function tryDeleteTaskInDatabase(id) {
         throw new Error(`Fehler: ${response.status} ${response.statusText}`);
     }
     alert("Aufgabe erfolgreich gelöscht.");
+}
 
 
 setLoggedInUser();
