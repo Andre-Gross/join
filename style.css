@@ -101,3 +101,10 @@ textarea:focus {
 .btn-dark:hover {
     background-color: var(--primary-hover-color);
 }
+
+
+
+/* Andrés Hinzufügungen */
+.mb-template {
+    margin-bottom: calc(82px - 0.5rem);;
+}
