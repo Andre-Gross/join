@@ -59,9 +59,9 @@ async function getContacts() {
  * @param {object} data - Datas of the new contact.
  * @param {string} user - ID of the user, who should get the datas of the new contact. The standart user is the aktive user.
  */
-async function postContactToDatabase(data, user = loggedInUser) {
+async function postContactToDatabase(data) {
     try {
-        tryPostContactToDatabase(data, user);
+        tryPostContactToDatabase(data);
     } catch (error) {
         console.error("Fehler beim Speichern des Kontaktes:", error);
         alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
@@ -75,8 +75,8 @@ async function postContactToDatabase(data, user = loggedInUser) {
  * @param {object} data - Datas of the new contact.
  * @param {string} user - ID of the user, who should get the datas of the new contact.   
  */
-async function tryPostContactToDatabase(data, user) {
-    const response = await fetch(BASE_URL + `users/${user}/contacts.json`, {
+async function tryPostContactToDatabase(data) {
+    const response = await fetch(BASE_URL + `users/contacts.json`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
