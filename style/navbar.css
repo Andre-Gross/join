@@ -26,6 +26,7 @@
 .nav-item.active {
     background-color: #081831;
     border-radius: 8px;
+    width: 80px;
 }
 
 .nav-icon {
