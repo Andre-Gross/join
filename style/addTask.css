@@ -106,9 +106,29 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
+.btn-container{
+    display: flex;
+    gap: 32px;
+    justify-content: end;
+    margin-top: 16px;
+}
+
+.btn-form{
+    padding: 16px !important;
+    width: max-content !important;
+    gap: 4px
+}
+
+
+.bounding-box-button-icon {
+    width: 24px;
+    height: 24px;
+}
+
+
 /* Neu hinzugefügt für die Buttons */
 
-.btn-container{
+/* .btn-container{
     display: flex;
     gap: 32px;
     justify-content: end;
@@ -123,4 +143,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .btn-primary{
     width: 183px !important;
     height: 56px !important;
-}
+} */
