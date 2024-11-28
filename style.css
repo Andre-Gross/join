@@ -38,10 +38,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 input, textarea {
     border: 1.5px solid var(--border-color);
     border-radius: var(--border-radius);
