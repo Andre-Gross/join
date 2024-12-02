@@ -123,7 +123,7 @@
 #idheadContactView{
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-start;
     flex-direction: row;
     width: 100%;
     padding-top: 36px;
@@ -152,4 +152,26 @@
     height: 100%;
     background-color: white;
     border: red 1px solid;
+}
+
+#idVector{
+    border: 1px red solid;
+}
+
+#idTitle{
+    font-size: 20px;
+    font-weight: 400;
+    border: 1px red solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#idBlueLine{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5CBEE7;
+    height: 3px;
+    width: 30%;
 }
