@@ -5,7 +5,6 @@
     align-items: center;
     flex-direction: column;
     margin-top: 16px;
-    border: red 1px solid;
     width: 100%;
 }
 
@@ -15,7 +14,6 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    border: red 1px solid;
 }
 
 #idGreyLine{
@@ -50,7 +48,6 @@
     position: fixed;
     bottom: 88px;
     right: 16px;
-    border: red 1px solid;
 }
 
 #idShortName{
@@ -61,7 +58,6 @@
     width: 42px;
     height: 42px;
     border-radius: 100px;
-    border: red 1px solid;
 }
 
 #idNameMailshort{
@@ -70,21 +66,18 @@
     align-items: column;
     cursor: pointer;
     gap: 42px;
-    border: red 1px solid;
 }
 
 #idName{
     display: flex;
     justify-content: flex-start;
     margin-bottom: 4px;
-    border: red 1px solid;
 }
 
 #idMail{
     display: flex;
     justify-content: flex-start;
     color: #017CEE;
-    border: red 1px solid;
 }
 
 #idShortAlph{
@@ -92,12 +85,10 @@
     justify-content: center;
     align-items: center;
     margin: 0px;
-    border: red 1px solid;
 }
 
 #idNameMail{
     width: 200px;
-    border: red 1px solid;
 }
 
 #idEditDeleteBtn{
@@ -113,7 +104,6 @@
     position: fixed;
     bottom: 88px;
     right: 16px;
-    border: red 1px solid;
 }
 
 #idEditDeleteBtn:hover{
@@ -127,18 +117,15 @@
     flex-direction: row;
     width: 100%;
     padding-top: 36px;
-    border: red 1px solid;
 }
 
 #idh1Contacts{
     font-weight: 700;
     font-size: 47px;
-    border: red 1px solid;
 }
 
 #idContactView{
     width: 100%;
-    border: red 1px solid;
 }
 
 #idAddContact{
@@ -151,17 +138,11 @@
     width: 100%;
     height: 100%;
     background-color: white;
-    border: red 1px solid;
-}
-
-#idVector{
-    border: 1px red solid;
 }
 
 #idTitle{
     font-size: 20px;
     font-weight: 400;
-    border: 1px red solid;
     display: flex;
     align-items: center;
     justify-content: center;
