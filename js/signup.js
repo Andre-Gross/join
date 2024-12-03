@@ -38,7 +38,7 @@ async function signUp() {
   }
 
   try {
-      const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users.json");
+      const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
       const users = await response.json();
 
       const emailExists = Object.values(users || {}).some(
@@ -51,7 +51,7 @@ async function signUp() {
           return;
       }
 
-      await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users.json", {
+      await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
