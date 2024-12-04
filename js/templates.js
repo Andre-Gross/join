@@ -50,7 +50,6 @@ function displayUserInitials(userId) {
     const profileIcon = document.getElementById('profile-icon-container');
 
     if (!profileIcon) {
-        console.warn("The 'profile-icon-container' element was not found.");
         return;
     }
 
