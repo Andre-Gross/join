@@ -51,16 +51,16 @@ function getAddContactBtn() {
 
 function addContact() {
   let addContact = document.getElementById("idContactMain");
-  addContact.innerHTML += getaddContact();
+  addContact.innerHTML += getAddContact();
 }
 
-function getaddContact() {
+function getAddContact() {
   return `
         <div id="idAddContact">
             <img src="assets/img/general/Vector.svg" alt="x" onclick="contactMain()">
             <h1>Add contact</h1>
             <h3>Tasks are better with a team!</h3>
-            <div id="blueline"><div>
+            <div id="blueLine"><div>
         </div>
         <img src="assets/img/contacts/person.svg">
         <div>
@@ -149,7 +149,7 @@ function getEditContact(i) {
   return `
     <div>
         <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
-        <div id="idblueLine"></div>
+        <div id="idBlueLine"></div>
             <div id="idShortName">
                 <p id="idShortAlph">MM</p>
             </div>
