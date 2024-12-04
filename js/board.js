@@ -1,5 +1,5 @@
 
-// This function searchs for the Pokemon names
+// This function searchs for the Task name
 function filterAndShowTask(){
     let filterWord = document.getElementById("idSearch").value; 
     
@@ -9,8 +9,8 @@ function filterAndShowTask(){
       indexs =[]; 
   
       for (let i = 0; i < currentNames.length; i++) {
-        let currentPokemon = currentNames[i]; 
-        let index = names.findIndex(pokemon => pokemon.name === currentPokemon.name);  
+        let currentTask = currentNames[i]; 
+        let index = names.findIndex(pokemon => pokemon.name === currentTask.name);  
          indexs.push(index);  
       }  
       renderBodySearch();
