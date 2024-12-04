@@ -1,72 +1,58 @@
-/**
- * Registers a new user by validating the provided inputs
- * (name, email, password, confirm password, and terms agreement)
- * and sending the data to a Firebase database.
- * 
- * Steps performed:
- * - Checks if the terms and conditions are accepted.
- * - Validates if the password and confirm password match.
- * - Verifies if the email already exists in the database.
- * - Sends the data to Firebase and creates a new user object with an empty contacts array and login data.
- * 
- * Displays an appropriate message if the inputs are invalid or the email already exists.
- * Redirects the user to the login page after successful registration.
- * 
- * @async
- * @function signUp
- * @returns {void} Shows a success message on successful registration or an error message for invalid inputs.
- */
 async function signUp() {
-  const [name, email, password, confirmPassword, agreeTerms] = [
-      "name",
+    const [email, password, confirmPassword, agreeTerms] = [
       "email",
       "password",
       "confirmPassword",
       "agreeTerms"
-  ].map(id => document.getElementById(id).type === "checkbox" 
-                ? document.getElementById(id).checked 
-                : document.getElementById(id).value.trim());
-
-  if (!agreeTerms) {
-      alert("Please agree to the terms and conditions.");
-      return;
+    ].map(id => document.getElementById(id).type === "checkbox" 
+                  ? document.getElementById(id).checked 
+                  : document.getElementById(id).value.trim());
+  
+    if (!agreeTerms) {
+        alert("Please agree to the terms and conditions.");
+        return;
+    }
+  
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+  
+    try {
+        const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
+        const users = await response.json();
+  
+        const emailExists = Object.values(users || {}).some(
+            user => user?.email === email
+        );
+  
+        if (emailExists) {
+            alert("This email address is already registered.");
+            window.location.href = 'login.html';
+            return;
+        }
+  
+        // Jetzt wird die ID zusammen mit der E-Mail und dem Passwort auf der obersten Ebene gespeichert
+        const newUser = {
+            email: email,
+            password: password,
+            contacts: []  // Kontakte bleiben leer
+        };
+  
+        const newUserResponse = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newUser)
+        });
+  
+        alert("Your registration was successful!");
+        window.location.href = 'login.html';
+    } catch (error) {
+        console.error("Registration error:", error);
+        alert("An error occurred. Please try again.");
+    }
   }
-
-  if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-  }
-
-  try {
-      const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
-      const users = await response.json();
-
-      const emailExists = Object.values(users || {}).some(
-          user => user?.login?.email === email
-      );
-
-      if (emailExists) {
-          alert("This email address is already registered.");
-          window.location.href = 'login.html';
-          return;
-      }
-
-      await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-              contacts: [],
-              login: { email, name, password }
-          })
-      });
-
-      alert("Your registration was successful!");
-      window.location.href = 'login.html';
-  } catch (error) {
-      console.error("Registration error:", error);
-      alert("An error occurred. Please try again.");
-  }
-}
+  
 
 /**
 * Validates the registration form and enables the register button
