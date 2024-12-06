@@ -107,7 +107,6 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
         subtasks: dataSubtasks,
         status: await getNextStatus(),
     };
-    dataStatus = 'To do';
     return data;
 }
 
