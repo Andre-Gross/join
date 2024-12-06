@@ -4,6 +4,27 @@ let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
 
 
+function transformCheckboxIdToName(id) {
+    id = id.replace('checkbox_', '');
+    const seperatedNames = id.split("_");
+    let name = '';
+    for (let i = 0; i < seperatedNames.length; i++) {
+        const singleName = upperCaseFirstLetter(seperatedNames[i]);
+        if (i === seperatedNames.length - 1) {
+            name += singleName;
+        } else {
+            name = singleName + ' ';
+        }
+    }
+    return name
+}
+
+
+function transformNameToId(name, partBeforeName = '', partAfterName = '') {
+    return (partBeforeName + name.trim().replace(/\s+/g, '_').toLowerCase() + partAfterName);
+}
+
+
 /**
  * This function set the status of the next task and open the addTask.html
  * 
@@ -144,7 +165,7 @@ async function filterContacts() {
         showAssignedToDropdown();
         for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
-            const item = document.getElementById(`item_${contact.name.replace(/\s+/g, '_')}`);
+            const item = document.getElementById(transformNameToId(contact.name, 'item_'));
             item.classList.add("d-none");
 
             for (let y = 0; y < filteredContacts.length; y++) {
@@ -293,20 +314,20 @@ async function createAssignedToDropdown() {
 
     contacts.forEach(contact => {
         const contactItem = document.createElement("div");
-        const checkboxId = `checkbox_${contact.name.replace(/\s+/g, '_')}`;
 
-        contactItem.id = `item_${contact.name.replace(/\s+/g, '_')}`;
         contactItem.className = "contact-item";
         contactItem.innerHTML = `
             ${contact.name}
-            <input type="checkbox" id="checkbox_${contact.name.replace(/\s+/g, '_')}">
         `;
 
         contactItem.onclick = () => selectContact(contact);
 
         dropdown.appendChild(contactItem);
     });
+    contactItem.id = transformNameToId(contact.name, 'item_');
+        <input type="checkbox" id="${transformNameToId(contact.name, 'checkbox_')}">
 
+    const checkbox = contactItem.querySelector(`#${transformNameToId(contact.name, 'checkbox_')}`)
 }
 
 
@@ -316,7 +337,7 @@ async function createAssignedToDropdown() {
  *  @param {object} contact - This object includes the information of a single contact.
  */
 function selectContact(contact) {
-    let checkbox = document.getElementById(`checkbox_${contact.name.replace(/\s+/g, '_')}`)
+    let checkbox = document.getElementById(transformNameToId(contact.name, 'checkbox_',))
     checkbox.checked = !checkbox.checked;
 
     checkbox.onclick = (event) => {
@@ -372,6 +393,4 @@ function selectCategory(category, element) {
 }
 
 
-function transformIdToName(input) {
-    return input.replace('checkbox_', '').replace(/_/g, ' ');
 }
