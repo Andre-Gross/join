@@ -1,43 +1,53 @@
-// summary.js
-
-/**
- * Initializes the summary page, displays a personalized greeting based on the user's ID,
- * and handles the transition from the welcome screen to the main content.
- *
- * @async
- * @function
- */
 document.addEventListener('DOMContentLoaded', async () => {
-    await includeHTML(); // Wait for templates to load
+    await includeHTML();
 
-    const userId = sessionStorage.getItem('loggedInUser');
-    console.log("Retrieved user ID:", userId);
+    // Benutzerinformationen aus dem sessionStorage abrufen
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    let email = null;
+    let password = null;
 
-    /**
-     * Displays the user's name or a default guest name based on the stored user ID.
-     * Fetches the user's data from Firebase if a valid user ID exists.
-     * 
-     * @async
-     * @function displayUserName
-     * @returns {void} Updates the greeting and username on the page.
-     */
+    if (loggedInUser) {
+        // Extrahiere die E-Mail und das Passwort aus den gespeicherten Daten
+        const user = JSON.parse(loggedInUser);
+        email = user.email;
+        password = user.password;
+    } else {
+        console.warn("No valid user data found in sessionStorage.");
+    }
+
+    // Hier kannst du die E-Mail und das Passwort verwenden
+    console.log("Email:", email);
+    console.log("Password:", password);
+
     async function displayUserName() {
         let name = 'Guest';
 
-        if (userId && userId !== 'guest') {
+        // Wenn die E-Mail existiert, kannst du versuchen, den Benutzernamen zu laden
+        if (email) {
             try {
                 const response = await fetch(
-                    `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`
+                    `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json`
                 );
-                const user = await response.json();
-                console.log("User data:", user);
 
-                if (user?.login?.name) {
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+
+                const users = await response.json();
+
+                // Finde den Benutzer mit der gespeicherten E-Mail und dem Passwort
+                const user = Object.values(users || {}).find(
+                    user => user?.email === email && user?.password === password
+                );
+
+                if (user && user?.login?.name) {
                     name = user.login.name;
                     sessionStorage.setItem('loggedInUserName', name);
+                } else {
+                    console.warn("No name found for this user in the database.");
                 }
             } catch (error) {
-                console.error("Error fetching username:", error);
+                console.error("Error fetching user data:", error);
             }
         }
 
@@ -46,12 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('userName').textContent = capitalize(name);
     }
 
-    /**
-     * Generates a greeting message based on the current time of day.
-     * 
-     * @function getGreetingMessage
-     * @returns {string} A time-based greeting (e.g., "Good Morning").
-     */
     function getGreetingMessage() {
         const hour = new Date().getHours();
         if (hour >= 6 && hour < 9) return 'Moin,';
@@ -61,28 +65,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         return 'Good Night,';
     }
 
-    /**
-     * Capitalizes the first letter of a string.
-     * 
-     * @function capitalize
-     * @param {string} str - The string to capitalize.
-     * @returns {string} The capitalized string.
-     */
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // Call the function to display the user's name
-    displayUserName();
+    await displayUserName();
 
-    // Start the fade-out animation after 1 second
     setTimeout(() => {
         document.querySelector('.welcome-container').classList.add('fade-out');
     }, 1000);
 
-    // Handle the end of the fade-out animation
     document.querySelector('.welcome-container').addEventListener('transitionend', () => {
-        document.querySelector('.welcome-container').classList.add('hidden'); // Hide the welcome container
-        document.querySelector('.main').classList.add('visible'); // Show the main content
+        document.querySelector('.welcome-container').classList.add('hidden');
+        document.querySelector('.main').classList.add('visible');
     });
 });
