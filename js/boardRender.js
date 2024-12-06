@@ -233,3 +233,5 @@ function readAllKeys(object, without = '') {
     }
     return allKeys;
 }
+
+updateTaskSummary(tasksData);
