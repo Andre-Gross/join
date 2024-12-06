@@ -43,6 +43,11 @@ function refreshContactNamesInInput() {
 }
 
 
+function updateLastStringOfInput() {
+    lastStringOfInput = document.getElementById("dropAssignedTo").value;
+}
+
+
 function transformCheckboxIdToName(id) {
     id = id.replace('checkbox_', '');
     const seperatedNames = id.split("_");
