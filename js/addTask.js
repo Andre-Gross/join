@@ -4,6 +4,45 @@ let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
 
 
+/**
+ * This function returns the contacts of the loggedInUser as Array
+ * 
+ * @returns {Array} - This array contains the contacts of the loggedInUser
+ */
+async function getContactsAsArray() {
+    let contacts = await getContacts();
+    if (Array.isArray(contacts)) {
+    } else {
+        contacts = Object.values(contacts);
+    }
+    return contacts
+}
+
+
+/**
+ * That function read the information, for which contact the task is assigned to.
+ * 
+ * @returns {string} - The person(s), which are assigned to to do the task.
+ */
+function readAssignedTo() {
+    const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformCheckboxIdToName(checkbox.id));
+    return assignedTo;
+}
+
+
+function refreshContactNamesInInput() {
+    let checkedContacts = readAssignedTo();
+    const dropAssignedTo = document.getElementById('dropAssignedTo')
+    dropAssignedTo.value = `An `
+    for (let i = 0; i < checkedContacts.length; i++) {
+        const singleContact = checkedContacts[i];
+        dropAssignedTo.value += `${singleContact}, `;
+    }
+    updateLastStringOfInput();
+}
+
+
 function transformCheckboxIdToName(id) {
     id = id.replace('checkbox_', '');
     const seperatedNames = id.split("_");
@@ -77,18 +116,6 @@ async function submitTaskForm() {
 
 
 /**
- * That function read the information, for which contact the task is assigned to.
- * 
- * @returns {string} - The person(s), which are assigned to to do the task.
- */
-function readAssignedTo() {
-    const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformIdToName(checkbox.id));
-    return assignedTo;
-}
-
-
-/**
  * This function, check if all inputs of the addTask-form includes content.
  * 
  * @param {string} title - Title of the task
@@ -134,19 +161,6 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 
 
 /**
- * This function reset the form of addTask
- */
-function emptyAddTaskInputs() {
-    document.getElementById("inputTitle").value = '';
-    document.getElementById("textareaDescription").value = '';
-    document.getElementById('inputDate').value = '';
-    document.querySelector('.btn-selected')?.classList.remove('btn-selected');
-    document.document.getElementById('medium').classList.add('btn-selected');
-    dataSubtasks = [];
-}
-
-
-/**
  * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
  * 
  */
@@ -181,14 +195,6 @@ async function filterContacts() {
 }
 
 
-/**
- * This function returns the contacts of the loggedInUser as Array
- * 
- * @returns {Array} - This array contains the contacts of the loggedInUser
- */
-async function getContactsAsArray() {
-    let contacts = await getContacts();
-    if (Array.isArray(contacts)) {
 async function deletePartInAssingedTo() {
     let input = document.getElementById("dropAssignedTo").value;
     if (input.length < lastStringOfInput.length) {
@@ -207,7 +213,6 @@ async function deletePartInAssingedTo() {
     } else {
         updateLastStringOfInput();
     }
-    return contacts
 }
 
 
@@ -398,4 +403,16 @@ function selectCategory(category, element) {
 }
 
 
+/**
+ * This function reset the form of addTask
+ */
+function emptyAddTaskInputs() {
+    document.getElementById("inputTitle").value = '';
+    document.getElementById("textareaDescription").value = '';
+    document.querySelectorAll('input[type="checkbox"]:checked').checked = false;
+    document.getElementById('inputDate').value = '';
+    document.getElementById('inputCategory').value = '';
+    selectPriority('medium');
+    document.getElementById("dropSubtasks").value = '';
+    dataSubtasks = [];
 }
