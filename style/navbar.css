@@ -4,33 +4,50 @@
     left: 50%;
     transform: translateX(-50%);
     width: 105%;
-    background-color: #1e2736;
+    background-color: #2A3647;
     display: flex;
     justify-content: space-around;
     box-sizing: border-box;
-    padding: 0;
+    padding: 5px 0;
+    height: 80px;
+
 }
 
 .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Vertikal und horizontal zentrieren */
+    width: 80px; 
+    height: 70px;
     color: #ffffff;
     text-decoration: none;
     font-size: 12px;
-    padding: 10px 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    line-height: 1;       /* Einheitliche Zeilenhöhe */
+    text-align: center;   /* Text zentrieren */
 }
 
 .nav-item.active {
-    background-color: #081831;
-    border-radius: 8px;
-    width: 80px;
+    background-color: #091931;
 }
 
 .nav-icon {
+    display: block;       /* Bild als Blockelement, vermeidet Inline-Alignment-Probleme */
     width: 24px;
     height: 24px;
     margin-bottom: 4px;
+}
+
+.nav-item span {
+    display: block;       /* Text ebenfalls als Block */
+    line-height: 1;       /* Zeilenhöhe für Text */
+    white-space: nowrap;  /* Verhindert Zeilenumbruch */
+}
+
+/* Entferne ggf. Fokusrahmen, um Layoutsprünge zu vermeiden */
+.nav-item:focus,
+.nav-item:active {
+    outline: none;
 }
