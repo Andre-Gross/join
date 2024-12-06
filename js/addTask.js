@@ -259,10 +259,10 @@ async function showAssignedToDropdown() {
     const arrowUp = document.getElementById("arrowUp");
 
     if (!contactsInitialized) {
-        await createAssignedToDropdown(); // Erstelle das Dropdown, wenn es noch nicht initialisiert wurde
+        await createAssignedToDropdown();
     }
 
-    dropdown.classList.remove("d-none"); // Zeige das Dropdown an
+    dropdown.classList.remove("d-none");
     arrowDown.classList.add("d-none");
     arrowUp.classList.remove("d-none");
 }
@@ -276,9 +276,9 @@ function hideAssignedToDropdown() {
     const arrowDown = document.getElementById("arrowDown");
     const arrowUp = document.getElementById("arrowUp");
 
-    dropdown.classList.add("d-none"); // Blende das Dropdown aus
-    arrowDown.classList.remove("d-none"); // Zeige den nach unten zeigenden Pfeil
-    arrowUp.classList.add("d-none"); // Verstecke den nach oben zeigenden Pfeil
+    dropdown.classList.add("d-none");
+    arrowDown.classList.remove("d-none");
+    arrowUp.classList.add("d-none");
 }
 
 
@@ -307,7 +307,6 @@ async function createAssignedToDropdown() {
         dropdown.appendChild(contactItem);
     });
 
-    contactsInitialized = true; // Setze das Flag auf true, nachdem die Kontakte initialisiert wurden
 }
 
 
