@@ -65,11 +65,11 @@ function getAddContact() {
         <img src="assets/img/contacts/person.svg">
         <div>
             <div>
-                <input type="text" name="name" placeholder="Name">
-                <input type="email" name="email" placeholder="Email">
-                <input type="Tel" name="phone" placeholder="Phone">
+                <input id="idname" type="text" name="name" placeholder="Name">
+                <input id="idmail" type="email" name="email" placeholder="Email">
+                <input id="phone" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
             </div>
-            <div onclick="submitAddContact()">
+            <div id="idsubmitAddContact" onclick="submitAddContact()">
                 <p>Create Contact</p>
                 <img src="assets/img/contacts/check.svg" alt="check">
             </div>
@@ -176,6 +176,11 @@ function getEditContact(i) {
 }
 
 function submitAddContact() {
+  let name = document.getElementById("idname").value; 
+  let mail = document.getElementById("idmail").value; 
+  let phone = document.getElementById("idphone").value; 
+
+  console.log(name);
   console.log("Submit new Contact in Progress");
 }
 
