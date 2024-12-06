@@ -1,6 +1,7 @@
 let contactsInitialized = false;
 let dataSubtasks = [];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
+let lastStringOfInput = '';
 
 
 /**
@@ -163,8 +164,23 @@ async function filterContacts() {
 async function getContactsAsArray() {
     let contacts = await getContacts();
     if (Array.isArray(contacts)) {
+async function deletePartInAssingedTo() {
+    let input = document.getElementById("dropAssignedTo").value;
+    if (input.length < lastStringOfInput.length) {
+        const delChar = findDelChar(input);
+        if ((input.substring(0, input.lastIndexOf(", ") + 2) == lastStringOfInput.substring(0, input.lastIndexOf(", ") + 2)) && (!isDeletededPartOfSeperator(delChar)) && input.includes("An ")) {
+            updateLastStringOfInput();
+        } else {
+            if (isDeletededPartOfSeperator(delChar)) {
+                deleteFromEndOfContact(input);
+            } else if (input.includes(", ")) {
+                deleteInmidOfContact(input);
+            } else {
+                document.getElementById("dropAssignedTo").value = "An ";
+            }
+        }
     } else {
-        contacts = Object.values(contacts);
+        updateLastStringOfInput();
     }
     return contacts
 }
@@ -181,8 +197,51 @@ async function getNamesOfContacts() {
     for (let i = 0; i < contacts.length; i++) {
         const name = contacts[i].name;
         namesOfContacts.push(name);
+function findDelChar(input) {
+    let difference = patienceDiff(input.split(''), lastStringOfInput.split(''));
+    for (i = 0; i < difference.lines.length; i++) {
+        const positionOfCharacter = difference.lines[i].aIndex;
+        if (positionOfCharacter === -1) {
+            return difference.lines[i].line
+        }
     }
-    return namesOfContacts;
+}
+
+
+function isDeletededPartOfSeperator(delChar) {
+    let input = document.getElementById("dropAssignedTo").value;
+    return (delChar == "," || (delChar == " " && input.slice(-1) == ","))
+}
+
+
+function deleteFromEndOfContact(input) {
+    if (input.includes(", ")) {
+        let removedInput = input.substring(input.lastIndexOf(", ") + 2);
+        document.getElementById(transformNameToId(removedInput, 'checkbox_',)).checked = false;
+        refreshContactNamesInInput()
+    } else {
+        let removedInput = input.substring(input.lastIndexOf("An ") + 3).replace(',', '');
+        document.getElementById(transformNameToId(removedInput, 'checkbox_')).checked = false;
+        document.getElementById("dropAssignedTo").value = 'An ';
+    }
+}
+
+
+async function deleteInmidOfContact(input) {
+    const allContacts = await getContactsAsArray();
+    const inputPart1 = input.substring(0, input.lastIndexOf(", ") + 2);
+    const inputPart2 = input.substring(input.lastIndexOf(", ") + 2);
+    for (i = 0; i < allContacts.length - 1; i++) {
+        const singleContactName = allContacts[i].name;
+        const checkboxID = transformNameToId(singleContactName, 'checkbox_',);
+        if (inputPart1.includes(singleContactName + ', ')) {
+            document.getElementById(checkboxID).checked = true;
+        } else {
+            document.getElementById(checkboxID).checked = false;
+        }
+    }
+    refreshContactNamesInInput();
+    document.getElementById("dropAssignedTo").value += inputPart2;
 }
 
 
