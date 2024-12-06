@@ -130,9 +130,13 @@ function emptyAddTaskInputs() {
  * 
  */
 async function filterContacts() {
-    const input = document.getElementById("dropAssignedTo").value.toLowerCase();
-    const dropdown = document.getElementById("contactDropdown");
     let contacts = await getContactsAsArray();
+    let input = document.getElementById("dropAssignedTo").value.toLowerCase();
+    if (!input.includes(", ") && input.includes("an ")) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
+    } else if (input.includes(", ")) {
+        input = input.substring(input.lastIndexOf(", ") + 1);
+    }
 
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
 
