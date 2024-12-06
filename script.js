@@ -49,3 +49,8 @@ function checkContentOfArray(key, arrayToCheck) {
 function capitalizeFirstLetter(val) {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
+
+
+function upperCaseFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+}
