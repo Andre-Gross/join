@@ -32,11 +32,10 @@ async function signUp() {
             return;
         }
   
-        // Jetzt wird die ID zusammen mit der E-Mail und dem Passwort auf der obersten Ebene gespeichert
         const newUser = {
             email: email,
             password: password,
-            contacts: []  // Kontakte bleiben leer
+            contacts: [] 
         };
   
         const newUserResponse = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
@@ -53,14 +52,7 @@ async function signUp() {
     }
   }
   
-
-/**
-* Validates the registration form and enables the register button
-* only if all fields are filled and the terms checkbox is checked.
-* 
-* @function checkFormValidity
-* @returns {void} Toggles the disabled state of the register button.
-*/
+  
 function checkFormValidity() {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
