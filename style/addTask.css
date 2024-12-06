@@ -9,8 +9,27 @@ h1 {
     padding-left: 16px;
 }
 
+
+form {
+    width: calc(100vw - 1rem);
+}
+
+
 .dropdown-container {
     position: relative;
+}
+
+
+.arrow-input {
+    border: 1.5px solid var(--border-color);
+    border-left: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+
+    aspect-ratio: 1/1;
 }
 
 .dropdown {
@@ -42,22 +61,8 @@ h1 {
 }
 
 
-.contact-item:hover {
-    background-color: #f0f0f0;
-}
-
-
-.arrow-input {
-    border: 1.5px solid #e8e8e8;
-    border-left: none;
-    border-radius: 8px;
-
-    aspect-ratio: 1/1;
-}
-
-
 input[type="date"]::-webkit-calendar-picker-indicator {
-    background-image: url(../assets/icons/calendar.png);
+    background-image: url(../assets/img/addTask/calendar.svg);
 }
 
 
@@ -70,7 +75,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-.prio-btn .btn {
+.prio-btn button {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
     background-color: #ffffff;
