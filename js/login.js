@@ -11,7 +11,7 @@ async function logIn() {
         const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
         const users = await response.json();
 
-        // Suche nach einem Benutzer, der der eingegebenen E-Mail und Passwort entspricht
+        
         const user = Object.values(users || {}).find(
             user => user?.email === email && user?.password === password
         );
@@ -20,15 +20,11 @@ async function logIn() {
             alert("Invalid email or password.");
             return;
         }
+                
+        sessionStorage.setItem('loggedInUser', JSON.stringify(user));
 
-        // Erfolgreiches Login
-        alert("Login successful!");
         
-        // Die Benutzer-ID oder andere Details im lokalen Speicher speichern, falls nötig
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
-
-        // Weiterleitung zur gewünschten Seite nach erfolgreichem Login (z.B. Dashboard)
-        window.location.href = 'summary.html'; // Beispiel: Weiterleitung zum Dashboard
+        window.location.href = 'summary.html'; 
     } catch (error) {
         console.error("Login error:", error);
         alert("An error occurred. Please try again.");
@@ -38,10 +34,10 @@ async function logIn() {
 
 async function guestLogIn() {
     try {
-        // Gast-User-ID in der Datenbank setzen (sicherstellen, dass diese Funktion existiert)
+        
         await putLoggedInUser('guest');
 
-        // Weiterleiten zur Übersicht
+        
         window.location.href = 'summary.html?userId=guest';
     } catch (error) {
         console.error("Fehler beim Gast-Login:", error);
