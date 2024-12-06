@@ -38,6 +38,34 @@ async function includeHTML() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+    await includeHTML();          // Warte, bis das HTML geladen ist.
+    highlightActiveNavItem();     // Jetzt sind die Nav-Items vorhanden und können hervorgehoben werden.
+});
+
+
+/**
+ * Highlights the current navigation item based on the page URL.
+ */
+function highlightActiveNavItem() {
+    const currentPage = getCurrentPage();
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        const page = item.getAttribute('data-page');
+        if (page === currentPage) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const fileName = path.substring(path.lastIndexOf('/') + 1);
+    return fileName.replace('.html', '');
+}
+
+
 /**
  * Fetches the user's name using their ID and displays their initials in the profile icon container.
  * If no name is found or an error occurs, defaults to "G" for Guest.
@@ -95,3 +123,5 @@ document.head.appendChild(link);
 
 // Call `includeHTML` to start the inclusion process
 includeHTML();
+
+
