@@ -49,6 +49,7 @@ async function submitTaskForm() {
         const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo)
         await postTaskToDatabase(data);
         emptyAddTaskInputs();
+        putNextStatus();
     }
 }
 
