@@ -46,52 +46,45 @@ async function includeHTML() {
  * @param {string} userId - The ID of the logged-in user.
  * @returns {void} Updates the profile icon with the user's initials.
  */
-function displayUserInitials(userId) {
+function displayUserInitials() {
     const profileIcon = document.getElementById('profile-icon-container');
 
     if (!profileIcon) {
         return;
     }
 
-    fetch(`${BASE_URL}users/${userId}.json`)
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            return response.json();
-        })
-        .then(user => {
-            let name = "Guest";
+    // Benutzerdaten aus dem sessionStorage abrufen
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    let name = "Guest";
+
+    if (loggedInUser) {
+        try {
+            const user = JSON.parse(loggedInUser);
             if (user?.login?.name) {
                 name = user.login.name;
-                // Store the name in `sessionStorage`
-                sessionStorage.setItem('loggedInUserName', name);
             }
-            const initials = getInitialsFromName(name);
-            profileIcon.innerHTML = `<div class="profile-icon-circle">${initials}</div>`;
-        })
-        .catch(error => {
-            console.error("Error fetching user name:", error);
-            profileIcon.innerHTML = `<div class="profile-icon-circle">G</div>`;
-        });
+        } catch (error) {
+            console.error("Error parsing loggedInUser from sessionStorage:", error);
+        }
+    }
+
+    const initials = getInitialsFromName(name);
+    profileIcon.innerHTML = `<div class="profile-icon-circle">${initials}</div>`;
 }
 
 /**
- * Generates initials from a given name.
- * - If the name has one word, returns the first letter in uppercase.
- * - If the name has multiple words, returns the first letter of the first two words in uppercase.
- * 
- * @function getInitialsFromName
- * @param {string} name - The name from which initials are generated.
- * @returns {string} The initials in uppercase.
+ * Hilfsfunktion, um die Initialen aus einem Namen zu extrahieren.
+ *
+ * @param {string} name - Der vollständige Name des Benutzers.
+ * @returns {string} Die Initialen (z. B. "JD" für "John Doe").
  */
 function getInitialsFromName(name) {
-    const nameParts = name.trim().split(" ");
-    if (nameParts.length === 1) {
-        return nameParts[0].charAt(0).toUpperCase();
-    } else if (nameParts.length >= 2) {
-        return nameParts[0].charAt(0).toUpperCase() + nameParts[1].charAt(0).toUpperCase();
-    }
-    return "";
+    if (!name) return "G"; // Standardwert für "Guest"
+    const words = name.split(" ");
+    const initials = words.map(word => word.charAt(0).toUpperCase()).join("");
+    return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
+
 
 // Dynamically add favicon to the document
 const link = document.createElement('link');
