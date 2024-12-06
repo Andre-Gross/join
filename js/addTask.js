@@ -308,26 +308,30 @@ function hideAssignedToDropdown() {
  */
 async function createAssignedToDropdown() {
     const dropdown = document.getElementById("contactDropdown");
-    let contacts = await getContactsAsArray();
-
+    const contacts = await getContactsAsArray();
     dropdown.innerHTML = "";
+    contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
+    contactsInitialized = true;
+}
 
-    contacts.forEach(contact => {
-        const contactItem = document.createElement("div");
 
-        contactItem.className = "contact-item";
-        contactItem.innerHTML = `
-            ${contact.name}
-        `;
+function createAssignedToDropdownHTML(dropdown, contact) {
+    const contactItem = document.createElement("div");
 
-        contactItem.onclick = () => selectContact(contact);
-
-        dropdown.appendChild(contactItem);
-    });
     contactItem.id = transformNameToId(contact.name, 'item_');
+    contactItem.className = "contact-item";
+    contactItem.innerHTML = `
+        ${contact.name}
         <input type="checkbox" id="${transformNameToId(contact.name, 'checkbox_')}">
+    `;
 
+    contactItem.onclick = () => selectContact(contact);
     const checkbox = contactItem.querySelector(`#${transformNameToId(contact.name, 'checkbox_')}`)
+    checkbox.onclick = (event) => {
+        event.stopPropagation();
+        refreshContactNamesInInput()
+    };
+    dropdown.appendChild(contactItem);
 }
 
 
@@ -339,10 +343,7 @@ async function createAssignedToDropdown() {
 function selectContact(contact) {
     let checkbox = document.getElementById(transformNameToId(contact.name, 'checkbox_',))
     checkbox.checked = !checkbox.checked;
-
-    checkbox.onclick = (event) => {
-        event.stopPropagation();
-    };
+    refreshContactNamesInInput()
 }
 
 
