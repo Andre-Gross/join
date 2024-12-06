@@ -211,17 +211,6 @@ async function deletePartInAssingedTo() {
 }
 
 
-/**
- * This function returns the name of the contacts of the aktive user as array.
- * 
- * @returns {Array} - This array contains the names of the contacts of the active user.
- */
-async function getNamesOfContacts() {
-    let contacts = await getContactsAsArray();
-    let namesOfContacts = [];
-    for (let i = 0; i < contacts.length; i++) {
-        const name = contacts[i].name;
-        namesOfContacts.push(name);
 function findDelChar(input) {
     let difference = patienceDiff(input.split(''), lastStringOfInput.split(''));
     for (i = 0; i < difference.lines.length; i++) {
@@ -268,6 +257,22 @@ async function deleteInmidOfContact(input) {
     refreshContactNamesInInput();
     document.getElementById("dropAssignedTo").value += inputPart2;
 }
+
+
+// /**
+//  * This function returns the name of the contacts of the aktive user as array.
+//  * 
+//  * @returns {Array} - This array contains the names of the contacts of the active user.
+//  */
+// async function getNamesOfContacts() {
+//     let contacts = await getContactsAsArray();
+//     let namesOfContacts = [];
+//     for (let i = 0; i < contacts.length; i++) {
+//         const name = contacts[i].name;
+//         namesOfContacts.push(name);
+//     }
+//     return namesOfContacts;
+// }
 
 
 /**
@@ -375,11 +380,11 @@ function selectPriority(priority) {
  * 
  * @returns {string} - the priority of the choosen button
  */
-function getSelectedPriority() {
-    if (document.getElementById("urgent").classList.contains("btn-selected")) return "urgent";
-    if (document.getElementById("medium").classList.contains("btn-selected")) return "medium";
-    if (document.getElementById("low").classList.contains("btn-selected")) return "low";
-}
+// function getSelectedPriority() {
+//     if (document.getElementById("urgent").classList.contains("btn-selected")) return "urgent";
+//     if (document.getElementById("medium").classList.contains("btn-selected")) return "medium";
+//     if (document.getElementById("low").classList.contains("btn-selected")) return "low";
+// }
 
 
 /**
@@ -387,7 +392,6 @@ function getSelectedPriority() {
  * 
  * @param {string} category - set the category of the next task as value in the input field
  * @param {element} element - the element what should be hide
- */
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
     toggleDisplayNoneBlock(element);
