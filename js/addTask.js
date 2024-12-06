@@ -46,7 +46,7 @@ async function submitTaskForm() {
     const assignedTo = readAssignedTo();
 
     if (checkAllInputsHasContent(title, description, dueDate, priority, category, assignedTo)) {
-        const data = await prepareData(title, description, dueDate, priority, category, assignedTo)
+        const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo)
         await postTaskToDatabase(data);
         emptyAddTaskInputs();
     }
@@ -95,7 +95,7 @@ function checkAllInputsHasContent(title, description, dueDate, priority, assigne
  * @param {Array} dataAssignedTo - contains the person(s) which the task is adressed 
  * @returns {object} - contains the all datas of the task
  */
-async function prepareData(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
     const data = {
         title: dataTitle,
         description: dataDescription,
