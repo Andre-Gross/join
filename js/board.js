@@ -1,46 +1,66 @@
-currentTasks = [];
-
+let currentTasks = [];
 
 // This function searchs for the Task name
-function filterAndShowTask() {
+async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
 
   if (filterWord.length >= 3) {
-    console.log("Tasks Array:", tasksAsArray);
+    let tasksAsArray = await getTasksAsArray();
     let filterWordLow = filterWord.toLowerCase();
-    currentTasks = tasksAsArray.filter(task => task.task.toLowerCase().includes(filterWordLow));
-    console.log(currentTasks);
-    console.log(tasksAsArray);
-    indexs = [];
+    let currentTitles = tasksAsArray.filter((title) =>
+      title.title.toLowerCase().includes(filterWordLow)
+    );
+    let currentDescriptions = tasksAsArray.filter((description) =>
+      description.description.toLowerCase().includes(filterWordLow)
+    );
+    let descriptionIds = new Set(currentDescriptions.map((task) => task.id));
+    currentTitles = currentTitles.filter(
+      (task) => !descriptionIds.has(task.id)
+    );
 
-    for (let i = 0; i < currentTasks.length; i++) {
-      let currentTask = currentTasks[i];
-      let index = tasksAsArray.findIndex(pokemon => pokemon.name === currentTask.name);
-      indexs.push(index);
+    for (let task of currentTitles) {
+      if (!currentTasks[task.id]) {
+        currentTasks[task.id] = task;
+      }
     }
-    renderBodySearch();
-  } else if (filterWord.length === 0) {
-    location.reload();
-    renderBodySearch();
+
+    for (let task of currentDescriptions) {
+      if (!currentTasks[task.id]) {
+        currentTasks[task.id] = task;
+      }
+    }
+
+    await renderBodySearch();
   } else if (filterWord.length === 0) {
     location.reload();
   }
 }
 
-
 async function renderBodySearch() {
-  let content = document.getElementById("idContent");
-  content.innerHTML = "";
+  [
+    "todo-container",
+    "progress-container",
+    "feedback-container",
+    "done-container",
+  ].forEach((containerId) => {
+    document.getElementById(containerId).innerHTML = "";
+  });
 
-  for (let i = 0; i < currentNames.length; i++) {
-    let name = currentNames[i].name;
-    await getTypes(name);
-    let type1 = types[0].type;
-    let type2 = "";
-    if (types.length > 1) { type2 = types[1].type; }
-
-    content = document.getElementById("idContent");
-    content.innerHTML += getContentSearch(i, name, type1, type2);
-    document.getElementById(`idCard${indexs[i]}`).classList.add(`type-${type1}`);
-  }
+  Object.entries(currentTasks).forEach(([taskId, task]) => {
+    const taskElement = document.createElement("div");
+    taskElement.classList.add("task");
+    taskElement.id = taskId;
+    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+    taskElement.innerHTML = `
+                <h4>${task.title}</h4>
+                <p>${task.description}</p>
+                <p>Due by: ${task.finishedUntil}</p>
+                <p><strong>Priority:</strong> <span class="${getPriorityClass(
+                  task.priority
+                )}">${task.priority}</span></p>
+            `;
+    const containerId = getContainerIdByStatus(task.status);
+    if (containerId)
+      document.getElementById(containerId).appendChild(taskElement);
+  });
 }
