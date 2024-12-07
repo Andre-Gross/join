@@ -3,7 +3,7 @@ currentTasks = [];
 
 // This function searchs for the Task name
 function filterAndShowTask() {
-  let filterWord = document.getElementById("board-search").value;
+  let filterWord = document.getElementById("idSearch").value;
 
   if (filterWord.length >= 3) {
     console.log("Tasks Array:", tasksAsArray);
