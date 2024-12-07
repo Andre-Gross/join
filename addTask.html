@@ -35,6 +35,7 @@
                 <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill" placeholder="Select contacts to assign"
  
 onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterContacts(), deletePartInAssingedTo()" onblur="addInvalidBorder(this)">
+                    onfocus="removeInvalidBorder(this), showAssignedToDropdown(); addTextToInput()"
                 <div class="arrow-input d-flex justify-content-center align-items-center">
                     <img id="arrowDown" src="assets/img/addTask/arrow-down.svg" class="" onclick="showAssignedToDropdown()">
                     <img id="arrowUp" src="assets/img/addTask/arrow-up.svg" class="d-none" onclick="hideAssignedToDropdown()">

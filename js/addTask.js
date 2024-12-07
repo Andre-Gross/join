@@ -165,6 +165,14 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 }
 
 
+function addTextToInput(str = 'An') {
+    let input = document.getElementById('dropAssignedTo');
+    if (input.value === "") {
+        input.value = "An ";
+    }
+}
+
+
 /**
  * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
  * 
