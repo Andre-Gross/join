@@ -165,6 +165,14 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 }
 
 
+function addTextToInput(str = 'An ') {
+    let input = document.getElementById('dropAssignedTo');
+    if (input.value === "") {
+        input.value = str;
+    }
+}
+
+
 /**
  * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
  * 
@@ -173,9 +181,9 @@ async function filterContacts() {
     let contacts = await getContactsAsArray();
     let input = document.getElementById("dropAssignedTo").value.toLowerCase();
     if (input.includes(", ")) {
-        input = input.substring(input.lastIndexOf("an ") + 3);
-    } else if (input.includes('an ')) {
         input = input.substring(input.lastIndexOf(", ") + 1);
+    } else if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
     }
 
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
