@@ -165,10 +165,10 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 }
 
 
-function addTextToInput(str = 'An') {
+function addTextToInput(str = 'An ') {
     let input = document.getElementById('dropAssignedTo');
     if (input.value === "") {
-        input.value = "An ";
+        input.value = str;
     }
 }
 
