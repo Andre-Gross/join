@@ -32,13 +32,15 @@
         <label for="dropAssignedTo">Assigned to</label>
         <div class="dropdown-container">
             <div class="input-group d-flex">
-                <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill" placeholder="Select contacts to assign"
- 
-onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterContacts(), deletePartInAssingedTo()" onblur="addInvalidBorder(this)">
+                <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
+                    placeholder="Select contacts to assign"
                     onfocus="removeInvalidBorder(this), showAssignedToDropdown(); addTextToInput()"
+                    oninput="filterContacts(), deletePartInAssingedTo()" onblur="addInvalidBorder(this)">
                 <div class="arrow-input d-flex justify-content-center align-items-center">
-                    <img id="arrowDown" src="assets/img/addTask/arrow-down.svg" class="" onclick="showAssignedToDropdown()">
-                    <img id="arrowUp" src="assets/img/addTask/arrow-up.svg" class="d-none" onclick="hideAssignedToDropdown()">
+                    <img id="arrowDown" src="assets/img/addTask/arrow-down.svg" class=""
+                        onclick="showAssignedToDropdown()">
+                    <img id="arrowUp" src="assets/img/addTask/arrow-up.svg" class="d-none"
+                        onclick="hideAssignedToDropdown()">
                 </div>
             </div>
             <div id="contactDropdown" class="dropdown d-none"></div>
@@ -62,7 +64,8 @@ onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterCon
         </div>
 
         <div class="d-flex justify-content-end btn-container">
-            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form" onclick="emptyAddTaskInputs()">
+            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                onclick="emptyAddTaskInputs()">
                 Clear
                 <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
                     <img src="./assets/img/general/cross.svg" alt="Clear">
