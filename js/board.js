@@ -6,7 +6,7 @@ function filterAndShowTask(){
     let filterWord = document.getElementById("idSearch").value; 
     
     if (filterWord.length >= 3) {
-      console.log(tasksAsArray);
+      console.log("Tasks Array:", tasksAsArray);
       let filterWordLow = filterWord.toLowerCase(); 
       currentTasks = tasksAsArray.filter(task => task.task.toLowerCase().includes(filterWordLow));
       console.log(currentTasks);
