@@ -1,16 +1,21 @@
+currentTasks = [];
+
 
 // This function searchs for the Task name
 function filterAndShowTask(){
     let filterWord = document.getElementById("idSearch").value; 
     
     if (filterWord.length >= 3) {
+      console.log(tasksAsArray);
       let filterWordLow = filterWord.toLowerCase(); 
-      currentNames = names.filter(name => name.name.toLowerCase().includes(filterWordLow));
+      currentTasks = tasksAsArray.filter(task => task.task.toLowerCase().includes(filterWordLow));
+      console.log(currentTasks);
+      console.log(tasksAsArray);
       indexs =[]; 
   
-      for (let i = 0; i < currentNames.length; i++) {
-        let currentTask = currentNames[i]; 
-        let index = names.findIndex(pokemon => pokemon.name === currentTask.name);  
+      for (let i = 0; i < currentTasks.length; i++) {
+        let currentTask = currentTasks[i]; 
+        let index = tasksAsArray.findIndex(pokemon => pokemon.name === currentTask.name);  
          indexs.push(index);  
       }  
       renderBodySearch();
