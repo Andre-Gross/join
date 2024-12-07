@@ -172,9 +172,9 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 async function filterContacts() {
     let contacts = await getContactsAsArray();
     let input = document.getElementById("dropAssignedTo").value.toLowerCase();
-    if (!input.includes(", ") && input.includes("an ")) {
+    if (input.includes(", ")) {
         input = input.substring(input.lastIndexOf("an ") + 3);
-    } else if (input.includes(", ")) {
+    } else if (input.includes('an ')) {
         input = input.substring(input.lastIndexOf(", ") + 1);
     }
 

@@ -1,6 +1,5 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 let loggedInUser = '';
-let tasksAsArray = [];
 
 
 /**
@@ -104,7 +103,7 @@ async function getTasks() {
 
 
 async function getTasksAsArray() {
-    tasksAsArray = [];
+    let tasksAsArray = [];
     let tasksData = await getTasks();
     for (const KEY in tasksData) {
         const singleTask = tasksData[KEY];
@@ -121,6 +120,7 @@ async function getTasksAsArray() {
         };
         tasksAsArray.push(task);
     }
+    return tasksAsArray;
 }
 
 

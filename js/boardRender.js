@@ -120,7 +120,7 @@ function getContainerIdByStatus(status) {
 // Ab hier beginnt der Modal-Card-Code
 
 async function openModal(id) {
-    await getTasksAsArray();
+    let tasksAsArray = await getTasksAsArray();
     const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
     const singleTask = tasksAsArray[singleTaskID];
     const keys = ['category', 'title', 'description', 'finishedUntil'];
