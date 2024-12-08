@@ -156,8 +156,27 @@
     width: 30%;
 }
 
-#idsubmitAddContact:hover{
+#idSubmitAddContact:hover{
     cursor: pointer;
+}
+#idSubmitAddContact{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2A3747;
+    border-radius: 8px;
+    width: 208px;
+    height: 48px;
+}
+
+#idSubmit{
+    color: white;
+    margin: 0;
+}
+
+#idCheck{
+    height: 24px;
+    width: 24px;
 }
 
 .bg-color-ff7a00 {
