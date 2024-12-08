@@ -1,6 +1,7 @@
 let names = [];
 let emails = [];
 let phones = [];
+let shortNames = [];
 
 async function contactMain() {
   names = [];
@@ -26,13 +27,14 @@ async function loadContacts() {
     phones.push(contactsArray[index].phone);
   }
   await sortContacts();
+  await shortName();
 }
 
 function getContactMain(i) {
   return `
     <div id="idNameMailshort" onclick="openContact(${i})">
         <div id="idShortName">
-            <p id="idShortAlph">MM</p>
+            <p id="idShortAlph">${shortNames[i]}</p>
         </div>
         <div id="idNameMail">
             <p id="idName">${names[i]}</p>
@@ -106,7 +108,7 @@ function getContactView(i) {
         <h3 id="idTitle">Better with a team</h3>
         <div id="idBlueLine"></div>
             <div id="idShortName">
-                <p id="idShortAlph">MM</p>
+                <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <h1>${names[i]}</h1>
             <h3>Contact Information</h3>
@@ -151,7 +153,7 @@ function getEditContact(i) {
         <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
         <div id="idBlueLine"></div>
             <div id="idShortName">
-                <p id="idShortAlph">MM</p>
+                <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <div>
                 <input value="${names[i]}" type="text" name="name" placeholder="Name">
@@ -198,4 +200,13 @@ function deleteContact() {
 
 function saveContact() {
   console.log("Save Contact in Progress");
+}
+
+async function shortName() {
+  shortNames = names.map(name => {
+    let parts = name.split(" "); 
+    let firstInitial = parts[0][0].toUpperCase();
+    let lastInitial = parts[1] ? parts[1][0].toUpperCase() : ""; 
+    return firstInitial + lastInitial; 
+  });
 }
