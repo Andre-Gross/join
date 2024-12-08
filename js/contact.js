@@ -2,12 +2,20 @@ let names = [];
 let emails = [];
 let phones = [];
 let shortNames = [];
+let nameToColorClass = {};
+const COLORLIST = [
+  "bg-color-ff7a00", "bg-color-9327ff", "bg-color-6e52ff", 
+  "bg-color-fc71ff", "bg-color-ffbb2b", "bg-color-1fd7c1",
+  "bg-color-452f8a", "bg-color-ff4546", "bg-color-00bee8"
+];
 
 async function contactMain() {
   names = [];
   emails = [];
   phones = [];
   await loadContacts();
+  await shortName();
+  await applyColorClasses();
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
@@ -27,13 +35,15 @@ async function loadContacts() {
     phones.push(contactsArray[index].phone);
   }
   await sortContacts();
-  await shortName();
 }
 
+
+
 function getContactMain(i) {
+  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
     <div id="idNameMailshort" onclick="openContact(${i})">
-        <div id="idShortName">
+        <div id="idShortName" class="${colorClass}">
             <p id="idShortAlph">${shortNames[i]}</p>
         </div>
         <div id="idNameMail">
@@ -100,6 +110,7 @@ function openContact(i) {
 }
 
 function getContactView(i) {
+  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
         <div id="idheadContactView">
         <h1 id="idh1Contacts">Contacts</h1> 
@@ -107,7 +118,7 @@ function getContactView(i) {
         </div>
         <h3 id="idTitle">Better with a team</h3>
         <div id="idBlueLine"></div>
-            <div id="idShortName">
+            <div id="idShortName" class="${colorClass}">
                 <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <h1>${names[i]}</h1>
@@ -148,11 +159,12 @@ function editContact(i) {
 }
 
 function getEditContact(i) {
+  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
     <div>
         <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
         <div id="idBlueLine"></div>
-            <div id="idShortName">
+            <div id="idShortName" class="${colorClass}">
                 <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <div>
@@ -208,5 +220,20 @@ async function shortName() {
     let firstInitial = parts[0][0].toUpperCase();
     let lastInitial = parts[1] ? parts[1][0].toUpperCase() : ""; 
     return firstInitial + lastInitial; 
+  });
+
+  for (let i = 0; i < shortNames.length; i++) {
+    let colorClass = COLORLIST[i % COLORLIST.length];  
+    nameToColorClass[names[i]] = colorClass;  
+  }
+}
+
+function applyColorClasses() {
+  let elements = document.querySelectorAll("#idShortName");
+
+  elements.forEach((element, index) => {
+    let name = names[index]; 
+    let colorClass = nameToColorClass[name] || "default-color"; 
+    element.classList.add(colorClass);  
   });
 }
