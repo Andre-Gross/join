@@ -81,9 +81,9 @@ function getAddContact() {
                 <input id="idmail" type="email" name="email" placeholder="Email">
                 <input id="phone" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
             </div>
-            <div id="idsubmitAddContact" onclick="submitAddContact()">
-                <p>Create Contact</p>
-                <img src="assets/img/contacts/check.svg" alt="check">
+            <div id="idSubmitAddContact" onclick="submitAddContact()">
+                <p id="idSubmit">Create Contact</p>
+                <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
             </div>
         </div>
     `;
