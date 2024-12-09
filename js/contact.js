@@ -38,7 +38,6 @@ async function loadContacts() {
 }
 
 
-
 function getContactMain(i) {
   let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
@@ -246,7 +245,6 @@ async function postContactToDatabase(data) {
   }
 }
 
-
 async function tryPostContactToDatabase(data) {
   const response = await fetch(BASE_URL + `users/contacts/json`, {
       method: "POST",
@@ -260,4 +258,8 @@ async function tryPostContactToDatabase(data) {
       throw new Error(`HTTP-Fehler! Status: ${response.status}`);
   }
   alert("Kontakt erfolgreich hinzugefügt.");
+}
+
+function getAlphabet() {
+  Alph = [ABCDEFGHIJKLMNOPQRSTUVWXYZ];
 }
