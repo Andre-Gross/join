@@ -77,9 +77,9 @@ function getAddContact() {
         <img src="assets/img/contacts/person.svg">
         <div>
             <div>
-                <input id="idname" type="text" name="name" placeholder="Name">
-                <input id="idmail" type="email" name="email" placeholder="Email">
-                <input id="phone" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
+                <input id="idNameAddContact" type="text" name="name" placeholder="Name">
+                <input id="idMailAddContact" type="email" name="email" placeholder="Email">
+                <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
             </div>
             <div id="idSubmitAddContact" onclick="submitAddContact()">
                 <p id="idSubmit">Create Contact</p>
@@ -190,11 +190,10 @@ function getEditContact(i) {
 }
 
 function submitAddContact() {
-  let name = document.getElementById("idname").value; 
-  let mail = document.getElementById("idmail").value; 
-  let phone = document.getElementById("idphone").value; 
+  let name = document.getElementById("idNameAddContact").value; 
+  let mail = document.getElementById("idMailAddContact").value; 
+  let phone = document.getElementById("idPhoneAddContact").value; 
 
-  console.log(name);
   console.log("Submit new Contact in Progress");
 }
 
@@ -236,4 +235,29 @@ function applyColorClasses() {
     let colorClass = nameToColorClass[name] || "default-color"; 
     element.classList.add(colorClass);  
   });
+}
+
+async function postContactToDatabase(data) {
+  try {
+      tryPostContactToDatabase(data);
+  } catch (error) {
+      console.error("Fehler beim Speichern des Kontaktes", error);
+      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+  }
+}
+
+
+async function tryPostContactToDatabase(data) {
+  const response = await fetch(BASE_URL + `users/contacts/json`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+  }
+  alert("Kontakt erfolgreich hinzugefügt.");
 }
