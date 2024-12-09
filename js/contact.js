@@ -127,8 +127,8 @@ function getContactView(i) {
             <p id="idMail">${emails[i]}</p>
             <h3>Phone</h3>
             <p>${phones[i]}</p>
-            <div id="idEditDeleteBtn">
-                <img src="assets/img/contacts/more_vert.svg" alt="editContact" onclick="editContactBtn(${i})">
+            <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
+                <img src="assets/img/contacts/more_vert.svg" alt="editContact">
             </div>
     `;
 }
