@@ -19,6 +19,7 @@ function initializeUserData() {
     const user = JSON.parse(loggedInUser);
     sessionStorage.setItem('loggedInUserEmail', user.email || '');
     sessionStorage.setItem('loggedInUserPassword', user.password || '');
+    sessionStorage.setItem('loggedInUserId', user.name || '');
 }
 
 
