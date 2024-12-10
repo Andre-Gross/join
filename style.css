@@ -104,3 +104,24 @@ textarea:focus {
 .mb-template {
     margin-bottom: calc(82px - 0.5rem);;
 }
+
+
+.two-img-box {
+    height: 24px;
+}
+
+
+.two-img-box img {
+    border-right: 1px solid var(--border-color);
+    padding: 4px;
+    width: 24px;
+    aspect-ratio: 1/1;
+}
+
+.two-img-box img:last-child {
+    border-right: none;
+}
+
+.d-list-item {
+    display: list-item;
+}
