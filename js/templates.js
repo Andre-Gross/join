@@ -25,63 +25,18 @@ async function includeHTML() {
         }
     }
 
-    // Fetch user ID from `sessionStorage` and display initials
-    const userId = sessionStorage.getItem('loggedInUser');
-    if (userId) {
-        displayUserInitials(userId);
-    } else {
-        console.warn("No user ID found. Defaulting to 'G' for Guest.");
-        const profileIcon = document.getElementById('profile-icon-container');
-        if (profileIcon) {
-            profileIcon.innerHTML = `<div class="profile-icon-circle">G</div>`;
-        }
-    }
+    // Display user initials
+    updateUserInitials();
 }
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await includeHTML();          // Warte, bis das HTML geladen ist.
-    highlightActiveNavItem();     // Jetzt sind die Nav-Items vorhanden und können hervorgehoben werden.
-});
-
 
 /**
- * Highlights the current navigation item based on the page URL.
+ * Updates the profile icon with the user's initials or defaults to "G" for Guest.
  */
-function highlightActiveNavItem() {
-    const currentPage = getCurrentPage();
-    const navItems = document.querySelectorAll('.nav-item');
-
-    navItems.forEach(item => {
-        const page = item.getAttribute('data-page');
-        if (page === currentPage) {
-            item.classList.add('active');
-        }
-    });
-}
-
-function getCurrentPage() {
-    const path = window.location.pathname;
-    const fileName = path.substring(path.lastIndexOf('/') + 1);
-    return fileName.replace('.html', '');
-}
-
-
-/**
- * Fetches the user's name using their ID and displays their initials in the profile icon container.
- * If no name is found or an error occurs, defaults to "G" for Guest.
- * 
- * @function displayUserInitials
- * @param {string} userId - The ID of the logged-in user.
- * @returns {void} Updates the profile icon with the user's initials.
- */
-function displayUserInitials() {
+function updateUserInitials() {
     const profileIcon = document.getElementById('profile-icon-container');
 
-    if (!profileIcon) {
-        return;
-    }
+    if (!profileIcon) return;
 
-    // Benutzerdaten aus dem sessionStorage abrufen
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     let name = "Guest";
 
@@ -101,27 +56,60 @@ function displayUserInitials() {
 }
 
 /**
- * Hilfsfunktion, um die Initialen aus einem Namen zu extrahieren.
- *
- * @param {string} name - Der vollständige Name des Benutzers.
- * @returns {string} Die Initialen (z. B. "JD" für "John Doe").
+ * Highlights the current navigation item based on the page URL.
+ */
+function highlightActiveNavItem() {
+    const currentPage = getCurrentPage();
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        const page = item.getAttribute('data-page');
+        if (page === currentPage) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+/**
+ * Extracts the current page name from the URL.
+ * 
+ * @returns {string} The current page name without file extension.
+ */
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const fileName = path.substring(path.lastIndexOf('/') + 1);
+    return fileName.replace('.html', '');
+}
+
+/**
+ * Extracts initials from a user's name.
+ * 
+ * @param {string} name - The full name of the user.
+ * @returns {string} The initials (e.g., "JD" for "John Doe").
  */
 function getInitialsFromName(name) {
-    if (!name) return "G"; // Standardwert für "Guest"
+    if (!name) return "G"; // Default for "Guest"
     const words = name.split(" ");
-    const initials = words.map(word => word.charAt(0).toUpperCase()).join("");
+    const initials = words
+        .filter(word => word.trim().length > 0) // Skip empty parts
+        .map(word => word.charAt(0).toUpperCase())
+        .join("");
     return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
 
-
 // Dynamically add favicon to the document
-const link = document.createElement('link');
-link.rel = 'icon';
-link.href = './assets/favicon/fav.ico';
-link.type = 'image/x-icon';
-document.head.appendChild(link);
+(function addFavicon() {
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = './assets/favicon/fav.ico';
+    link.type = 'image/x-icon';
+    document.head.appendChild(link);
+})();
 
-// Call `includeHTML` to start the inclusion process
-includeHTML();
-
-
+// Initialize dynamic content inclusion and navigation highlighting
+document.addEventListener('DOMContentLoaded', async () => {
+    await includeHTML();          // Include dynamic HTML content
+    highlightActiveNavItem();     // Highlight the active nav item
+});
