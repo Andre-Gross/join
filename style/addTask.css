@@ -15,15 +15,21 @@ form {
 }
 
 
+.input-group {
+    z-index: 2000;
+}
+
+
 .dropdown-container {
     position: relative;
 }
 
 
-.arrow-input {
-    border: 1.5px solid var(--border-color);
+.input-single-img-container {
     border-left: none;
-    border-radius: 8px;
+    border-right: 1.5px solid var(--border-color) !important;
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
     padding: 12px 16px;
     width: 24px;
     height: 24px;
@@ -32,18 +38,57 @@ form {
     aspect-ratio: 1/1;
 }
 
+
+.input-two-img-container{
+    border-left: none;
+    border-top: 1.5px solid var(--border-color) !important;
+    border-right: 1.5px solid var(--border-color) !important;
+    border-bottom: 1.5px solid var(--border-color) !important;
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+    height: 24px;
+    background-color: white;
+
+    aspect-ratio: 1/1;
+}
+
+
 .dropdown {
     position: absolute;
-    top: 100%;
+    top: 0.8px;
     left: 0;
     width: 100%;
-    max-height: 200px;
+    max-height: 224.8px;
     overflow-y: auto;
     z-index: 1000;
     background-color: white;
     border: 1.5px solid #e8e8e8;
     border-top: none;
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
+    padding-top: 24px;
+}
+
+
+#dropdown-contact {
+    scrollbar-width: thin;
+    /* Für Firefox */
+    scrollbar-color: #A8A8A8 white;
+}
+
+
+#dropdown-contact::-webkit-scrollbar {
+    width: 24px;
+}
+
+
+#dropdown-contact::-webkit-scrollbar-track {
+    background: white;
+}
+
+
+#dropdown-contact::-webkit-scrollbar-thumb {
+    background: #A8A8A8;
+    border-radius: 3px;
 }
 
 
@@ -111,14 +156,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-.btn-container{
+.btn-container {
     display: flex;
     gap: 32px;
     justify-content: end;
     margin-top: 16px;
 }
 
-.btn-form{
+.btn-form {
     padding: 16px !important;
     width: max-content !important;
     gap: 4px
