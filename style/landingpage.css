@@ -1,0 +1,64 @@
+body.landing-page {
+    background-color: #253345;
+    transition: background-color 1s ease-in-out;
+}
+
+body.landing-page.loaded {
+    background-color: #f0f0f0;
+}
+
+.logo-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 1.5s ease-in-out;
+}
+
+body.landing-page.loaded .logo-container {
+    top: 20px;
+    left: 20px;
+    transform: translate(0, 0);
+}
+
+.login-logo {
+    width: 100.03px;
+    height: 121.97px;
+    transition: all 1.5s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-self: center;
+}
+
+.initial-logo {
+    opacity: 1;
+}
+
+.final-logo {
+    opacity: 0;
+}
+
+body.landing-page.loaded .login-logo {
+    width: 64px;
+    height: 78.03px;
+}
+
+body.landing-page.loaded .initial-logo {
+    opacity: 0;
+}
+
+body.landing-page.loaded .final-logo {
+    opacity: 1;
+}
+
+#loginCard, #signupCard {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out 1.5s;
+}
+
+body.landing-page.loaded #loginCard,
+body.landing-page.loaded #signupCard {
+    opacity: 1;
+}
+
