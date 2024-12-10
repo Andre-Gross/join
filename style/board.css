@@ -187,8 +187,6 @@
 
 
 .custom-checkbox {
-    margin-left: 16px;
-    display: inline-block;
     cursor: pointer;
     position: relative;
 }
