@@ -208,8 +208,8 @@ async function deleteTaskOfModalCard(id){
 
 
 function toggleDisplayModal() {
-    toggleDisplayNoneBlock(document.getElementById('board'));
-    toggleDisplayNoneFlex(document.getElementById('modalCard'));
+    toggleDisplayNone(document.getElementById('board'));
+    toggleDisplayNone(document.getElementById('modalCard'), 'd-flex');
 }
 
 

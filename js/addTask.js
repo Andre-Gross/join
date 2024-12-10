@@ -405,6 +405,7 @@ function selectPriority(priority) {
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
     toggleDisplayNoneBlock(element);
+    toggleDisplayNone(element);
 }
 
 

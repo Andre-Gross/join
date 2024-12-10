@@ -53,6 +53,23 @@ function checkContentOfArray(key, arrayToCheck) {
 
 function capitalizeFirstLetter(val) {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+function toggleDisplayNone(element, displayMode = 'd-block', shallVisible = '') {
+    let eleClass = element.classList;
+    if (shallVisible === true) {
+        eleClass.remove("d-none");
+        eleClass.add(displayMode);
+    } else if (shallVisible === false) {
+        eleClass.remove(displayMode);
+        eleClass.add("d-none");
+    } else {
+        if (eleClass.contains("d-none")) {
+            eleClass.remove("d-none");
+            eleClass.add(displayMode);
+        } else {
+            eleClass.remove(displayMode);
+            eleClass.add("d-none");
+        }
+    }
 }
 
 
