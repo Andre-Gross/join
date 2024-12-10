@@ -111,7 +111,7 @@ async function submitTaskForm() {
     const title = document.getElementById("inputTitle").value.trim();
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
-    const priority = document.querySelector('btn-selected')?.id;
+    const priority = document.querySelector('.btn-selected')?.id;
     const category = document.getElementById("inputCategory").value;
     // const subtasks = document.getElementById("inputSubtasks").value;
 
@@ -179,9 +179,9 @@ async function filterContacts() {
     let contacts = await getContactsAsArray();
     let input = document.getElementById("dropAssignedTo").value.toLowerCase();
     if (input.includes(", ")) {
-        input = input.substring(input.lastIndexOf("an ") + 3);
-    } else if (input.includes('an ')) {
         input = input.substring(input.lastIndexOf(", ") + 1);
+    } else if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
     }
 
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
@@ -296,7 +296,7 @@ async function deleteInmidOfContact(input) {
  * 
  */
 async function showAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
+    const dropdown = document.getElementById("dropdown-contact");
     const arrowDown = document.getElementById("arrowDown");
     const arrowUp = document.getElementById("arrowUp");
 
@@ -314,7 +314,7 @@ async function showAssignedToDropdown() {
  * This function hide the assignedTo-Dropdown-Menu.
  */
 function hideAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
+    const dropdown = document.getElementById("dropdown-contact");
     const arrowDown = document.getElementById("arrowDown");
     const arrowUp = document.getElementById("arrowUp");
 
@@ -328,7 +328,7 @@ function hideAssignedToDropdown() {
  * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
  */
 async function createAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
+    const dropdown = document.getElementById("dropdown-contact");
     const contacts = await getContactsAsArray();
     dropdown.innerHTML = "";
     contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
@@ -408,9 +408,9 @@ function selectPriority(priority) {
  * 
  * @param {string} category - set the category of the next task as value in the input field
  * @param {element} element - the element what should be hide
+ */
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
-    toggleDisplayNoneBlock(element);
     toggleDisplayNone(element);
 }
 
@@ -516,3 +516,10 @@ function emptyAddTaskInputs() {
 document.addEventListener("DOMContentLoaded", () => {
     const subtaskInput = document.getElementById('input-subtask');
 
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
+});
