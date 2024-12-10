@@ -1,5 +1,11 @@
 let contactsInitialized = false;
-let dataSubtasks = [];
+let dataSubtasks = [{
+    'subtask': 'Subtask1',
+    'isChecked': false,
+}, {
+    'subtask': 'Subtask2',
+    'isChecked': false,
+}];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
 
@@ -409,6 +415,89 @@ function selectCategory(category, element) {
 }
 
 
+function focusElement(element) {
+    element.focus();
+}
+
+
+function changeVisibleImages() {
+    const plusImg = document.getElementById('input-subtask-plus-box');
+    const twoImgBox = document.getElementById('input-subtask-two-img-box')
+    toggleDisplayNone(plusImg, 'd-flex');
+    toggleDisplayNone(twoImgBox, 'd-flex');
+}
+
+
+function addNewSubtask() {
+    const minLength = 3;
+    const maxLength = 20;
+    const input = document.getElementById('input-subtask');
+
+    if (input.value.length < minLength) {
+        alert(`Der Subtask ist zu kurz. Bitte verwende mindestens ${minLength} Zeichen`)
+    } else if (input.value.length > maxLength) {
+        alert(`Der Subtask ist zu lang. Bitte begrenze dich auf ${maxLength}`)
+    } else {
+        const subtask = {
+            'subtask': input.value,
+            'isChecked': false,
+        };
+        dataSubtasks.push(subtask);
+        input.value = '';
+        renderNewSubtasks();
+    }
+}
+
+
+function renderNewSubtasks() {
+    const list = document.getElementById('list-subtasks')
+    list.innerHTML = '';
+    for (let i = 0; i < dataSubtasks.length; i++) {
+        const singleSubtask = dataSubtasks[i].subtask;
+        list.innerHTML += /*HTML*/`
+            <div>
+                <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
+                    <li id="" class="">
+                        <p>${singleSubtask}</p>
+                    </li>
+                    <div class="two-img-box">
+                        <img id="input-subtask-pen" src="assets/img/addTask/pen.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                        <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
+                    </div>
+                </div>
+                <div id="input-box-current-subtask${i}" class="d-none justify-content-between">
+                    <input id="input-current-subtask${i}" type="text" class="">
+                    <div class="two-img-box">
+                        <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                        <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
+                    </div>
+                </div>
+            </div>
+        `
+    }
+}
+
+
+function toggleEditModeSubtask(id) {
+    toggleDisplayNone(document.getElementById(`list-item-box-current-subtask${id}`), 'd-flex');
+    toggleDisplayNone(document.getElementById(`input-box-current-subtask${id}`), 'd-flex');
+    document.getElementById(`input-current-subtask${id}`).value = dataSubtasks[id].subtask;
+}
+
+
+function editSubtask(id) {
+    dataSubtasks[id].subtask = document.getElementById(`input-current-subtask${id}`).value;
+    toggleEditModeSubtask(id);
+    renderNewSubtasks();
+}
+
+
+function removeSubtask(id) {
+    dataSubtasks.splice(id, 1);
+    renderNewSubtasks();
+}
+
+
 /**
  * This function reset the form of addTask
  */
@@ -422,3 +511,8 @@ function emptyAddTaskInputs() {
     document.getElementById("dropSubtasks").value = '';
     dataSubtasks = [];
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const subtaskInput = document.getElementById('input-subtask');
+
