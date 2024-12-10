@@ -97,3 +97,4 @@ function displayError(message) {
         errorElement.classList.remove("d-none");
     }
 }
+
