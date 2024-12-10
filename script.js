@@ -1,8 +1,3 @@
-function removeInvalidBorder(element) {
-    element.classList.remove("invalid-border");
-}
-
-
 function addInvalidBorder(element) {
     if (element.value == '') {
         element.classList.add("invalid-border");
@@ -10,32 +5,8 @@ function addInvalidBorder(element) {
 }
 
 
-function toggleDisplayNoneBlock(element) {
-
-
-function clearValue(element) {
-    element.value = '';
-}
-    let eleClass = element.classList;
-    if (eleClass.contains("d-none")) {
-        eleClass.remove("d-none");
-        eleClass.add("d-block");
-    } else {
-        eleClass.remove("d-block");
-        eleClass.add("d-none");
-    }
-}
-
-
-function toggleDisplayNoneFlex(element) {
-    let eleClass = element.classList;
-    if (eleClass.contains("d-none")) {
-        eleClass.remove("d-none");
-        eleClass.add("d-flex");
-    } else {
-        eleClass.remove("d-flex");
-        eleClass.add("d-none");
-    }
+function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
 
@@ -51,8 +22,16 @@ function checkContentOfArray(key, arrayToCheck) {
 }
 
 
-function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+function clearValue(element) {
+    element.value = '';
+}
+
+
+function removeInvalidBorder(element) {
+    element.classList.remove("invalid-border");
+}
+
+
 function toggleDisplayNone(element, displayMode = 'd-block', shallVisible = '') {
     let eleClass = element.classList;
     if (shallVisible === true) {
