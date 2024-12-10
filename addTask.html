@@ -87,18 +87,23 @@ onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterCon
             </div>
         </div>
 
-        <!-- <label for="Subtasks">Subtasks</label>
-        <div class="dropdown-container">
-            <div class="input-group">
-                <input id="dropSubtasks" type="text" class="border-end-0" placeholder="Select contacts to assign"
-                    oninput="filterContacts()" onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
-                <div class="arrow-input d-flex justify-content-center align-items-center mb-template">
-                    <img id="arrowDown" src="#" class="" onclick="showSubtasksDropdown()">
-                    <img id="arrowUp" src="#" class="d-none" onclick="hideSubtasksDropdown()">
+        <label for="input-subtask">Subtasks</label>
+        <div class="w-100 mb-template">
+            <div class="input-group" onclick="">
+                <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
+                    oninput="" onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
+                <div  id="input-subtask-plus-box" class="input-single-img-container d-flex justify-content-center align-items-center" onclick="focusElement(document.getElementById('input-subtask'))">
+                    <img id="input-subtask-plus" src="assets/img/addTask/plus-dark.svg" class="">
+                </div>
+                <div id="input-subtask-two-img-box" class="input-two-img-container two-img-box d-none">
+                    <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
+                    <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="addNewSubtask()">
                 </div>
             </div>
-            <div id="contactDropdown" class="dropdown d-none"></div>
-        </div> -->
+            <div id="list-subtasks-container" class="">
+                <ul id="list-subtasks"></ul>
+            </div>
+        </div>
     </form>
 
 
