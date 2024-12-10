@@ -130,7 +130,7 @@ async function openModal(id) {
 
     document.getElementById('modalCard-category-value').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
     renderPriority(singleTask.priority);
-    renderSubtasks(singleTask.subtasks)
+    renderSubtasks(singleTask.id, singleTask.subtasks)
 
     document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
 
@@ -173,30 +173,31 @@ function priorityLabelHTML(priority) {
 }
 
 
-function renderSubtasks(subtasks) {
+function renderSubtasks(taskId, subtasks) {
     let modalSubtasksValue = document.getElementById('modalCard-subtasks-value');
-    modalSubtasksValue.innerHTML = renderSubtasksHTML(subtasks)
+    modalSubtasksValue.innerHTML = renderSubtasksHTML(taskId, subtasks)
 }
 
 
-function renderSubtasksHTML(subtasks) {
+function renderSubtasksHTML(taskId, subtasks) {
     let HTML = '';
-    if (subtasks == undefined || subtasks == null || subtasks.length == 0) {
-        HTML = ''
-    } else {
-        for (let i = 0; i < subtasks.length; i++) {
-            const singleSubtask = subtasks[i];
-            HTML += `
+    if (!subtasks || subtasks.length === 0) {
+        return HTML;
+    }
+
+    for (let i = 0; i < subtasks.length; i++) {
+        const singleSubtask = subtasks[i];
+        HTML += `
             <div class="d-flex align-items-center">
-                <label class="custom-checkbox d-flex align-items-center">
-                    <input type="checkbox">
+                <label class="custom-checkbox d-flex align-items-center" onclick="changeCheckbox('${taskId}', ${i})">
+                    <input id="checkbox-subtask${i}" type="checkbox" ${singleSubtask.isChecked ? 'checked' : ''}>
                     <span class="checkbox-image"></span>
                 </label>
-                <p>${singleSubtask}</p>
+                <p>${singleSubtask.subtask}</p>
             </div>
-            `
-        }
+        `;
     }
+
     return HTML;
 }
 
@@ -220,7 +221,6 @@ async function deleteTaskOfModalCard(id) {
 }
 
 
-
 function readAllKeys(object, without = '') {
     const allKeys = [];
     for (let i = 0; i < Object.keys(object).length; i++) {
@@ -233,5 +233,15 @@ function readAllKeys(object, without = '') {
     }
     return allKeys;
 }
+
+
+function changeCheckbox(taskId, id) {
+    const checkbox = document.getElementById(`checkbox-subtask${id}`);
+    checkbox.checked = !checkbox.checked;
+    console.log('Checked state:', checkbox.checked);
+
+    putNewCheckedToSubtask(taskId, id, checkbox.checked);
+}
+
 
 updateTaskSummary(tasksData);

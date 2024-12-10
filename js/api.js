@@ -214,4 +214,16 @@ async function tryDeleteTaskInDatabase(id) {
 }
 
 
+async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
+    await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(isChecked)
+    })
+        .then(response => response.json())
+}
+
+
 setLoggedInUser();
