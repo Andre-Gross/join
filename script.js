@@ -11,6 +11,11 @@ function addInvalidBorder(element) {
 
 
 function toggleDisplayNoneBlock(element) {
+
+
+function clearValue(element) {
+    element.value = '';
+}
     let eleClass = element.classList;
     if (eleClass.contains("d-none")) {
         eleClass.remove("d-none");
