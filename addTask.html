@@ -32,15 +32,19 @@
         <label for="dropAssignedTo">Assigned to</label>
         <div class="dropdown-container">
             <div class="input-group d-flex">
-                <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill" placeholder="Select contacts to assign"
- 
-onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterContacts(), deletePartInAssingedTo()" onblur="addInvalidBorder(this)">
-                <div class="arrow-input d-flex justify-content-center align-items-center">
-                    <img id="arrowDown" src="assets/img/addTask/arrow-down.svg" class="" onclick="showAssignedToDropdown()">
-                    <img id="arrowUp" src="assets/img/addTask/arrow-up.svg" class="d-none" onclick="hideAssignedToDropdown()">
+                <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
+                    placeholder="Select contacts to assign"
+                    onfocus="removeInvalidBorder(this), showAssignedToDropdown()"
+                    oninput="filterContacts(), deletePartInAssingedTo()" onblur="addInvalidBorder(this)">
+                <div class="input-img-container d-flex justify-content-center align-items-center">
+                    <img id="arrowDown" src="assets/img/addTask/arrow-down.svg" class=""
+                        onclick="showAssignedToDropdown()">
+                    <img id="arrowUp" src="assets/img/addTask/arrow-up.svg" class="d-none"
+                        onclick="hideAssignedToDropdown()">
                 </div>
             </div>
-            <div id="contactDropdown" class="dropdown d-none"></div>
+            <div id="dropdown-contact" class="dropdown d-none">
+            </div>
         </div>
 
         <label for="inputDate">Due to</label>
@@ -61,7 +65,8 @@ onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterCon
         </div>
 
         <div class="d-flex justify-content-end btn-container">
-            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form" onclick="emptyAddTaskInputs()">
+            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                onclick="emptyAddTaskInputs()">
                 Clear
                 <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
                     <img src="./assets/img/general/cross.svg" alt="Clear">
@@ -105,6 +110,7 @@ onfocus="removeInvalidBorder(this), showAssignedToDropdown()" oninput="filterCon
             </div>
         </div>
     </form>
+
 
 
     <div w3-include-html="./templates/templates.html"></div>
