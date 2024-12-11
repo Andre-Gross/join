@@ -1,43 +1,4 @@
 let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
-let loggedInUser = '';
-
-
-/**
- * This function returns the loggedInUser from the database.
- * 
- * @returns {string} - the value of the loggedInUser in the database 
- */
-async function getLoggedInUser() {
-    let response = await fetch(BASE_URL + 'users/.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['loggedInUser'];
-}
-
-
-/*
- * This function set value if the loggedInUser of the database in the global variable if loggedInUser.
- * 
- */
-async function setLoggedInUser() {
-    loggedInUser = await getLoggedInUser();
-}
-
-
-/**
- * This function set who is the loggedInUser to the Database
- * 
- * @param {string} user - the user who shall be the new loggedInUser
- */
-async function putLoggedInUser(user) {
-    await fetch(BASE_URL + '/users/loggedInUser.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-        .then(response => response.json())
-}
 
 
 /**
@@ -49,44 +10,6 @@ async function getContacts() {
     let response = await fetch(BASE_URL + 'users/' + '/contacts' + '.json');
     let responseAsJSON = await response.json();
     return responseAsJSON;
-}
-
-
-/**
- * This function post the datas of a new contact with another function. If the response is an error, it catch it.
- * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact. The standart user is the aktive user.
- */
-async function postContactToDatabase(data) {
-    try {
-        tryPostContactToDatabase(data);
-    } catch (error) {
-        console.error("Fehler beim Speichern des Kontaktes:", error);
-        alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
-    }
-}
-
-
-/**
- * This function post the datas of a new contact. If there is an error, it give an response. Otherwise it give an positve alert.
- * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact.   
- */
-async function tryPostContactToDatabase(data) {
-    const response = await fetch(BASE_URL + `users/contacts.json`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-    alert("Kontakt erfolgreich hinzugefügt.");
 }
 
 
@@ -137,19 +60,40 @@ async function getNextStatus() {
 
 
 /**
- * This string put the staus of the next task to the database
+ * This function post the datas of a new contact with another function. If the response is an error, it catch it.
  * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ * @param {object} data - Datas of the new contact.
+ * @param {string} user - ID of the user, who should get the datas of the new contact. The standart user is the aktive user.
  */
-async function putNextStatus(status = 'To do') {
-    await fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
+async function postContactToDatabase(data) {
+    try {
+        tryPostContactToDatabase(data);
+    } catch (error) {
+        console.error("Fehler beim Speichern des Kontaktes:", error);
+        alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new contact. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - Datas of the new contact.
+ * @param {string} user - ID of the user, who should get the datas of the new contact.   
+ */
+async function tryPostContactToDatabase(data) {
+    const response = await fetch(BASE_URL + `users/contacts.json`, {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    alert("Kontakt erfolgreich hinzugefügt.");
 }
 
 
@@ -189,6 +133,35 @@ async function tryPostTaskToDatabase(data) {
 }
 
 
+/**
+ * This string put the staus of the next task to the database
+ * 
+ * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ */
+async function putNextStatus(status = 'To do') {
+    await fetch(BASE_URL + '/nextStatus.json', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(status)
+    })
+        .then(response => response.json())
+}
+
+
+async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
+    await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(isChecked)
+    })
+        .then(response => response.json())
+}
+
+
 async function deleteTaskInDatabase(id){
     try {
         tryDeleteTaskInDatabase(id);
@@ -212,6 +185,3 @@ async function tryDeleteTaskInDatabase(id) {
     }
     alert("Aufgabe erfolgreich gelöscht.");
 }
-
-
-setLoggedInUser();

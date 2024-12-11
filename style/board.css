@@ -187,15 +187,12 @@
 
 
 .custom-checkbox {
-    margin-left: 16px;
-    display: inline-block;
     cursor: pointer;
     position: relative;
 }
 
 .custom-checkbox input[type="checkbox"] {
     display: none;
-    /* Versteckt die Standard-Checkbox */
 }
 
 .checkbox-image {
@@ -203,17 +200,13 @@
     width: 16px;
     height: 16px;
     background-image: url('../assets/img/board/checkbox-unchecked.svg');
-    /* Bild für die nicht aktivierte Checkbox */
     background-size: cover;
     transition: transform 0.2s ease;
-    /* Optionaler Effekt */
 }
 
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-image {
     background-image: url('../assets/img/board/checkbox-checked.svg');
-    /* Bild für die aktivierte Checkbox */
     transform: scale(1.1);
-    /* Optionaler Effekt */
 }
 
 

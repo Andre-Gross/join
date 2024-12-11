@@ -2,7 +2,7 @@
  * Handles the user registration process.
  */
 async function signUp() {
-    const [email, password, confirmPassword, agreeTerms] = getInputValues();
+    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
 
     if (!agreeTerms || password !== confirmPassword) {
         displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
@@ -16,7 +16,7 @@ async function signUp() {
             return;
         }
 
-        await registerNewUser(email, password);
+        await registerNewUser(name, email, password);
         redirectToLogin(true);
     } catch {
         displayError("An error occurred during registration. Please try again.");
@@ -44,11 +44,12 @@ function isEmailAlreadyRegistered(users, email) {
 
 /**
  * Registers a new user in the database.
+ * @param {string} name - The user's name.
  * @param {string} email - The user's email.
  * @param {string} password - The user's password.
  */
-async function registerNewUser(email, password) {
-    const newUser = { email, password, contacts: [] };
+async function registerNewUser(name, email, password) {
+    const newUser = { name, email, password, contacts: [] };
     await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,7 +71,7 @@ function redirectToLogin(isSuccess = false) {
  * @returns {Array} - Array of processed input values.
  */
 function getInputValues() {
-    return ["email", "password", "confirmPassword", "agreeTerms"].map(id =>
+    return ["name", "email", "password", "confirmPassword", "agreeTerms"].map(id =>
         document.getElementById(id).type === "checkbox"
             ? document.getElementById(id).checked
             : document.getElementById(id).value.trim()

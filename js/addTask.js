@@ -2,6 +2,7 @@ let contactsInitialized = false;
 let dataSubtasks = [];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
+const dropdownMenues =['assignedTo', 'category']
 
 
 /**
@@ -69,6 +70,17 @@ function transformNameToId(name, partBeforeName = '', partAfterName = '') {
 }
 
 
+function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
+    const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
+    const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
+    const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
+
+    toggleDisplayNone(dropdown, displayMode, shallVisible);
+    toggleDisplayNone(arrowDown, displayMode, !shallVisible);
+    toggleDisplayNone(arrowUp, displayMode , shallVisible);
+}
+
+
 /**
  * This function set the status of the next task and open the addTask.html
  * 
@@ -105,7 +117,7 @@ async function submitTaskForm() {
     const title = document.getElementById("inputTitle").value.trim();
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
-    const priority = document.querySelector('btn-selected')?.id;
+    const priority = document.querySelector('.btn-selected')?.id;
     const category = document.getElementById("inputCategory").value;
     // const subtasks = document.getElementById("inputSubtasks").value;
 
@@ -165,6 +177,14 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 }
 
 
+function addTextToInput(str = 'An ') {
+    let input = document.getElementById('dropAssignedTo');
+    if (input.value === "") {
+        input.value = str;
+    }
+}
+
+
 /**
  * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
  * 
@@ -173,15 +193,15 @@ async function filterContacts() {
     let contacts = await getContactsAsArray();
     let input = document.getElementById("dropAssignedTo").value.toLowerCase();
     if (input.includes(", ")) {
-        input = input.substring(input.lastIndexOf("an ") + 3);
-    } else if (input.includes('an ')) {
         input = input.substring(input.lastIndexOf(", ") + 1);
+    } else if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
     }
 
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
 
     if (filteredContacts.length > 0) {
-        showAssignedToDropdown();
+        toggleDropdown('assignedTo', 'd-block', true);
         for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
             const item = document.getElementById(transformNameToId(contact.name, 'item_'));
@@ -195,7 +215,7 @@ async function filterContacts() {
             }
         }
     } else {
-        hideAssignedToDropdown();
+        toggleDropdown('assignedTo', 'd-block', false);
     }
 }
 
@@ -269,60 +289,11 @@ async function deleteInmidOfContact(input) {
 }
 
 
-// /**
-//  * This function returns the name of the contacts of the aktive user as array.
-//  * 
-//  * @returns {Array} - This array contains the names of the contacts of the active user.
-//  */
-// async function getNamesOfContacts() {
-//     let contacts = await getContactsAsArray();
-//     let namesOfContacts = [];
-//     for (let i = 0; i < contacts.length; i++) {
-//         const name = contacts[i].name;
-//         namesOfContacts.push(name);
-//     }
-//     return namesOfContacts;
-// }
-
-
-/**
- * This function show the assignedTo-Dropdown-Menu.
- * 
- */
-async function showAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
-    const arrowDown = document.getElementById("arrowDown");
-    const arrowUp = document.getElementById("arrowUp");
-
-    if (!contactsInitialized) {
-        await createAssignedToDropdown();
-    }
-
-    dropdown.classList.remove("d-none");
-    arrowDown.classList.add("d-none");
-    arrowUp.classList.remove("d-none");
-}
-
-
-/**
- * This function hide the assignedTo-Dropdown-Menu.
- */
-function hideAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
-    const arrowDown = document.getElementById("arrowDown");
-    const arrowUp = document.getElementById("arrowUp");
-
-    dropdown.classList.add("d-none");
-    arrowDown.classList.remove("d-none");
-    arrowUp.classList.add("d-none");
-}
-
-
 /**
  * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
  */
 async function createAssignedToDropdown() {
-    const dropdown = document.getElementById("contactDropdown");
+    const dropdown = document.getElementById("dropdown-assignedTo");
     const contacts = await getContactsAsArray();
     dropdown.innerHTML = "";
     contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
@@ -386,25 +357,97 @@ function selectPriority(priority) {
 
 
 /**
- * That function return the priority of the choosen button.
- * 
- * @returns {string} - the priority of the choosen button
- */
-// function getSelectedPriority() {
-//     if (document.getElementById("urgent").classList.contains("btn-selected")) return "urgent";
-//     if (document.getElementById("medium").classList.contains("btn-selected")) return "medium";
-//     if (document.getElementById("low").classList.contains("btn-selected")) return "low";
-// }
-
-
-/**
  * This function set the choosen category in the category input field and close the category dropdown menu.
  * 
  * @param {string} category - set the category of the next task as value in the input field
  * @param {element} element - the element what should be hide
+ */
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
-    toggleDisplayNoneBlock(element);
+    toggleDisplayNone(element);
+}
+
+
+function focusElement(element) {
+    element.focus();
+}
+
+
+function changeVisibleImages() {
+    const plusImg = document.getElementById('input-subtask-plus-box');
+    const twoImgBox = document.getElementById('input-subtask-two-img-box')
+    toggleDisplayNone(plusImg, 'd-flex');
+    toggleDisplayNone(twoImgBox, 'd-flex');
+}
+
+
+function addNewSubtask() {
+    const minLength = 3;
+    const maxLength = 20;
+    const input = document.getElementById('input-subtask');
+
+    if (input.value.length < minLength) {
+        alert(`Der Subtask ist zu kurz. Bitte verwende mindestens ${minLength} Zeichen`)
+    } else if (input.value.length > maxLength) {
+        alert(`Der Subtask ist zu lang. Bitte begrenze dich auf ${maxLength}`)
+    } else {
+        const subtask = {
+            'subtask': input.value,
+            'isChecked': false,
+        };
+        dataSubtasks.push(subtask);
+        input.value = '';
+        renderNewSubtasks();
+    }
+}
+
+
+function renderNewSubtasks() {
+    const list = document.getElementById('list-subtasks')
+    list.innerHTML = '';
+    for (let i = 0; i < dataSubtasks.length; i++) {
+        const singleSubtask = dataSubtasks[i].subtask;
+        list.innerHTML += /*HTML*/`
+            <div>
+                <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
+                    <li id="" class="">
+                        <p>${singleSubtask}</p>
+                    </li>
+                    <div class="two-img-box">
+                        <img id="input-subtask-pen" src="assets/img/addTask/pen.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                        <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
+                    </div>
+                </div>
+                <div id="input-box-current-subtask${i}" class="d-none justify-content-between">
+                    <input id="input-current-subtask${i}" type="text" class="">
+                    <div class="two-img-box">
+                        <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                        <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
+                    </div>
+                </div>
+            </div>
+        `
+    }
+}
+
+
+function toggleEditModeSubtask(id) {
+    toggleDisplayNone(document.getElementById(`list-item-box-current-subtask${id}`), 'd-flex');
+    toggleDisplayNone(document.getElementById(`input-box-current-subtask${id}`), 'd-flex');
+    document.getElementById(`input-current-subtask${id}`).value = dataSubtasks[id].subtask;
+}
+
+
+function editSubtask(id) {
+    dataSubtasks[id].subtask = document.getElementById(`input-current-subtask${id}`).value;
+    toggleEditModeSubtask(id);
+    renderNewSubtasks();
+}
+
+
+function removeSubtask(id) {
+    dataSubtasks.splice(id, 1);
+    renderNewSubtasks();
 }
 
 
@@ -421,3 +464,29 @@ function emptyAddTaskInputs() {
     document.getElementById("dropSubtasks").value = '';
     dataSubtasks = [];
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const subtaskInput = document.getElementById('input-subtask');
+
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
+
+    createAssignedToDropdown()
+
+    for (let i = 0; i < dropdownMenues.length; i++) {
+        const singleDropdown = dropdownMenues[i];
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
+            const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
+    
+            if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
+                toggleDropdown(`${singleDropdown}`, 'd-block', false);
+            }
+        });
+    }
+});

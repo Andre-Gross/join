@@ -10,7 +10,7 @@
     padding: 16px;
     border-bottom: 1px solid #e5e5e5;
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    z-index: 9999;
 }
 
 #profile-icon-container {
