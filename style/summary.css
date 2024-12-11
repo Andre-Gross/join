@@ -136,7 +136,7 @@
     text-align: center;
     margin-top: 0;
     opacity: 1;
-    transition: opacity 1s ease-out;
+    transition: opacity 1s ease-out 0.5s;	
 }
 
 .welcome-container.fade-out {
