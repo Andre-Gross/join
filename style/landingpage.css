@@ -10,7 +10,7 @@ body.landing-page.loaded {
 .logo-container {
     position: fixed;
     top: 50%;
-    left: 50%;
+    left: 35%;
     transform: translate(-50%, -50%);
     transition: all 1.5s ease-in-out;
 }
@@ -54,7 +54,8 @@ body.landing-page.loaded .final-logo {
 
 #loginCard, #signupCard {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out 1.5s;
+    transition: opacity 0.2s ease-in-out;
+    max-width: 650px;
 }
 
 body.landing-page.loaded #loginCard,
@@ -62,3 +63,30 @@ body.landing-page.loaded #signupCard {
     opacity: 1;
 }
 
+@media (min-width: 500px) {
+    .col.text-center {
+        top: 5%;
+        right: 5%;
+        position: absolute;
+        transform: translate(0, -50%);
+        display: flex;
+        justify-content: right;
+    }
+
+    span#switchText.me-2{
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (min-width: 768px) {
+    #loginCard, #signupCard {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out 1.5s;
+        width: 650px;
+    }
+
+    .col-md-4{
+        width: 100%;
+    }
+}
