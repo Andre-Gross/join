@@ -1,11 +1,5 @@
 let contactsInitialized = false;
-let dataSubtasks = [{
-    'subtask': 'Subtask1',
-    'isChecked': false,
-}, {
-    'subtask': 'Subtask2',
-    'isChecked': false,
-}];
+let dataSubtasks = [];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
 const dropdownMenues =['assignedTo', 'category']
@@ -295,22 +289,6 @@ async function deleteInmidOfContact(input) {
 }
 
 
-// /**
-//  * This function returns the name of the contacts of the aktive user as array.
-//  * 
-//  * @returns {Array} - This array contains the names of the contacts of the active user.
-//  */
-// async function getNamesOfContacts() {
-//     let contacts = await getContactsAsArray();
-//     let namesOfContacts = [];
-//     for (let i = 0; i < contacts.length; i++) {
-//         const name = contacts[i].name;
-//         namesOfContacts.push(name);
-//     }
-//     return namesOfContacts;
-// }
-
-
 /**
  * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
  */
@@ -376,18 +354,6 @@ function selectPriority(priority) {
     document.getElementById(priority).classList.add(`btn-selected-${priority}`);
     document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
 }
-
-
-/**
- * That function return the priority of the choosen button.
- * 
- * @returns {string} - the priority of the choosen button
- */
-// function getSelectedPriority() {
-//     if (document.getElementById("urgent").classList.contains("btn-selected")) return "urgent";
-//     if (document.getElementById("medium").classList.contains("btn-selected")) return "medium";
-//     if (document.getElementById("low").classList.contains("btn-selected")) return "low";
-// }
 
 
 /**
