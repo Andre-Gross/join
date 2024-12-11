@@ -8,6 +8,7 @@ let dataSubtasks = [{
 }];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
+const dropdownMenues =['assignedTo', 'category']
 
 
 /**
@@ -72,6 +73,17 @@ function transformCheckboxIdToName(id) {
 
 function transformNameToId(name, partBeforeName = '', partAfterName = '') {
     return (partBeforeName + name.trim().replace(/\s+/g, '_').toLowerCase() + partAfterName);
+}
+
+
+function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
+    const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
+    const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
+    const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
+
+    toggleDisplayNone(dropdown, displayMode, shallVisible);
+    toggleDisplayNone(arrowDown, displayMode, !shallVisible);
+    toggleDisplayNone(arrowUp, displayMode , shallVisible);
 }
 
 
@@ -195,7 +207,7 @@ async function filterContacts() {
     const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
 
     if (filteredContacts.length > 0) {
-        showAssignedToDropdown();
+        toggleDropdown('assignedTo', 'd-block', true);
         for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
             const item = document.getElementById(transformNameToId(contact.name, 'item_'));
@@ -209,7 +221,7 @@ async function filterContacts() {
             }
         }
     } else {
-        hideAssignedToDropdown();
+        toggleDropdown('assignedTo', 'd-block', false);
     }
 }
 
@@ -300,43 +312,10 @@ async function deleteInmidOfContact(input) {
 
 
 /**
- * This function show the assignedTo-Dropdown-Menu.
- * 
- */
-async function showAssignedToDropdown() {
-    const dropdown = document.getElementById("dropdown-contact");
-    const arrowDown = document.getElementById("arrowDown");
-    const arrowUp = document.getElementById("arrowUp");
-
-    if (!contactsInitialized) {
-        await createAssignedToDropdown();
-    }
-
-    dropdown.classList.remove("d-none");
-    arrowDown.classList.add("d-none");
-    arrowUp.classList.remove("d-none");
-}
-
-
-/**
- * This function hide the assignedTo-Dropdown-Menu.
- */
-function hideAssignedToDropdown() {
-    const dropdown = document.getElementById("dropdown-contact");
-    const arrowDown = document.getElementById("arrowDown");
-    const arrowUp = document.getElementById("arrowUp");
-
-    dropdown.classList.add("d-none");
-    arrowDown.classList.remove("d-none");
-    arrowUp.classList.add("d-none");
-}
-
-
-/**
  * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
  */
 async function createAssignedToDropdown() {
-    const dropdown = document.getElementById("dropdown-contact");
+    const dropdown = document.getElementById("dropdown-assignedTo");
     const contacts = await getContactsAsArray();
     dropdown.innerHTML = "";
     contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
@@ -530,4 +509,18 @@ document.addEventListener("DOMContentLoaded", () => {
             addNewSubtask();
         }
     });
+
+    createAssignedToDropdown()
+
+    for (let i = 0; i < dropdownMenues.length; i++) {
+        const singleDropdown = dropdownMenues[i];
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
+            const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
+    
+            if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
+                toggleDropdown(`${singleDropdown}`, 'd-block', false);
+            }
+        });
+    }
 });
