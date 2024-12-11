@@ -127,21 +127,6 @@
     justify-content: center; /* optional, falls vertikal zentriert werden soll */
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .welcome-container {
     display: flex;
     flex-direction: column;
