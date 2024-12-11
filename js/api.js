@@ -162,6 +162,37 @@ async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
 }
 
 
+async function putContactToDatabase(contactId, data) {
+    try {
+        tryPutTaskToDatabase(contactId, data);
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryPutContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    alert("Aufgabe erfolgreich bearbeitet.");
+}
+
+
 async function deleteTaskInDatabase(id){
     try {
         tryDeleteTaskInDatabase(id);
@@ -184,4 +215,35 @@ async function tryDeleteTaskInDatabase(id) {
         throw new Error(`Fehler: ${response.status} ${response.statusText}`);
     }
     alert("Aufgabe erfolgreich gelöscht.");
+}
+
+
+async function deleteContactToDatabase(contactId, data) {
+    try {
+        tryPutTaskToDatabase(contactId, data);
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryDeleteContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    alert("Aufgabe erfolgreich bearbeitet.");
 }
