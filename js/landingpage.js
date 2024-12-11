@@ -38,6 +38,7 @@ function switchView() {
     const switchButton = document.getElementById('switchButton');
     const switchText = document.getElementById('switchText');
 
+    // Set opacity to 0 for transition
     loginCard.style.opacity = '0';
     signupCard.style.opacity = '0';
 
@@ -48,11 +49,20 @@ function switchView() {
             switchButton.textContent = 'Log in';
             switchText.textContent = 'Already a Join user?';
         } else {
-            loginCard.style.display = 'block';
             signupCard.style.display = 'none';
+            loginCard.style.display = 'block';
             switchButton.textContent = 'Sign up';
             switchText.textContent = 'Not a Join user?';
         }
-        showActiveForm();
+
+        // Allow fade-in transition after display is set
+        setTimeout(() => {
+            if (signupCard.style.display === 'block') {
+                signupCard.style.opacity = '1';
+            } else {
+                loginCard.style.opacity = '1';
+            }
+        }, 50);
     }, 500);
 }
+
