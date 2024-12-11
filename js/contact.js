@@ -1,21 +1,19 @@
 let names = [];
 let emails = [];
 let phones = [];
+let colors = [];
 let shortNames = [];
 let nameToColorClass = {};
-const COLORLIST = [
-  "bg-color-ff7a00", "bg-color-9327ff", "bg-color-6e52ff", 
-  "bg-color-fc71ff", "bg-color-ffbb2b", "bg-color-1fd7c1",
-  "bg-color-452f8a", "bg-color-ff4546", "bg-color-00bee8"
-];
+const COLORS = ["#FF7A00", "#9327FF", "#FF745E", "#FFC700", "#FFE62B", "#FF5EB3", "#00BEE8", "#FFA45E", "#0038FF", "#FF4546", "#6E52FF", "#1FD7C1", "#FC71FF", "#C3FE2B", "#FFBB2B"];
+
 
 async function contactMain() {
   names = [];
   emails = [];
   phones = [];
+  colors = [];
   await loadContacts();
   await shortName();
-  await applyColorClasses();
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
@@ -33,16 +31,16 @@ async function loadContacts() {
     emails.push(contactsArray[index].email);
     names.push(contactsArray[index].name);
     phones.push(contactsArray[index].phone);
+    colors.push(contactsArray[index].color);
   }
   await sortContacts();
 }
 
 
 function getContactMain(i) {
-  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
     <div id="idNameMailshort" onclick="openContact(${i})">
-        <div id="idShortName" class="${colorClass}">
+        <div id="idShortName" style="background-color:${colors[i]}">
             <p id="idShortAlph">${shortNames[i]}</p>
         </div>
         <div id="idNameMail">
@@ -93,6 +91,7 @@ async function sortContacts() {
     name,
     email: emails[index],
     phone: phones[index],
+    color: colors[index],
   }));
 
   contacts.sort((a, b) => a.name.localeCompare(b.name));
@@ -100,6 +99,7 @@ async function sortContacts() {
   names = contacts.map((contact) => contact.name);
   emails = contacts.map((contact) => contact.email);
   phones = contacts.map((contact) => contact.phone);
+  colors = contacts.map((contact) => contact.color);
 }
 
 function openContact(i) {
@@ -109,7 +109,6 @@ function openContact(i) {
 }
 
 function getContactView(i) {
-  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
         <div id="idheadContactView">
         <h1 id="idh1Contacts">Contacts</h1> 
@@ -117,7 +116,7 @@ function getContactView(i) {
         </div>
         <h3 id="idTitle">Better with a team</h3>
         <div id="idBlueLine"></div>
-            <div id="idShortName" class="${colorClass}">
+            <div id="idShortName" style="background-color:${colors[i]}">
                 <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <h1>${names[i]}</h1>
@@ -158,12 +157,11 @@ function editContact(i) {
 }
 
 function getEditContact(i) {
-  let colorClass = nameToColorClass[names[i]] || "default-color"; 
   return `
     <div>
         <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
         <div id="idBlueLine"></div>
-            <div id="idShortName" class="${colorClass}">
+            <div id="idShortName" style="background-color:${colors[i]}">
                 <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <div>
@@ -192,8 +190,9 @@ function submitAddContact() {
   let name = document.getElementById("idNameAddContact").value; 
   let mail = document.getElementById("idMailAddContact").value; 
   let phone = document.getElementById("idPhoneAddContact").value; 
+  let color = getRandomColor();
 
-  console.log("Submit new Contact in Progress");
+postContactToDatabase(name, mail, phone, color);
 }
 
 function notifSucess() {
@@ -219,39 +218,30 @@ async function shortName() {
     let lastInitial = parts[1] ? parts[1][0].toUpperCase() : ""; 
     return firstInitial + lastInitial; 
   });
-
-  for (let i = 0; i < shortNames.length; i++) {
-    let colorClass = COLORLIST[i % COLORLIST.length];  
-    nameToColorClass[names[i]] = colorClass;  
-  }
 }
 
-function applyColorClasses() {
-  let elements = document.querySelectorAll("#idShortName");
 
-  elements.forEach((element, index) => {
-    let name = names[index]; 
-    let colorClass = nameToColorClass[name] || "default-color"; 
-    element.classList.add(colorClass);  
-  });
-}
-
-async function postContactToDatabase(data) {
+async function postContactToDatabase(name, mail, phone, color) {
   try {
-      tryPostContactToDatabase(data);
+      tryPostContactToDatabase(name, mail, phone, color);
   } catch (error) {
       console.error("Fehler beim Speichern des Kontaktes", error);
       alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
 
-async function tryPostContactToDatabase(data) {
-  const response = await fetch(BASE_URL + `users/contacts/json`, {
+async function tryPostContactToDatabase(name, mail, phone, color) {
+  const response = await fetch(BASE_URL + `users/contacts.json`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+        "color": color,
+        "email": mail,
+        "name": name,
+        "phone": phone
+      })
   });
 
   if (!response.ok) {
@@ -263,3 +253,10 @@ async function tryPostContactToDatabase(data) {
 function getAlphabet() {
   Alph = [ABCDEFGHIJKLMNOPQRSTUVWXYZ];
 }
+
+function getRandomColor() {
+  const randomIndex = Math.floor(Math.random() * COLORS.length);
+  return COLORS[randomIndex];
+}
+
+
