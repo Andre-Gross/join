@@ -1,4 +1,4 @@
-let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
+const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
 
 /**
@@ -130,6 +130,37 @@ async function tryPostTaskToDatabase(data) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
     alert("Aufgabe erfolgreich hinzugefügt.");
+}
+
+
+async function putTaskToDatabase(taskId, data) {
+    try {
+        tryPutTaskToDatabase(taskId, data);
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryPutTaskToDatabase(taskId, data) {
+    const response = await fetch(BASE_URL + `tasks/${taskId}.json`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    alert("Aufgabe erfolgreich bearbeitet.");
 }
 
 
