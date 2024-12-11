@@ -249,12 +249,12 @@ async function tryDeleteTaskInDatabase(id) {
 }
 
 
-async function deleteContactToDatabase(contactId, data) {
+async function deleteContactInDatabase(contactId) {
     try {
-        tryPutTaskToDatabase(contactId, data);
+        tryPutTaskToDatabase(contactId);
     } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Fehler beim Löschen der Aufgabe:", error);
+        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
     }
 }
 
@@ -264,7 +264,7 @@ async function deleteContactToDatabase(contactId, data) {
  * 
  * @param {object} data - datas of the task
  */
-async function tryDeleteContactToDatabase(contactId, data) {
+async function tryDeleteContactInDatabase(contactId) {
     const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
         method: "DELETE",
         headers: {
