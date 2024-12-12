@@ -22,20 +22,11 @@ async function contactMain() {
   }
   contactMain.innerHTML += getAddContactBtn();
 }
-
+ 
 async function loadContacts() {
   let loadContacts = await getContacts();
-  let contactsArray = Object.values(loadContacts).filter(contact => contact !== null);
+  let contactsArray = Object.values(loadContacts);
   ids = Object.keys(loadContacts);
-  console.log("ContactArray", contactsArray);
-  console.log("IDs:", ids);
-
-  for (let i = 0; i < contactsArray.length; i++) {
-    if (contactsArray[i] === null) {
-      contactsArray.splice(i, 1);  
-      i--; 
-    }
-  }
 
   for (let index = 0; index < contactsArray.length; index++) {
     emails.push(contactsArray[index].email);
@@ -113,15 +104,6 @@ async function sortContacts() {
   phones = contacts.map((contact) => contact.phone);
   colors = contacts.map((contact) => contact.color);
   ids = contacts.map((contact) => contact.id);
-
-  console.log("Ids Sortiert:", ids);
-
-  for (let i = 0; i < ids.length; i++) {
-    if (ids[i] === null) {
-      ids.splice(i, 1);  
-      i--; 
-    }
-  }
 }
 
 function openContact(i) {
