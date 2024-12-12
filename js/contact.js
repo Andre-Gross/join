@@ -3,15 +3,15 @@ let emails = [];
 let phones = [];
 let colors = [];
 let shortNames = [];
-let nameToColorClass = {};
+let ids = [];
 const COLORS = ["#FF7A00", "#9327FF", "#FF745E", "#FFC700", "#FFE62B", "#FF5EB3", "#00BEE8", "#FFA45E", "#0038FF", "#FF4546", "#6E52FF", "#1FD7C1", "#FC71FF", "#C3FE2B", "#FFBB2B"];
-
 
 async function contactMain() {
   names = [];
   emails = [];
   phones = [];
   colors = [];
+  ids = [];
   await loadContacts();
   await shortName();
   let contactMain = document.getElementById("idContactMain");
@@ -25,7 +25,17 @@ async function contactMain() {
 
 async function loadContacts() {
   let loadContacts = await getContacts();
-  let contactsArray = Object.values(loadContacts);
+  let contactsArray = Object.values(loadContacts).filter(contact => contact !== null);
+  ids = Object.keys(loadContacts);
+  console.log("ContactArray", contactsArray);
+  console.log("IDs:", ids);
+
+  for (let i = 0; i < contactsArray.length; i++) {
+    if (contactsArray[i] === null) {
+      contactsArray.splice(i, 1);  
+      i--; 
+    }
+  }
 
   for (let index = 0; index < contactsArray.length; index++) {
     emails.push(contactsArray[index].email);
@@ -33,6 +43,7 @@ async function loadContacts() {
     phones.push(contactsArray[index].phone);
     colors.push(contactsArray[index].color);
   }
+
   await sortContacts();
 }
 
@@ -92,6 +103,7 @@ async function sortContacts() {
     email: emails[index],
     phone: phones[index],
     color: colors[index],
+    id: ids[index],
   }));
 
   contacts.sort((a, b) => a.name.localeCompare(b.name));
@@ -100,6 +112,16 @@ async function sortContacts() {
   emails = contacts.map((contact) => contact.email);
   phones = contacts.map((contact) => contact.phone);
   colors = contacts.map((contact) => contact.color);
+  ids = contacts.map((contact) => contact.id);
+
+  console.log("Ids Sortiert:", ids);
+
+  for (let i = 0; i < ids.length; i++) {
+    if (ids[i] === null) {
+      ids.splice(i, 1);  
+      i--; 
+    }
+  }
 }
 
 function openContact(i) {
@@ -143,7 +165,7 @@ function getEditContactBtn(i) {
             <img src="assets/img/contacts/pen.svg" alt="pencil">
             <p>Edit</p>
         </div>
-        <div onclick="deleteContact()">
+        <div onclick="deleteContact(${i})">
             <img src="assets/img/contacts/bin.svg" alt="bin">
             <p>Delete</p>
         </div>
@@ -203,8 +225,10 @@ function notifSucess() {
     `;
 }
 
-function deleteContact() {
-  console.log("Delete Contact in Progress");
+async function deleteContact(i) {
+  let id = ids[i];
+  await deleteContactInDatabase(id);
+  location.reload();
 }
 
 function saveContact() {
@@ -231,7 +255,7 @@ async function postContactToDatabase(name, mail, phone, color) {
 }
 
 async function tryPostContactToDatabase(name, mail, phone, color) {
-  const response = await fetch(BASE_URL + `users/contacts.json`, {
+  let response = await fetch(BASE_URL + `users/contacts.json`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -255,8 +279,52 @@ function getAlphabet() {
 }
 
 function getRandomColor() {
-  const randomIndex = Math.floor(Math.random() * COLORS.length);
+  let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
 
+async function deleteContactInDatabase(id){
+  try {
+      tryDeleteContactInDatabase(id);
+  } catch (error) {
+      console.error("Fehler beim Löschen des Kontaktes:", error);
+      alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
+  }
+}
 
+async function tryDeleteContactInDatabase(id) {
+  let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
+      method: "DELETE",
+      headers: {
+          "Content-Type": "application/json"
+      },
+  });
+
+  if (!response.ok) {
+      throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+  }
+  alert("Kontakt erfolgreich gelöscht.");
+}
+
+async function putContactInDatabase(id){
+  try {
+      tryPutContactInDatabase(id);
+  } catch (error) {
+      console.error("Fehler beim Bearbeiten des Kontaktes:", error);
+      alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
+  }
+}
+
+async function tryPutContactInDatabase(id) {
+  let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
+      method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+  });
+
+  if (!response.ok) {
+      throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+  }
+  alert("Kontakt erfolgreich Bearbeitet.");
+}
