@@ -210,7 +210,6 @@ function notifSucess() {
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
-  location.reload();
 }
 
 function saveContact() {
