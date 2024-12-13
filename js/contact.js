@@ -169,9 +169,9 @@ function getEditContact(i) {
                 <p id="idShortAlph">${shortNames[i]}</p>
             </div>
             <div>
-                <input value="${names[i]}" type="text" name="name" placeholder="Name">
-                <input value="${emails[i]}" type="email" name="email" placeholder="Email">
-                <input value="${phones[i]}" type="Tel" name="phone" placeholder="Phone">
+                <input id="idNameEditContact" value="${names[i]}" type="text" name="name" placeholder="Name">
+                <input id="idMailEditContact" value="${emails[i]}" type="email" name="email" placeholder="Email">
+                <input id="idPhoneEditContact" value="${phones[i]}" type="Tel" name="phone" placeholder="Phone">
             </div>
             <h1>${names[i]}</h1>
             <h3>Contact Information</h3>
@@ -179,12 +179,12 @@ function getEditContact(i) {
             <p id="idMail">${emails[i]}</p>
             <h3>Phone<h3>
             <p>${phones[i]}</p>
-            <div id="idDeleteBtn" onclick="deleteContact()">
+            <div id="idDeleteBtn" onclick="deleteContact(${i})">
             <p>Delete</p>
             </div>
-            <div id="idSaveBtn" onclick="saveContact()">
+            <div id="idSaveEditBtn" onclick="saveEditContact(${i})">
                 <p>Save</p>
-                <img src="assets/img/contacts/check.svg" alt="saveContact" >
+                <img src="assets/img/contacts/check.svg" alt="saveEditContact" >
             </div>
     </div>
     `;
@@ -200,6 +200,7 @@ postContactToDatabase(name, mail, phone, color);
 }
 
 function notifSucess() {
+  console.log("Save Contact in Progress");
   return `
     <div>
     <p>Contact successfully created</p>
@@ -212,8 +213,14 @@ async function deleteContact(i) {
   await deleteContactInDatabase(id);
 }
 
-function saveContact() {
+function saveEditContact(i) {
   console.log("Save Contact in Progress");
+  let name = document.getElementById("idNameEditContact").value; 
+  let mail = document.getElementById("idMailEditContact").value; 
+  let phone = document.getElementById("idPhoneEditContact").value;
+  let color = colors[i]; 
+  let id = ids[i];
+  putContactInDatabase(name, mail, phone, color, id);
 }
 
 async function shortName() {
@@ -256,6 +263,7 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
 }
 
 function getAlphabet() {
+  console.log("Save Contact in Progress");
   Alph = [ABCDEFGHIJKLMNOPQRSTUVWXYZ];
 }
 
@@ -287,21 +295,27 @@ async function tryDeleteContactInDatabase(id) {
   alert("Kontakt erfolgreich gelöscht.");
 }
 
-async function putContactInDatabase(id){
+async function putContactInDatabase(name, mail, phone, color, id){
   try {
-      tryPutContactInDatabase(id);
+      tryPutContactInDatabase(name, mail, phone, color, id);
   } catch (error) {
       console.error("Fehler beim Bearbeiten des Kontaktes:", error);
       alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
 
-async function tryPutContactInDatabase(id) {
+async function tryPutContactInDatabase(name, mail, phone, color, id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
       method: "PUT",
       headers: {
           "Content-Type": "application/json"
       },
+      body: JSON.stringify({
+        "color": color,
+        "email": mail,
+        "name": name,
+        "phone": phone
+      })
   });
 
   if (!response.ok) {
