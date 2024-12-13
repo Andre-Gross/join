@@ -179,3 +179,32 @@
     width: 24px;
 }
 
+
+#idSaveEditBtn:hover{
+    cursor: pointer;
+}
+
+#idDeleteBtn:hover{
+    cursor: pointer;
+}
+
+#idSaveEditBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #2A3747;
+    border-radius: 8px;
+    color: white;
+}
+
+#idDeleteBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: white;
+    border: 1px, solid, #2A3747;
+    border-radius: 8px;
+    color: #2A3747;
+}
