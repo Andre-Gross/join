@@ -2,7 +2,7 @@ let contactsInitialized = false;
 let dataSubtasks = [];
 let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
 let lastStringOfInput = '';
-const dropdownMenues =['assignedTo', 'category']
+const dropdownMenues = ['assignedTo', 'category']
 
 
 /**
@@ -71,13 +71,28 @@ function transformNameToId(name, partBeforeName = '', partAfterName = '') {
 
 
 function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
+    const input = document.getElementById(`input-group-dropdown-${whichDropdown}`)
     const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
     const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
     const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
 
     toggleDisplayNone(dropdown, displayMode, shallVisible);
     toggleDisplayNone(arrowDown, displayMode, !shallVisible);
-    toggleDisplayNone(arrowUp, displayMode , shallVisible);
+    toggleDisplayNone(arrowUp, displayMode, shallVisible);
+
+    if (shallVisible === '') {
+        if (input.classList.contains('active-dropdown-input')) {
+            input.classList.remove('active-dropdown-input');
+        } else {
+            input.classList.add('active-dropdown-input');
+        }
+    } else if (shallVisible) {
+        input.classList.add('active-dropdown-input');
+    } else {
+        input.classList.remove('active-dropdown-input');
+    }
+
+
 }
 
 
@@ -498,7 +513,7 @@ function loadFormFunctions() {
         document.addEventListener('click', (event) => {
             const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
             const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
-    
+
             if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
                 toggleDropdown(`${singleDropdown}`, 'd-block', false);
             }

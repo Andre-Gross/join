@@ -23,8 +23,6 @@ form {
 }
 
 
-.input-group {
-    z-index: 2000;
 #modalCard-edit-mode form {
     width: 100%;
     margin: 0;
@@ -77,6 +75,11 @@ form {
     border-top: none;
     border-radius: 8px;
     padding-top: 24px;
+}
+
+
+.active-dropdown-input {
+    z-index: 2000;
 }
 
 
@@ -135,8 +138,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
     background-color: #ffffff;
-
-
     display: flex;
     flex: 1;
     justify-content: center;

@@ -20,7 +20,8 @@
 <body onload="">
     <h1 class="m-2 w-100">Add Task</h1>
 
-    <form action="" class="d-flex flex-column" onsubmit="submitTaskForm('boardId'); return false;">
+    <form action="" class="m-template-main-buttons d-flex flex-column"
+        onsubmit="submitTaskForm('boardId'); return false;">
         <label for="inputTitle">Title</label>
         <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
             onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
@@ -67,8 +68,9 @@
         <div class="dropdown-container d-flex flex-column">
             <label for="inputCategory">Categorie</label>
             <div id="input-group-dropdown-category" class="input-group d-flex">
-                <input required readonly type="text" id="inputCategory" placeholder="Select task category"
-                    onclick="toggleDisplayNone(document.getElementById('categoryDropdown'), 'd-block', true)" />
+                <input required readonly type="text" id="inputCategory" class="flex-fill"
+                    placeholder="Select task category"
+                    onclick="toggleDisplayNone(document.getElementById('category'), 'd-block', true)" />
                 <div class="input-img-container d-flex justify-content-center align-items-center">
                     <img id="input-category-arrow-down" src="assets/img/addTask/arrow-down.svg" class=""
                         onclick="toggleDropdown('category', 'd-block', true)">

@@ -56,8 +56,8 @@ async function renderBodySearch() {
                 <p>${task.description}</p>
                 <p>Due by: ${task.finishedUntil}</p>
                 <p><strong>Priority:</strong> <span class="${getPriorityClass(
-                  task.priority
-                )}">${task.priority}</span></p>
+      task.priority
+    )}">${task.priority}</span></p>
             `;
     const containerId = getContainerIdByStatus(task.status);
     if (containerId)
