@@ -71,18 +71,17 @@ async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
   const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
   const singleTask = tasksAsArray[singleTaskID];
-  const keys = ['category', 'title', 'description', 'finishedUntil'];
 
   const title = document.getElementById("inputTitle");
   const description = document.getElementById("textareaDescription");
   const dueDate = document.getElementById('inputDate');
-  const priority = document.querySelector('.btn-selected')?.id;
   const category = document.getElementById("inputCategory");
 
   title.value = singleTask.title;
   description.value = singleTask.description;
   dueDate.value = singleTask.finishedUntil;
-  // priority = singleTask.priority;
+  selectPriority(singleTask.priority)
+  priority = singleTask.priority;
   category.value = singleTask.category;
   dataSubtasks = singleTask.subtasks;
 
