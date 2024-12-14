@@ -432,9 +432,18 @@ function renderNewSubtasks() {
 
 
 function toggleEditModeSubtask(id) {
+    const element = document.getElementById(`input-current-subtask${id}`);
+
     toggleDisplayNone(document.getElementById(`list-item-box-current-subtask${id}`), 'd-flex');
     toggleDisplayNone(document.getElementById(`input-box-current-subtask${id}`), 'd-flex');
-    document.getElementById(`input-current-subtask${id}`).value = dataSubtasks[id].subtask;
+    element.value = dataSubtasks[id].subtask;
+
+    element.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            editSubtask(id)
+        };
+    });
 }
 
 
@@ -466,8 +475,14 @@ function emptyAddTaskInputs() {
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
+function loadFormFunctions() {
     const subtaskInput = document.getElementById('input-subtask');
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
 
     subtaskInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -489,4 +504,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-});
+}

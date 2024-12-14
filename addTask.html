@@ -85,7 +85,7 @@
         </div>
 
         <label for="input-subtask">Subtasks</label>
-        <div class="w-100 mb-template-main-buttons">
+        <div class="w-100">
             <div class="input-group" onclick="">
                 <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
                     oninput="" onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
@@ -129,6 +129,11 @@
     <script>
         window.addEventListener("beforeunload", async function () {
             await putNextStatus('To do');
+        });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFormFunctions();
         });
     </script>
 
