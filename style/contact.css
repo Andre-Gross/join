@@ -1,96 +1,88 @@
-
-#idContactMain{
+#idContactMain {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-direction: column;
-    margin-top: 16px;
-    width: 100%;
+    margin: 24px 40px;
+    width: calc(100% - 80px);
 }
 
-#idContactAlph{
+#idContactAlph {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-direction: column;
     width: 100%;
+    gap: 8px;
+    margin-bottom: 32px;
 }
 
-#idGreyLine{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#idGreyLine {
     background-color: #d1d1d1;
     height: 1px;
-    width: 80%;
-    /* saved for later*/
+    width: 100%;
+    margin: 0;
 }
 
-#idImgAddContact{
-    width: 32px;
-    height: 32px;
-}
-
-#idAddContactBtn:hover{
-    background-color: #29ABE2;
-}
-
-#idAddContactBtn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 56px;
-    height: 56px;
-    background-color: #2A3747;
-    cursor: pointer;
-    border-radius: 100px;
-    z-index: 1;
-    position: fixed;
-    bottom: 88px;
-    right: 16px;
-}
-
-#idShortName{
+#idShortName {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 42px;
     height: 42px;
-    border-radius: 100px;
+    border-radius: 100%;
+    font-weight: 500;
+    color: white;
 }
 
-#idNameMailshort{
+#idNameMailshort {
     display: flex;
-    justify-content: center;
-    align-items: column;
+    align-items: center;
     cursor: pointer;
-    gap: 42px;
+    gap: 24px;
+    padding: 15px 0;
+    width: 100%;
+    border-bottom: 1px solid #d1d1d1;
 }
 
-#idName{
-    display: flex;
-    justify-content: flex-start;
+#idName {
+    font-size: 16px;
+    font-weight: 500;
     margin-bottom: 4px;
 }
 
-#idMail{
-    display: flex;
-    justify-content: flex-start;
+#idMail {
     color: #017CEE;
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: 0;
 }
 
-#idShortAlph{
+#idShortAlph {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0px;
+    align-self: flex-start;
+    margin-bottom: 0;
 }
 
-#idNameMail{
-    width: 200px;
+#idNameMail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-#idEditDeleteBtn{
+/* Avatar colors */
+[data-initials="AM"] { background-color: #FF8A00; }
+[data-initials="AS"] { background-color: #9327FF; }
+[data-initials="BZ"] { background-color: #9327FF; }
+[data-initials="DE"] { background-color: #FF4E9D; }
+[data-initials="EF"] { background-color: #FF8A00; }
+
+#idAddContactBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,113 +90,20 @@
     height: 56px;
     background-color: #2A3747;
     cursor: pointer;
-    border-radius: 100px;
-    z-index: 1;
+    border-radius: 50%;
     position: fixed;
     bottom: 88px;
-    right: 16px;
+    right: 24px;
+    transition: background-color 0.2s ease;
 }
 
-#idEditDeleteBtn:hover{
+#idAddContactBtn:hover {
     background-color: #29ABE2;
 }
 
-#idheadContactView{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: row;
-    width: 100%;
-    padding-top: 36px;
-}
-
-#idh1Contacts{
-    font-weight: 700;
-    font-size: 47px;
-}
-
-#idContactView{
-    width: 100%;
-}
-
-#idAddContact{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    position: fixed;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-}
-
-#idTitle{
-    font-size: 20px;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#idBlueLine{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #5CBEE7;
-    height: 3px;
-    width: 30%;
-}
-
-#idSubmitAddContact:hover{
-    cursor: pointer;
-}
-#idSubmitAddContact{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #2A3747;
-    border-radius: 8px;
-    width: 208px;
-    height: 48px;
-}
-
-#idSubmit{
-    color: white;
-    margin: 0;
-}
-
-#idCheck{
-    height: 24px;
+#idImgAddContact {
     width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
 }
 
-
-#idSaveEditBtn:hover{
-    cursor: pointer;
-}
-
-#idDeleteBtn:hover{
-    cursor: pointer;
-}
-
-#idSaveEditBtn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    background-color: #2A3747;
-    border-radius: 8px;
-    color: white;
-}
-
-#idDeleteBtn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    background-color: white;
-    border: 1px, solid, #2A3747;
-    border-radius: 8px;
-    color: #2A3747;
-}
