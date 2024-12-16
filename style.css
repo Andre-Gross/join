@@ -1,5 +1,5 @@
 :root {
-    --background-color: #2A3647;
+    --background-color: #F6F7F8;
     --text-color: #333;
     --primary-color: #2A3647;
     --primary-hover-color: #2A3647;
@@ -12,6 +12,7 @@
     --button-height: 51px;
     --border-radius: 8px;
     --font-family: 'Inter', sans-serif;
+    --global-margin-top: 100px;
 }
 
 @font-face {
@@ -97,7 +98,6 @@ textarea:focus {
 .btn-dark:hover {
     background-color: var(--primary-hover-color);
 }
-
 
 
 /* Andrés Hinzufügungen */
