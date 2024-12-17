@@ -9,16 +9,18 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style/contact.css">
-    
+
     <script src="js/api.js"></script>
     <script src="js/contact.js"></script>
 
 </head>
 
 <body onload="contactMain()">
-    <div w3-include-html="templates/templates.html"></div>
-    <div  id="idContactMain"></div>
-    <script src="js/templates.js"></script>
+    <div class="content-wrapper">
+        <div id="idContactMain"></div>
+        <div w3-include-html="templates/templates.html"></div>
+        <script src="js/templates.js"></script>
+    </div>
 </body>
 
 </html>
