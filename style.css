@@ -29,11 +29,23 @@
 }
 
 body {
+    margin: 0;
+    box-sizing: border-box;
     background-color: #F6F7F8;
     font-family: var(--font-family);
     font-weight: normal;
     font-style: normal;
 }
+
+.content-wrapper {
+    margin: 0;
+padding: 80px 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Scrollen ermöglichen, falls nötig */
+    min-height: calc(100vh - 160px); /* Verbleibender Platz */
+    background-color: #f8f9fa; /* Optional für Übersicht */
+}
+
 
 a {
     text-decoration: none;
