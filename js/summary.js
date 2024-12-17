@@ -53,16 +53,18 @@ async function fetchUserName(email, password) {
 
         const users = await response.json();
         const user = Object.values(users || {}).find(u => u?.email === email && u?.password === password);
-        return user?.login?.name || null;
-    } catch {
+        return user?.name || null; // Korrektur: Direkt user.name verwenden
+    } catch (error) {
+        console.error("Error fetching user data:", error);
         displayError("Error fetching user data.");
         return null;
     }
 }
 
-
 function getGreetingMessage() {
-    const hour = new Date().getHours();
+    const hour = parseInt(new Date().getHours(), 10); // Stelle sicher, dass es eine Zahl ist
+    console.log("Current Hour:", hour);
+
     if (hour >= 6 && hour < 9) return 'Moin,';
     if (hour >= 9 && hour < 12) return 'Good Morning,';
     if (hour >= 12 && hour < 17) return 'Good Afternoon,';
