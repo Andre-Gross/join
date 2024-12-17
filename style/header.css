@@ -14,6 +14,7 @@
     z-index: 9999;
 }
 
+
 #profile-icon-container {
     width: 50px;
     height: 50px;
@@ -34,8 +35,4 @@
     font-size: 18px;
     font-weight: bold;
     border: 2px solid #2A3647;
-}
-
-body {
-    padding-top: 72px; /* Höhe des Headers, damit der Inhalt darunter sichtbar bleibt */
 }
