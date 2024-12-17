@@ -29,6 +29,8 @@
 }
 
 body {
+    height: 100%;
+    padding: 80px 20px;
     margin: 0;
     box-sizing: border-box;
     background-color: #F6F7F8;
@@ -37,21 +39,15 @@ body {
     font-style: normal;
 }
 
-.content-wrapper {
-    margin: 0;
-padding: 80px 20px;
-    box-sizing: border-box;
-    overflow-y: auto; /* Scrollen ermöglichen, falls nötig */
-    min-height: calc(100vh - 160px); /* Verbleibender Platz */
-    background-color: #f8f9fa; /* Optional für Übersicht */
-}
+
 
 
 a {
     text-decoration: none;
 }
 
-input, textarea {
+input,
+textarea {
     border: 1.5px solid var(--border-color);
     border-radius: var(--border-radius);
 }
@@ -63,8 +59,8 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: var(--focus-border-color);
-  outline: none;
+    border-color: var(--focus-border-color);
+    outline: none;
 }
 
 .btn-primary {
@@ -76,7 +72,7 @@ textarea:focus {
     color: #fff;
     border: none;
     cursor: pointer;
-    --bs-btn-active-bg:var(--background-color);
+    --bs-btn-active-bg: var(--background-color);
 }
 
 .btn-primary:hover {
@@ -92,7 +88,7 @@ textarea:focus {
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
     cursor: pointer;
-    --bs-btn-active-bg:none;
+    --bs-btn-active-bg: none;
     --bs-btn-active-color: #2A3647;
 }
 
@@ -104,7 +100,7 @@ textarea:focus {
 .btn-dark {
     width: 104px;
     background-color: var(--primary-color);
-    --bs-btn-active-bg:var(--background-color);
+    --bs-btn-active-bg: var(--background-color);
 }
 
 .btn-dark:hover {
