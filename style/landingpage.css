@@ -65,6 +65,15 @@ body.landing-page.loaded #signupCard {
     opacity: 1;
 }
 
+/* Kein Effekt beim erneuten Laden */
+body.no-animation .logo-container,
+body.no-animation .login-logo,
+body.no-animation #loginCard {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    background-color: #f0f0f0;
+}
 @media (min-width: 500px) {
     .col.text-center {
         top: 5%;
