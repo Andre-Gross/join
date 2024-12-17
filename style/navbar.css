@@ -3,7 +3,7 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 105%;
+    width: 100%;
     background-color: #2A3647;
     display: flex;
     justify-content: space-around;
@@ -12,6 +12,7 @@
     height: 80px;
     z-index: 9999;
 }
+
 
 .nav-item {
     display: flex;
