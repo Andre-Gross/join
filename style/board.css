@@ -1,8 +1,5 @@
 .board-header {
-    padding: 1rem;
-    background-color: white;
-    border-bottom: 1px solid #dee2e6;
-    margin-top: 200px;
+       margin-top: 0;
 }
 
 .search-container {
