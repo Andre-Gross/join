@@ -81,16 +81,18 @@ function capitalize(str) {
 function fadeOutWelcomeMessage() {
     setTimeout(() => {
         const welcomeContainer = document.querySelector('.welcome-container');
+        const mainContent = document.getElementById('main-content');
+
         if (welcomeContainer) {
-            welcomeContainer.classList.add('fade-out');
+            welcomeContainer.classList.add('fade-out'); // Begrüßung ausblenden
             welcomeContainer.addEventListener('transitionend', () => {
-                welcomeContainer.classList.add('hidden');
-                const mainSection = document.querySelector('.main');
-                if (mainSection) mainSection.classList.add('visible');
+                welcomeContainer.classList.add('hidden'); // Begrüßung verstecken
+                mainContent.classList.remove('hidden'); // Hauptinhalt anzeigen
             });
         }
     }, 1000);
 }
+
 
 
 async function initializeSummary() {
