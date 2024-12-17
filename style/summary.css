@@ -1,17 +1,19 @@
-h1 {
-    z-index: 9000;
-    position: fixed;
-    top: 0;
-    padding-top: 98px;
-    padding-bottom: 16px;
-}
-
 .main {
     display: none; /* Initially hide main content */
     flex-grow: 1;
     padding: 16px;
     overflow-y: auto;
 }
+
+.hidden {
+    display: none;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
 
 .main.visible {
     display: block;
