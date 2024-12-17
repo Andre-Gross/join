@@ -43,8 +43,8 @@ function updateUserInitials() {
     if (loggedInUser) {
         try {
             const user = JSON.parse(loggedInUser);
-            if (user?.login?.name) {
-                name = user.login.name;
+            if (user?.name) {  // Direkt auf "name" prüfen
+                name = user.name;
             }
         } catch (error) {
             console.error("Error parsing loggedInUser from sessionStorage:", error);
@@ -54,6 +54,7 @@ function updateUserInitials() {
     const initials = getInitialsFromName(name);
     profileIcon.innerHTML = `<div class="profile-icon-circle">${initials}</div>`;
 }
+
 
 /**
  * Highlights the current navigation item based on the page URL.
