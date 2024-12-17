@@ -1,11 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-    }, 100);
+    const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
-    setTimeout(() => {
+    if (!hasLoadedBefore) {
+        // Erstes Laden: Animation wird ausgeführt
+        setTimeout(() => {
+            document.body.classList.add('loaded');
+        }, 100);
+
+        setTimeout(() => {
+            document.getElementById('loginCard').style.display = 'block';
+        }, 1600);
+
+        localStorage.setItem('hasLoadedBefore', 'true'); // Speichern, dass geladen wurde
+    } else {
+        // Kein erstes Laden: Sofortige Anzeige ohne Animation
+        document.body.classList.add('loaded'); // Hintergrund direkt anzeigen
         document.getElementById('loginCard').style.display = 'block';
-    }, 1600);
+    }
 
     // Event-Listener für Login-Formular
     const loginForm = document.querySelector('#loginCard form');
@@ -38,7 +49,10 @@ function switchView() {
     const switchButton = document.getElementById('switchButton');
     const switchText = document.getElementById('switchText');
 
-    // Set opacity to 0 for transition
+    // Wechsel ohne Verzögerung
+    loginCard.style.transition = 'none';
+    signupCard.style.transition = 'none';
+
     loginCard.style.opacity = '0';
     signupCard.style.opacity = '0';
 
@@ -55,14 +69,8 @@ function switchView() {
             switchText.textContent = 'Not a Join user?';
         }
 
-        // Allow fade-in transition after display is set
-        setTimeout(() => {
-            if (signupCard.style.display === 'block') {
-                signupCard.style.opacity = '1';
-            } else {
-                loginCard.style.opacity = '1';
-            }
-        }, 50);
-    }, 500);
+        // Sofortiges Anzeigen der entsprechenden Karte
+        signupCard.style.opacity = '1';
+        loginCard.style.opacity = '1';
+    }, 50);
 }
-
