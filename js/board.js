@@ -94,3 +94,38 @@ async function changeToEditMode(id) {
   document.getElementById('modalCard-first-line').classList.add('justify-content-end');
   loadFormFunctions()
 }
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadTasks(); // Tasks laden und rendern
+  scrollToTaskSection(); // Scrollt zur gewünschten Sektion
+});
+
+
+/**
+ * Scrolls to the task section based on the "status" parameter in the URL.
+ */
+function scrollToTaskSection() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get('status'); // Liest den ?status-Parameter aus der URL
+
+  if (!status) return; // Falls kein Status vorhanden ist, abbrechen
+
+  // Mapping der Status zu den Container-IDs
+  const containerMapping = {
+      'todo': 'todo-container',
+      'inprogress': 'progress-container',
+      'feedback': 'feedback-container',
+      'done': 'done-container',
+      'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+  };
+
+  const targetContainerId = containerMapping[status];
+  if (targetContainerId) {
+      const targetElement = document.getElementById(targetContainerId);
+      if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          console.log(`Scrolled to section: ${status}`);
+      }
+  }
+}
+
