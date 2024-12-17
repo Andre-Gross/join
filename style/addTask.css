@@ -3,6 +3,12 @@ body {
     width: 100vw;
 }
 
+
+h1 {
+    padding-top: 80px;
+}
+
+
 form {
     margin-left: .5rem;
     margin-top: calc(171.1px + .5rem);
