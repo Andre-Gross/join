@@ -3,18 +3,6 @@ body {
     width: 100vw;
 }
 
-
-h1 {
-    z-index: 9000;
-    position: fixed;
-    top: 0;
-    padding-top: 98px;
-    padding-left: 16px;
-    padding-bottom: 16px;
-    background-color: #F6F7F8;
-}
-
-
 form {
     margin-left: .5rem;
     margin-top: calc(171.1px + .5rem);
