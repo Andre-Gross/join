@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="./style/landingpage.css">
 </head>
 <body class="landing-page">
-    <div class="container-fluid min-vh-100 d-flex flex-column">
+    <div class="container-fluid d-flex flex-column">
         <header class="row p-3">
             <div class="col">
                 <div class="logo-container">
@@ -71,13 +71,14 @@
                         </form>
                     </div>
                 </div>
+                <div class="col text-center mt-3" id="switchExtras">
+                    <span class="me-2" id="switchText">Not a Join user?</span>
+                    <button class="btn btn-dark" id="switchButton" onclick="switchView()">Sign up</button>
+                </div>
+                
+            </main>
             </div>
-            <div class="col text-center mt-3">
-                <span class="me-2" id="switchText">Not a Join user?</span>
-                <button class="btn btn-dark" id="switchButton" onclick="switchView()">Sign up</button>
-            </div>
-        </main>
-        <footer class="row p-3 text-center">
+        <footer class="row p-3 text-center footer">
             <div class="col">
                 <a href="legalNotice.html" class="text-muted me-3">Legal Notice</a>
                 <a href="privacyPolicy.html" class="text-muted">Privacy Policy</a>
