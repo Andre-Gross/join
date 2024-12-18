@@ -1,0 +1,97 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+
+#profile-icon-container {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon-circle {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Blaue Hintergrundfarbe */
+    border-radius: 50%; /* Macht das Element rund */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #29ABE2;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #2A3647;
+}
+
+/* Navigation */
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: #2A3647;
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    height: 80px;
+    z-index: 9999;
+}
+
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Vertikal und horizontal zentrieren */
+    width: 80px; 
+    height: 70px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    line-height: 1;       /* Einheitliche Zeilenhöhe */
+    text-align: center;   /* Text zentrieren */
+}
+
+.nav-item.active {
+    background-color: #091931;
+}
+
+.nav-icon {
+    display: block;       /* Bild als Blockelement, vermeidet Inline-Alignment-Probleme */
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-item span {
+    display: block;       /* Text ebenfalls als Block */
+    line-height: 1;       /* Zeilenhöhe für Text */
+    white-space: nowrap;  /* Verhindert Zeilenumbruch */
+}
+
+/* Entferne ggf. Fokusrahmen, um Layoutsprünge zu vermeiden */
+.nav-item:focus,
+.nav-item:active {
+    outline: none;
+}
+
+/* Burger-menu */
