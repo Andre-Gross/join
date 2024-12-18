@@ -5,19 +5,18 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="./js/templates.js"></script>
 
-
 <header class="header">
     <div class="logo-container">
         <img class="logo" src="./assets/img/general/favicon.svg" alt="Join">
     </div>
     <div id="profile-icon-container" class="profile-dropdown">
         <div class="profile-icon-circle"></div>
-        <div id="dropdownMenu" class="dropdown-menu dm-hidden">
+        <div id="dropdownMenu" class="d-menu dm-hidden">
             <a href="help.html" class="dropdown-item">Hilfe</a>
             <a href="legalNotice.html" class="dropdown-item">Impressum</a>
             <a href="privacyPolicy.html" class="dropdown-item">Datenschutz</a>
-            <hr class="dropdown-divider">
-            <button class="dropdown-item logout-button">Abmelden</button>
+            <button class="dropdown-item logout-button" onclick="logOut()">Abmelden</button>
+
         </div>
     </div>
 </header>
