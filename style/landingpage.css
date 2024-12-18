@@ -1,3 +1,6 @@
+body{
+    padding: 0 20px;
+}
 body.landing-page {
     background-color: #253345;
     transition: background-color 1s ease-in-out;
@@ -5,6 +8,13 @@ body.landing-page {
 
 body.landing-page.loaded {
     background-color: #f0f0f0;
+}
+
+.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .logo-container {
@@ -52,7 +62,7 @@ body.landing-page.loaded .final-logo {
     opacity: 1;
 }
 
-#loginCard, #signupCard {
+#loginCard, #signupCard{
     opacity: 0;
     transition: opacity 0.2s ease-in-out 1.5s;
     max-width: 650px;
@@ -65,7 +75,6 @@ body.landing-page.loaded #signupCard {
     opacity: 1;
 }
 
-/* Kein Effekt beim erneuten Laden */
 body.no-animation .logo-container,
 body.no-animation .login-logo,
 body.no-animation #loginCard {
@@ -74,6 +83,25 @@ body.no-animation #loginCard {
     transform: none;
     background-color: #f0f0f0;
 }
+
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#switchExtras {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out 1.5s, visibility 0s linear 1.5s;
+}
+
+body.landing-page.loaded #switchExtras {
+    opacity: 1;
+    visibility: visible;
+}
+
+
 @media (min-width: 500px) {
     .col.text-center {
         top: 5%;
