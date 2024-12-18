@@ -27,13 +27,16 @@ async function includeHTML() {
 
     // Display user initials
     updateUserInitials();
+    
+    // Set up dropdown functionality
+    setupDropdown();
 }
 
 /**
  * Updates the profile icon with the user's initials or defaults to "G" for Guest.
  */
 function updateUserInitials() {
-    const profileIcon = document.getElementById('profile-icon-container');
+    const profileIcon = document.querySelector('.profile-icon-circle');
 
     if (!profileIcon) return;
 
@@ -43,7 +46,7 @@ function updateUserInitials() {
     if (loggedInUser) {
         try {
             const user = JSON.parse(loggedInUser);
-            if (user?.name) {  // Direkt auf "name" prüfen
+            if (user?.name) {
                 name = user.name;
             }
         } catch (error) {
@@ -52,9 +55,29 @@ function updateUserInitials() {
     }
 
     const initials = getInitialsFromName(name);
-    profileIcon.innerHTML = `<div class="profile-icon-circle">${initials}</div>`;
+    profileIcon.textContent = initials;
 }
 
+/**
+ * Sets up the dropdown functionality for the profile icon.
+ */
+function setupDropdown() {
+    const profileIconContainer = document.getElementById('profile-icon-container');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    if (!profileIconContainer || !dropdownMenu) return;
+
+    profileIconContainer.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdownMenu.classList.toggle('dm-hidden');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!profileIconContainer.contains(event.target)) {
+            dropdownMenu.classList.add('dm-hidden');
+        }
+    });
+}
 
 /**
  * Highlights the current navigation item based on the page URL.
@@ -114,3 +137,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     await includeHTML();          // Include dynamic HTML content
     highlightActiveNavItem();     // Highlight the active nav item
 });
+
+// Logout-Funktion
+function logOut() {
+    // Sitzungsdaten für den eingeloggten Benutzer löschen
+    sessionStorage.removeItem('loggedInUser');
+    sessionStorage.removeItem('loggedInUserEmail');
+    sessionStorage.removeItem('loggedInUserId');
+    sessionStorage.removeItem('loggedInUserName');
+    sessionStorage.removeItem('loggedInUserPassword');
+
+    // Zur Landing-Page weiterleiten
+    setTimeout(() => {
+        window.location.href = 'landingpage.html'; // Weiterleitung zur Landing-Page
+    }, 50); // Optionale Verzögerung für Animationen
+}
+
+// Event-Listener für den Logout-Button
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logOut);
+    }
+});
+
