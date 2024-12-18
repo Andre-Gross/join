@@ -39,9 +39,6 @@ body {
     font-style: normal;
 }
 
-
-
-
 a {
     text-decoration: none;
 }
@@ -61,6 +58,12 @@ input:focus,
 textarea:focus {
     border-color: var(--focus-border-color);
     outline: none;
+}
+
+footer{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
 }
 
 .btn-primary {
