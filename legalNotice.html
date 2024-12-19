@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="./style.css">
+     <script src="js/api.js"></script>
+    <script src="js/templates.js"></script>
     <style>
         .text-justify {
             text-align: justify;
@@ -19,25 +21,27 @@
 </head>
 
 <body>
-    <div class="content-wrapper">
-        <h1 class="m-4 text-center">Legal Notice</h1>
-        <p class="m-4 text-justify">This Legal Notice provides essential information about the ownership and management of this Kanban board platform. It includes details required by law to ensure transparency and accountability. The following points are covered:</p>
+    <div class="container">
+        <div class="header-container">
+            <h1 class="m-4 text-start">Legal Notice</h1>
+            <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="goBack()">
+        </div>
+        <p class="m-4 text-justify">This Legal Notice provides essential information about the ownership and
+            management of this Kanban board platform. It includes details required by law to ensure transparency and
+            accountability. The following points are covered:</p>
         <ul class="m-4">
             <li>Ownership of the platform</li>
             <li>Contact information for inquiries</li>
             <li>Usage terms and responsibilities</li>
             <li>Legal disclaimers and liability</li>
         </ul>
-        <p class="m-4 text-justify">The platform is operated by [Your Company Name], located at [Your Address]. For any inquiries or legal concerns, please contact us at [Your Email Address] or [Your Phone Number]. By using this platform, you agree to abide by the terms and conditions outlined in this document. Unauthorized use of this platform may result in legal consequences.</p>
+        <p class="m-4 text-justify">The platform is operated by [Your Company Name], located at [Your Address]. For
+            any inquiries or legal concerns, please contact us at [Your Email Address] or [Your Phone Number]. By
+            using this platform, you agree to abide by the terms and conditions outlined in this document.
+            Unauthorized use of this platform may result in legal consequences.</p>
     </div>
 
-    <footer class="row p-3 text-center">
-        <div class="col">
-            <a href="summary.html" class="text-muted me-3">Home</a>
-            <a href="legalNotice.html" class="text-muted me-3">Legal Notice</a>
-            <a href="privacyPolicy.html" class="text-muted">Privacy Policy</a>
-        </div>
-    </footer>
+    <div w3-include-html="templates/templates.html"></div>
 </body>
 
 </html>
