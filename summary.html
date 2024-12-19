@@ -8,14 +8,15 @@
 
     <link rel="icon" href="./assets/img/general/favicon.svg" type="image/png">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./style/summary.css">
     <link rel="stylesheet" href="./style/font.css">
+    <link rel="stylesheet" href="./style/summary.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="style.css">
     <script src="./js/summary.js"></script>
 </head>
 
 <body>
+    <div class="container">
         <div class="welcome-container">
             <div id="greeting"></div>
             <div id="userName" class="text-primary"></div>
@@ -23,9 +24,11 @@
 
 
         <div id="main-content" class="hidden">
-            <h1 class="m-2 w-100">Join 360</h1>
-            <p class="subtitle">Key Metrics at a Glance</p>
-
+            <div class="title">
+                <h1 class="m-2 w-100">Join 360</h1>
+                <div class="separator"></div>
+                <p class="subtitle">Key Metrics at a Glance</p>
+            </div>
             <div class="grid grid-2">
                 <div class="metric-card">
                     <div class="icon grey">
@@ -83,7 +86,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     <div w3-include-html="./templates/templates.html"></div>
 
     <script src="./js/templates.js"></script>
