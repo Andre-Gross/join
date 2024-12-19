@@ -107,22 +107,6 @@ function getCurrentPage() {
     return fileName.replace('.html', '');
 }
 
-/**
- * Extracts initials from a user's name.
- * 
- * @param {string} name - The full name of the user.
- * @returns {string} The initials (e.g., "JD" for "John Doe").
- */
-function getInitialsFromName(name) {
-    if (!name) return "G"; // Default for "Guest"
-    const words = name.split(" ");
-    const initials = words
-        .filter(word => word.trim().length > 0) // Skip empty parts
-        .map(word => word.charAt(0).toUpperCase())
-        .join("");
-    return initials.length > 2 ? initials.substring(0, 2) : initials;
-}
-
 // Dynamically add favicon to the document
 (function addFavicon() {
     const link = document.createElement('link');
