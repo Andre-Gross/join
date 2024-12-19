@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="./style.css">
+      <script src="js/api.js"></script>
+    <script src="js/templates.js"></script>
     <style>
         .text-justify {
             text-align: justify;
@@ -19,8 +21,11 @@
 </head>
 
 <body>
-    <div class="content-wrapper">
-        <h1 class="m-4 text-center">Privacy Policy</h1>
+    <div class="container">
+        <div class="header-container">
+            <h1 class="m-4 text-start">Privacy Policy</h1>
+            <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="goBack()">
+        </div>
         <p class="m-4 text-justify">This Privacy Policy outlines how we collect, use, and protect your personal data in compliance with applicable data protection laws. Your privacy is important to us, and we are committed to safeguarding your information. This document describes the following points:</p>
         <ul class="m-4">
             <li>What data we collect and why</li>
@@ -31,13 +36,8 @@
         <p class="m-4 text-justify">We collect personal data, such as your name, email address, and usage data, to enhance your experience on our platform. Your data will never be shared with unauthorized third parties. If you have questions about our data handling practices, please contact our Data Protection Officer through the contact information provided in this document.</p>
     </div>
 
-    <footer class="row p-3 text-center">
-        <div class="col">
-            <a href="summary.html" class="text-muted me-3">Home</a>
-            <a href="legalNotice.html" class="text-muted me-3">Legal Notice</a>
-            <a href="privacyPolicy.html" class="text-muted">Privacy Policy</a>
-        </div>
-    </footer>
+
+    <div w3-include-html="templates/templates.html"></div>
 </body>
 
 </html>
