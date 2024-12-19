@@ -25,14 +25,14 @@ h2 {
 }
 
 #greeting {
-    font-size: 36px;
     font-weight: 400;
     color: #2A3647;
+    font-size: clamp(36px, 5vw, 50px);
 }
 
 #userName {
     font-weight: 700;
-    font-size: 47px;
+    font-size: clamp(47px, 5vw, 70px);
     color: #29ABE2 !important;
 }
 
