@@ -79,20 +79,62 @@ function capitalize(str) {
 
 
 function fadeOutWelcomeMessage() {
-    setTimeout(() => {
-        const welcomeContainer = document.querySelector('.welcome-container');
-        const mainContent = document.getElementById('main-content');
+    const animationShown = sessionStorage.getItem('greetingAnimationShown');
+    const isLargeScreen = window.innerWidth >= 768; // Prüfen, ob größer als 768px
 
-        if (welcomeContainer) {
-            welcomeContainer.classList.add('fade-out'); // Begrüßung ausblenden
+    const welcomeContainer = document.querySelector('.welcome-container');
+    const mainContent = document.getElementById('main-content');
+
+    if (isLargeScreen) {
+        // Für große Bildschirme: Begrüßung und Hauptinhalt direkt anzeigen
+        if (welcomeContainer) welcomeContainer.classList.remove('hidden');
+        if (mainContent) mainContent.classList.remove('hidden');
+        return; // Funktion hier beenden, keine Animation
+    }
+
+    if (!animationShown) {
+        // Begrüßungsanimation nur beim ersten Laden auf kleinen Bildschirmen
+        setTimeout(() => {
+            if (welcomeContainer) welcomeContainer.classList.add('fade-out');
             welcomeContainer.addEventListener('transitionend', () => {
                 welcomeContainer.classList.add('hidden'); // Begrüßung verstecken
                 mainContent.classList.remove('hidden'); // Hauptinhalt anzeigen
             });
-        }
-    }, 1000);
+        }, 1000);
+
+        // Markiere die Animation als angezeigt
+        sessionStorage.setItem('greetingAnimationShown', 'true');
+    } else {
+        // Begrüßung sofort ausblenden und Hauptinhalt anzeigen
+        if (welcomeContainer) welcomeContainer.classList.add('hidden');
+        if (mainContent) mainContent.classList.remove('hidden');
+    }
 }
 
+
+function handleResize() {
+    const isLargeScreen = window.innerWidth >= 1000;
+    const welcomeContainer = document.querySelector('.welcome-container');
+    const mainContent = document.getElementById('main-content');
+
+    if (isLargeScreen) {
+        // Ab 768px: Zeige beide Container
+        if (welcomeContainer) welcomeContainer.classList.remove('hidden');
+        if (mainContent) mainContent.classList.remove('hidden');
+    } else {
+        // Unter 768px: Begrüßung bleibt versteckt, wenn schon animiert
+        const animationShown = sessionStorage.getItem('greetingAnimationShown');
+        if (animationShown) {
+            if (welcomeContainer) welcomeContainer.classList.add('hidden');
+        }
+    }
+}
+
+// Event-Listener für die Größenänderung
+window.addEventListener('resize', handleResize);
+
+// Initialer Aufruf beim Laden der Seite
+document.addEventListener('DOMContentLoaded', handleResize);
 
 
 async function initializeSummary() {
