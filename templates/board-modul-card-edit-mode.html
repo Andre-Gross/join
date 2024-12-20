@@ -1,11 +1,11 @@
-<form action="" class="d-flex flex-column" onsubmit="submitTaskForm('boardId'); return false;">
+<form id="modul-card-edit-mode-form" action="" class="d-flex flex-column" onsubmit="">
     <label for="inputTitle">Title</label>
-    <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
-        onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+    <input required id="inputTitle" class="" type="text" placeholder="Enter a title" onfocus="removeInvalidBorder(this)"
+        onblur="addInvalidBorder(this)">
 
     <label for="textareaDescription">Description</label>
-    <textarea required id="textareaDescription" placeholder="Enter a Description"
-        onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
+    <textarea required id="textareaDescription" placeholder="Enter a Description" onfocus="removeInvalidBorder(this)"
+        onblur="addInvalidBorder(this)"></textarea>
 
     <label for="dropAssignedTo">Assigned to</label>
     <div id="dropdown-container-assignedTo" class="dropdown-container" onclick="">
@@ -33,8 +33,7 @@
         <button id="urgent" type="button" class="btn" onclick="selectPriority('urgent')">
             Urgent <img id="img-urgent" src="assets/img/addTask/prio-urgent.svg" alt="Urgent">
         </button>
-        <button id="medium" type="button" class="btn"
-            onclick="selectPriority('medium')">
+        <button id="medium" type="button" class="btn" onclick="selectPriority('medium')">
             Medium <img id="img-medium" src="assets/img/addTask/prio-medium-white.svg" alt="Medium">
         </button>
         <button id="low" type="button" class="btn" onclick="selectPriority('low')">
@@ -75,12 +74,20 @@
             <div id="input-subtask-two-img-box" class="input-two-img-container two-img-box d-none">
                 <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
                     onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
-                <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
                     onclick="addNewSubtask()">
             </div>
         </div>
         <div id="list-subtasks-container" class="">
             <ul id="list-subtasks"></ul>
         </div>
+    </div>
+
+    <div class="d-flex justify-content-end w-100">
+        <button id="modal-card-submit-button" class="d-flex align-items-center btn-primary btn-form fw-bold">
+            Ok
+            <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                <img src="./assets/img/general/tick.svg" alt="Create Task">
+            </div>
+        </button>
     </div>
 </form>
