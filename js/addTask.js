@@ -493,12 +493,14 @@ function removeSubtask(id) {
 function emptyAddTaskInputs() {
     document.getElementById("inputTitle").value = '';
     document.getElementById("textareaDescription").value = '';
-    document.querySelectorAll('input[type="checkbox"]:checked').checked = false;
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
+    document.getElementById('dropAssignedTo').value = '';
     document.getElementById('inputDate').value = '';
     document.getElementById('inputCategory').value = '';
     selectPriority('medium');
-    document.getElementById("dropSubtasks").value = '';
+    document.getElementById("input-subtask").value = [];
     dataSubtasks = [];
+    renderNewSubtasks();
 }
 
 
