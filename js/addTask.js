@@ -128,23 +128,35 @@ async function addTaskFromBoard(status = 'To do') {
  * 
  * @param {string} boardId - That includes the ID of the board, where the datas should be post.
  */
-async function submitTaskForm() {
+async function submitTaskForm(method = 'post', id = '') {
     const title = document.getElementById("inputTitle").value.trim();
     const description = document.getElementById("textareaDescription").value.trim();
     const dueDate = document.getElementById('inputDate').value;
     const priority = document.querySelector('.btn-selected')?.id;
     const category = document.getElementById("inputCategory").value;
-    // const subtasks = document.getElementById("inputSubtasks").value;
 
     const assignedTo = readAssignedTo();
 
     if (checkAllInputsHasContent(title, description, dueDate, priority, category, assignedTo)) {
         const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo)
-        await postTaskToDatabase(data);
+        if (method === 'put') {
+            await putTaskToDatabase(id, data);
+        } else {
+            await postTaskToDatabase(data);
+        }
         emptyAddTaskInputs();
-        putNextStatus();
+        setTimeout(putNextStatus, 2000);
+
+        let allTasks = await getTasksAsArray();
+        for (let i = allTasks.length - 1; i > 0; i--) {
+            const singleTask = allTasks[i];
+            if (singleTask.title === title && singleTask.description === description) {
+                window.location.href = `/board.html#${singleTask.id}`;
+            }
+        }
     }
 }
+
 
 
 /**
@@ -481,12 +493,14 @@ function removeSubtask(id) {
 function emptyAddTaskInputs() {
     document.getElementById("inputTitle").value = '';
     document.getElementById("textareaDescription").value = '';
-    document.querySelectorAll('input[type="checkbox"]:checked').checked = false;
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
+    document.getElementById('dropAssignedTo').value = '';
     document.getElementById('inputDate').value = '';
     document.getElementById('inputCategory').value = '';
     selectPriority('medium');
-    document.getElementById("dropSubtasks").value = '';
+    document.getElementById("input-subtask").value = [];
     dataSubtasks = [];
+    renderNewSubtasks();
 }
 
 

@@ -85,7 +85,9 @@ async function changeToEditMode(id) {
   category.value = singleTask.category;
   dataSubtasks = singleTask.subtasks;
 
-  renderNewSubtasks()
+  if (dataSubtasks) {
+    renderNewSubtasks();
+  }
 
   toggleDisplayNone(document.getElementById('modalCard-no-edit-mode'));
   toggleDisplayNone(document.getElementById('modalCard-edit-mode'));
@@ -93,6 +95,8 @@ async function changeToEditMode(id) {
   document.getElementById('modalCard-first-line').classList.remove('justify-content-between');
   document.getElementById('modalCard-first-line').classList.add('justify-content-end');
   loadFormFunctions()
+
+  document.getElementById('modul-card-edit-mode-form').onsubmit = function () { submitTaskForm('put', id); return false };
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -112,20 +116,20 @@ function scrollToTaskSection() {
 
   // Mapping der Status zu den Container-IDs
   const containerMapping = {
-      'todo': 'todo-container',
-      'inprogress': 'progress-container',
-      'feedback': 'feedback-container',
-      'done': 'done-container',
-      'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+    'todo': 'todo-container',
+    'inprogress': 'progress-container',
+    'feedback': 'feedback-container',
+    'done': 'done-container',
+    'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
   };
 
   const targetContainerId = containerMapping[status];
   if (targetContainerId) {
-      const targetElement = document.getElementById(targetContainerId);
-      if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          console.log(`Scrolled to section: ${status}`);
-      }
+    const targetElement = document.getElementById(targetContainerId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      console.log(`Scrolled to section: ${status}`);
+    }
   }
 }
 
