@@ -85,7 +85,9 @@ async function changeToEditMode(id) {
   category.value = singleTask.category;
   dataSubtasks = singleTask.subtasks;
 
-  renderNewSubtasks()
+  if (dataSubtasks) {
+    renderNewSubtasks();
+  }
 
   toggleDisplayNone(document.getElementById('modalCard-no-edit-mode'));
   toggleDisplayNone(document.getElementById('modalCard-edit-mode'));
