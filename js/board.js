@@ -95,6 +95,8 @@ async function changeToEditMode(id) {
   document.getElementById('modalCard-first-line').classList.remove('justify-content-between');
   document.getElementById('modalCard-first-line').classList.add('justify-content-end');
   loadFormFunctions()
+
+  document.getElementById('modul-card-edit-mode-form').onsubmit = function () { submitTaskForm('put', id); return false };
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
