@@ -114,20 +114,20 @@ function scrollToTaskSection() {
 
   // Mapping der Status zu den Container-IDs
   const containerMapping = {
-      'todo': 'todo-container',
-      'inprogress': 'progress-container',
-      'feedback': 'feedback-container',
-      'done': 'done-container',
-      'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+    'todo': 'todo-container',
+    'inprogress': 'progress-container',
+    'feedback': 'feedback-container',
+    'done': 'done-container',
+    'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
   };
 
   const targetContainerId = containerMapping[status];
   if (targetContainerId) {
-      const targetElement = document.getElementById(targetContainerId);
-      if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          console.log(`Scrolled to section: ${status}`);
-      }
+    const targetElement = document.getElementById(targetContainerId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      console.log(`Scrolled to section: ${status}`);
+    }
   }
 }
 
