@@ -31,6 +31,8 @@ body.landing-page.loaded .logo-container {
     transform: translate(0, 0);
 }
 
+
+
 .login-logo {
     width: 100.03px;
     height: 121.97px;
@@ -64,15 +66,17 @@ body.landing-page.loaded .final-logo {
 
 #loginCard, #signupCard{
     opacity: 0;
-    transition: opacity 3s ease-in-out 3s;
+    transition: opacity 1s ease-in-out 0.5s;
     max-width: 650px;
+    width: 100%;
     padding: 0;
-
+    margin: 0;
 }
 
 body.landing-page.loaded #loginCard,
 body.landing-page.loaded #signupCard {
     opacity: 1;
+    transition: opacity 1s ease-in-out 1s;
 }
 
 body.no-animation .logo-container,
@@ -116,12 +120,18 @@ body.landing-page.loaded #switchExtras {
         display: flex;
         align-items: center;
     }
+
+    .d-grid {
+        display: flex !important;
+        justify-content: center;
+        gap: 30px !important;
+    }
 }
 
 @media (min-width: 768px) {
     #loginCard, #signupCard {
         opacity: 0;
-        transition: opacity 0.1s ease-in-out 0.1s;
+        transition: opacity 0.5s ease-in-out 1.5s;
         width: 650px;
     }
 
@@ -144,10 +154,9 @@ body.landing-page.loaded #switchExtras {
 
     body.landing-page.loaded .logo-container,
     body.landing-page.loaded .final-logo,
-    body.landing-page.loaded #loginCard,
-    body.landing-page.loaded #signupCard,
     body.landing-page.loaded #switchExtras {
-        transition-delay: 1s;
+        transition-delay: 0s;
+        transition-duration: 0.5s;
     }
 
     .final-logo {
@@ -156,14 +165,20 @@ body.landing-page.loaded #switchExtras {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out 1s;
 
+    }
+
+    body.landing-page.loaded #loginCard,
+    body.landing-page.loaded #signupCard {
+        opacity: 1;
+        transition: opacity 0s ease-in-out 0.5s;
     }
 
     body.landing-page.loaded .final-logo {
         top: 20px;
         left: 20px;
         transform: translate(0, 0);
-        transition: all 0.01s cubic-bezier(0.4, 0, 0, 1.09);
     }
 
 
