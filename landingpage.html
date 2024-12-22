@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./style/landingpage.css">
 </head>
+
 <body class="landing-page">
     <div class="container-fluid d-flex flex-column">
         <header class="row p-3">
@@ -32,7 +34,8 @@
                                 <input type="email" class="form-control" id="email" placeholder="Email" required>
                             </div>
                             <div class="mb-3">
-                                <input type="password" class="form-control" id="password" placeholder="Passwort" required>
+                                <input type="password" class="form-control" id="password" placeholder="Passwort"
+                                    required>
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -40,7 +43,8 @@
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Log in</button>
-                                <button type="button" class="btn btn-outline-secondary" onclick="guestLogIn();">Guest Log in</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="guestLogIn();">Guest
+                                    Log in</button>
                             </div>
                         </form>
                     </div>
@@ -50,34 +54,40 @@
                         <h1 class="text-center mb-4">Sign Up</h1>
                         <form onsubmit="event.preventDefault(); signUp();">
                             <div class="mb-3">
-                                <input type="text" id="name" class="form-control" placeholder="Name" required oninput="checkFormValidity()">
+                                <input type="text" id="name" class="form-control" placeholder="Name" required
+                                    oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="email" id="signupEmail" class="form-control" placeholder="Email" required oninput="checkFormValidity()">
+                                <input type="email" id="signupEmail" class="form-control" placeholder="Email" required
+                                    oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="password" id="signupPassword" class="form-control" placeholder="Passwort" required oninput="checkFormValidity()">
+                                <input type="password" id="signupPassword" class="form-control" placeholder="Passwort"
+                                    required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="password" id="confirmPassword" class="form-control" placeholder="Passwort wiederholen" required oninput="checkFormValidity()">
+                                <input type="password" id="confirmPassword" class="form-control"
+                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="agreeTerms" required onclick="checkFormValidity()">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms" required
+                                    onclick="checkFormValidity()">
                                 <label class="form-check-label" for="agreeTerms">I agree to the privacy policy</label>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign Up</button>
+                                <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign
+                                    Up</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col text-center mt-3" id="switchExtras">
-                    <span class="me-2" id="switchText">Not a Join user?</span>
-                    <button class="btn btn-dark" id="switchButton" onclick="switchView()">Sign up</button>
-                </div>
-                
-            </main>
             </div>
+        </main>
+        <div class="col text-center mt-3" id="switchExtras">
+            <span class="me-2" id="switchText">Not a Join user?</span>
+            <button class="btn btn-dark" id="switchButton" onclick="switchView()">Sign up</button>
+        </div>
+
         <footer class="row p-3 text-center footer">
             <div class="col">
                 <a href="legalNotice.html" class="text-muted me-3">Legal Notice</a>
@@ -92,5 +102,5 @@
     <script src="./js/api.js"></script>
     <script src="./js/landingpage.js"></script>
 </body>
-</html>
 
+</html>
