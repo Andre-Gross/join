@@ -228,7 +228,6 @@ async function shortName() {
 }
 
 
-
 async function postContactToDatabase(name, mail, phone, color) {
   try {
       tryPostContactToDatabase(name, mail, phone, color);
