@@ -215,11 +215,7 @@
         padding-bottom: 40px;
     }
 
-    .separator {
-        border: 2px solid #29ABE2;
-        border-radius: 25px;
-        height: 55px;
-    }
+
 
     .grid {
         gap: 30px;
