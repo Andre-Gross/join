@@ -25,7 +25,7 @@ body.landing-page.loaded {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all 1.5s ease-in-out 1000s;
+    transition: all 1.5s ease-in-out 1s;
 }
 
 body.landing-page.loaded .logo-container {
@@ -91,7 +91,7 @@ body.landing-page.loaded .final-logo {
 #loginCard,
 #signupCard {
     opacity: 0;
-    transition: opacity 1s ease-in-out 20000.5s;
+    transition: opacity 1s ease-in-out 2.5s;
     max-width: 650px;
     width: 100%;
     padding: 0;
@@ -120,6 +120,10 @@ body.no-animation #loginCard {
     padding: 0.75rem;
     margin-bottom: 1rem;
     border: 1px solid #d1d1d1;
+}
+
+.d-grid button {
+    margin: 0 auto;
 }
 
 /* Footer */
@@ -195,8 +199,13 @@ body.landing-page.loaded #switchExtras {
 
     .d-grid {
         display: flex !important;
+        width: 300px;
         justify-content: center;
-        gap: 30px !important;
+        margin: 0 auto;
+    }
+
+    .btn-primary {
+        width: 100px;
     }
 }
 
