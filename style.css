@@ -66,16 +66,17 @@ footer{
     bottom: 0;
 }
 
+
 .btn-primary {
-    background-color: var(--primary-color);
-    width: var(--button-width);
-    height: var(--button-height);
-    padding: 0.75rem;
-    border-radius: var(--border-radius);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    --bs-btn-active-bg: var(--background-color);
+    background-color: var(--primary-color) !important;
+    width: var(--button-width) !important;
+    height: var(--button-height) !important;
+    padding: 0.75rem !important;
+    border-radius: var(--border-radius) !important;
+    color: #fff !important;
+    border: none !important;
+    cursor: pointer !important;
+    --bs-btn-active-bg: var(--background-color) !important;
 }
 
 .btn-primary:hover {
@@ -110,6 +111,12 @@ footer{
     background-color: var(--primary-hover-color);
 }
 
+.col-md-4{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    max-width: 650px;
+}
 
 /* Andrés Hinzufügungen */
 .m-template {
