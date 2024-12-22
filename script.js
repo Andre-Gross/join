@@ -26,6 +26,30 @@ function clearValue(element) {
     element.value = '';
 }
 
+/**
+ * Extracts initials from a user's name.
+ *
+ * @param {string} name - The full name of the user.
+ * @returns {string} The initials (e.g., "JD" for "John Doe").
+ */
+function getInitialsFromName(name) {
+    if (!name) return "G"; // Default for "Guest"
+    const words = name.split(" ");
+    const initials = words
+        .filter(word => word.trim().length > 0)
+        .map(word => word.charAt(0).toUpperCase())
+        .join("");
+    return initials.length > 2 ? initials.substring(0, 2) : initials;
+}
+
+
+/**
+ * Navigates the user to the previous page in the browser history.
+ */
+function goBack() {
+    window.history.back();
+}
+
 
 function removeInvalidBorder(element) {
     element.classList.remove("invalid-border");
@@ -55,3 +79,4 @@ function toggleDisplayNone(element, displayMode = 'd-block', shallVisible = '') 
 function upperCaseFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 }
+
