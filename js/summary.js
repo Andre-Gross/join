@@ -79,37 +79,30 @@ function capitalize(str) {
 
 
 function fadeOutWelcomeMessage() {
-    const animationShown = sessionStorage.getItem('greetingAnimationShown');
-    const isLargeScreen = window.innerWidth >= 768; // Prüfen, ob größer als 768px
-
+    // Elemente holen
     const welcomeContainer = document.querySelector('.welcome-container');
     const mainContent = document.getElementById('main-content');
 
-    if (isLargeScreen) {
-        // Für große Bildschirme: Begrüßung und Hauptinhalt direkt anzeigen
-        if (welcomeContainer) welcomeContainer.classList.remove('hidden');
-        if (mainContent) mainContent.classList.remove('hidden');
-        return; // Funktion hier beenden, keine Animation
-    }
+    // Initial sicherstellen, dass das Hauptinhalt ausgeblendet ist
+    mainContent.classList.add('hidden');
 
-    if (!animationShown) {
-        // Begrüßungsanimation nur beim ersten Laden auf kleinen Bildschirmen
+    // Überprüfen, ob das Element existiert und die Bildschirmbreite unter 660px ist
+    if (welcomeContainer && window.innerWidth < 660) {
+        // Nach 1 Sekunde Begrüßungscontainer ausblenden
         setTimeout(() => {
-            if (welcomeContainer) welcomeContainer.classList.add('fade-out');
+            welcomeContainer.classList.add('fade-out'); // Füge Animationsklasse hinzu
+            // Warte, bis die Transition abgeschlossen ist
             welcomeContainer.addEventListener('transitionend', () => {
-                welcomeContainer.classList.add('hidden'); // Begrüßung verstecken
-                mainContent.classList.remove('hidden'); // Hauptinhalt anzeigen
-            });
-        }, 1000);
-
-        // Markiere die Animation als angezeigt
-        sessionStorage.setItem('greetingAnimationShown', 'true');
-    } else {
-        // Begrüßung sofort ausblenden und Hauptinhalt anzeigen
-        if (welcomeContainer) welcomeContainer.classList.add('hidden');
-        if (mainContent) mainContent.classList.remove('hidden');
+                welcomeContainer.classList.add('hidden'); // Verstecke Begrüßung
+                mainContent.classList.remove('hidden'); // Zeige Hauptinhalt
+                mainContent.classList.add('visible'); // Füge Sichtbarkeitsklasse hinzu
+            }, { once: true }); // Stelle sicher, dass der Listener nur einmal ausgelöst wird
+        }, 500); // Wartezeit für die Begrüßung
     }
 }
+
+// Beim Laden der Seite die Funktion aufrufen
+document.addEventListener('DOMContentLoaded', fadeOutWelcomeMessage);
 
 
 function handleResize() {
