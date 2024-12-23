@@ -94,7 +94,7 @@ main {
     align-items: center;
     padding: 28px 10px;
     width: 264px;
-    height: 134px;
+    height: clamp(130px, 5vw, 170px);
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 25px;
@@ -161,7 +161,7 @@ main {
     gap: clamp(10px, 5vw, 61px);
     width: 100%;
     max-width: 560px;
-    height: 168px;
+    height: clamp(130px, 5vw, 170px);
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 25px;
@@ -202,7 +202,7 @@ main {
     justify-content: space-between;
     width: 100%;
     max-width: 560px;
-    height: 170px;
+    height: clamp(130px, 5vw, 170px);
     gap: clamp(10px, 2vw, 20px);
     
 }
