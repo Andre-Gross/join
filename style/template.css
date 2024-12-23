@@ -169,7 +169,11 @@
 }
 
 
-@media (min-width: 1000px) {
+@media (min-width: 660px) {
+
+    .header{
+        z-index: inherit;
+    }
 
     .navbar {
         position: fixed;
@@ -177,7 +181,7 @@
         top: 0;
         padding: 0;
         height: 100%;
-        width: 200px;
+        width: 230px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -238,7 +242,7 @@
 }
 
 
-@media (max-width: 1000px) {
+@media (max-width: 660px) {
     .navbar .logo {
         display: none;
         /* Logo vollständig ausblenden */
