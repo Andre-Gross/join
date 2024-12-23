@@ -276,13 +276,6 @@ h1 {
     height: 18px;
 }
 
-@media (min-width: 1000px) {
-    #board {
-        padding-left: 200px;
-    }
-}
-
-
 @media (max-width: 1000px) {
     .container-fluid {
         display: flex;
