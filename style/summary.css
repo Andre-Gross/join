@@ -199,10 +199,12 @@ main {
 
 .task-overview {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     max-width: 560px;
     height: 170px;
     gap: clamp(10px, 2vw, 20px);
+    
 }
 
 .deadline {
