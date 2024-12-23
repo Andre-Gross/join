@@ -109,12 +109,3 @@
     filter: brightness(0) invert(1);
 }
 
-@media (min-width: 1000px) {
-    .container {
-        flex-direction: row;
-        padding-left: 200px;
-        justify-content: space-between;
-        max-width: 100%;
-        height: calc(100vh - 160px);
-    }
-}
