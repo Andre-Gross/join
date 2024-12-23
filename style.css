@@ -6,7 +6,7 @@
     --border-color: #d1d1d1;
     --bs-btn-active-bg: #2A3647;
     --textarea-border-color: #e8e8e8;
-    --invalid-border-color: #c9999f;
+    /* --invalid-border-color: #c9999f; */
     --bs-btn-active-color: #2A3647;
     --button-width: 180px;
     --button-height: 51px;
@@ -16,6 +16,9 @@
     --button-hover-background-color: #29ABE2;
     --white-color: #FFFFFF;
 
+    /* Hinzugefügt von André */
+    --invalid-border-color: #FF001F;
+    --input-border-standart: #D1D1D1;
 }
 
 @font-face {
