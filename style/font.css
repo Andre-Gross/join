@@ -1,8 +1,9 @@
 h1 {
+    width: 203px;
+    height: 56px;
     font-weight: 700;
     font-size: 47px;
-    margin-top: 0;
-    padding-top: 0;
+    color: #000000;
 }
 
 h2 {
@@ -41,3 +42,6 @@ p {
     line-height: 1.6;
     margin-bottom: 16px;
 }
+
+
+
