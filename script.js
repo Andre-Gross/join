@@ -22,6 +22,7 @@ function checkContentOfArray(key, arrayToCheck) {
 }
 
 
+
 function clearValue(element) {
     element.value = '';
 }
