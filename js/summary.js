@@ -52,8 +52,8 @@ async function fetchUserName(email, password) {
         if (!response.ok) return null;
 
         const users = await response.json();
-        const user = Object.values(users || {}).find(u => u?.email === email && u?.password === password);
-        return user?.name || null; // Korrektur: Direkt user.name verwenden
+        const user = Object.values(users || {}).find(u => u?.email === email);
+        return user?.name || null;
     } catch (error) {
         console.error("Error fetching user data:", error);
         displayError("Error fetching user data.");
