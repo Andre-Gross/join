@@ -67,7 +67,7 @@ async function getNextStatus() {
  */
 async function postContactToDatabase(data) {
     try {
-        tryPostContactToDatabase(data);
+        await tryPostContactToDatabase(data);
     } catch (error) {
         console.error("Fehler beim Speichern des Kontaktes:", error);
         alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
@@ -104,7 +104,7 @@ async function tryPostContactToDatabase(data) {
  */
 async function postTaskToDatabase(data) {
     try {
-        tryPostTaskToDatabase(data);
+        await tryPostTaskToDatabase(data);
     } catch (error) {
         console.error("Fehler beim Speichern der Aufgabe:", error);
         alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
@@ -135,7 +135,7 @@ async function tryPostTaskToDatabase(data) {
 
 async function putTaskToDatabase(taskId, data) {
     try {
-        tryPutTaskToDatabase(taskId, data);
+        await tryPutTaskToDatabase(taskId, data);
     } catch (error) {
         console.error("Fehler beim Speichern der Aufgabe:", error);
         alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
@@ -195,7 +195,7 @@ async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
 
 async function putContactToDatabase(contactId, data) {
     try {
-        tryPutTaskToDatabase(contactId, data);
+        await tryPutTaskToDatabase(contactId, data);
     } catch (error) {
         console.error("Fehler beim Speichern der Aufgabe:", error);
         alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
@@ -226,7 +226,7 @@ async function tryPutContactToDatabase(contactId, data) {
 
 async function deleteTaskInDatabase(id){
     try {
-        tryDeleteTaskInDatabase(id);
+        await tryDeleteTaskInDatabase(id);
     } catch (error) {
         console.error("Fehler beim Löschen der Aufgabe:", error);
         alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
@@ -251,7 +251,7 @@ async function tryDeleteTaskInDatabase(id) {
 
 async function deleteContactInDatabase(contactId) {
     try {
-        tryPutTaskToDatabase(contactId);
+        await tryPutTaskToDatabase(contactId);
     } catch (error) {
         console.error("Fehler beim Löschen der Aufgabe:", error);
         alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
