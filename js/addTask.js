@@ -137,7 +137,7 @@ async function submitTaskForm(method = 'post', id = '') {
 
     const assignedTo = readAssignedTo();
 
-    if (checkAllInputsHasContent(title, description, dueDate, priority, category, assignedTo)) {
+    if (checkAllInputsHasContent(title, dueDate, category)) {
         const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo)
         if (method === 'put') {
             await putTaskToDatabase(id, data);
@@ -169,8 +169,8 @@ async function submitTaskForm(method = 'post', id = '') {
  * @param {Array} assignedTo - The person(s), who are assigned to do the task
  * @returns {boolean} - Giv the feedback if all inputs contain informations. 
  */
-function checkAllInputsHasContent(title, description, dueDate, priority, assignedTo) {
-    if (title == '' || description == '' || dueDate == '' || priority == '' || assignedTo.length == 0) {
+function checkAllInputsHasContent(title, dueDate, category) {
+    if (title == '' || dueDate == '' || category == '') {
         alert("Bitte fülle alle Felder aus.");
         return false;
     } else {
