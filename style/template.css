@@ -2,6 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    max-width: 1920px;
     width: 100%;
     background-color: #ffffff;
     display: flex;
@@ -11,9 +12,6 @@
     border-bottom: 1px solid #e5e5e5;
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.15);
     height: 80px;
-    /* z-index: 10; */
-
-    /* Andres Hinzufügung */
     z-index: 9999;
 }
 
