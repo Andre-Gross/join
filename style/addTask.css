@@ -24,22 +24,29 @@ body {
 }
 
 
-h1 {
+.headline-container {
     position: fixed;
     top: var(--h1-psition-top);
     left: 0;
     right: 0;
     padding: 48px 16px 16px 16px;
-    background-color: #F6F7F8;
+    background-color: var(--background-color);
     z-index: 9999;
 }
 
 
 form {
     padding-top: calc(var(--h1-psition-top) + var(--h1-height-with-padding) + 1.5rem);
-    margin-bottom: calc(var(--main-button-container-height-with-padding) - 0.5rem + 75px);
+    padding-bottom: calc(var(--main-button-container-height-with-padding) - 0.5rem + 75px);
+    padding-left: 16px;
+    padding-right: 16px;
     gap: 1rem;
+}
 
+
+#modalCard-edit-mode form {
+    width: 100%;
+    margin: 0;
 }
 
 

@@ -73,10 +73,12 @@ function transformNameToId(name, partBeforeName = '', partAfterName = '') {
 function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
     const input = document.getElementById(`input-group-dropdown-${whichDropdown}`)
     const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
+    const inputDummy = document.getElementById(`input-dummy-${whichDropdown}`);
     const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
     const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
 
     toggleDisplayNone(dropdown, displayMode, shallVisible);
+    toggleDisplayNone(inputDummy, 'd-block', shallVisible)
     toggleDisplayNone(arrowDown, displayMode, !shallVisible);
     toggleDisplayNone(arrowUp, displayMode, shallVisible);
 
@@ -391,7 +393,9 @@ function selectPriority(priority) {
  */
 function selectCategory(category, element) {
     document.getElementById('inputCategory').value = category;
+    const inputDummy = document.getElementById('input-dummy-category');
     toggleDisplayNone(element);
+    toggleDisplayNone(inputDummy, 'd-block', false);
 }
 
 
