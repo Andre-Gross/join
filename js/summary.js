@@ -129,120 +129,131 @@ window.addEventListener('resize', handleResize);
 // Initialer Aufruf beim Laden der Seite
 document.addEventListener('DOMContentLoaded', handleResize);
 
-
+/**
+ * Fetches and calculates the summary of tasks from Firebase.
+ *
+ * @async
+ * @function initializeSummary
+ * @returns {Promise<void>} Resolves when the summary is successfully updated or logs an error if something goes wrong.
+ */
 async function initializeSummary() {
     const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
 
     try {
         const response = await fetch(firebaseUrl);
-        const tasks = await response.json();
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
+        const tasks = await response.json();
         if (!tasks) {
-            displayError("No tasks found.");
+            console.log("No tasks found.");
+            updateSummaryElements(0, 0, 0, 0, 0); // Setze alle Werte auf 0, wenn keine Tasks vorhanden sind
             return;
         }
 
-        let todo = 0;
-        let inProgress = 0;
-        let feedback = 0;
-        let done = 0;
-
-        for (let taskId in tasks) {
-            const task = tasks[taskId];
-            if (task.status === "To do") todo++;
-            if (task.status === "In progress") inProgress++;
-            if (task.status === "Await feedback") feedback++;
-            if (task.status === "Done") done++;
-        }
-
+        const { todo, inProgress, feedback, done } = calculateTaskStatusCounts(tasks);
         const total = todo + inProgress + feedback + done;
+
         updateSummaryElements(todo, done, inProgress, feedback, total);
         updateUrgentDeadline(tasks);
-        
 
-    } catch {
+    } catch (error) {
+        console.error("Error loading summary:", error);
         displayError("An error occurred while loading the summary.");
     }
 }
 
+/**
+ * Calculates the number of tasks for each status.
+ *
+ * @function calculateTaskStatusCounts
+ * @param {Object} tasks - The tasks object from Firebase.
+ * @returns {Object} An object containing counts for each task status.
+ */
+function calculateTaskStatusCounts(tasks) {
+    let todo = 0, inProgress = 0, feedback = 0, done = 0;
 
-function updateUrgentDeadline(tasks) {
-    const urgentTasks = Object.values(tasks).filter(t => t.priority === "urgent");
-    if (urgentTasks.length === 0) {
-        setElementText(".date", "No urgent tasks");
-        return;
+    for (let taskId in tasks) {
+        const task = tasks[taskId];
+        if (task.status === "To do") todo++;
+        if (task.status === "In progress") inProgress++;
+        if (task.status === "Await feedback") feedback++;
+        if (task.status === "Done") done++;
     }
 
-    // Sortieren nach Datum
-    urgentTasks.sort((a, b) => new Date(a.finishedUntil) - new Date(b.finishedUntil));
-    const earliest = urgentTasks[0];
-
-    const formatted = formatDateToLongFormat(earliest.finishedUntil);
-    setElementText(".date", formatted);
+    return { todo, inProgress, feedback, done };
 }
 
-
-function formatDateToLongFormat(dateStr) {
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const [year, month, day] = dateStr.split("-");
-    const monthName = months[parseInt(month)-1];
-    return `${monthName} ${parseInt(day)}, ${year}`;
-}
-
-
-function setElementText(selector, value) {
-    const element = document.querySelector(selector);
-    if (element) element.textContent = value;
-}
-
-
-
+/**
+ * Updates the summary UI with the calculated task counts.
+ *
+ * @function updateSummaryElements
+ * @param {number} todo - Count of "To do" tasks.
+ * @param {number} done - Count of "Done" tasks.
+ * @param {number} inProgress - Count of "In progress" tasks.
+ * @param {number} feedback - Count of "Await feedback" tasks.
+ * @param {number} total - Total count of tasks.
+ */
 function updateSummaryElements(todo, done, inProgress, feedback, total) {
-    setElementText(".grid.grid-2 .metric-card:nth-child(1) .count", todo);
-    setElementText(".grid.grid-2 .metric-card:nth-child(2) .count", done);
-    setElementText(".grid.grid-3 .metric-card:nth-child(1) .count", total);        // Alle Tasks
-    setElementText(".grid.grid-3 .metric-card:nth-child(2) .count", inProgress);
-    setElementText(".grid.grid-3 .metric-card:nth-child(3) .count", feedback);
-
-    makeTasksClickable();
+    setElementText("#todo-count", todo);
+    setElementText("#done-count", done);
+    setElementText("#in-progress-tasks", inProgress);
+    setElementText("#feedback-tasks", feedback);
+    setElementText("#total-tasks", total);
 }
 
+/**
+ * Updates the urgent deadline UI with the next upcoming urgent task.
+ *
+ * @function updateUrgentDeadline
+ * @param {Object} tasks - The tasks object from Firebase.
+ */
+function updateUrgentDeadline(tasks) {
+    const urgentTasks = Object.values(tasks).filter(t => t.priority === "urgent");
+    const urgentCount = urgentTasks.length;
 
+    setElementText("#urgent-count", urgentCount);
+
+    if (urgentCount === 0) {
+        setElementText("#urgent-deadline", "No Deadline");
+    } else {
+        urgentTasks.sort((a, b) => new Date(a.finishedUntil) - new Date(b.finishedUntil));
+        const earliest = urgentTasks[0];
+        const formatted = formatDateToLongFormat(earliest.finishedUntil);
+        setElementText("#urgent-deadline", formatted);
+    }
+}
+
+/**
+ * Sets the text content of an element selected by the given selector.
+ *
+ * @function setElementText
+ * @param {string} selector - The CSS selector for the element.
+ * @param {string} value - The text value to set.
+ */
 function setElementText(selector, value) {
     const element = document.querySelector(selector);
     if (element) element.textContent = value;
 }
 
 
+/**
+ * Displays an error message in the UI.
+ *
+ * @function displayError
+ * @param {string} message - The error message to display.
+ */
 function displayError(message) {
     const errorElement = document.getElementById("errorDisplay");
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.remove("d-none");
+        setTimeout(() => {
+            errorElement.classList.add("d-none");
+        }, 5000); // Fehlernachricht nach 5 Sekunden ausblenden
     }
 }
 
-function makeTasksClickable() {
-    const mapping = [
-        { selector: ".grid.grid-2 .metric-card:nth-child(1)", status: "todo" },
-        { selector: ".grid.grid-2 .metric-card:nth-child(2)", status: "done" },
-        { selector: ".grid.grid-3 .metric-card:nth-child(1)", status: "board" },
-        { selector: ".grid.grid-3 .metric-card:nth-child(2)", status: "inprogress" },
-        { selector: ".grid.grid-3 .metric-card:nth-child(3)", status: "feedback" },
-        { selector: ".urgent-card", status: "urgent" } // Hier fügst du Urgent hinzu
-    ];
+// Call initializeSummary on page load
+document.addEventListener("DOMContentLoaded", initializeSummary);
 
-    mapping.forEach(item => {
-        const element = document.querySelector(item.selector);
-        if (element) {
-            element.style.cursor = "pointer";
-            element.addEventListener("click", () => {
-                window.location.href = `board.html?status=${item.status}`;
-            });
-        }
-    });
-}
 
