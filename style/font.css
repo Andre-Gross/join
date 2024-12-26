@@ -10,6 +10,13 @@ h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
 }
 
+.h6{
+    font-size: 20px !important;
+    font-weight: 700;
+    color: #42526E;
+    margin-bottom: 1rem;
+}
+
 .login-container h2,
 .signup-container h2 {
     font-size: 1.75rem;
