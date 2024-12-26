@@ -58,6 +58,8 @@
 }
 
 
+
+
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -243,10 +245,25 @@
 @media (max-width: 660px) {
     .navbar .logo {
         display: none;
-        /* Logo vollständig ausblenden */
     }
 
     .link {
         display: none;
+    }
+
+    .nav-item[data-page="summary"] {
+        order: 1;
+    }
+
+    .nav-item[data-page="board"] {
+        order: 2;
+    }
+
+    .nav-item[data-page="addTask"] {
+        order: 3;
+    }
+
+    .nav-item[data-page="contact"] {
+        order: 4;
     }
 }
