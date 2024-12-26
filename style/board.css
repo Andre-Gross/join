@@ -19,7 +19,9 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    
+    padding: 0;
+    overflow-x: hidden;
+
 }
 
 .board-header {
@@ -48,24 +50,27 @@ h1 {
 
 .board-section {
     border-radius: 8px;
-    padding: 1rem;
-    margin: 1rem;
-    width: 250px;
+    padding: 15px;
+    width: clamp(180px, 100%, 250px);
     max-height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .tasks-container {
-    min-width: 200px;
+    width: clamp(180px, 100%, 250px);
     min-height: 200px;
-    border: 1px solid red;
+
 }
 
 .task {
-    background: white;
-    border-radius: 8px;
+    background: #ffffff;
+    border-radius: 15px;
     padding: 1rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    width: clamp(180px, 100%, 250px);
 }
 
 
@@ -90,6 +95,8 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    width: 200px;
+
 }
 
 .add-button {
@@ -112,6 +119,10 @@ h1 {
     opacity: 0.5;
     border: 2px dashed #29abe1;
     cursor: grabbing;
+}
+
+a, .plus-button {
+height: 20px;
 }
 
 
@@ -297,9 +308,6 @@ h1 {
         align-items: center;
 
     }
-    .task {
-        width: 200px;
-     }
 
 
 }
