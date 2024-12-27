@@ -434,30 +434,36 @@ function addNewSubtask() {
 
 
 function renderNewSubtasks() {
+    const listContainer = document.getElementById('list-subtasks-container')
     const list = document.getElementById('list-subtasks')
-    list.innerHTML = '';
-    for (let i = 0; i < dataSubtasks.length; i++) {
-        const singleSubtask = dataSubtasks[i].subtask;
-        list.innerHTML += /*HTML*/`
-            <div>
-                <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
-                    <li id="" class="">
-                        <p>${singleSubtask}</p>
-                    </li>
-                    <div class="two-img-box">
-                        <img id="input-subtask-pen" src="assets/img/addTask/pen.svg" class="" onclick="toggleEditModeSubtask(${i})">
-                        <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
+    if (dataSubtasks.length > 0) {
+        toggleDisplayNone(listContainer, 'd-block', true);
+        list.innerHTML = '';
+        for (let i = 0; i < dataSubtasks.length; i++) {
+            const singleSubtask = dataSubtasks[i].subtask;
+            list.innerHTML += /*HTML*/`
+                <div>
+                    <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
+                        <li id="" class="">
+                            <p>${singleSubtask}</p>
+                        </li>
+                        <div class="two-img-box">
+                            <img id="input-subtask-pen" src="assets/img/addTask/pen.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                            <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
+                        </div>
+                    </div>
+                    <div id="input-box-current-subtask${i}" class="d-none justify-content-between">
+                        <input id="input-current-subtask${i}" type="text" class="">
+                        <div class="two-img-box">
+                            <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
+                            <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
+                        </div>
                     </div>
                 </div>
-                <div id="input-box-current-subtask${i}" class="d-none justify-content-between">
-                    <input id="input-current-subtask${i}" type="text" class="">
-                    <div class="two-img-box">
-                        <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
-                        <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
-                    </div>
-                </div>
-            </div>
-        `
+            `
+        }
+    } else {
+        toggleDisplayNone(listContainer, 'd-block', false);
     }
 }
 

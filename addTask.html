@@ -104,27 +104,31 @@
         <div class="d-flex flex-column gap-05">
             <label for="input-subtask">Subtasks</label>
             <div class="w-100">
-                <div class="input-group" onclick="">
-                    <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
-                        oninput="" onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
+                <div class="input-group w-100" onclick="">
+                    <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask" oninput=""
+                        onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
                     <div id="input-subtask-plus-box"
                         class="input-single-img-container d-flex justify-content-center align-items-center"
                         onclick="focusElement(document.getElementById('input-subtask'))">
                         <img id="input-subtask-plus" src="assets/img/addTask/plus-dark.svg" class="">
                     </div>
-                    <div id="input-subtask-two-img-box" class="input-two-img-container two-img-box d-none">
-                        <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
-                            onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
-                        <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
-                            onclick="addNewSubtask()">
+                    <div id="input-subtask-two-img-box" class="input-single-img-container two-img-box d-none">
+                        <div class="single-img-box d-flex justify-content-center align-items-center">
+                            <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
+                                onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
+                        </div>
+                        <div class="single-img-box d-flex justify-content-center align-items-center">
+                            <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
+                                onclick="addNewSubtask()">
+                        </div>
                     </div>
                 </div>
-                <div id="list-subtasks-container" class="">
+                <div id="list-subtasks-container" class="d-none">
                     <ul id="list-subtasks"></ul>
                 </div>
             </div>
         </div>
-        <p><span class="c-invalid-border-color">*</span>This field is required</p>
+        <p id="required-text"><span class="c-invalid-border-color">*</span>This field is required</p>
     </form>
 
     <div class="main-btn-container d-flex justify-content-end w-100">
