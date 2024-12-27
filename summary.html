@@ -9,9 +9,9 @@
     <link rel="icon" href="./assets/img/general/favicon.svg" type="image/png">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style/font.css">
-    <link rel="stylesheet" href="./style/summary.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/summary.css">
     <script src="./js/summary.js"></script>
     <script src="./script.js"></script>
 </head>
@@ -28,60 +28,69 @@
             <div id="greeting"></div>
             <div id="userName" class="text-primary"></div>
         </div>
+
         <div id="main-content" class="hidden">
             <div class="metric-cards">
-                <div class="metric-card todo-card" onclick="window.location.href='board.html'">                  
+                <!-- To-Do Card -->
+                <div class="metric-card todo-card" onclick="window.location.href='board.html?status=todo'">
                     <img src="./assets/img/summary/sum-pen-dark.svg" alt="Icon">
                     <div class="metric-content">
-                        <span class="count">1</span>
+                        <span id="todo-count" class="count">0</span>
                         <span class="label">To-do</span>
                     </div>
                 </div>
-                <div class="metric-card done-card" onclick="window.location.href='board.html'">
+                <!-- Done Card -->
+                <div class="metric-card done-card" onclick="window.location.href='board.html?status=done'">
                     <img src="./assets/img/summary/sum-tick-dark.svg" alt="Icon">
                     <div class="metric-content">
-                        <span class="count">1</span>
+                        <span id="done-count" class="count">0</span>
                         <span class="label">Done</span>
                     </div>
                 </div>
             </div>
-            <div class="urgent-card" onclick="window.location.href='board.html'">
+        
+            <!-- Urgent Card -->
+            <div class="urgent-card" onclick="window.location.href='board.html?status=urgent'">
                 <div class="urgent-left">
                     <img class="icon" src="./assets/img/summary/circle-urgent.svg" alt="Icon">
                     <div class="urgent-info">
-                        <span class="count">1</span>
+                        <span id="urgent-count" class="count">0</span>
                         <span class="label">Urgent</span>
                     </div>
                 </div>
                 <div class="line"></div>
                 <div class="urgent-right">
                     <div class="deadline">
-                        <span class="date">October 16, 2022</span>
+                        <span id="urgent-deadline" class="date">No Deadline</span>
                         <span class="upcoming">Upcoming Deadline</span>
                     </div>
                 </div>
             </div>
+        
+            <!-- Task Overview -->
             <div class="task-overview">
                 <div class="metric-card counter-div">
                     <div class="metric-content">
-                        <span class="count">5</span>
+                        <span id="total-tasks" class="count">0</span>
                         <span class="label">Tasks in Board</span>
                     </div>
                 </div>
-                <div class="metric-card counter-div" >
+                <div class="metric-card counter-div">
                     <div class="metric-content">
-                        <span class="count">2</span>
+                        <span id="in-progress-tasks" class="count">0</span>
                         <span class="label">Tasks in Progress</span>
                     </div>
                 </div>
                 <div class="metric-card counter-div">
                     <div class="metric-content">
-                        <span class="count">2</span>
+                        <span id="feedback-tasks" class="count">0</span>
                         <span class="label">Awaiting Feedback</span>
                     </div>
                 </div>
             </div>
         </div>
+        
+
     </main>
     <div w3-include-html="./templates/templates.html"></div>
     <script src="./js/templates.js"></script>

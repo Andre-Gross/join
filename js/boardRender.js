@@ -97,7 +97,6 @@ function initializeDragAndDrop() {
     });
 }
 
-
 /**
  * Updates the task status in Firebase.
  *
@@ -194,6 +193,7 @@ function getStatusFromContainerId(containerId) {
     };
     return statusMapping[containerId] || null;
 }
+
 
 
 
