@@ -1,8 +1,14 @@
 :root {
-    --h1-psition-top: 80px;
+    --h1-position-top: 80px;
     --h1-height-with-padding: 120px;
     --main-button-container-height-with-padding: 83px;
     --standart-input-height: 39.2px;
+    --navbar-width-desktop-mode: 230px;
+}
+
+
+h1 {
+    padding: 0;
 }
 
 
@@ -26,7 +32,7 @@ body {
 
 .headline-container {
     position: fixed;
-    top: var(--h1-psition-top);
+    top: var(--h1-position-top);
     left: 0;
     right: 0;
     padding: 48px 16px 16px 16px;
@@ -36,11 +42,17 @@ body {
 
 
 form {
-    padding-top: calc(var(--h1-psition-top) + var(--h1-height-with-padding) + 1.5rem);
+    padding-top: calc(var(--h1-position-top) + var(--h1-height-with-padding) + 1.5rem);
     padding-bottom: calc(var(--main-button-container-height-with-padding) + var(--template-height-with-padding) + 45px);
     padding-left: 16px;
     padding-right: 16px;
+    flex-direction: column;
     gap: 1rem;
+}
+
+
+#form-subcontainer {
+    flex-direction: column;
 }
 
 
@@ -262,14 +274,28 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-.main-btn-container {
+#form-footer {
     z-index: 9000;
     position: fixed;
     bottom: calc(80px);
     right: 0;
     background-color: #F6F7F8;
-    gap: 32px;
     padding: 12px 16px 20px 16px;
+}
+
+
+.required-text-mobile-mode {
+    display: block;
+}
+
+
+#required-text-desktop-mode {
+    display: none;
+}
+
+
+.main-btn-container {
+    gap: 32px;
 }
 
 .btn-form {
@@ -285,28 +311,76 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
-#required-text {
+.required-text {
     line-height: 24px;
     padding: 0;
     margin: 0;
 }
 
 
-/* Neu hinzugefügt für die Buttons */
+@media (min-width: 1000px) {
 
-/* .btn-container{
-    display: flex;
-    gap: 32px;
-    justify-content: end;
-    margin-top: 16px;
+    body {
+        position: fixed;
+        top: 0;
+    }
+
+
+    #position-desktop-mode {
+        margin-top: var(--template-height-with-padding);
+        margin-left: calc(var(--navbar-width-desktop-mode));
+        width: calc(100vw - var(--navbar-width-desktop-mode));
+        max-width: min(calc(100vw - var(--navbar-width-desktop-mode)), calc(1980px - var(--navbar-width-desktop-mode)));
+    }
+
+
+    .headline-container {
+        position: unset;
+        background-color: unset;
+        padding: 110px 0 48px 0;
+    }
+
+
+    form {
+        margin-left: 0;
+        padding: 0;
+        justify-content: start;
+        align-items: center;
+        flex-direction: row;
+    }
+
+
+    .form-subcontainer:first-child {
+        padding-right: 48px;
+    }
+
+
+    .form-subcontainer:last-child {
+        border-left: 1px solid var(--input-border-standart);
+        padding-left: 48px;
+    }
+
+
+    #form-footer {
+        position: sticky;
+        bottom: 0;
+        padding-bottom: 79px;
+        background-color: unset;
+    }
+
+
+    #required-text-mobile-mode {
+        display: none;
+    }
+
+
+    #required-text-desktop-mode {
+        display: block;
+        flex-grow: 1;
+    }
+
+
+    .main-btn-container {
+        flex-grow: 1;
+    }
 }
-
-.btn-outline-secondary{
-    width: 110px !important;
-    height: 56px !important;
-}
-
-.btn-primary{
-    width: 183px !important;
-    height: 56px !important;
-} */
