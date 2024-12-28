@@ -1,3 +1,5 @@
-@media (min-width: 0px){
-    /* Add your code here */
+@media (max-width: 350px){
+   #idShortName {
+       display: none;
+   }
 }
