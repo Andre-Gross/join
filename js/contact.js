@@ -14,14 +14,31 @@ async function contactMain() {
   ids = [];
   await loadContacts();
   await shortName();
+  
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
+  let currentLetter = ""; // Verfolgt den aktuellen Buchstaben
+
   for (let i = 0; i < names.length; i++) {
+    let firstLetter = names[i][0].toUpperCase(); // Erster Buchstabe des Namens
+
+    if (firstLetter !== currentLetter) {
+      // Füge Überschrift für den neuen Buchstaben hinzu
+      contactMain.innerHTML += `
+        <h2>${firstLetter}</h2>
+        <div id="idGreyLine"></div>
+      `;
+      currentLetter = firstLetter;
+    }
+
+    // Füge den Kontakt hinzu
     contactMain.innerHTML += getContactMain(i);
   }
+
   contactMain.innerHTML += getAddContactBtn();
 }
+
  
 async function loadContacts() {
   let loadContacts = await getContacts();
@@ -73,7 +90,9 @@ function getAddContact() {
             <h3>Tasks are better with a team!</h3>
             <div id="blueLine"><div>
         </div>
-        <img src="assets/img/contacts/person.svg">
+        <div id="idPersonBackground">
+            <img id="idPerson" src="assets/img/contacts/person.svg">
+        </div>
         <div>
             <div>
                 <input id="idNameAddContact" type="text" name="name" placeholder="Name">
@@ -87,6 +106,18 @@ function getAddContact() {
         </div>
     `;
 }
+
+
+function addContact() {
+  let addContact = document.getElementById("idContactMain");
+  addContact.innerHTML += getAddContact();
+
+  // Füge Animation hinzu
+  setTimeout(() => {
+    document.getElementById("idAddContact").classList.add("show");
+  }, 10); // Timeout sorgt dafür, dass die Transition greift
+}
+
 
 async function sortContacts() {
   let contacts = names.map((name, index) => ({
