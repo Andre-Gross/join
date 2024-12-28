@@ -1,0 +1,9 @@
+@media (max-width: 660px) {
+    .container-fluid {
+
+        grid-template-columns: 1fr;
+        justify-items: center;
+
+    }
+
+}
