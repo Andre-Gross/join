@@ -1,6 +1,20 @@
-h2{
+h2 {
     margin-left: 8px;
 }
+
+h3 {
+    font-weight: 400;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+#idH1Title {
+    width: unset;
+    color: #FFFFFF;
+    font-size: 47px;
+    font-weight: 700;
+}
+
 
 #idContactMain {
     display: flex;
@@ -18,7 +32,7 @@ h2{
     width: 100%;
     gap: 8px;
     margin-bottom: 32px;
-    
+
 }
 
 #idGreyLine {
@@ -81,11 +95,25 @@ h2{
 }
 
 /* Avatar colors */
-[data-initials="AM"] { background-color: #FF8A00; }
-[data-initials="AS"] { background-color: #9327FF; }
-[data-initials="BZ"] { background-color: #9327FF; }
-[data-initials="DE"] { background-color: #FF4E9D; }
-[data-initials="EF"] { background-color: #FF8A00; }
+[data-initials="AM"] {
+    background-color: #FF8A00;
+}
+
+[data-initials="AS"] {
+    background-color: #9327FF;
+}
+
+[data-initials="BZ"] {
+    background-color: #9327FF;
+}
+
+[data-initials="DE"] {
+    background-color: #FF4E9D;
+}
+
+[data-initials="EF"] {
+    background-color: #FF8A00;
+}
 
 #idAddContactBtn {
     display: flex;
@@ -119,41 +147,117 @@ h2{
     left: 0;
     right: 0;
     margin: auto;
-    width: 90%; 
-    max-width: 400px; 
-    height: 760px; 
+    width: 90%;
+    max-width: 400px;
+    height: 760px;
     background: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 24px;
     padding: 20px;
     transition: transform 0.5s ease, bottom 0.5s ease;
-    transform: translateY(100%); 
+    transform: translateY(100%);
     z-index: 1000;
-  }
-  
-  #idAddContact.show {
-    bottom: 80px;
-    transform: translateY(0); 
-  }
+}
 
-  #idPersonBackground{
+#idAddContact.show {
+    bottom: 80px;
+    transform: translateY(0);
+    background: linear-gradient(to bottom, #2A3647 50%, white 50%);
+}
+
+#idXBtn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    cursor: pointer;
+}
+
+#blueLine {
+    margin-top: 20px;
+    border: 1px solid #29ABE2;
+    border-radius: 25px;
+    width: 100px;
+}
+
+#idPersonBackground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #d1d1d1;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    border: 3px solid white;
+    width: 120px;
+    height: 120px;
     gap: 8px;
     margin-bottom: 32px;
-  }
 
-  #idPerson{
+    #idPerson {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 43px;
+        height: 43px;
+        filter: brightness(0) invert(1);
+    }
+}
+
+
+#idInput {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
+    flex-direction: column;
+    gap: 16px;
+    position: fixed;
+    width: 100%;
+    bottom: 110px;
+}
+
+#idNameAddContact {
+    background-image: url('../assets/img/contacts/person.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;
+    }
+
+#idMailAddContact {
+    background-image: url('../assets/img/contacts/mail.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;
+}
+
+#idPhoneAddContact {
+    background-image: url('../assets/img/contacts/phone.svg');
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;
+}
+
+
+
+#idNameAddContact,
+#idMailAddContact,
+#idPhoneAddContact {
+    width: calc(100% - 40px);
     height: 40px;
-    filter: brightness(0) invert(1);
-  }
-  
+    padding: 0 10px;
+}
+
+
+
+#idSubmitAddContact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 21px;
+    font-weight: 700;
+}
+
+
+#idSubmitAddContact svg {
+    fill: white;
+}
