@@ -2,14 +2,16 @@
     flex-direction: row;
     justify-content: center;
     max-width: 100%;
-    height: calc(100vh - 160px);
+    height: calc(100vh);
 }
 
 h1 {
     position: relative;
     top: unset;
+}
 
-
+body{
+    position: unset;
 }
 
 .title {
@@ -20,34 +22,12 @@ h1 {
 
 .container-fluid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 1rem;
 
     .grid-item {
         width: clamp(180px, 18vw, 300px);
       }
-
-
-    @media (max-width: 1530px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-
-    @media (max-width: 1000px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-
-    @media (max-width: 780px) {
-        grid-template-columns: 1fr;
-
-    }
-
-
-    @media (min-width: 768px) {
-        grid-template-rows: auto;
-
-    }
 }
 
 .board-header {
@@ -79,7 +59,7 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    width: clamp(180px, 18vw, 300px);
+    width: 100%;
 
 }
 
@@ -318,16 +298,4 @@ a,
 #modalCard-delete-edit-bar img {
     width: 16px;
     height: 18px;
-}
-
-
-
-@media (max-width: 660px) {
-    .container-fluid {
-
-        grid-template-columns: 1fr;
-        justify-items: center;
-
-    }
-
 }
