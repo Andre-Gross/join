@@ -4,7 +4,23 @@ let phones = [];
 let colors = [];
 let shortNames = [];
 let ids = [];
-const COLORS = ["#FF7A00", "#9327FF", "#FF745E", "#FFC700", "#FFE62B", "#FF5EB3", "#00BEE8", "#FFA45E", "#0038FF", "#FF4546", "#6E52FF", "#1FD7C1", "#FC71FF", "#C3FE2B", "#FFBB2B"];
+const COLORS = [
+  "#FF7A00",
+  "#9327FF",
+  "#FF745E",
+  "#FFC700",
+  "#FFE62B",
+  "#FF5EB3",
+  "#00BEE8",
+  "#FFA45E",
+  "#0038FF",
+  "#FF4546",
+  "#6E52FF",
+  "#1FD7C1",
+  "#FC71FF",
+  "#C3FE2B",
+  "#FFBB2B",
+];
 
 async function contactMain() {
   names = [];
@@ -14,7 +30,7 @@ async function contactMain() {
   ids = [];
   await loadContacts();
   await shortName();
-  
+
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
@@ -39,7 +55,6 @@ async function contactMain() {
   contactMain.innerHTML += getAddContactBtn();
 }
 
- 
 async function loadContacts() {
   let loadContacts = await getContacts();
   let contactsArray = Object.values(loadContacts);
@@ -54,7 +69,6 @@ async function loadContacts() {
 
   await sortContacts();
 }
-
 
 function getContactMain(i) {
   return `
@@ -84,29 +98,35 @@ function addContact() {
 
 function getAddContact() {
   return `
-        <div id="idAddContact">
-            <img src="assets/img/general/Vector.svg" alt="x" onclick="contactMain()">
-            <h1>Add contact</h1>
-            <h3>Tasks are better with a team!</h3>
-            <div id="blueLine"><div>
+<div id="idAddContact">
+    <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
+    <h1 id="idH1Title">Add contact</h1>
+    <h3>Tasks are better with a team!</h3>
+    <div id="blueLine">
+        <div>
         </div>
         <div id="idPersonBackground">
             <img id="idPerson" src="assets/img/contacts/person.svg">
         </div>
         <div>
-            <div>
+            <div id="idInput">
                 <input id="idNameAddContact" type="text" name="name" placeholder="Name">
                 <input id="idMailAddContact" type="email" name="email" placeholder="Email">
                 <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
             </div>
-            <div id="idSubmitAddContact" onclick="submitAddContact()">
-                <p id="idSubmit">Create Contact</p>
+            <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
+                Create Contact
                 <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
-            </div>
+            </button>
+            <button id="idCancelAddContact" class="btn btn-outline-secondary" onclick="closeAddContact()">
+                Cancel
+                <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
+            </button>
         </div>
+    </div>
+</div>
     `;
 }
-
 
 function addContact() {
   let addContact = document.getElementById("idContactMain");
@@ -118,6 +138,12 @@ function addContact() {
   }, 10); // Timeout sorgt dafür, dass die Transition greift
 }
 
+function closeAddContact() {
+  let addContactElement = document.getElementById("idAddContact");
+  if (addContactElement) {
+    addContactElement.remove();
+  }
+}
 
 async function sortContacts() {
   let contacts = names.map((name, index) => ({
@@ -222,12 +248,12 @@ function getEditContact(i) {
 }
 
 function submitAddContact() {
-  let name = document.getElementById("idNameAddContact").value; 
-  let mail = document.getElementById("idMailAddContact").value; 
-  let phone = document.getElementById("idPhoneAddContact").value; 
+  let name = document.getElementById("idNameAddContact").value;
+  let mail = document.getElementById("idMailAddContact").value;
+  let phone = document.getElementById("idPhoneAddContact").value;
   let color = getRandomColor();
 
-postContactToDatabase(name, mail, phone, color);
+  postContactToDatabase(name, mail, phone, color);
 }
 
 function notifSucess() {
@@ -246,44 +272,43 @@ async function deleteContact(i) {
 
 function saveEditContact(i) {
   console.log("Save Contact in Progress");
-  let name = document.getElementById("idNameEditContact").value; 
-  let mail = document.getElementById("idMailEditContact").value; 
+  let name = document.getElementById("idNameEditContact").value;
+  let mail = document.getElementById("idMailEditContact").value;
   let phone = document.getElementById("idPhoneEditContact").value;
-  let color = colors[i]; 
+  let color = colors[i];
   let id = ids[i];
   putContactInDatabase(name, mail, phone, color, id);
 }
 
 async function shortName() {
-  shortNames = names.map(name => getInitialsFromName(name));
+  shortNames = names.map((name) => getInitialsFromName(name));
 }
-
 
 async function postContactToDatabase(name, mail, phone, color) {
   try {
-      tryPostContactToDatabase(name, mail, phone, color);
+    tryPostContactToDatabase(name, mail, phone, color);
   } catch (error) {
-      console.error("Fehler beim Speichern des Kontaktes", error);
-      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+    console.error("Fehler beim Speichern des Kontaktes", error);
+    alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
 
 async function tryPostContactToDatabase(name, mail, phone, color) {
   let response = await fetch(BASE_URL + `users/contacts.json`, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "color": color,
-        "email": mail,
-        "name": name,
-        "phone": phone
-      })
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      color: color,
+      email: mail,
+      name: name,
+      phone: phone,
+    }),
   });
 
   if (!response.ok) {
-      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
   }
   alert("Kontakt erfolgreich hinzugefügt.");
 }
@@ -298,54 +323,86 @@ function getRandomColor() {
   return COLORS[randomIndex];
 }
 
-async function deleteContactInDatabase(id){
+async function deleteContactInDatabase(id) {
   try {
-      tryDeleteContactInDatabase(id);
+    tryDeleteContactInDatabase(id);
   } catch (error) {
-      console.error("Fehler beim Löschen des Kontaktes:", error);
-      alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
+    console.error("Fehler beim Löschen des Kontaktes:", error);
+    alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
 
 async function tryDeleteContactInDatabase(id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
-      method: "DELETE",
-      headers: {
-          "Content-Type": "application/json"
-      },
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!response.ok) {
-      throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+    throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
   alert("Kontakt erfolgreich gelöscht.");
 }
 
-async function putContactInDatabase(name, mail, phone, color, id){
+async function putContactInDatabase(name, mail, phone, color, id) {
   try {
-      tryPutContactInDatabase(name, mail, phone, color, id);
+    tryPutContactInDatabase(name, mail, phone, color, id);
   } catch (error) {
-      console.error("Fehler beim Bearbeiten des Kontaktes:", error);
-      alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
+    console.error("Fehler beim Bearbeiten des Kontaktes:", error);
+    alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
 
 async function tryPutContactInDatabase(name, mail, phone, color, id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
-      method: "PUT",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "color": color,
-        "email": mail,
-        "name": name,
-        "phone": phone
-      })
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      color: color,
+      email: mail,
+      name: name,
+      phone: phone,
+    }),
   });
 
   if (!response.ok) {
-      throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+    throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
   alert("Kontakt erfolgreich Bearbeitet.");
+}
+
+function toggleContactButtons() {
+  // Werte der Eingabefelder abrufen und trimmen
+  const name = document.getElementById("idNameAddContact").value.trim();
+  const mail = document.getElementById("idMailAddContact").value.trim();
+  const phone = document.getElementById("idPhoneAddContact").value.trim();
+
+  // Buttons abrufen
+  const deleteBtn = document.getElementById("idDeleteAddContact");
+  const saveBtn = document.getElementById("idSaveAddContact");
+  const submitBtn = document.getElementById("idSubmitAddContact");
+  const cancelBtn = document.getElementById("idCancelAddContact");
+
+  // Überprüfen, ob alle Felder ausgefüllt sind
+  if (name && mail && phone) {
+    // Delete- und Save-Button anzeigen
+    deleteBtn.style.display = "block";
+    saveBtn.style.display = "block";
+
+    // Submit- und Cancel-Button ausblenden
+    submitBtn.style.display = "none";
+    cancelBtn.style.display = "none";
+  } else {
+    // Delete- und Save-Button ausblenden
+    deleteBtn.style.display = "none";
+    saveBtn.style.display = "none";
+
+    // Submit- und Cancel-Button anzeigen
+    submitBtn.style.display = "block";
+    cancelBtn.style.display = "block";
+  }
 }
