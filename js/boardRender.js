@@ -69,7 +69,6 @@ async function boardRender() {
                     <img src="assets/img/general/prio-${
                       task.priority
                     }.png" alt="${task.priority}">
-                    <span>${task.priority}</span>
                 </div>
             </div>
         `;
@@ -206,23 +205,6 @@ function getDragAfterElement(container, y) {
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
 }
-
-/**
- * Gets the CSS class name for the given priority level.
- *
- * @function getPriorityClass
- * @param {string} priority - The priority level (e.g., "urgent", "medium", "low").
- * @returns {string} The CSS class name for the priority.
- */
-function getPriorityClass(priority) {
-  const priorityClasses = {
-    urgent: "priority-high",
-    medium: "priority-medium",
-    low: "priority-low",
-  };
-  return priorityClasses[priority] || "";
-}
-
 /**
  * Converts container IDs back to task statuses.
  *
