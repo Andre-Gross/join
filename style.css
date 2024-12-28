@@ -7,8 +7,8 @@
     --bs-btn-active-bg: #2A3647;
     --textarea-border-color: #e8e8e8;
     --bs-btn-active-color: #2A3647;
-    --button-width: 180px;
-    --button-height: 51px;
+    --button-width: 200px;
+    --button-height: 50px;
     --border-radius: 8px;
     --font-family: 'Inter', sans-serif;
     --global-margin-top: 100px;
@@ -87,7 +87,6 @@ footer{
 .btn-primary:hover, .btn-dark:hover {
     background-color: var(--button-hover-background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
 }
 
 .btn-outline-secondary {
