@@ -106,21 +106,23 @@ function getAddContact() {
         <div id="idPersonBackground">
             <img id="idPerson" src="assets/img/contacts/person.svg">
         </div>
-          <div id="idInput">
-            <input id="idNameAddContact" type="text" name="name" placeholder="Name">
-              <input id="idMailAddContact" type="email" name="email" placeholder="Email">
-              <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
-          </div>
-          <div id="idContactBtns">
-            <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
-              Create Contact
-              <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
-            </button>
-            <button id="idCancelAddContact" class="btn btn-outline-secondary" onclick="closeAddContact()">
-              Cancel
-              <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
-            </button>
-          </div>
+        <div>
+            <div id="idInput">
+                <input id="idNameAddContact" type="text" name="name" placeholder="Name">
+                <input id="idMailAddContact" type="email" name="email" placeholder="Email">
+                <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
+            </div>
+            <div id="idContactBtns">
+                <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
+                    Create Contact
+                    <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
+                </button>
+                <button id="idCancelAddContact" class="btn btn-outline-secondary" onclick="closeAddContact()">
+                    Cancel
+                    <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 `;
