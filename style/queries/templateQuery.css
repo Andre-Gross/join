@@ -31,7 +31,7 @@
     .nav-item {
         flex-direction: row;
         justify-content: flex-start;
-        width: 200px;
+        width: 100%;
         padding: 10px 20px;
         gap: 10px;
         font-size: 16px;
