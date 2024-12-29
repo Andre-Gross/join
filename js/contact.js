@@ -171,24 +171,41 @@ function openContact(i) {
 
 function getContactView(i) {
   return `
-        <div id="idheadContactView">
-        <h1 id="idh1Contacts">Contacts</h1> 
-        <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
-        </div>
-        <h3 id="idTitle">Better with a team</h3>
-        <div id="idBlueLine"></div>
-            <div id="idShortName" style="background-color:${colors[i]}">
-                <p id="idShortAlph">${shortNames[i]}</p>
-            </div>
-            <h1>${names[i]}</h1>
-            <h3>Contact Information</h3>
-            <h3>Email</h3>
-            <p id="idMail">${emails[i]}</p>
-            <h3>Phone</h3>
-            <p>${phones[i]}</p>
-            <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
-                <img src="assets/img/contacts/more_vert.svg" alt="editContact">
-            </div>
+<div id="idViewContactCard">
+<div id="idHeadContactView">
+    <h1 id="idh1Contacts">Contacts</h1>
+    <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
+</div>
+    <h3 id="idTitle">Better with a team</h3>
+    <div id="idBlueLine"></div>
+<div id="idContactName">
+    <div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
+        <p id="idShortAlph" class="classShortAlph">${shortNames[i]}</p>
+    </div>
+    <h1 id="idH1Name">${names[i]}</h1>
+</div>
+<div id="idContactInfoContainer">
+    <h3 id="idH3Title">Contact Information</h3>
+    <table>
+        <tr>
+            <th>Email</th>
+        </tr>
+        <tr>
+            <td id="idMail">${emails[i]}</td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+        </tr>
+        <tr>
+            <td id="idPhone">${phones[i]}</td>
+        </tr>
+    </table>
+</div>
+
+    <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
+        <img id="idEditContactBtn" src="assets/img/contacts/3dots-dark-circle.png" alt="editContact">
+    </div>
+</div>
     `;
 }
 
