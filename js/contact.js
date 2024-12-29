@@ -102,30 +102,28 @@ function getAddContact() {
     <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
     <h1 id="idH1Title">Add contact</h1>
     <h3>Tasks are better with a team!</h3>
-    <div id="blueLine">
-        <div>
-        </div>
+    <div id="blueLine"></div>
         <div id="idPersonBackground">
             <img id="idPerson" src="assets/img/contacts/person.svg">
         </div>
-        <div>
-            <div id="idInput">
-                <input id="idNameAddContact" type="text" name="name" placeholder="Name">
-                <input id="idMailAddContact" type="email" name="email" placeholder="Email">
-                <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
-            </div>
+          <div id="idInput">
+            <input id="idNameAddContact" type="text" name="name" placeholder="Name">
+              <input id="idMailAddContact" type="email" name="email" placeholder="Email">
+              <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
+          </div>
+          <div id="idContactBtns">
             <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
-                Create Contact
-                <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
+              Create Contact
+              <img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
             </button>
             <button id="idCancelAddContact" class="btn btn-outline-secondary" onclick="closeAddContact()">
-                Cancel
-                <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
+              Cancel
+              <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
             </button>
-        </div>
+          </div>
     </div>
 </div>
-    `;
+`;
 }
 
 function addContact() {
