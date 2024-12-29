@@ -31,7 +31,7 @@
     .nav-item {
         flex-direction: row;
         justify-content: flex-start;
-        width: 200px;
+        width: 100%;
         padding: 10px 20px;
         gap: 10px;
         font-size: 16px;
@@ -39,7 +39,7 @@
     }
 
     .nav-item:hover {
-        background-color: #2f3f55;
+        background-color: #2A3D59;
     }
 
     .nav-icon {

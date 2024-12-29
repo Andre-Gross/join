@@ -102,9 +102,7 @@ function getAddContact() {
     <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
     <h1 id="idH1Title">Add contact</h1>
     <h3>Tasks are better with a team!</h3>
-    <div id="blueLine">
-        <div>
-        </div>
+    <div id="blueLine"></div>
         <div id="idPersonBackground">
             <img id="idPerson" src="assets/img/contacts/person.svg">
         </div>
@@ -127,7 +125,7 @@ function getAddContact() {
         </div>
     </div>
 </div>
-    `;
+`;
 }
 
 function addContact() {
