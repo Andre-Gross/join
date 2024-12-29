@@ -203,7 +203,7 @@ function getContactView(i) {
 </div>
 
     <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
-        <img id="idEditContactBtn" src="assets/img/contacts/3dots-dark-circle.png" alt="editContact">
+        <img id="idEditContactBtn" src="assets/img/contacts/3dots.svg" alt="editContact">
     </div>
 </div>
     `;
