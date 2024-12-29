@@ -72,10 +72,15 @@ h3 {
 #idMail {
     color: #017CEE;
     font-size: 16px;
-
     font-weight: 400;
     text-decoration: none;
     margin-bottom: 0;
+}
+
+#idPhone{
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
 }
 
 #idShortAlph {
@@ -194,17 +199,16 @@ h3 {
     height: 120px;
     gap: 8px;
     margin-bottom: 32px;
-
-    #idPerson {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 43px;
-        height: 43px;
-        filter: brightness(0) invert(1);
-    }
 }
 
+#idPerson {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 43px;
+    height: 43px;
+    filter: brightness(0) invert(1);
+}
 
 #idInput {
     display: flex;
@@ -219,7 +223,7 @@ h3 {
     background-image: url('../assets/img/contacts/person.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
-    }
+}
 
 #idMailAddContact {
     background-image: url('../assets/img/contacts/mail.svg');
@@ -260,4 +264,117 @@ h3 {
 
 #idSubmitAddContact svg {
     fill: white;
+}
+
+#idViewContactCard {
+    max-width: 660px;
+    width: 100%;
+    position: fixed;
+    top: 80px;
+    bottom: 80px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    background-color: #F6F7F8;
+    padding: 20px;
+}
+
+#idHeadContactView {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#idVector {
+    width: 32px;
+}
+
+#idViewContactCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    /* Abstand zwischen den Elementen */
+    padding: 20px;
+}
+
+#idTitle {
+    color: #2A3647;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+#idBlueLine {
+    border: 2px solid #29ABE2;
+    border-radius: 25px;
+    width: 100px;
+}
+
+#idContactName {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 25px;
+}
+
+.classShortName {
+    width: 80px !important;
+    height: 80px !important;
+    border: 2px solid #FFFFFF;
+}
+
+.classShortAlph {
+    font-size: 27px !important;
+    color: #FFFFFF !important;
+}
+
+#idH1Name {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 27px;
+    font-weight: 700;
+    color: #2A3647;
+}
+
+#idH3Title {
+    font-size: 20px;
+    font-weight: 400;
+    color: #000000;
+}
+
+#idContactInfoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th{
+    font-weight: 700;
+    font-size: 16px;
+    color: #000000;
+}
+
+th,
+td {
+    padding: 8px 0;
+}
+
+#idEditContactBtn{
+    position: fixed;
+    bottom: 120px;
+    right: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
