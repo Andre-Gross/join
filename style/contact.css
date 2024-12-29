@@ -120,7 +120,7 @@ h3 {
     background-color: #FF8A00;
 }
 
-#idAddContactBtn, #idEditDeleteBtn {
+#idAddContactBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +135,7 @@ h3 {
     transition: background-color 0.2s ease;
 }
 
-#idAddContactBtn:hover, #idEditDeleteBtn:hover {
+#idAddContactBtn:hover {
     background-color: #29ABE2;
 }
 
@@ -148,13 +148,16 @@ h3 {
 #idAddContact {
     top: 80px;
     position: fixed;
+    left: 0;
     right: 0;
     margin: auto;
     width: 90%;
+    max-width: 400px;
     height: 760px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 24px;
     padding: 20px;
+    transition: transform 0.5s ease, bottom 0.5s ease;
     transform: translateY(100%);
     z-index: 1000;
 }
@@ -365,3 +368,11 @@ td {
     padding: 8px 0;
 }
 
+#idEditContactBtn{
+    position: fixed;
+    bottom: 120px;
+    right: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
