@@ -120,7 +120,7 @@ h3 {
     background-color: #FF8A00;
 }
 
-#idAddContactBtn {
+#idAddContactBtn, #idEditDeleteBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,7 +135,7 @@ h3 {
     transition: background-color 0.2s ease;
 }
 
-#idAddContactBtn:hover {
+#idAddContactBtn:hover, #idEditDeleteBtn:hover {
     background-color: #29ABE2;
 }
 
@@ -370,11 +370,3 @@ td {
     padding: 8px 0;
 }
 
-#idEditContactBtn{
-    position: fixed;
-    bottom: 120px;
-    right: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
