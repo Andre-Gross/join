@@ -43,7 +43,7 @@ body {
     font-family: var(--font-family);
     font-weight: normal;
     font-style: normal;
-
+    overflow: hidden;
 }
 
 a {
@@ -137,20 +137,4 @@ footer{
 /* Der Code von irgendjemanden anderen */
 #idVector:hover {
     cursor: pointer;
-}
-
-@media (min-width: 660px) {
-
-    body{
-        padding-left: 270px;
-        padding-top: 80px;
-        padding-bottom: 0;
-    }
-    .header-container{
-        padding-right: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
 }
