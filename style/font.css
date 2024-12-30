@@ -1,6 +1,4 @@
 h1 {
-    width: 203px;
-    height: 56px;
     font-weight: 700;
     font-size: 47px;
     color: #000000;
@@ -8,6 +6,11 @@ h1 {
 
 h2 {
     font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+h5 {
+    font-weight: 700;
+    font-size: 27px;
 }
 
 .h6{
@@ -50,5 +53,8 @@ p {
     margin-bottom: 16px;
 }
 
-
+.textblue {
+    color: #29ABE2;
+   }
+   
 
