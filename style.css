@@ -133,7 +133,13 @@ footer{
 }
 
 
-/* Der Code von irgendjemanden anderen */
+/* Der Code von Kay */
 #idVector:hover {
     cursor: pointer;
+}
+
+/* Der Code von Relja */
+
+.textblue {
+ color: #29ABE2;
 }
