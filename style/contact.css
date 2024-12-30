@@ -3,7 +3,7 @@ body {
 }
 
 h2 {
-    margin-left: 8px;
+    margin-left: 20px;
 }
 
 h3 {
@@ -68,7 +68,7 @@ h3 {
 }
 
 #idGreyLine {
-    width: 90%;
+    width: 100%;
     border: 1px solid #d1d1d1;
 }
 
@@ -82,6 +82,7 @@ h3 {
     border-radius: 100%;
     font-weight: 500;
     color: white;
+    border: 2px solid #FFFFFF;
 }
 
 #idNameMailshort {
@@ -89,7 +90,7 @@ h3 {
     align-items: center;
     cursor: pointer;
     gap: 24px;
-    padding: 15px 0;
+    padding: 16px 16px;
     width: 100%;
 }
 
@@ -97,6 +98,7 @@ h3 {
     font-size: 20px;
     font-weight: 400;
     margin-bottom: 4px;
+    align-self: flex-start;
 }
 
 #idMail {
@@ -105,12 +107,14 @@ h3 {
     font-weight: 400;
     text-decoration: none;
     margin-bottom: 0;
+    cursor: pointer;
 }
 
 #idPhone {
     font-size: 16px;
     font-weight: 400;
     color: #000000;
+    cursor: pointer;
 }
 
 #idShortAlph {
