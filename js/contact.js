@@ -231,9 +231,19 @@ function getContactView(i) {
         </table>
     </div>
 
-    <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
-        <img id="idEditContactBtn" src="assets/img/contacts/3dots.svg" alt="editContact">
+<div id="idEditDeleteBtn" onclick="toggleDropdownMenu(${i})">
+    <img id="idEditContactBtn" src="assets/img/contacts/3dots.svg" alt="editContact">
+<div id="dropdownMenu-${i}" class="d-menu-2 dm-hidden">
+    <div onclick="editContact(${i})">
+        <img src="assets/img/contacts/pen.svg" alt="Edit" class="icon"> Edit
     </div>
+    <div onclick="deleteContact(${i})">
+        <img src="assets/img/contacts/bin.svg" alt="Delete" class="icon"> Delete
+    </div>
+</div>
+
+</div>
+   
 </div>
     `;
 }
@@ -261,35 +271,40 @@ function getEditContactBtn(i) {
 function editContact(i) {
   let editContact = document.getElementById("idContactMain");
   editContact.innerHTML += getEditContact(i);
+
+  setTimeout(() => {
+    document.getElementById("idEditContact").classList.add("show");
+  }, 10);
 }
 
 function getEditContact(i) {
   return `
-    <div>
-        <h1>Edit contact</h1><img src="assets/img/contacts/close.svg" alt="return" onclick="contactMain()">
-        <div id="idBlueLine"></div>
-            <div id="idShortName" style="background-color:${colors[i]}">
-                <p id="idShortAlph">${shortNames[i]}</p>
-            </div>
-            <div>
-                <input id="idNameEditContact" value="${names[i]}" type="text" name="name" placeholder="Name">
-                <input id="idMailEditContact" value="${emails[i]}" type="email" name="email" placeholder="Email">
-                <input id="idPhoneEditContact" value="${phones[i]}" type="Tel" name="phone" placeholder="Phone">
-            </div>
-            <h1>${names[i]}</h1>
-            <h3>Contact Information</h3>
-            <h3>Email<h3>
-            <p id="idMail">${emails[i]}</p>
-            <h3>Phone<h3>
-            <p>${phones[i]}</p>
-            <div id="idDeleteBtn" onclick="deleteContact(${i})">
-            <p>Delete</p>
-            </div>
-            <div id="idSaveEditBtn" onclick="saveEditContact(${i})">
-                <p>Save</p>
-                <img src="assets/img/contacts/check.svg" alt="saveEditContact" >
-            </div>
+<div id="idEditContact">
+    <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="contactMain()">
+    <h1 id="idH1Title">Edit Contact</h1>
+    <h3>Update your contact details</h3>
+    <div id="blueLine"></div>
+    <div id="idShortName-2" style="background-color: ${colors[i]}">
+        <p id="idShortAlph">${shortNames[i]}</p>
     </div>
+    <div>
+        <div id="idInput">
+            <input id="idNameEditContact" type="text" value="${names[i]}" name="name" placeholder="Name">
+            <input id="idMailEditContact" type="email" value="${emails[i]}" name="email" placeholder="Email">
+            <input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone">
+        </div>
+        <div id="idContactBtns">
+            <button id="idDeleteBtn" class="btn btn-outline-secondary" onclick="deleteContact(${i})">
+                Delete
+            </button>
+            <button id="idSaveEditBtn" class="btn btn-primary" onclick="saveEditContact(${i})">
+                Save
+                <img src="assets/img/contacts/check.svg" alt="save">
+            </button>
+        </div>
+    </div>
+</div>
+
     `;
 }
 
@@ -475,3 +490,12 @@ document.addEventListener('click', (event) => {
     event.target.closest('.NameMailShort').classList.add('selected');
   }
 });
+
+function toggleDropdownMenu(index) {
+  const dropdown = document.getElementById(`dropdownMenu-${index}`);
+  if (dropdown.classList.contains('dm-hidden')) {
+      dropdown.classList.remove('dm-hidden');
+  } else {
+      dropdown.classList.add('dm-hidden');
+  }
+}
