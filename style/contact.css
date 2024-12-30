@@ -2,10 +2,6 @@ body {
     overflow: hidden;
 }
 
-h2 {
-    margin-left: 20px;
-}
-
 h3 {
     font-weight: 400;
     font-size: 20px;
@@ -29,6 +25,10 @@ h3 {
     max-height: 100%;
     margin-right: -20px;
     padding: 20px 0;
+}
+
+#idContactMain h2 {
+    margin: 20px;
 }
 
 #idContactMain::-webkit-scrollbar {
@@ -86,12 +86,14 @@ h3 {
 }
 
 #idNameMailshort {
+    margin-top: 5px;
     display: flex;
     align-items: center;
     cursor: pointer;
     gap: 24px;
     padding: 16px 16px;
     width: 100%;
+    height: 80px;
 }
 
 #idName {
@@ -165,7 +167,7 @@ h3 {
     cursor: pointer;
     border-radius: 50%;
     position: fixed;
-    bottom: 88px;
+    bottom: 100px;
     right: 24px;
     transition: background-color 0.2s ease;
 }
@@ -180,7 +182,8 @@ h3 {
     filter: brightness(0) invert(1);
 }
 
-#idAddContact {
+#idAddContact
+ {
     top: 80px;
     position: fixed;
     right: 0;
@@ -192,10 +195,30 @@ h3 {
     padding: 20px;
     transition: transform 0.5s ease, bottom 0.5s ease;
     transform: translateY(100%);
-    z-index: 1000;
+    z-index: 3000;
+}
+
+
+#idEditContact {
+    width: 100%;
+    margin: auto;
+    max-width: 400px;
+    height: 760px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 24px;
+    padding: 20px;
+    transition: transform 0.5s ease, bottom 0.5s ease;
+    transform: translateY(100%);
+    z-index: 3000;
 }
 
 #idAddContact.show {
+    bottom: 80px;
+    transform: translateY(0);
+    background: linear-gradient(to bottom, #2A3647 50%, white 50%);
+}
+
+#idEditContact.show {
     bottom: 80px;
     transform: translateY(0);
     background: linear-gradient(to bottom, #2A3647 50%, white 50%);
@@ -215,7 +238,8 @@ h3 {
     width: 100px;
 }
 
-#idPersonBackground {
+#idPersonBackground,
+#idShortName-2 {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -250,19 +274,22 @@ h3 {
     bottom: 110px;
 }
 
-#idNameAddContact {
+#idNameAddContact,
+#idNameEditContact {
     background-image: url('../assets/img/contacts/person.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
 }
 
-#idMailAddContact {
+#idMailAddContact,
+#idMailEditContact {
     background-image: url('../assets/img/contacts/mail.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
 }
 
-#idPhoneAddContact {
+#idPhoneAddContact,
+#idPhoneEditContact {
     background-image: url('../assets/img/contacts/phone.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
@@ -270,7 +297,10 @@ h3 {
 
 #idNameAddContact,
 #idMailAddContact,
-#idPhoneAddContact {
+#idPhoneAddContact,
+#idNameEditContact,
+#idMailEditContact,
+#idPhoneEditContact {
     width: calc(100% - 40px);
     height: 40px;
     padding: 0 10px;
@@ -287,6 +317,28 @@ h3 {
     transform: translateX(-50%);
     font-size: 21px;
     font-weight: 700;
+}
+
+#idContactBtns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 21px;
+    font-weight: 700;
+}
+
+#idDeleteBtn{
+    width: 82px;
+    }
+
+#idSaveEditBtn{
+    width: 99px;
 }
 
 
@@ -411,4 +463,41 @@ td {
 
 #idEditDeleteBtn:hover {
     background-color: #29ABE2;
+}
+
+.dm-hidden {
+    display: none;
+}
+
+.d-menu-2 {
+    top: unset;
+    background-color: #FFFFFF !important;
+    position: absolute;
+    height: 100px;
+    width: 116px;
+    bottom: 0;
+    right: 0;
+    background-color: #2A3647;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 100px;
+    border-radius: 15% 15% 0 15%;
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Keyframes für die Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        /* Startposition: Rechts außerhalb des Bildschirms */
+    }
+
+    to {
+        transform: translateX(0);
+        /* Endposition: Im sichtbaren Bereich */
+    }
 }
