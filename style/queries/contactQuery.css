@@ -13,9 +13,7 @@
     #idAddContact {
         left: 0 !important;
     }
-}
 
-@media (max-width: 1100px) {
     #idAddContactBtnBig {
         display: none;
     }
@@ -25,7 +23,57 @@
     }
 }
 
+@media (min-width: 660px) and (max-width: 1099px) {
+    #idViewContactCard {
+        left: 230px;
+        max-width: calc(100% - 230px);
+    }
+
+    #idAddContactBtnBig {
+        display: none;
+    }
+
+    #contentText {
+        display: none;
+    }
+}
+
+@media (max-width: 1099px) {
+    #idEditDeleteContainer {
+        display: none;
+    }
+}
+
 @media (min-width: 1100px) {
+
+    #idEditDeleteContainer {
+        width: 160px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 90px;
+        left: 16%;
+    }
+
+    #idEditDeleteContainer svg {
+        height: 19px;
+        width: 30px;
+    }
+
+    #idEditDeleteContainer p {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    #idSideBySide {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
     #idAddContactBtn {
         display: none;
     }
@@ -52,7 +100,7 @@
         left: 700px;
         display: flex;
         justify-content: space-between;
-        
+        align-items: center;
     }
 
     .separator {
@@ -60,10 +108,10 @@
         display: unset;
         border: 3px solid #29ABE2;
         border-radius: 25px;
-        margin: 0 40px ;
+        margin: 0 40px;
     }
 
-    h1{
+    h1 {
         align-self: center;
         margin: 0;
         display: flex;
@@ -74,13 +122,117 @@
         width: auto;
     }
 
-    p{
+    p {
         margin: 0;
         align-self: center;
         font-size: 27px;
         font-weight: 400;
+
     }
-    
+
+    #idViewContactCard {
+        left: 700px;
+        top: 270px;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    #idHeadContactView {
+        display: none;
+    }
+
+    #idTitle {
+        display: none;
+    }
+
+    #idBlueLine {
+        display: none;
+    }
+
+    #idEditDeleteBtn {
+        display: none;
+    }
+
+
+    .NameMailShort:hover {
+        background-color: #F4F4F4;
+        transition: background-color 0.3s;
+        border-radius: 8px;
+    }
+
+    .NameMailShort.selected {
+        background-color: #2A3647; 
+        border-radius: 8px;
+    }
+
+    .NameMailShort.selected p {
+        color: #FFFFFF;
+
+    }
+}
+
+@media (min-width: 660px) {
+
+    #idSaveAddContact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 200px;
+        left: 75%;
+        transform: translateX(-50%);
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    #idDeleteAddContact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 200px;
+        left: 50%;
+        width: 140px;
+        color: #2A3647;
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    #idDeleteAddContact,
+    #idSaveAddContact {
+        display: none;
+
+    }
+
+    #idContactMain {
+        max-width: 400px;
+        width: 100%;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin-left: -40px;
+        max-height: 100%;
+        padding: 20px 30px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 @media (max-width: 1350px) {
@@ -151,69 +303,5 @@
         filter: brightness(0) saturate(100%) invert(12%) sepia(23%) saturate(435%) hue-rotate(180deg) brightness(95%) contrast(91%);
         top: unset;
     }
-
-}
-
-@media (min-width: 660px) {
-
-    #idSaveAddContact {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        bottom: 200px;
-        left: 75%;
-        transform: translateX(-50%);
-        font-size: 21px;
-        font-weight: 700;
-    }
-
-    #idDeleteAddContact {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        bottom: 200px;
-        left: 50%;
-        width: 140px;
-        color: #2A3647;
-        font-size: 20px;
-        font-weight: 400;
-    }
-
-    #idDeleteAddContact,
-    #idSaveAddContact {
-        display: none;
-
-    }
-
-    #idContactMain {
-        max-width: 400px;
-        width: 100%;
-        background-color: #FFFFFF;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        margin-left: -40px;
-        max-height: 100%;
-        padding: 20px 20px;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
