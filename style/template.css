@@ -97,7 +97,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    transform: translateY(0);
 }
 
 .profile-icon-circle {
@@ -125,6 +124,17 @@
     min-width: 200px;
     border-radius: 15% 0 15% 15%;
     padding: 20px 30px;
+    transform: translateX(100%); 
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%); / Startposition: Rechts außerhalb des Bildschirms /
+    }
+    to {
+        transform: translateX(0); / Endposition: Im sichtbaren Bereich */
+    }
 }
 
 .dropdown-item {
