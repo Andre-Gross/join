@@ -72,7 +72,7 @@ async function loadContacts() {
 
 function getContactMain(i) {
   return `
-    <div id="idNameMailshort" onclick="openContact(${i})">
+    <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
         <div id="idShortName" style="background-color:${colors[i]}">
             <p id="idShortAlph">${shortNames[i]}</p>
         </div>
@@ -165,42 +165,71 @@ async function sortContacts() {
 
 function openContact(i) {
   let openContact = document.getElementById("idContactMain");
-  openContact.innerHTML = "";
-  openContact.innerHTML += getContactView(i);
+
+  if (window.innerWidth < 1100) {
+    openContact.innerHTML = "";
+    openContact.innerHTML += getContactView(i);
+  } else {
+    // Überprüfen, ob ein vorheriger contactViewContainer existiert
+    let existingView = document.getElementById("idViewContactCard");
+    if (existingView) {
+      existingView.remove(); // Vorherige Ansicht entfernen
+    }
+
+    // Neues contactViewContainer erstellen und hinzufügen
+    let contactViewContainer = document.createElement("div");
+    contactViewContainer.id = "idViewContactCard";
+    contactViewContainer.innerHTML = getContactView(i);
+    document.body.appendChild(contactViewContainer);
+  }
 }
 
 function getContactView(i) {
   return `
 <div id="idViewContactCard">
-<div id="idHeadContactView">
-    <h1 id="idh1Contacts">Contacts</h1>
-    <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
-</div>
+    <div id="idHeadContactView">
+        <h1 id="idh1Contacts">Contacts</h1>
+        <img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
+    </div>
     <h3 id="idTitle">Better with a team</h3>
     <div id="idBlueLine"></div>
-<div id="idContactName">
-    <div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
-        <p id="idShortAlph" class="classShortAlph">${shortNames[i]}</p>
+    <div id="idContactName">
+        <div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
+            <p id="idShortAlph" class="classShortAlph">${shortNames[i]}</p>
+        </div>
+        <h1 id="idH1Name">${names[i]}</h1>
     </div>
-    <h1 id="idH1Name">${names[i]}</h1>
-</div>
-<div id="idContactInfoContainer">
-    <h3 id="idH3Title">Contact Information</h3>
-    <table>
-        <tr>
-            <th>Email</th>
-        </tr>
-        <tr>
-            <td id="idMail">${emails[i]}</td>
-        </tr>
-        <tr>
-            <th>Phone</th>
-        </tr>
-        <tr>
-            <td id="idPhone">${phones[i]}</td>
-        </tr>
-    </table>
-</div>
+    <div id="idEditDeleteContainer">
+        <div id="idSideBySide" onclick="editContact(${i})">
+            <img src="assets/img/contacts/pen.svg" alt="pencil">
+            <p>Edit</p>
+        </div>
+        <div id="idSideBySide" onclick="deleteContact(${i})">
+            <img src="assets/img/contacts/bin.svg" alt="bin">
+            <p>Delete</p>
+        </div>
+    </div>
+    <div id="idContactInfoContainer">
+        <h3 id="idH3Title">Contact Information</h3>
+        <table>
+            <tr>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td id="idMail">
+                <a href="mailto:${emails[i]}">${emails[i]}</a>
+            </td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+            </tr>
+            <tr>
+                 <td id="idPhone">
+                <a href="tel:${phones[i]}">${phones[i]}</a>
+            </td>
+            </tr>
+        </table>
+    </div>
 
     <div id="idEditDeleteBtn" onclick="editContactBtn(${i})">
         <img id="idEditContactBtn" src="assets/img/contacts/3dots.svg" alt="editContact">
@@ -423,3 +452,26 @@ function toggleContactButtons() {
     cancelBtn.style.display = "block";
   }
 }
+
+//von Kay hinzugefügt
+
+function callPhoneNumber(phoneNumber) {
+  window.location.href = `tel:${phoneNumber}`;
+}
+
+function openEmailClient(email) {
+  window.location.href = `mailto:${email}`;
+}
+
+document.addEventListener('click', (event) => {
+  // Überprüfen, ob das geklickte Element die Klasse 'NameMailShort' hat
+  if (event.target.closest('.NameMailShort')) {
+    // Alle vorhandenen ausgewählten Elemente zurücksetzen
+    document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
+      el.classList.remove('selected');
+    });
+
+    // Das aktuelle Element als ausgewählt markieren
+    event.target.closest('.NameMailShort').classList.add('selected');
+  }
+});
