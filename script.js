@@ -43,7 +43,6 @@ function getInitialsFromName(name) {
     return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
 
-
 /**
  * Navigates the user to the previous page in the browser history.
  */
