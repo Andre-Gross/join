@@ -68,9 +68,6 @@ async function boardRender() {
   }
 }
 
-/**
- * Drag-and-Drop Initialization
- */
 function initializeDragAndDrop() {
   const tasks = document.querySelectorAll(".task");
   const containers = document.querySelectorAll(".tasks-container");
@@ -113,9 +110,6 @@ function initializeDragAndDrop() {
   });
 }
 
-/**
- * Get Container ID by Task Status
- */
 function getContainerIdByStatus(status) {
   const statusContainers = {
     "To do": "todo-container",
@@ -126,9 +120,7 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
-/**
- * Get Priority Class
- */
+
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -138,14 +130,7 @@ function getPriorityClass(priority) {
   return priorityClasses[priority] || "";
 }
 
-/**
- * Updates the task status in Firebase.
- *
- * @async
- * @function updateTaskStatus
- * @param {string} taskId - The ID of the task to update.
- * @param {string} newStatus - The new status of the task.
- */
+
 async function updateTaskStatus(taskId, newStatus) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
@@ -163,14 +148,6 @@ async function updateTaskStatus(taskId, newStatus) {
   }
 }
 
-/**
- * Calculates the element after which the dragging task should be dropped.
- *
- * @function getDragAfterElement
- * @param {HTMLElement} container - The container where the task is being dragged.
- * @param {number} y - The vertical mouse position.
- * @returns {HTMLElement|null} The element after which the dragging task should be placed, or null.
- */
 function getDragAfterElement(container, y) {
   const draggableElements = [
     ...container.querySelectorAll(".task:not(.dragging)"),
@@ -189,13 +166,7 @@ function getDragAfterElement(container, y) {
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
 }
-/**
- * Converts container IDs back to task statuses.
- *
- * @function getStatusFromContainerId
- * @param {string} containerId - The container ID (e.g., "todo-container").
- * @returns {string|null} The task status or null if the container ID is not recognized.
- */
+
 function getStatusFromContainerId(containerId) {
   const statusMapping = {
     "todo-container": "To do",
