@@ -248,11 +248,6 @@ function getContactView(i) {
     `;
 }
 
-function editContactBtn(i) {
-  let editContactBtn = document.getElementById("idEditDeleteBtn");
-  editContactBtn.innerHTML += getEditContactBtn(i);
-}
-
 function getEditContactBtn(i) {
   return `
     <div>
