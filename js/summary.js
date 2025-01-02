@@ -202,6 +202,24 @@ function updateSummaryElements(todo, done, inProgress, feedback, total) {
 }
 
 /**
+ * Formatiert einen Datumsstring in ein lesbares, langes Format (z. B. "1. Januar 2025").
+ *
+ * @function formatDateToLongFormat
+ * @param {string} dateString - Der Datumsstring, der formatiert werden soll.
+ * @returns {string} Der formatierte Datumsstring.
+ */
+function formatDateToLongFormat(dateString) {
+    if (!dateString) return "Ungültiges Datum";
+    
+    const date = new Date(dateString);
+    if (isNaN(date)) return "Ungültiges Datum";
+    
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('de-DE', options); // Verwendet deutsches Format
+}
+
+
+/**
  * Updates the urgent deadline UI with the next upcoming urgent task.
  *
  * @function updateUrgentDeadline
