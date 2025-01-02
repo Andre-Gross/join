@@ -7,20 +7,17 @@ async function boardRender() {
     if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
     const tasksData = await response.json();
 
-    if (!tasksData) {
+    if (!tasksData || Object.keys(tasksData).length === 0) {
       console.log("No tasks found.");
       return;
     }
 
     // Clear all task containers
-    [
-      "todo-container",
-      "progress-container",
-      "feedback-container",
-      "done-container",
-    ].forEach((containerId) => {
-      document.getElementById(containerId).innerHTML = "";
-    });
+    ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
+      (containerId) => {
+        document.getElementById(containerId).innerHTML = "";
+      }
+    );
 
     // Render Tasks
     Object.entries(tasksData).forEach(([taskId, task]) => {
@@ -34,27 +31,40 @@ async function boardRender() {
       taskElement.setAttribute("draggable", "true");
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
+      // Kategorie-Label
+      const categoryClass = task.category
+        ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+        : "bc-category-label-unknown";
+      const categoryHTML = `
+        <div class="category-label ${categoryClass}">
+          ${task.category || "No category"}
+        </div>`;
+
       // Subtasks HTML
       const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+
+      // Priority Image
+      const priorityImage = priorityLabelHTML(task.priority);
+
+      // Render Assigned Contacts
+      const contactsHTML = renderTaskContacts(task.assignedTo || []);
 
       // Task HTML
       taskElement.innerHTML = `
         <div class="task-header">
-          <span class="category-label ${task.category
-            .replace(/\s+/g, "-")
-            .toLowerCase()}">
-              ${task.category || "No category"}
-          </span>
+          ${categoryHTML}
         </div>
         <h4 class="task-title">${task.title}</h4>
         <p class="task-description">${task.description}</p>
         <div class="task-subtasks">${subtasksHTML}</div>
-        <div class="task-footer d-flex justify-content-between align-items-center">
-          <div class="assigned-to">${(task.assignedTo || []).join(", ")}</div>
-          <div class="priority ${getPriorityClass(task.priority)}">
-            <img src="assets/img/general/prio-${task.priority}.png" alt="${task.priority}">
+        <footer class="task-footer d-flex justify-content-between align-items-center">
+          <div class="assigned-contacts d-flex">
+            ${contactsHTML} <!-- Dynamische Kontakte -->
           </div>
-        </div>
+          <div class="task-priority">
+            ${priorityImage}
+          </div>
+        </footer>
       `;
 
       // Append Task to Container
@@ -67,6 +77,28 @@ async function boardRender() {
     console.error("Error loading tasks:", error);
   }
 }
+
+function renderTaskContacts(assignedTo = []) {
+  if (!assignedTo || assignedTo.length === 0) return "";
+
+  const maxContacts = 3; // Maximal 3 Kontakte anzeigen
+  return assignedTo
+    .slice(0, maxContacts) // Nimm die ersten 3 Kontakte
+    .map((contactName) => {
+      const shortName = contactName
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join(""); // Kürzel z. B. "Max Mustermann" -> "MM"
+
+      return `
+        <div class="contact-circle" style="background-color: #9327FF;">
+          <span>${shortName}</span>
+        </div>
+      `;
+    })
+    .join(""); // HTML zusammenfügen
+}
+
 
 function initializeDragAndDrop() {
   const tasks = document.querySelectorAll(".task");
