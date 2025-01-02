@@ -97,16 +97,13 @@ async function loadTasks() {
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
       // Kategorie-Label erstellen
-// Kategorie-Label erstellen
-const categoryClass = task.category
-  ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-  : "bc-category-label-unknown";
-const categoryHTML = `
-  <div class="category-label ${categoryClass}">
-    ${task.category || "No category"}
-  </div>`;
-      // Prioritätsbild rendern
-      const priorityImage = priorityLabelHTML(task.priority);
+      const categoryClass = task.category
+        ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+        : "bc-category-label-unknown";
+      const categoryHTML = `
+        <div class="category-label ${categoryClass}">
+          ${task.category || "No category"}
+        </div>`;
 
       // Berechnung des Fortschritts der Subtasks
       let progressHTML = "";
@@ -125,6 +122,9 @@ const categoryHTML = `
         `;
       }
 
+      // Prioritätsbild rendern
+      const priorityImage = priorityLabelHTML(task.priority);
+
       // Aufgabe rendern
       taskElement.innerHTML = `
         <div class="task-header">
@@ -133,20 +133,23 @@ const categoryHTML = `
         <h4>${task.title}</h4>
         <p>${task.description}</p>
         <p>Due by: ${task.finishedUntil}</p>
-        <div class="task-priority">${priorityImage}</div>
         ${progressHTML}
+        <div class="task-priority">${priorityImage}</div>
       `;
 
       document.getElementById(containerId).appendChild(taskElement);
     });
 
     console.log("Tasks loaded successfully.");
+
+    // Drag-and-Drop initialisieren
+    initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
 }
 
-// Additional Functions for filtering
+
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -199,6 +202,23 @@ async function renderBodySearch() {
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.png" alt="${priority}">`;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Andres Funktionen
