@@ -78,12 +78,14 @@ async function loadTasks() {
       return;
     }
 
+    // Lösche vorhandene Inhalte in den Containern
     ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
       (containerId) => {
         document.getElementById(containerId).innerHTML = "";
       }
     );
 
+    // Rendere Tasks basierend auf ihrem Status
     Object.entries(tasksData).forEach(([taskId, task]) => {
       const containerId = getContainerIdByStatus(task.status);
       if (!containerId) return;
@@ -94,14 +96,46 @@ async function loadTasks() {
       taskElement.setAttribute("draggable", "true");
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-      taskElement.innerHTML = `
-          <h4>${task.title}</h4>
-          <p>${task.description}</p>
-          <p>Due by: ${task.finishedUntil}</p>
-          <p><strong>Priority:</strong> <span class="${getPriorityClass(
-            task.priority
-          )}">${task.priority}</span></p>
+      // Kategorie-Label erstellen
+// Kategorie-Label erstellen
+const categoryClass = task.category
+  ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+  : "bc-category-label-unknown";
+const categoryHTML = `
+  <div class="category-label ${categoryClass}">
+    ${task.category || "No category"}
+  </div>`;
+      // Prioritätsbild rendern
+      const priorityImage = priorityLabelHTML(task.priority);
+
+      // Berechnung des Fortschritts der Subtasks
+      let progressHTML = "";
+      if (task.subtasks && task.subtasks.length > 0) {
+        const completedSubtasks = task.subtasks.filter((subtask) => subtask.isChecked).length;
+        const totalSubtasks = task.subtasks.length;
+        const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+
+        progressHTML = `
+          <div class="subtasks-progress-container d-flex align-items-center">
+            <div class="progress-bar-container">
+              <div class="progress-bar" style="width: ${progressPercentage}%;"></div>
+            </div>
+            <div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks</div>
+          </div>
         `;
+      }
+
+      // Aufgabe rendern
+      taskElement.innerHTML = `
+        <div class="task-header">
+          ${categoryHTML}
+        </div>
+        <h4>${task.title}</h4>
+        <p>${task.description}</p>
+        <p>Due by: ${task.finishedUntil}</p>
+        <div class="task-priority">${priorityImage}</div>
+        ${progressHTML}
+      `;
 
       document.getElementById(containerId).appendChild(taskElement);
     });
@@ -160,6 +194,10 @@ async function renderBodySearch() {
     if (containerId)
       document.getElementById(containerId).appendChild(taskElement);
   });
+}
+
+function priorityLabelHTML(priority) {
+  return `<img src="assets/img/general/prio-${priority}.png" alt="${priority}">`;
 }
 
 
