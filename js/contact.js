@@ -100,9 +100,11 @@ function getAddContact() {
   return `
 <div id="idAddContact">
     <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
+    <div id="headTitle">
     <h1 id="idH1Title">Add contact</h1>
     <h3>Tasks are better with a team!</h3>
     <div id="blueLine"></div>
+    </div>
         <div id="idPersonBackground">
             <img id="idPerson" src="assets/img/contacts/person.svg">
         </div>
@@ -264,44 +266,60 @@ function getEditContactBtn(i) {
 }
 
 function editContact(i) {
-  let editContact = document.getElementById("idContactMain");
-  editContact.innerHTML += getEditContact(i);
+  // Überprüfen, ob ein bestehendes Edit-Modal geöffnet ist, und entfernen
+  const existingEditModal = document.getElementById("idEditContact");
+  if (existingEditModal) {
+    existingEditModal.remove();
+  }
 
+  // Neues Edit-Modal erstellen und anhängen
+  let editContactModal = document.createElement("div");
+  editContactModal.id = "idEditContact";
+  editContactModal.innerHTML = getEditContact(i);
+  document.body.appendChild(editContactModal);
+
+  // Animation hinzufügen
   setTimeout(() => {
-    document.getElementById("idEditContact").classList.add("show");
+    editContactModal.classList.add("show");
   }, 10);
 }
 
 function getEditContact(i) {
   return `
-<div id="idEditContact">
-    <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="contactMain()">
+<img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
+<div id="headTitle">
     <h1 id="idH1Title">Edit Contact</h1>
-    <h3>Update your contact details</h3>
     <div id="blueLine"></div>
-    <div id="idShortName-2" style="background-color: ${colors[i]}">
-        <p id="idShortAlph">${shortNames[i]}</p>
+</div>
+<div id="idShortName-2" style="background-color: ${colors[i]}">
+    <p id="idShortAlph" class="editShortAlph">${shortNames[i]}</p>
+</div>
+<div>
+    <div id="idInput">
+        <input id="idNameEditContact" type="text" value="${names[i]}" name="name" placeholder="Name">
+        <input id="idMailEditContact" type="email" value="${emails[i]}" name="email" placeholder="Email">
+        <input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone">
     </div>
-    <div>
-        <div id="idInput">
-            <input id="idNameEditContact" type="text" value="${names[i]}" name="name" placeholder="Name">
-            <input id="idMailEditContact" type="email" value="${emails[i]}" name="email" placeholder="Email">
-            <input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone">
-        </div>
-        <div id="idContactBtns">
-            <button id="idDeleteBtn" class="btn btn-outline-secondary" onclick="deleteContact(${i})">
-                Delete
-            </button>
-            <button id="idSaveEditBtn" class="btn btn-primary" onclick="saveEditContact(${i})">
-                Save
-                <img src="assets/img/contacts/check.svg" alt="save">
-            </button>
-        </div>
+    <div id="idContactBtns">
+        <button id="idDeleteBtn" class="btn btn-outline-secondary" onclick="deleteContact(${i})">
+            Delete
+        </button>
+        <button id="idSaveEditBtn" class="btn btn-primary" onclick="saveEditContact(${i})">
+            Save
+            <img src="assets/img/contacts/check.svg" alt="save">
+        </button>
     </div>
 </div>
-
-    `;
+  `;
 }
+
+function closeEditContact() {
+  const editContactModal = document.getElementById("idEditContact");
+  if (editContactModal) {
+    editContactModal.remove();
+  }
+}
+
 
 function submitAddContact() {
   let name = document.getElementById("idNameAddContact").value;
