@@ -27,6 +27,20 @@ function clearValue(element) {
     element.value = '';
 }
 
+
+function getContactMain(i) {
+    return `
+      <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
+          <div id="idShortName" style="background-color:${colors[i]}">
+              <p id="idShortAlph">${shortNames[i]}</p>
+          </div>
+          <div id="idNameMail">
+              <p id="idName">${names[i]}</p>
+              <p id="idMail">${emails[i]}</p>
+          </div>
+      </div>
+      `;
+  }
 /**
  * Extracts initials from a user's name.
  *
