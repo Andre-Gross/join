@@ -26,7 +26,6 @@
 @media (min-width: 660px) and (max-width: 1099px) {
     #idViewContactCard {
         left: 230px;
-        max-width: calc(100% - 230px);
     }
 
     #idAddContactBtnBig {
