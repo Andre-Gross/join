@@ -95,25 +95,9 @@ body{
     margin-top: 10px;
 }
 
-.category-label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333; /* Sichere Farbe */
-    background-color: #f0f0f0; /* Optional für Hervorhebung */
-    padding: 4px 8px;
-    border-radius: 4px;
-    display: inline-block;
-}
 
-.category-label.technical-task {
-    background-color: #1FD7C1;
-    color: white; /* Textfarbe für bessere Lesbarkeit */
-}
 
-.category-label.user-story {
-    background-color: #0038FF;
-    color: white;
-}
+
 
 .add-button {
     position: absolute;
@@ -160,14 +144,14 @@ a,
   
   .progress-bar {
     height: 100%;
-    background-color: #4caf50; /* Farbe des Fortschritts */
+    background-color: #4589FF; /* Farbe des Fortschritts */
     border-radius: 4px; /* Gleiche Abrundung wie der Container */
     transition: width 0.3s ease-in-out; /* Animation beim Ändern der Breite */
   }
   
   .subtasks-count {
     font-size: 14px;
-    color: #555; 
+    color: #000000; 
     white-space: nowrap; 
   }
 
@@ -206,11 +190,13 @@ a,
 
 .bc-category-label-technicaltask {
     background-color: #1FD7C1;
+    color: white;
 }
 
 
 .bc-category-label-userstory {
     background-color: #0038FF;
+    color: white;
 }
 
 
