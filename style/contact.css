@@ -130,6 +130,12 @@ h3 {
     color: #FFFFFF;
 }
 
+.editShortAlph {
+    font-size: 47px ! important;
+    color: #FFFFFF;
+    font-weight: 500 ! important;;
+}
+
 #idNameMail {
     display: flex;
     flex-direction: column;
@@ -183,13 +189,13 @@ h3 {
 }
 
 #idAddContact {
-    top: 80px;
+    top: 0;
     position: fixed;
     right: 0;
     margin: auto;
-    max-width: 400px;
+    max-width: 350px;
     min-width: 320px;
-    height: 760px;
+    height: 650px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 24px;
     padding: 20px;
@@ -201,19 +207,20 @@ h3 {
 #idAddContact.show {
     bottom: 80px;
     transform: translateY(0);
-    background: linear-gradient(to bottom, #2A3647 50%, white 50%);
+    background: linear-gradient(to bottom, #2A3647 45%, white 45%);
 }
 
 
 #idEditContact {
+    top: 0;
     position: fixed;
     bottom: -100%;
     left: 50%;
     margin: auto;
-    max-width: 400px;
+    max-width: 350px;
     min-width: 320px;
     width: 100%;
-    height: 760px;
+    height: 650px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 24px;
     padding: 20px;
@@ -224,9 +231,18 @@ h3 {
 
 #idEditContact.show {
     transform: translateX(-50%); 
-    bottom: 25%;
+    bottom: 80px;
     opacity: 1; 
-    background: linear-gradient(to bottom, #2A3647 50%, white 50%);
+    background: linear-gradient(to bottom, #2A3647 45%, white 45%);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#headTitle {
+    height: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 
@@ -247,7 +263,7 @@ h3 {
 #idPersonBackground,
 #idShortName-2 {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
