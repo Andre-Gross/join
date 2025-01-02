@@ -142,6 +142,39 @@ a,
     height: 20px;
 }
 
+.subtasks-progress-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px; /* Abstand zwischen Balken und Zähler */
+  }
+  
+  .progress-bar-container {
+    position: relative;
+    flex: 1; /* Balken füllt den verfügbaren Platz */
+    height: 8px; /* Höhe des Fortschrittsbalkens */
+    background-color: #e0e0e0; /* Hintergrundfarbe des Containers */
+    border-radius: 4px; /* Abgerundete Ecken */
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #4caf50; /* Farbe des Fortschritts */
+    border-radius: 4px; /* Gleiche Abrundung wie der Container */
+    transition: width 0.3s ease-in-out; /* Animation beim Ändern der Breite */
+  }
+  
+  .subtasks-count {
+    font-size: 14px;
+    color: #555; 
+    white-space: nowrap; 
+  }
+
+  .hidden-subtasks {
+    display: none; /* Versteckt den Container */
+  }
+  
 
 
 
@@ -157,6 +190,7 @@ a,
     padding: 32px 24px;
     background-color: white;
     gap: 16px;
+    z-index: 9999;
 }
 
 
@@ -183,6 +217,7 @@ a,
 #modulCard-close {
     width: 24px;
     height: 24px;
+    cursor: pointer;
 }
 
 
@@ -291,6 +326,7 @@ a,
     gap: 8px;
     padding-right: 8px;
     border-right: 1px solid #D1D1D1;
+    cursor: pointer;
 }
 
 
@@ -303,3 +339,4 @@ a,
     width: 16px;
     height: 18px;
 }
+
