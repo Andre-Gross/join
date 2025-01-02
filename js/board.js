@@ -36,43 +36,68 @@ async function filterAndShowTask() {
   }
 }
 
-async function renderBodySearch() {
-  [
-    "todo-container",
-    "progress-container",
-    "feedback-container",
-    "done-container",
-  ].forEach((containerId) => {
-    document.getElementById(containerId).innerHTML = "";
-  });
+function renderAssignedContacts(assignedTo, contacts) {
+  // Kontakte aus der Datenbank herausfiltern
+  const contactEntries = Object.values(contacts);
 
-  Object.entries(currentTasks).forEach(([taskId, task]) => {
-    const taskElement = document.createElement("div");
-    taskElement.classList.add("task");
-    taskElement.id = taskId;
-    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-    taskElement.innerHTML = `
-                <h4>${task.title}</h4>
-                <p>${task.description}</p>
-                <p>Due by: ${task.finishedUntil}</p>
-                <p><strong>Priority:</strong> <span class="${getPriorityClass(
-      task.priority
-    )}">${task.priority}</span></p>
+  // Limitiere auf maximal 3 Kontakte oder füge Platzhalter hinzu
+  const limitedContacts = assignedTo && assignedTo.length > 0
+    ? assignedTo.slice(0, 3)
+    : ["", "", ""]; // Drei transparente Platzhalter-Kreise
+
+  return `
+    <div class="assigned-contacts">
+      ${limitedContacts
+        .map((name) => {
+          if (!name) {
+            // Platzhalter für leere Kontakte (transparenter Kreis)
+            return `
+              <div class="contact-circle" style="background-color: transparent; ">
+              </div>
             `;
-    const containerId = getContainerIdByStatus(task.status);
-    if (containerId)
-      document.getElementById(containerId).appendChild(taskElement);
-  });
+          }
+
+          // Finde den Kontakt in den gespeicherten Daten
+          const contact = contactEntries.find((c) => c.name === name);
+
+          // Fallback für unbekannte Kontakte
+          const color = contact ? contact.color : "#ccc";
+
+          // Kürzel aus Vor- und Nachnamen generieren
+          const nameParts = (contact ? contact.name : name).split(" ");
+          const shortName =
+            nameParts.length > 1
+              ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
+              : nameParts[0][0].toUpperCase();
+
+          return `
+            <div class="contact-circle" style="background-color: ${color}">
+              ${shortName}
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
 }
 
 async function loadTasks() {
-  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
-    const response = await fetch(firebaseUrl);
-    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+    // Lade Tasks und Kontakte gleichzeitig
+    const [tasksResponse, contactsResponse] = await Promise.all([
+      fetch(`${firebaseUrl}/tasks.json`),
+      fetch(`${firebaseUrl}/users/contacts.json`),
+    ]);
 
-    const tasksData = await response.json();
+    if (!tasksResponse.ok || !contactsResponse.ok) {
+      throw new Error("Error fetching data");
+    }
+
+    const tasksData = await tasksResponse.json();
+    const contactsData = await contactsResponse.json();
+
     if (!tasksData) {
       console.log("No tasks found.");
       return;
@@ -125,6 +150,9 @@ async function loadTasks() {
       // Prioritätsbild rendern
       const priorityImage = priorityLabelHTML(task.priority);
 
+      // Kontakte rendern
+      const contactsHTML = renderAssignedContacts(task.assignedTo, contactsData);
+
       // Aufgabe rendern
       taskElement.innerHTML = `
         <div class="task-header">
@@ -132,23 +160,45 @@ async function loadTasks() {
         </div>
         <h4>${task.title}</h4>
         <p>${task.description}</p>
-        <p>Due by: ${task.finishedUntil}</p>
         ${progressHTML}
-        <div class="task-priority">${priorityImage}</div>
+        <div class="task-footer">
+          ${contactsHTML}
+          <div class="task-priority">${priorityImage}</div>
+        </div>
       `;
 
       document.getElementById(containerId).appendChild(taskElement);
     });
 
     console.log("Tasks loaded successfully.");
-
-    // Drag-and-Drop initialisieren
     initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
 }
 
+function renderTaskContacts(assignedTo = []) {
+  if (!assignedTo || assignedTo.length === 0) return "";
+
+  const maxContacts = 3; // Maximal 3 Kontakte anzeigen
+  return assignedTo
+    .slice(0, maxContacts) // Nimm die ersten 3 Kontakte
+    .map((contactName) => {
+      // Kürzel generieren
+      const shortName = contactName
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join(""); // Z. B. "Max Mustermann" -> "MM"
+
+      // Rückgabe der HTML-Struktur für den Kontakt
+      return `
+        <div class="contact-circle" style="background-color: #9327FF;">
+          <span>${shortName}</span>
+        </div>
+      `;
+    })
+    .join(""); // HTML zusammenfügen
+}
 
 function getPriorityClass(priority) {
   const priorityClasses = {
