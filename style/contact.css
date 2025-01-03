@@ -8,12 +8,7 @@ h3 {
     color: #FFFFFF;
 }
 
-#idH1Title {
-    width: unset;
-    color: #FFFFFF;
-    font-size: 47px;
-    font-weight: 700;
-}
+
 
 #idContactMain {
     display: flex;
@@ -133,7 +128,8 @@ h3 {
 .editShortAlph {
     font-size: 47px ! important;
     color: #FFFFFF;
-    font-weight: 500 ! important;;
+    font-weight: 500 ! important;
+    ;
 }
 
 #idNameMail {
@@ -202,6 +198,8 @@ h3 {
     transition: transform 0.5s ease, bottom 0.5s ease;
     transform: translateY(100%);
     z-index: 6000;
+    display: flex;
+    flex-direction: column;
 }
 
 #idAddContact.show {
@@ -226,13 +224,13 @@ h3 {
     padding: 20px;
     transition: bottom 0.5s ease, background 0.5s ease;
     z-index: 6000;
-    opacity: 0; 
+    opacity: 0;
 }
 
 #idEditContact.show {
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     bottom: 80px;
-    opacity: 1; 
+    opacity: 1;
     background: linear-gradient(to bottom, #2A3647 45%, white 45%);
     left: 50%;
     transform: translateX(-50%);
@@ -243,6 +241,13 @@ h3 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
+}
+
+#idH1Title {
+    color: #FFFFFF;
+    font-size: 47px;
+    font-weight: 700;
 }
 
 
