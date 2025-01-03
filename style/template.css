@@ -83,13 +83,11 @@
     white-space: nowrap;
 }
 
-/* Entferne ggf. Fokusrahmen, um Layoutsprünge zu vermeiden */
 .nav-item:focus,
 .nav-item:active {
     outline: none;
 }
 
-/* Burger-Icon */
 #profile-icon-container {
     width: clamp(50px, 5vw, 70px);
     height: clamp(50px, 5vw, 70px);
@@ -137,13 +135,12 @@
     }
 }
 
-/* Keyframes für die Animation */
 @keyframes slideIn {
     from {
-        transform: translateX(100%); /* Startposition: Rechts außerhalb des Bildschirms */
+        transform: translateX(100%); 
     }
     to {
-        transform: translateX(0); /* Endposition: Im sichtbaren Bereich */
+        transform: translateX(0); 
     }
 }
 
