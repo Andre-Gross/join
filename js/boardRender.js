@@ -99,7 +99,6 @@ function renderTaskContacts(assignedTo = []) {
     .join(""); // HTML zusammenfügen
 }
 
-
 function initializeDragAndDrop() {
   const tasks = document.querySelectorAll(".task");
   const containers = document.querySelectorAll(".tasks-container");
@@ -152,7 +151,6 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
-
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -161,7 +159,6 @@ function getPriorityClass(priority) {
   };
   return priorityClasses[priority] || "";
 }
-
 
 async function updateTaskStatus(taskId, newStatus) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
