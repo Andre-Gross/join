@@ -4,6 +4,77 @@
     }
 }
 
+@media (min-width: 660px) {
+
+    #idEditDeleteContainer {
+        width: 160px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 290px;
+        left: 16%;
+    }
+
+    #idSideBySide {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    #idSideBySide p {
+        margin: auto;
+    }
+
+    #idSaveAddContact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 200px;
+        left: 75%;
+        transform: translateX(-50%);
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    #idDeleteAddContact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        bottom: 200px;
+        left: 50%;
+        width: 140px;
+        color: #2A3647;
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    #idDeleteAddContact,
+    #idSaveAddContact {
+        display: none;
+
+    }
+
+    #idContactMain {
+        max-width: 400px;
+        width: 100%;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        margin-left: -40px;
+        max-height: 100%;
+        padding: 20px 30px;
+    }
+
+    #idEditDeleteBtn {
+        display: none;
+    }
+
+}
+
 @media (max-width: 660px) {
     .btn-primary:hover {
         background-color: #2A3647 !important;
@@ -21,9 +92,32 @@
     #contentText {
         display: none;
     }
+
+    #idEditDeleteContainer {
+        display: none;
+    }
 }
 
 @media (min-width: 660px) and (max-width: 1099px) {
+    #idEditDeleteContainer {
+        width: 160px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: absolute;
+        top: 290px;
+        left: 16%;
+    }
+
+    #idSideBySide {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+
     #idViewContactCard {
         left: 230px;
     }
@@ -37,22 +131,11 @@
     }
 }
 
-@media (max-width: 1099px) {
-    #idEditDeleteContainer {
-        display: none;
-    }
-}
 
 @media (min-width: 1100px) {
 
     #idEditDeleteContainer {
-        width: 160px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: absolute;
         top: 90px;
-        left: 16%;
     }
 
     #idEditDeleteContainer svg {
@@ -96,10 +179,12 @@
     #contentText {
         position: absolute;
         top: 200px;
-        left: 700px;
+        left: calc(630px + 30px);
+        width: calc(100% - 630px - 30px);
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
+        text-align: left;
     }
 
     .separator {
@@ -116,7 +201,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 61px;
+        font-size: clamp(45px, 5vw, 61px);
         font-weight: 700;
         width: auto;
     }
@@ -124,7 +209,8 @@
     p {
         margin: 0;
         align-self: center;
-        font-size: 27px;
+        font-size: clamp(20px, 2.5vw, 27px);
+        white-space: nowrap;
         font-weight: 400;
 
     }
@@ -160,7 +246,7 @@
     }
 
     .NameMailShort.selected {
-        background-color: #2A3647; 
+        background-color: #2A3647;
         border-radius: 8px;
     }
 
@@ -170,68 +256,18 @@
     }
 }
 
-@media (min-width: 660px) {
-
-    #idSaveAddContact {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        bottom: 200px;
-        left: 75%;
-        transform: translateX(-50%);
-        font-size: 21px;
-        font-weight: 700;
+@media (max-width: 1220px) {
+    h1 {
+        font-size: 50px;
     }
 
-    #idDeleteAddContact {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        bottom: 200px;
-        left: 50%;
-        width: 140px;
-        color: #2A3647;
+    p {
         font-size: 20px;
-        font-weight: 400;
     }
 
-    #idDeleteAddContact,
-    #idSaveAddContact {
-        display: none;
-
+    .separator {
+        margin: 0 20px;
     }
-
-    #idContactMain {
-        max-width: 400px;
-        width: 100%;
-        background-color: #FFFFFF;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        margin-left: -40px;
-        max-height: 100%;
-        padding: 20px 30px;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 @media (max-width: 1350px) {
