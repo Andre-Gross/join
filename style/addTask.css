@@ -4,10 +4,12 @@
     --main-button-container-height-with-padding: 83px;
     --standart-input-height: 39.2px;
     --navbar-width-desktop-mode: 230px;
+    --form-subcontainer-max-width: 440px;
 }
 
 
 h1 {
+    margin: 0;
     padding: 0;
 }
 
@@ -41,22 +43,31 @@ body {
     left: 0;
     right: 0;
     padding: 48px 16px 16px 16px;
+    max-width: var(--form-subcontainer-max-width);
     background-color: var(--background-color);
     z-index: 9999;
 }
 
 
 form {
-    padding-top: calc(var(--h1-position-top) + var(--h1-height-with-padding) + 1.5rem);
-    padding-bottom: calc(var(--main-button-container-height-with-padding) + var(--template-height-with-padding) + 45px);
-    padding-left: 16px;
-    padding-right: 16px;
+    margin-top: calc(var(--template-height-with-padding) + var(--h1-height-with-padding));
+    padding-bottom: calc((var(--template-height-with-padding) + var(--main-button-container-height-with-padding)));
+    width: max-content;
     flex-direction: column;
-    gap: 1rem;
+    
+    margin-left: 0;
+    margin-right: -16px;
+    padding-right: 16px;
+    padding-top: 0;
+    /* padding-bottom: calc(var(--main-button-container-height-with-padding) + var(--template-height-with-padding) + 45px); */
+    height: calc(100vh - var(--template-height-with-padding) - 178px - 141px);
+
 }
 
 
-#form-subcontainer {
+.form-subcontainer {
+    width: 100%;
+    max-width: 440px;
     flex-direction: column;
 }
 
@@ -280,12 +291,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 #form-footer {
-    z-index: 9000;
+    margin-bottom: var(--template-height-with-padding);
+    padding-top: 12px;
+    padding-left: 16px;
+    padding-bottom: 12px;
+    z-index: 4000;
     position: fixed;
     bottom: calc(80px);
     right: 0;
     background-color: #F6F7F8;
-    padding: 12px 16px 20px 16px;
 }
 
 
@@ -321,5 +335,3 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 0;
     margin: 0;
 }
-
-
