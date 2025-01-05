@@ -269,7 +269,7 @@ function redirectToLogin(isSuccess = false) {
  * @returns {Array} - Array of processed input values.
  */
 function getInputValues() {
-    return ["name", "email", "password", "confirmPassword", "agreeTerms"].map(id =>
+    return ["name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"].map(id =>
         document.getElementById(id).type === "checkbox"
             ? document.getElementById(id).checked
             : document.getElementById(id).value.trim()
@@ -333,6 +333,6 @@ function displayError(message) {
  */
 function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
     if (!agreeTerms) return "Please agree to the terms and conditions.";
-    if (password !== confirmPassword) return "Passwords do not match.";
+    if (password !== confirmPassword) return "Password do not match.";
     return "An unknown validation error occurred.";
 }
