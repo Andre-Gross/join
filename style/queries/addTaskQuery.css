@@ -108,6 +108,7 @@
         justify-content: start;
         align-items: center;
         flex-direction: row;
+        overflow-y: unset;
     }
 
 
