@@ -180,3 +180,13 @@ body.landing-page.loaded #switchExtras {
     width: 150px;
     margin: 30px auto;
 }
+
+.form-check{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-check-label{
+    margin-left: 8px;
+}
