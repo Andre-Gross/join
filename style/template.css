@@ -172,3 +172,14 @@
 .dm-hidden {
     display: none;
 }
+
+.help {
+    position: absolute;
+    top: 40%;
+    right: 108px; 
+}
+
+.help:hover {
+    scale: 130%;
+    cursor: pointer;
+}
