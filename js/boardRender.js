@@ -259,33 +259,22 @@ function readAllKeys(object, without = "") {
 
 
 
-// Ab hier beginnt der Modal-Card-Code
 async function openModal(id) {
-  const tasksAsArray = await getTasksAsArray();
-  const singleTask = tasksAsArray.find((task) => task.id === id);
+  let tasksAsArray = await getTasksAsArray();
+  const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
+  const singleTask = tasksAsArray[singleTaskID];
+  const keys = ['category', 'title', 'description', 'finishedUntil'];
 
-  if (!singleTask) {
-    console.error(`Task mit ID ${id} nicht gefunden.`);
-    return;
-  }
-
-  const keys = ["category", "title", "description", "finishedUntil"];
   renderModal(singleTask, keys);
-  renderDate(singleTask);
+  renderDate(singleTask)
 
-  document
-    .getElementById("modalCard-category-value")
-    .classList.add(
-      `bc-category-label-${singleTask.category
-        .replace(/\s/g, "")
-        .toLowerCase()}`
-    );
+  document.getElementById('modalCard-category-value').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
   renderPriority(singleTask.priority);
+  renderSubtasks(singleTask.id, singleTask.subtasks)
 
-  // Subtasks in der Modal-Card rendern
-  renderSubtasksInModal(singleTask.id, singleTask.subtasks);
-    document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-    document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+  document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
+  document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id) };
+  document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
   toggleDisplayModal();
 }
@@ -293,86 +282,105 @@ async function openModal(id) {
 
 function renderModal(singleTask, allKeys) {
   for (let i = 0; i < allKeys.length; i++) {
-    const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
-    element.innerHTML = singleTask[allKeys[i]];
+      const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
+      element.innerHTML = singleTask[allKeys[i]];
   }
 }
 
+
 function renderDate(singleTask) {
-  let date = singleTask["finishedUntil"];
-  document.getElementById(`modalCard-finishedUntil-value`).innerHTML =
-    formatDate(date);
+  let date = singleTask['finishedUntil'];
+  document.getElementById((`modalCard-finishedUntil-value`)).innerHTML = formatDate(date);
 }
+
 
 function formatDate(date) {
   const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
 }
 
+
 function renderPriority(priority) {
-  let priorityLabel = document.getElementById("modalCard-priority-value");
-  priorityLabel.innerHTML = priorityLabelHTML(priority);
+  let priorityLabel = document.getElementById('modalCard-priority-value');
+  priorityLabel.innerHTML = priorityLabelHTML(priority)
 }
+
 
 function priorityLabelHTML(priority) {
   let HTML = `
-    <span>${capitalizeFirstLetter(priority)}<span>
-    <img src="assets/img/general/prio-${priority}.png" alt="">
-    `;
+  <span>${capitalizeFirstLetter(priority)}<span>
+  <img src="assets/img/general/prio-${priority}.png" alt="">
+  `;
+  return HTML
+}
+
+
+function renderSubtasks(taskId, subtasks) {
+  let modalSubtasksValue = document.getElementById('modalCard-subtasks-value');
+  modalSubtasksValue.innerHTML = renderSubtasksHTML(taskId, subtasks)
+}
+
+
+function renderSubtasksHTML(taskId, subtasks) {
+  let HTML = '';
+  if (!subtasks || subtasks.length === 0) {
+      return HTML;
+  }
+
+  for (let i = 0; i < subtasks.length; i++) {
+      const singleSubtask = subtasks[i];
+      HTML += `
+          <div class="d-flex align-items-center">
+              <label class="custom-checkbox d-flex align-items-center" onclick="changeCheckbox('${taskId}', ${i})">
+                  <input id="checkbox-subtask${i}" type="checkbox" ${singleSubtask.isChecked ? 'checked' : ''}>
+                  <span class="checkbox-image"></span>
+              </label>
+              <p>${singleSubtask.subtask}</p>
+          </div>
+      `;
+  }
+
   return HTML;
 }
 
 
-function renderSubtasksInModal(taskId, subtasks) {
-  const subtasksContainer = document.getElementById("modalCard-subtasks-value");
-
-  // Container leeren und standardmäßig verstecken
-  subtasksContainer.innerHTML = "";
-  subtasksContainer.style.display = "none"; // Explizit verstecken
-
-  // Wenn keine Subtasks existieren, Abbrechen
-  if (!subtasks || subtasks.length === 0) {
-    return; // Keine Subtasks -> Container bleibt versteckt
-  }
-
-  // Wenn Subtasks existieren, Container sichtbar machen
-  subtasksContainer.style.display = "flex"; // Explizit anzeigen
-
-  // Subtasks hinzufügen
-  subtasks.forEach((subtask, index) => {
-    const subtaskItem = document.createElement("div");
-    subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = subtask.isChecked;
-    checkbox.id = `modal-subtask-${taskId}-${index}`;
-
-    const label = document.createElement("label");
-    label.setAttribute("for", `modal-subtask-${taskId}-${index}`);
-    label.textContent = subtask.subtask;
-
-    subtaskItem.appendChild(checkbox);
-    subtaskItem.appendChild(label);
-    subtasksContainer.appendChild(subtaskItem);
-  });
+async function deleteTaskOfModalCard(id){
+  deleteTaskInDatabase(id);
+  toggleDisplayModal()
 }
 
 
-async function saveSubtaskChange(taskId, subtasks) {
-  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
-
-  try {
-    await fetch(firebaseUrl, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ subtasks }),
-    });
-    console.log(`Subtasks für Task ${taskId} erfolgreich aktualisiert.`);
-  } catch (error) {
-    console.error("Fehler beim Aktualisieren der Subtasks:", error);
-  }
+function toggleDisplayModal() {
+  toggleDisplayNone(document.getElementById('board'));
+  toggleDisplayNone(document.getElementById('modalCard'), 'd-flex');
 }
 
+
+async function deleteTaskOfModalCard(id) {
+  await deleteTaskInDatabase(id),
+  toggleDisplayModal();
+  await boardRender()
+}
+
+
+function readAllKeys(object, without = '') {
+  const allKeys = [];
+  for (let i = 0; i < Object.keys(object).length; i++) {
+      const key = Object.keys(object)[i];
+      if (checkContentOfArray(key, without)) {
+          continue;
+      } else {
+          allKeys.push(key);
+      }
+  }
+  return allKeys;
+}
+
+
+function changeCheckbox(taskId, id) {
+  const checkbox = document.getElementById(`checkbox-subtask${id}`);
+  checkbox.checked = !checkbox.checked;
+  console.log('Checked state:', checkbox.checked);
+
+  putNewCheckedToSubtask(taskId, id, checkbox.checked);
+}
