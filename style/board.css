@@ -67,6 +67,7 @@ body {
     display: flex;
     justify-content: space-between; 
     margin-bottom: 10px; 
+    width: 250px;
 }
 
 .section-header h2 {
