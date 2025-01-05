@@ -281,13 +281,17 @@ function getInputValues() {
  */
 function checkFormValidity() {
     const [name, email, password, confirmPassword, agreeTerms] = [
-        "name", "email", "password", "confirmPassword", "agreeTerms"
+        "name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"
     ].map(id =>
         document.getElementById(id).type === "checkbox"
             ? document.getElementById(id).checked
             : document.getElementById(id).value.trim()
     );
-
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Confirm Password:", confirmPassword);
+    console.log("Agree Terms:", agreeTerms);
     const isFormValid = name && email && password && confirmPassword && agreeTerms;
     document.getElementById("registerButton").disabled = !isFormValid;
 }
