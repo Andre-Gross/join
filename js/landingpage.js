@@ -1,3 +1,5 @@
+let isSubmitting = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
@@ -111,6 +113,35 @@ async function logIn() {
 }
 
 /**
+ * Handles the user registration process.
+ */
+async function signUp() {
+    if (isSubmitting) return; // Verhindert mehrfaches Ausführen
+    isSubmitting = true;
+    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+
+    if (!agreeTerms || password !== confirmPassword) {
+        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
+        return;
+    }
+
+    try {
+        const users = await fetchUsers();
+        if (isEmailAlreadyRegistered(users, email)) {
+            redirectToLogin();
+            isSubmitting = false; 
+            return;
+        }
+        await registerNewUser(name, email, password);
+        isSubmitting = false; 
+        redirectToLogin(true);
+    } catch {
+        isSubmitting = false; 
+        displayError("An error occurred during registration. Please try again.");
+    }
+}
+
+/**
  * Handles failed login attempts and shows a reset password option after 3 tries.
  * @param {string} email - The user's email address.
  */
@@ -149,31 +180,6 @@ async function guestLogIn() {
         redirectToSummary(true);
     } catch {
         displayError("An error occurred during guest login. Please try again later.");
-    }
-}
-
-/**
- * Handles the user registration process.
- */
-async function signUp() {
-    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
-
-    if (!agreeTerms || password !== confirmPassword) {
-        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
-        return;
-    }
-
-    try {
-        const users = await fetchUsers();
-        if (isEmailAlreadyRegistered(users, email)) {
-            redirectToLogin();
-            return;
-        }
-
-        await registerNewUser(name, email, password);
-        redirectToLogin(true);
-    } catch {
-        displayError("An error occurred during registration. Please try again.");
     }
 }
 
