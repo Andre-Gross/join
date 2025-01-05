@@ -53,13 +53,12 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 .board-section {
     display: flex;
     flex-direction: column; 
-    padding: 15px; 
     width: 250px;
 }
 
@@ -67,7 +66,7 @@ body {
     display: flex;
     justify-content: space-between; 
     margin-bottom: 10px; 
-    width: 250px;
+    width: 100%;
 }
 
 .section-header h2 {
@@ -84,8 +83,8 @@ body {
 
 .task {
     position: relative;
-    width: 250px !important;
-    height: 260px !important;
+    width: 250px;
+    height: 260px;
     background: #ffffff;
     border-radius: 24px;
     padding: 1rem;
@@ -93,7 +92,9 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05), 2px 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
 }
+
 
 .task h4 {
     margin-top: 1rem;
