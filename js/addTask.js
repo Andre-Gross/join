@@ -545,3 +545,27 @@ function loadFormFunctions() {
         });
     }
 }
+
+// Zu Testzwecken
+async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
+    let tasksAsArray = await getTasksAsArray();
+    const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
+    const singleTask = tasksAsArray[singleTaskID];
+
+    const title = document.getElementById("inputTitle");
+    const description = document.getElementById("textareaDescription");
+    const dueDate = document.getElementById('inputDate');
+    const category = document.getElementById("inputCategory");
+
+    title.value = singleTask.title;
+    description.value = singleTask.description;
+    dueDate.value = singleTask.finishedUntil;
+    selectPriority(singleTask.priority)
+    priority = singleTask.priority;
+    category.value = singleTask.category;
+    dataSubtasks = singleTask.subtasks;
+
+    if (dataSubtasks) {
+        renderNewSubtasks();
+    }
+}
