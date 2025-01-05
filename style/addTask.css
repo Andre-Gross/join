@@ -37,7 +37,7 @@ body {
     right: 0;
     padding: 48px 16px 16px 16px;
     background-color: var(--background-color);
-    z-index: 9999;
+    z-index: 3000;
 }
 
 
@@ -275,7 +275,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 #form-footer {
-    z-index: 9000;
+    z-index: 3000;
     position: fixed;
     bottom: calc(80px);
     right: 0;
