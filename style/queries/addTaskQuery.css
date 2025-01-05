@@ -64,3 +64,31 @@
         flex-grow: 1;
     }
 }
+
+@media (min-width: 660px) and (max-width: 999px) {
+    .headline-container h1 {
+        position: relative;
+        left: 300px;
+    }
+
+
+    .align-items-center {
+        align-items: flex-start !important;
+    }
+
+    .align-items-start {
+        position: relative;
+        left: 300px !important;
+    }
+}
+
+@media (max-width: 659px) {
+    .headline-container {
+        left: unset;
+        right: unset;
+    }
+    .main-btn-container {
+        gap: 16px;
+    }
+
+}
