@@ -89,12 +89,12 @@ main {
     justify-content: center;
     align-items: center;
     padding: 28px 10px;
-    height: clamp(140px, 9vw, 170px);
+    height: clamp(150px, 9vw, 170px);
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 25px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .metric-card:hover {
@@ -111,10 +111,69 @@ main {
     align-items: center;
 }
 
+.metric-content span {
+    color: #000000; /* Standardfarbe: Schwarz */
+    transition: color 0.3s ease; /* Sanfter Übergang bei Farbwechsel */
+}
+
+/* Standardzustand: Weiß sichtbar, Schwarz versteckt */
+.metric-card .white {
+    display: block; /* Weißes Icon anzeigen */
+    transition: opacity 0.3s ease;
+}
+
+.metric-card .black {
+    display: none; /* Schwarzes Icon verstecken */
+    transition: opacity 0.3s ease;
+}
+
+/* Hover-Zustand: Schwarz sichtbar, Weiß versteckt */
+.metric-card:hover .white {
+    display: none; /* Weißes Icon verstecken */
+}
+
+.metric-card:hover .black {
+    display: block; /* Schwarzes Icon anzeigen */
+}
+
+
+/* Farbänderung beim Hover der .metric-card */
+.metric-card:hover .metric-content span {
+    color: #FFFFFF; /* Farbe ändern zu Weiß */
+}
+
+.metric-card:hover .img-container-pen, 
+.metric-card:hover .img-container-tick {
+    background-color: #FFFFFF; /* Hintergrundfarbe ändern */
+    transition: background-color 0.3s ease;
+}
+
+.metric-card:hover .img-container-pen svg, 
+.metric-card:hover .img-container-tick svg {
+    fill: #2A3647; /* SVG-Farbe ändern */
+    transition: fill 0.3s ease;
+}
+
+
 .todo-card,
 .done-card {
     max-width: 425px;
     width: 100%;
+}
+
+.img-container-pen, .img-container-tick {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2A3647;
+}
+
+.img-container-tick img, .img-container-pen img {
+    width: 20px;
+    height: 20px;
 }
 
 .urgent-card {
@@ -130,7 +189,7 @@ main {
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 25px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     margin-top: clamp(10px, 2vw, 20px);
     margin-bottom: clamp(10px, 2vw, 20px);
 }
@@ -142,6 +201,16 @@ main {
     background: #2A3647;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 30px;
+}
+
+.urgent-left span, .urgent-info span {
+    color: #000000; /* Standardfarbe: Schwarz */
+    transition: color 0.3s ease; /* Sanfter Übergang bei Farbwechsel */
+}
+
+/* Farbänderung beim Hover der .metric-card */
+.urgent-card:hover .urgent-left span {
+    color: #FFFFFF; /* Farbe ändern zu Weiß */
 }
 
 .urgent-left {
@@ -156,6 +225,16 @@ main {
     flex-direction: column;
     align-items: center;
     padding-right: 10px;
+}
+
+.urgent-right span, .urgent-deadline span {
+    color: #2A3647;
+    transition: color 0.3s ease; 
+}
+
+
+.urgent-card:hover .urgent-right span {
+    color: #FFFFFF; 
 }
 
 .counter-div {
@@ -182,8 +261,8 @@ main {
 }
 
 .icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
