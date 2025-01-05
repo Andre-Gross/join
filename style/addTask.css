@@ -30,6 +30,11 @@ body {
 }
 
 
+#content-container {
+    padding: 12px 16px 20px 16px;
+}
+
+
 .headline-container {
     position: fixed;
     top: var(--h1-position-top);
