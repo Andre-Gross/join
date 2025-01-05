@@ -153,7 +153,8 @@ async function submitTaskForm(method = 'post', id = '') {
         for (let i = allTasks.length - 1; i > 0; i--) {
             const singleTask = allTasks[i];
             if (singleTask.title === title && singleTask.description === description) {
-                window.location.href = `/board.html#${singleTask.id}`;
+                window.location.href = `./board.html`;
+                break;
             }
         }
     }
