@@ -1,17 +1,18 @@
 @media (max-width: 1400px) {
     .container-fluid {
-        grid-template-columns: repeat(3, 1fr); /* Wechsel zu 3 Spalten */
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 1120px) {
     .container-fluid {
-        grid-template-columns: repeat(2, 1fr); /* Wechsel zu 3 Spalten */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 850px) {
     .container-fluid {
-        grid-template-columns: repeat(1, 1fr); /* Wechsel zu 3 Spalten */
+        grid-template-columns: repeat(1, 1fr);
+        justify-items: center;
     }
 }
