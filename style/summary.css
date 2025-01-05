@@ -342,7 +342,7 @@ main {
     padding: 0px;
     gap: 3px;
     position: absolute;
-    width: 385px;
+    width: auto;
     height: 136px;
     top: 350px;
 }
