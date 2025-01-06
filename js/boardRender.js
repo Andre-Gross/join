@@ -370,21 +370,22 @@ function priorityLabelHTML(priority) {
   return HTML;
 }
 
-// hier nur ein Eventlistener für das aktualisieren der Subtasks hinzugefügt
 function renderSubtasksInModal(taskId, subtasks) {
   const subtasksContainer = document.getElementById("modalCard-subtasks-value");
 
-
+  // Container leeren und standardmäßig verstecken
   subtasksContainer.innerHTML = "";
-  subtasksContainer.style.display = "none"; 
-  subtasksContainer.style.display = "none";
+  subtasksContainer.style.display = "none"; // Explizit verstecken
 
+  // Wenn keine Subtasks existieren, Abbrechen
   if (!subtasks || subtasks.length === 0) {
-    return;
+    return; // Keine Subtasks -> Container bleibt versteckt
   }
 
-  subtasksContainer.style.display = "flex";
+  // Wenn Subtasks existieren, Container sichtbar machen
+  subtasksContainer.style.display = "flex"; // Explizit anzeigen
 
+  // Subtasks hinzufügen
   subtasks.forEach((subtask, index) => {
     const subtaskItem = document.createElement("div");
     subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
@@ -397,14 +398,6 @@ function renderSubtasksInModal(taskId, subtasks) {
     const label = document.createElement("label");
     label.setAttribute("for", `modal-subtask-${taskId}-${index}`);
     label.textContent = subtask.subtask;
-
-    checkbox.addEventListener("change", async () => {
-      subtask.isChecked = checkbox.checked;
-
-       await saveSubtaskChange(taskId, subtasks);
-
-      updateProgressBar(taskId, subtasks);
-    });
 
     subtaskItem.appendChild(checkbox);
     subtaskItem.appendChild(label);
