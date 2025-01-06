@@ -334,7 +334,7 @@ h3 {
 }
 
 
-#idSubmitAddContact {
+#idSubmitAddContact{
     display: flex;
     justify-content: space-between;
     align-items: center;
