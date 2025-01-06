@@ -37,7 +37,7 @@
 body {
     max-width: 1920px;
     height: 100vh;
-    padding: 80px 8px;
+    padding: 80px 16px;
     box-sizing: border-box;
     background-color: var(--background-color);
     font-family: var(--font-family);
