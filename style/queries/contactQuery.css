@@ -79,6 +79,7 @@
         display: none;
     }
 
+
 }
 
 @media (max-width: 660px) {
@@ -138,6 +139,13 @@
 
     #contentText {
         display: none;
+    }
+}
+
+@media (min-width: 660px) and (max-width: 1350px) {
+    #idEditContact.show {
+        left: calc(50% + 115px); /* Mittige Berechnung mit Navbar */
+        transform: translateX(-50%);
     }
 }
 
@@ -288,15 +296,26 @@
     #idAddContact {
         left: 230px;
     }
+
+    #idLogoCard {
+        display: none;
+    }
 }
 
 @media (min-width: 1350px) {
+
+    #idLogoCard{
+        height: 100px;
+        position: fixed;
+        left: 20px;
+        bottom: 65%;
+    }
     #idContactBtns {
         bottom: -55px;
 
     }
 
-    #idAddContact, #idEditContact {
+    #idAddContact{
         top: 0;
         position: fixed;
         right: 0;
@@ -317,10 +336,36 @@
         max-width: 1100px;
     }
 
-    #idAddContact.show, #idEditContact.show {
+    #idAddContact.show{
         bottom: 80px;
         background: linear-gradient(to right, #2A3647 30%, #FFFFFF 30%);
     }
+
+    #idEditContact {
+        top: 0;
+        position: fixed;
+        right: 0;
+        margin: auto;
+        min-width: 320px;
+        height: 650px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 24px;
+        padding: 20px;
+        z-index: 6000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 1100px;
+    }
+
+    #idEditContact.show {
+        bottom: 80px;
+        background: linear-gradient(to right, #2A3647 30%, #FFFFFF 30%);
+        left: calc(50% + 115px); /* Zentriere mit Berücksichtigung der 230px Navbar */
+        transform: translateX(-50%);
+        position: fixed; /* Stelle sicher, dass die Position relativ zum Viewport ist */
+    }
+    
 
     #idPersonBackground, #idShortName-2 {
         position: absolute;
@@ -351,14 +396,15 @@
         transform: translateY(-50%);
     }
 
-    #idSaveEditBtn {
-        position: fixed;
+    #idSubmitAddContact {
+
         bottom: 270px;
         left: 75%;
         transform: translateX(-50%);
     }
 
-    #idSubmitAddContact, #idSaveEditBtn {
+     #idSaveEditBtn {
+        position: fixed;
         bottom: 270px;
         left: 70%;
         transform: translateX(-50%);
