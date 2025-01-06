@@ -132,14 +132,14 @@ body.no-animation #loginCard {
     margin: 0 auto;
 }
 
-/* Footer */
 .footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
 }
 
-/* Extras-Schalter */
+
 #switchExtras {
     opacity: 0;
     visibility: hidden;
@@ -151,7 +151,7 @@ body.landing-page.loaded #switchExtras {
     visibility: visible;
 }
 
-/* Pop-up-Nachrichten */
+
 .popup-message {
     position: fixed;
     bottom: 20px;
