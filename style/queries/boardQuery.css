@@ -1,21 +1,14 @@
-/* Ab 1370px: 3 Spalten */
-@media (max-width: 1370px) {
-    .container-fluid {
-        justify-content: space-between; /* Spalten gleichmäßig verteilen */
-    }
-}
 
-/* Ab 1096px: 2 Spalten */
-@media (max-width: 1096px) {
+@media (max-width: 660px) {
     .container-fluid {
-        justify-content: space-between; /* Spalten gleichmäßig verteilen */
-    }
-}
-
-/* Ab 560px: 1 Spalte */
-@media (max-width: 560px) {
-    .container-fluid {
-        justify-content: center; 
         padding-bottom: 80px;
+
+    }
+}
+/* Ab 560px: 1 Spalte */
+@media (max-width: 556px) {
+    .container-fluid {
+        justify-content: center;
+
     }
 }
