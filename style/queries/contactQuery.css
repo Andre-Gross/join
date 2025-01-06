@@ -88,6 +88,14 @@
         box-shadow: unset !important;
     }
 
+    #idEditContact {
+        top: 80px;
+    }
+
+    #idAddContact {
+        top: 80px;
+    }
+
     #idAddContact {
         left: 0 !important;
     }
