@@ -164,7 +164,6 @@ function getPriorityClass(priority) {
   return priorityClasses[priority] || "";
 }
 
-  try {
 
 function getDragAfterElement(container, y) {
   const draggableElements = [
