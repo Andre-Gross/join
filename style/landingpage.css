@@ -22,32 +22,34 @@ body.landing-page.loaded {
 /* Logo-Container und Animation */
 .logo-container {
     position: fixed;
-    top: 50%;
+    display: flex; /* Flexbox nutzen */
+    justify-content: center; /* Horizontal zentrieren */
+    align-items: center; /* Vertikal zentrieren */
+    top: 50%; /* Startposition: Mitte */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); /* Zentrierung */
+    width: 120px; /* Container-Breite */
+    height: 120px; /* Container-Höhe */
     transition: all 1.5s ease-in-out 1s;
 }
 
 body.landing-page.loaded .logo-container {
-    top: 20px;
-    left: 20px;
-    transform: translate(0, 0);
+    top: 10px; /* Verschieben nach oben */
+    left: 10px; /* Verschieben nach links */
+    transform: translate(0, 0); /* Zentrierung entfernen */
 }
 
+/* Logos */
 .login-logo {
     width: 100px;
     height: 120px;
     transition: all 1.5s ease-in-out 1s;
     position: absolute;
-    top: 0;
-    left: 0;
-    align-self: center;
 }
 
 body.landing-page.loaded .login-logo {
-    width: 50px;
-    height: 65px;
-    transform: translate(0, 0);
+    width: 45px;
+    height: 60px;
 }
 
 /* Initial- und Final-Logo */
@@ -68,6 +70,10 @@ body.landing-page.loaded .initial-logo {
 body.landing-page.loaded .final-logo {
     opacity: 1;
 }
+
+
+
+
 
 /* Karten-Stile */
 .card {
