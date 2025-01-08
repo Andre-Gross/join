@@ -20,13 +20,18 @@
     height: 100%;
     background-color: #ffffff;
     border-radius: 50%;
-     display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: #29ABE2;
     font-size: 18px;
     font-weight: bold;
     border: 2px solid #2A3647;
+    cursor: pointer;
+}
+
+.profile-icon-circle:hover {
+    background-color: #E2E6EC;
 }
 
 /* Navigation */
@@ -92,21 +97,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-}
-
-.profile-icon-circle {
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #29ABE2;
-    font-size: 18px;
-    font-weight: bold;
-    border: 2px solid #2A3647;
-    cursor: pointer;
 }
 
 .d-menu {
