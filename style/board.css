@@ -429,6 +429,7 @@ a,
     url('/assets/img/board/Frame 122.svg');
     background-repeat: no-repeat;
     background-position: right center; 
+    margin-right: 40px;
 }
 
 #idSearch:focus {
@@ -436,32 +437,36 @@ a,
 
 }
 
-.searchBar{
-    width:100%
-}
-
 .AddTaskBtn{
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: row;
     background-color: #2A3747;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.1s ease;
-    width: 138px;
+    width: 228px;
     height: 54px;
     padding:8px;
+    margin-top: 18px;
 }
+
 .AddTaskBtnText{
     font-size: 21px;
     font-weight: 700;
     color: white;
     margin: 0;
-    padding-right: 16px;
-
+    padding-right: 8px;
 }
 
 .AddTaskBtn:hover{
     background-color: #29ABE2;
+}
+
+.searchBar{
+    display:flex;
+    align-items: center;
+    flex-direction: row;
 }
