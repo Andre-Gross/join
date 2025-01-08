@@ -46,9 +46,9 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">To Do</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+                    
+                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'To do')">
+                    
                 </div>
                 <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do">
                      <!-- Tasks will be inserted here by JavaScript -->
@@ -58,9 +58,9 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">In progress</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+                    
+                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'In progress')">
+                
                 </div>
                 <div id="progress-container" class="tasks-container" data-empty-message="No Tasks in Progress">
                     <!-- Tasks will be inserted here by JavaScript -->
@@ -70,9 +70,9 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">Await feedback</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+                  
+                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'Await Feedback')">
+                
                 </div>
                 <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in  Await Feedback">
                     <!-- Tasks will be inserted here by JavaScript -->
