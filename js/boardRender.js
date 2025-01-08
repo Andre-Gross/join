@@ -78,6 +78,7 @@ async function boardRender() {
   }
 }
 
+
 function renderTaskContacts(assignedTo = []) {
   if (!assignedTo || assignedTo.length === 0) return "";
 
@@ -98,6 +99,7 @@ function renderTaskContacts(assignedTo = []) {
     })
     .join(""); // HTML zusammenfügen
 }
+
 
 function initializeDragAndDrop() {
   const tasks = document.querySelectorAll(".task");
@@ -141,6 +143,7 @@ function initializeDragAndDrop() {
   });
 }
 
+
 function getContainerIdByStatus(status) {
   const statusContainers = {
     "To do": "todo-container",
@@ -151,6 +154,7 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
+
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -160,22 +164,6 @@ function getPriorityClass(priority) {
   return priorityClasses[priority] || "";
 }
 
-async function updateTaskStatus(taskId, newStatus) {
-  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
-
-  try {
-    await fetch(firebaseUrl, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    console.log(`Task ${taskId} updated to status: ${newStatus}`);
-  } catch (error) {
-    console.error(`Error updating task ${taskId}:`, error);
-  }
-}
 
 function getDragAfterElement(container, y) {
   const draggableElements = [
@@ -196,6 +184,7 @@ function getDragAfterElement(container, y) {
   ).element;
 }
 
+
 function getStatusFromContainerId(containerId) {
   const statusMapping = {
     "todo-container": "To do",
@@ -206,13 +195,42 @@ function getStatusFromContainerId(containerId) {
   return statusMapping[containerId] || null;
 }
 
+
+function updateProgressBar(taskId, subtasks) {
+  const taskElement = document.getElementById(taskId);
+
+  if (!taskElement) {
+    console.error(`Task mit ID ${taskId} nicht gefunden.`);
+    return;
+  }
+
+  const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = totalSubtasks > 0 
+      ? Math.round((completedSubtasks / totalSubtasks) * 100) 
+      : 0;
+
+  const progressBarContainer = taskElement.querySelector(".progress-bar");
+  const subtasksCount = taskElement.querySelector(".subtasks-count");
+
+  if (progressBarContainer) {
+    progressBarContainer.style.width = `${progressPercentage}%`;
+  }
+
+  if (subtasksCount) {
+    subtasksCount.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
+  }
+
+  console.log(`Progress für Task ${taskId} aktualisiert: ${progressPercentage}%`);
+}
+
+
 function renderSubtasksHTML(taskId, subtasks) {
   let HTML = "";
   if (!subtasks || subtasks.length === 0) {
     return HTML;
   }
 
-  // Berechnung des Fortschritts
   const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
   const totalSubtasks = subtasks.length;
   const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
@@ -229,20 +247,42 @@ function renderSubtasksHTML(taskId, subtasks) {
   return HTML;
 }
 
+
+async function updateTaskStatus(taskId, newStatus) {
+  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+
+  try {
+    await fetch(firebaseUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    console.log(`Task ${taskId} updated to status: ${newStatus}`);
+  } catch (error) {
+    console.error(`Error updating task ${taskId}:`, error);
+  }
+}
+
+
 async function deleteTaskOfModalCard(id) {
   deleteTaskInDatabase(id);
   toggleDisplayModal();
 }
+
 
 function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("board"));
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
 }
 
+
 async function deleteTaskOfModalCard(id) {
   await deleteTaskInDatabase(id), toggleDisplayModal();
   await boardRender();
 }
+
 
 function readAllKeys(object, without = "") {
   const allKeys = [];
@@ -256,7 +296,6 @@ function readAllKeys(object, without = "") {
   }
   return allKeys;
 }
-
 
 
 async function openModal(id) {
@@ -314,11 +353,14 @@ function priorityLabelHTML(priority) {
   return HTML
 }
 
-
 function renderSubtasks(taskId, subtasks) {
   let modalSubtasksValue = document.getElementById('modalCard-subtasks-value');
   modalSubtasksValue.innerHTML = renderSubtasksHTML(taskId, subtasks)
 }
+
+
+// function renderSubtasksInModal(taskId, subtasks) {
+//  const subtasksContainer = document.getElementById("modalCard-subtasks-value");
 
 
 function renderSubtasksHTML(taskId, subtasks) {

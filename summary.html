@@ -35,7 +35,11 @@
             <div class="metric-cards">
                 <!-- To-Do Card -->
                 <div class="metric-card todo-card" onclick="window.location.href='board.html?status=todo'">
-                    <img src="./assets/img/summary/sum-pen-dark.svg" alt="Icon">
+                    <div class="img-container-pen">
+                        <img class="white" src="./assets/img/summary/pen-white.svg" alt="Icon">
+                        <img class="black" src="./assets/img/summary/pen-black.svg" alt="Icon">
+                    </div>
+                    
                     <div class="metric-content">
                         <span id="todo-count" class="count">0</span>
                         <span class="label">To-do</span>
@@ -43,7 +47,11 @@
                 </div>
                 <!-- Done Card -->
                 <div class="metric-card done-card" onclick="window.location.href='board.html?status=done'">
-                    <img src="./assets/img/summary/sum-tick-dark.svg" alt="Icon">
+                    <div class="img-container-tick">
+                        <img class="white" src="./assets/img/summary/tick-white.svg" alt="Icon">
+                        <img class="black" src="./assets/img/summary/tick-dark.svg" alt="Icon">
+                    </div>
+                    
                     <div class="metric-content">
                         <span id="done-count" class="count">0</span>
                         <span class="label">Done</span>
@@ -72,21 +80,21 @@
             <!-- Task Overview -->
             <div class="task-overview">
                 <div class="metric-card counter-div">
-                    <div class="metric-content">
+                    <div class="metric-content metric-content-count">
                         <span id="total-tasks" class="count">0</span>
-                        <span class="label">Tasks in Board</span>
+                        <span class="label">Tasks in <br> Board</span>
                     </div>
                 </div>
                 <div class="metric-card counter-div">
-                    <div class="metric-content">
+                    <div class="metric-content metric-content-count">
                         <span id="in-progress-tasks" class="count">0</span>
-                        <span class="label">Tasks in Progress</span>
+                        <span class="label">Tasks in <br> Progress</span>
                     </div>
                 </div>
                 <div class="metric-card counter-div">
-                    <div class="metric-content">
+                    <div class="metric-content metric-content-count">
                         <span id="feedback-tasks" class="count">0</span>
-                        <span class="label">Awaiting Feedback</span>
+                        <span class="label">Awaiting <br> Feedback</span>
                     </div>
                 </div>
             </div>

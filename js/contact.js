@@ -100,6 +100,7 @@ function getAddContact() {
   return `
 <div id="idAddContact">
     <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
+    <img id="idLogoCard" src="./assets/img/general/join-logo.svg" alt="logo">
     <div id="headTitle">
     <h1 id="idH1Title">Add contact</h1>
     <h3>Tasks are better with a team!</h3>
@@ -287,6 +288,7 @@ function editContact(i) {
 function getEditContact(i) {
   return `
 <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
+<img id="idLogoCard" src="./assets/img/general/join-logo.svg" alt="logo">
 <div id="headTitle">
     <h1 id="idH1Title">Edit Contact</h1>
     <div id="blueLine"></div>

@@ -71,7 +71,7 @@
         background-color: #FFFFFF;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         margin-left: -40px;
-        max-height: 100%;
+        height: 100vh;
         padding: 20px 30px;
     }
 
@@ -79,12 +79,21 @@
         display: none;
     }
 
+
 }
 
 @media (max-width: 660px) {
     .btn-primary:hover {
         background-color: #2A3647 !important;
         box-shadow: unset !important;
+    }
+
+    #idEditContact {
+        top: 80px;
+    }
+
+    #idAddContact {
+        top: 80px;
     }
 
     #idAddContact {
@@ -141,6 +150,13 @@
     }
 }
 
+@media (min-width: 660px) and (max-width: 1350px) {
+    #idEditContact.show {
+        left: calc(50% + 115px); /* Mittige Berechnung mit Navbar */
+        transform: translateX(-50%);
+    }
+}
+
 @media (min-width: 1100px) {
 
     #idEditDeleteContainer {
@@ -189,7 +205,7 @@
         position: absolute;
         top: 200px;
         left: calc(630px + 30px);
-        width: calc(100% - 630px - 30px);
+        width: auto;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -288,15 +304,26 @@
     #idAddContact {
         left: 230px;
     }
+
+    #idLogoCard {
+        display: none;
+    }
 }
 
 @media (min-width: 1350px) {
+
+    #idLogoCard{
+        height: 100px;
+        position: fixed;
+        left: 20px;
+        bottom: 65%;
+    }
     #idContactBtns {
         bottom: -55px;
 
     }
 
-    #idAddContact {
+    #idAddContact{
         top: 0;
         position: fixed;
         right: 0;
@@ -317,15 +344,41 @@
         max-width: 1100px;
     }
 
-    #idAddContact.show {
+    #idAddContact.show{
         bottom: 80px;
         background: linear-gradient(to right, #2A3647 30%, #FFFFFF 30%);
     }
 
-    #idPersonBackground{
+    #idEditContact {
+        top: 0;
+        position: fixed;
+        right: 0;
+        margin: auto;
+        min-width: 320px;
+        height: 650px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 24px;
+        padding: 20px;
+        z-index: 6000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 1100px;
+    }
+
+    #idEditContact.show {
+        bottom: 80px;
+        background: linear-gradient(to right, #2A3647 30%, #FFFFFF 30%);
+        left: calc(50% + 115px); /* Zentriere mit Berücksichtigung der 230px Navbar */
+        transform: translateX(-50%);
+        position: fixed; /* Stelle sicher, dass die Position relativ zum Viewport ist */
+    }
+    
+
+    #idPersonBackground, #idShortName-2 {
         position: absolute;
-        top: 45%;
-        left: 50%;
+        top: 50%;
+        left: 40%;
         transform: translate(-50%, -50%);
         display: flex;
         justify-content: center;
@@ -338,11 +391,7 @@
         gap: 8px;
         margin-bottom: 32px;
     }
-
-    #idPersonBackground {
-        left: 35%;
-        transform: translateY(-100%);
-    }
+    
 
     #idInput {
         display: flex;
@@ -356,12 +405,20 @@
     }
 
     #idSubmitAddContact {
+
         bottom: 270px;
         left: 75%;
         transform: translateX(-50%);
     }
 
-    #idCancelAddContact {
+     #idSaveEditBtn {
+        position: fixed;
+        bottom: 270px;
+        left: 70%;
+        transform: translateX(-50%);
+    }
+
+    #idCancelAddContact, #idDeleteBtn {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -374,7 +431,11 @@
         font-weight: 400;
     }
 
-    #idCancelAddContact:hover {
+    #idCancelAddContact img {
+        top: unset;
+    }
+
+    #idCancelAddContact:hover, #idDeleteBtn:hover {
         border-color: #29ABE2;
         color: #29ABE2;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -382,6 +443,7 @@
 
     #idXBtn {
         filter: brightness(0) saturate(100%) invert(12%) sepia(23%) saturate(435%) hue-rotate(180deg) brightness(95%) contrast(91%);
+        
     }
 
 }

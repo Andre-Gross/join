@@ -12,19 +12,13 @@ h1 {
 
 body {
     position: unset;
+    width: auto;
 }
 
 .title {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.container-fluid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 1rem;
-    padding-left: 0;
 }
 
 .grid-item {
@@ -55,36 +49,67 @@ body {
     color: #6c757d;
 }
 
-.section-header {
+.container-fluid {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    width: 250px;
-
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+    justify-content: flex-start;
 }
 
 .board-section {
-    border-radius: 8px;
-    padding: 15px;
-    width: 250px;
-    max-width: 300px;
-    max-height: fit-content;
+    flex: 0 0 250px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 16px;
 }
 
 .tasks-container {
     width: 100%;
     min-height: 200px;
-
 }
+
+
+#todo-container:empty::before,
+#progress-container:empty::before,
+#feedback-container:empty::before,
+#done-container:empty::before {
+    content: attr(data-empty-message);
+    display: block;
+    color: #A8A8A8;
+    text-align: center;
+}
+
+#todo-container:empty,
+#progress-container:empty,
+#feedback-container:empty,
+#done-container:empty {
+    background-color: #E7E7E7;
+    border-radius: var(--border-radius);
+    height: 50px;
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 .task {
     position: relative;
-    width: 250px !important;
-    height: 260px !important;
+    width: 250px;
+    height: 260px;
     background: #ffffff;
     border-radius: 24px;
     padding: 1rem;
@@ -92,7 +117,9 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05), 2px 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
 }
+
 
 .task h4 {
     margin-top: 1rem;
@@ -228,8 +255,8 @@ a,
     color: #999;
     padding: 20px 0;
     font-style: italic;
-  }
-  
+}
+
 
 
 

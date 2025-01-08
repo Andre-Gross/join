@@ -1,9 +1,14 @@
+
 @media (max-width: 660px) {
     .container-fluid {
-
-        grid-template-columns: 1fr;
-        justify-items: flex-start;
+        padding-bottom: 80px;
 
     }
+}
+/* Ab 560px: 1 Spalte */
+@media (max-width: 556px) {
+    .container-fluid {
+        justify-content: center;
 
+    }
 }

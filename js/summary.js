@@ -65,8 +65,8 @@ function getGreetingMessage() {
     const hour = parseInt(new Date().getHours(), 10); // Stelle sicher, dass es eine Zahl ist
     console.log("Current Hour:", hour);
 
-    if (hour >= 6 && hour < 9) return 'Good Early Morning,';
-    if (hour >= 9 && hour < 12) return 'Good Morning,';
+    if (hour >= 3 && hour < 6) return 'Good Early Morning,';
+    if (hour >= 6 && hour < 12) return 'Good Morning,';
     if (hour >= 12 && hour < 17) return 'Good Afternoon,';
     if (hour >= 17 && hour < 22) return 'Good Evening,';
     return 'Good Night,';

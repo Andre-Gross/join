@@ -1,21 +1,23 @@
 @media (min-width: 660px) and (max-width: 1150px) {
     .welcome-container {
         position: relative;
-        width: 100%;
+        width: auto;
         height: auto;
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 20px;
-        top: 800px;
+        top: 700px;
     }
 
     #greeting {
         transform: none;
+        align-self: flex-start;
     }
 
     #userName {
         transform: none;
+        align-self: flex-start;
     }
 
 
@@ -47,8 +49,7 @@
 
     main {
         display: grid;
-        grid-template-columns: 60% 40%;
-        /* Zwei Spalten */
+        grid-template-columns: 50% 50%;
         gap: 16px;
         max-width: 1920px;
         width: 100%;
@@ -61,23 +62,19 @@
         grid-row: 1;
         width: 100%;
         top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .welcome-container {
-        grid-column: 2;
-        /* Bleibt in der rechten Spalte */
-        grid-row: 1;
-        /* Erste Zeile */
-        width: 100%;
-        height: 562px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         position: relative;
         animation: slide-in 1s forwards;
+        padding-left: 30px;
         right: 0;
         top: 0;
-        margin-left: 0;
     }
 
     .w-100 {
@@ -103,7 +100,7 @@
         gap: 30px;
         position: absolute;
         max-width: 1200px;
-        width: 100%;
+        width: auto;
         height: 140px;
         bottom: unset;
         overflow: hidden;

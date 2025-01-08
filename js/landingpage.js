@@ -1,3 +1,5 @@
+let isSubmitting = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
@@ -111,6 +113,35 @@ async function logIn() {
 }
 
 /**
+ * Handles the user registration process.
+ */
+async function signUp() {
+    if (isSubmitting) return; // Verhindert mehrfaches Ausführen
+    isSubmitting = true;
+    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+
+    if (!agreeTerms || password !== confirmPassword) {
+        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
+        return;
+    }
+
+    try {
+        const users = await fetchUsers();
+        if (isEmailAlreadyRegistered(users, email)) {
+            redirectToLogin();
+            isSubmitting = false; 
+            return;
+        }
+        await registerNewUser(name, email, password);
+        isSubmitting = false; 
+        redirectToLogin(true);
+    } catch {
+        isSubmitting = false; 
+        displayError("An error occurred during registration. Please try again.");
+    }
+}
+
+/**
  * Handles failed login attempts and shows a reset password option after 3 tries.
  * @param {string} email - The user's email address.
  */
@@ -149,31 +180,6 @@ async function guestLogIn() {
         redirectToSummary(true);
     } catch {
         displayError("An error occurred during guest login. Please try again later.");
-    }
-}
-
-/**
- * Handles the user registration process.
- */
-async function signUp() {
-    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
-
-    if (!agreeTerms || password !== confirmPassword) {
-        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
-        return;
-    }
-
-    try {
-        const users = await fetchUsers();
-        if (isEmailAlreadyRegistered(users, email)) {
-            redirectToLogin();
-            return;
-        }
-
-        await registerNewUser(name, email, password);
-        redirectToLogin(true);
-    } catch {
-        displayError("An error occurred during registration. Please try again.");
     }
 }
 
@@ -260,7 +266,7 @@ async function registerNewUser(name, email, password) {
  * @param {boolean} [isSuccess] - Whether the registration was successful.
  */
 function redirectToLogin(isSuccess = false) {
-    const url = isSuccess ? "login.html?registered=true" : "login.html?error=emailExists";
+    const url = isSuccess ? "landingpage.html?registered=true" : "landingpage.html?error=emailExists";
     window.location.href = url;
 }
 
@@ -269,7 +275,7 @@ function redirectToLogin(isSuccess = false) {
  * @returns {Array} - Array of processed input values.
  */
 function getInputValues() {
-    return ["name", "email", "password", "confirmPassword", "agreeTerms"].map(id =>
+    return ["name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"].map(id =>
         document.getElementById(id).type === "checkbox"
             ? document.getElementById(id).checked
             : document.getElementById(id).value.trim()
@@ -287,11 +293,6 @@ function checkFormValidity() {
             ? document.getElementById(id).checked
             : document.getElementById(id).value.trim()
     );
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-    console.log("Agree Terms:", agreeTerms);
     const isFormValid = name && email && password && confirmPassword && agreeTerms;
     document.getElementById("registerButton").disabled = !isFormValid;
 }
@@ -333,6 +334,6 @@ function displayError(message) {
  */
 function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
     if (!agreeTerms) return "Please agree to the terms and conditions.";
-    if (password !== confirmPassword) return "Passwords do not match.";
+    if (password !== confirmPassword) return "Password do not match.";
     return "An unknown validation error occurred.";
 }
