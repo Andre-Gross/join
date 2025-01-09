@@ -211,6 +211,7 @@ body {
 a,
 .plus-button {
     height: 20px;
+    cursor: pointer;
 }
 
 .subtasks-progress-container {
