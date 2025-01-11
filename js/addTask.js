@@ -77,10 +77,18 @@ function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '
     const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
     const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
 
-    toggleDisplayNone(dropdown, displayMode, shallVisible);
-    toggleDisplayNone(inputDummy, 'd-block', shallVisible)
-    toggleDisplayNone(arrowDown, displayMode, !shallVisible);
-    toggleDisplayNone(arrowUp, displayMode, shallVisible);
+
+    if (shallVisible === '') {
+        toggleDisplayNone(dropdown, displayMode);
+        toggleDisplayNone(inputDummy, 'd-block')
+        toggleDisplayNone(arrowDown, displayMode);
+        toggleDisplayNone(arrowUp, displayMode);
+    } else {
+        toggleDisplayNone(dropdown, displayMode, shallVisible);
+        toggleDisplayNone(inputDummy, 'd-block', shallVisible)
+        toggleDisplayNone(arrowDown, displayMode, !shallVisible);
+        toggleDisplayNone(arrowUp, displayMode, shallVisible);
+    }
 
     if (shallVisible === '') {
         if (input.classList.contains('active-dropdown-input')) {
