@@ -31,50 +31,6 @@
         padding-top: 0;
         padding-bottom: calc(var(--main-button-container-height-with-padding) + var(--template-height-with-padding) + 45px);
         height: calc(100vh - var(--template-height-with-padding) - 178px - 141px);
-
-        /* padding-top: calc(var(--h1-position-top) + var(--h1-height-with-padding) + 1.5rem);
-        padding-left: 16px;
-        padding-right: 16px; */
-        /* width: 100%;
-        gap: 1rem; */
-        
-        overflow-y: scroll;
-        scrollbar-width: thin;
-
-        --sb-track-color: #f6f7f8;
-        --sb-thumb-color: #a8a8a8;
-        --sb-size: 4px;
-    }
-    
-    
-    form::-webkit-scrollbar {
-        width: var(--sb-size)
-    }
-    
-    
-    form::-webkit-scrollbar-track {
-        background: var(--sb-track-color);
-        border-radius: 2px;
-    }
-    
-    
-    form::-webkit-scrollbar-thumb {
-        background: var(--sb-thumb-color);
-        border-radius: 2px;
-    }
-
-
-    #form-footer {
-        position: sticky;
-        bottom: 0;
-        margin-bottom: var(--template-height-with-padding);
-    }
-
-
-    @supports not selector(::-webkit-scrollbar) {
-        form {
-            scrollbar-color: var(--sb-thumb-color)
-                           var(--sb-track-color);
         }
       }
 }

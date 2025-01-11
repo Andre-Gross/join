@@ -205,29 +205,6 @@ textarea {
 }
 
 
-#dropdown-contact {
-    scrollbar-width: thin;
-    /* Für Firefox */
-    scrollbar-color: #A8A8A8 white;
-}
-
-
-#dropdown-contact::-webkit-scrollbar {
-    width: 24px;
-}
-
-
-#dropdown-contact::-webkit-scrollbar-track {
-    background: white;
-}
-
-
-#dropdown-contact::-webkit-scrollbar-thumb {
-    background: #A8A8A8;
-    border-radius: 3px;
-}
-
-
 .contact-item {
     padding: 8px;
     display: flex;

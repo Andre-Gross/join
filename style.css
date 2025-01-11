@@ -32,7 +32,29 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    --sb-track-color: #f6f7f8;
+    --sb-thumb-color: #a8a8a8;
+    --sb-size: 4px;
 }
+
+
+*::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+
+*::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 2px;
+}
+
+
+*::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 2px;
+}
+
 
 body {
     max-width: 1920px;
