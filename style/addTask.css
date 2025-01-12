@@ -8,73 +8,11 @@
 }
 
 
-h1 {
-    margin: 0;
-    padding: 0;
-}
-
-
-.c-invalid-border-color {
-    color: var(--invalid-border-color);
-}
-
-
-.gap-05 {
-    gap: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-
-
 body {
+    position: fixed;
+    top: 0;
     padding-top: 0 !important;
     width: 100vw;
-    top: 0;
-}
-
-
-#content-container {
-    padding: 12px 16px 20px 16px;
-}
-
-
-.headline-container {
-    position: fixed;
-    top: var(--h1-position-top);
-    left: 0;
-    right: 0;
-    padding: 48px 16px 16px 16px;
-    max-width: var(--form-subcontainer-max-width);
-    background-color: var(--background-color);
-    z-index: 9999;
-}
-
-
-form {
-    margin-top: calc(var(--template-height-with-padding) + var(--h1-height-with-padding));
-    padding-bottom: calc((var(--template-height-with-padding) + var(--main-button-container-height-with-padding)));
-    width: max-content;
-    flex-direction: column;
-    
-    margin-left: 0;
-    margin-right: -16px;
-    padding-right: 16px;
-    padding-top: 0;
-    /* padding-bottom: calc(var(--main-button-container-height-with-padding) + var(--template-height-with-padding) + 45px); */
-    height: calc(100vh - var(--template-height-with-padding) - 178px - 141px);
-
-}
-
-
-.form-subcontainer {
-    width: 100%;
-    max-width: 440px;
-    flex-direction: column;
-}
-
-
-#modalCard-edit-mode form {
-    width: 100%;
-    margin: 0;
 }
 
 
@@ -103,6 +41,76 @@ textarea {
 }
 
 
+.c-invalid-border-color {
+    color: var(--invalid-border-color);
+}
+
+
+.mw-396-u1000 {
+    max-width: 396px;
+}
+
+
+.gap-05 {
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+
+#content-container {
+    margin-top: var(--template-height-with-padding);
+    padding: 12px 16px 20px 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.headline-container {
+    top: var(--h1-position-top);
+    left: 0;
+    right: 0;
+    padding: 48px 0 8px 0;
+    max-width: var(--form-subcontainer-max-width);
+    background-color: unset;
+    z-index: 6000;
+}
+
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+
+form {
+    box-sizing: content-box;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: -16px;
+    padding-right: 16px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: calc(100vh - var(--template-height-with-padding) - 178px - 141px);
+    width: max-content;
+    flex-direction: column;
+        
+    overflow-y: scroll;
+}
+
+
+#modalCard-edit-mode form {
+    width: 100%;
+    margin: 0;
+}
+
+
+.form-subcontainer {
+    width: 100%;
+    max-width: 440px;
+    flex-direction: column;
+}
+
+
 .input-group {
     flex-wrap: nowrap;
 }
@@ -116,8 +124,6 @@ textarea {
     border-bottom-right-radius: 8px !important;
     padding: 12px 16px;
     background-color: white;
-
-    aspect-ratio: 1/1;
 }
 
 
@@ -130,6 +136,8 @@ textarea {
     border-bottom-right-radius: 8px !important;
     padding: 12px 16px;
     background-color: white;
+
+    aspect-ratio: 1/1;
 }
 
 
@@ -180,13 +188,9 @@ textarea {
 
 
 .dropdown {
-    /* position: absolute;
-    top: 0.8px;
-    left: 0;
-    width: 100%; */
     max-height: 224.8px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 8000;
     background-color: white;
     border-top: none;
     border-right: 1.5px solid var(--input-border-standart);
@@ -194,7 +198,6 @@ textarea {
     border-bottom: 1.5px solid var(--input-border-standart);
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
-    /* padding-top: var(--standart-input-height); */
 }
 
 
@@ -266,13 +269,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 
 #form-footer {
-    margin-bottom: var(--template-height-with-padding);
+    position: sticky;
+    bottom: 0;
     padding-top: 12px;
     padding-left: 16px;
     padding-bottom: 12px;
-    z-index: 4000;
-    position: fixed;
-    bottom: calc(80px);
+    z-index: 7000;
     right: 0;
     background-color: #F6F7F8;
 }
