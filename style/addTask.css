@@ -1,6 +1,6 @@
 :root {
-    --h1-position-top: 80px;
-    --h1-height-with-padding: 120px;
+    --h1-position-top: 70px;
+    --headline-container-height-with-padding: 124px;
     --main-button-container-height-with-padding: 83px;
     --standart-input-height: 39.2px;
     --navbar-width-desktop-mode: 230px;
@@ -27,7 +27,6 @@ textarea {
     text-align: left;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
-
 }
 
 
@@ -90,10 +89,10 @@ form {
     padding-right: 16px;
     padding-top: 0;
     padding-bottom: 0;
-    height: calc(100vh - var(--template-height-with-padding) - 178px - 141px);
+    height: calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
     width: max-content;
     flex-direction: column;
-        
+
     overflow-y: scroll;
 }
 
@@ -273,7 +272,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     bottom: 0;
     padding-top: 12px;
     padding-left: 16px;
-    padding-bottom: 12px;
+    padding-bottom: calc(var(--template-height-with-padding) + 12px);
     z-index: 7000;
     right: 0;
     background-color: #F6F7F8;

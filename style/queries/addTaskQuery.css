@@ -1,5 +1,5 @@
 @media (min-width: 660px) {
-    
+
     #content-container {
         margin-top: var(--template-height-with-padding);
         margin-left: calc(var(--navbar-width-desktop-mode));
@@ -9,18 +9,17 @@
 
 
     form {
-        height: calc(100vh - var(--template-height-with-padding) - 168px - 64px);
         padding-bottom: 0;
     }
 
 
     #form-footer {
-        padding-bottom: 0;
+        padding-bottom: 12px;
     }
 }
 
 
-@media (min-width: 1000px) {    
+@media (min-width: 1000px) {
 
     .mw-396-u1000 {
         max-width: unset;
