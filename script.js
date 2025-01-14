@@ -28,6 +28,37 @@ function clearValue(element) {
 }
 
 
+function createNameCirlce(initials, color) {
+    let HTML = /*HTML*/`
+            <div class="name-circle d-flex bg-${color} text-light">
+                <span>${initials.toUpperCase()}</span>
+            </div>
+        `
+    return HTML
+}
+
+
+async function createNameCirlceWithId(id) {
+    const contacts = await getContacts();
+    const initials = returnInitialsOfName(contacts[id].name);
+    const color = contacts[id].color.replace('#', '').toLowerCase();
+
+    return createNameCirlce(initials, color)
+}
+
+
+function returnInitialsOfName(name) {
+    const splitName = name.split(' ');
+    let initials = '';
+
+    for (let i = 0; i < splitName.length; i++) {
+        const letter = splitName[i].charAt(0).toUpperCase()
+        initials += letter
+    }
+    return initials;
+}
+
+
 function getContactMain(i) {
     return `
       <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
@@ -40,7 +71,9 @@ function getContactMain(i) {
           </div>
       </div>
       `;
-  }
+}
+
+
 /**
  * Extracts initials from a user's name.
  *
@@ -56,6 +89,7 @@ function getInitialsFromName(name) {
         .join("");
     return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
+
 
 /**
  * Navigates the user to the previous page in the browser history.
