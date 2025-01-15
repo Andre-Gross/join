@@ -1,6 +1,6 @@
 let contactsInitialized = false;
 let dataSubtasks = [];
-let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
+let possibleStatuses = ['To do', 'In progress', 'Await feedback', 'Done'];
 let lastStringOfInput = '';
 const dropdownMenues = ['assignedTo', 'category']
 
