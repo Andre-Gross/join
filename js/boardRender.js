@@ -275,6 +275,7 @@ async function deleteTaskOfModalCard(id) {
 function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("board"));
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
+  toggleDisplayNone(document.getElementById("modalCard-background"))
 }
 
 
@@ -328,8 +329,8 @@ async function openModal(id) {
 
   // Subtasks in der Modal-Card rendern
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
-    document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-    document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+  document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
+  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
   toggleDisplayModal();
 }
