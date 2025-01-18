@@ -286,9 +286,8 @@ async function changeToEditMode(id) {
     renderNewSubtasks();
   }
 
-  toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"));
-  toggleDisplayNone(document.getElementById("modalCard-edit-mode"));
-  toggleDisplayNone(document.getElementById("modalCard-category-value"));
+  toggleEditMode(true);
+  
   document
     .getElementById("modalCard-first-line")
     .classList.remove("justify-content-between");
@@ -302,6 +301,14 @@ async function changeToEditMode(id) {
     return false;
   };
 }
+
+
+function toggleEditMode(shallVisible = '') {
+  toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-category-value"), 'd-block', !shallVisible);
+}
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadTasks(); // Tasks laden und rendern
