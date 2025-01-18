@@ -12,7 +12,7 @@ const dropdownMenues = ['assignedTo', 'category']
  */
 function readAssignedTo() {
     const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformCheckboxIdToString(checkbox.id));
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformIdToString(checkbox.id, 'checkbox_'));
     return assignedTo;
 }
 
@@ -35,9 +35,9 @@ function updateLastStringOfInput() {
 }
 
 
-function transformCheckboxIdToString(id) {
-    id = id.replace('checkbox_', '');
-    return id
+function transformIdToString(string, part1 = '', part2 = '') {
+    string = string.replace(part1, '').replace(part2, '');
+    return string;
 }
 
 
