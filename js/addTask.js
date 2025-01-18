@@ -27,7 +27,7 @@ async function getContactsAsArray() {
  */
 function readAssignedTo() {
     const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformCheckboxIdToName(checkbox.id));
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformCheckboxIdToString(checkbox.id));
     return assignedTo;
 }
 
@@ -49,24 +49,24 @@ function updateLastStringOfInput() {
 }
 
 
-function transformCheckboxIdToName(id) {
+function transformCheckboxIdToString(id) {
     id = id.replace('checkbox_', '');
-    const seperatedNames = id.split("_");
-    let name = '';
-    for (let i = 0; i < seperatedNames.length; i++) {
-        const singleName = upperCaseFirstLetter(seperatedNames[i]);
-        if (i === seperatedNames.length - 1) {
-            name += singleName;
+    const seperatedStrings = id.split("_");
+    let string = '';
+    for (let i = 0; i < seperatedStrings.length; i++) {
+        const singleString = upperCaseFirstLetter(seperatedStrings[i]);
+        if (i === seperatedStrings.length - 1) {
+            string += singleString;
         } else {
-            name = singleName + ' ';
+            string = singleString + ' ';
         }
     }
-    return name
+    return string
 }
 
 
-function transformNameToId(name, partBeforeName = '', partAfterName = '') {
-    return (partBeforeName + name.trim().replace(/\s+/g, '_').toLowerCase() + partAfterName);
+function transformStringToId(string, partBeforeString = '', partAfterString = '') {
+    return (partBeforeString + string.trim().replace(/\s+/g, '_').toLowerCase() + partAfterString);
 }
 
 
@@ -243,7 +243,7 @@ async function filterContacts() {
         toggleDropdown('assignedTo', 'd-block', true);
         for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
-            const item = document.getElementById(transformNameToId(contact.name, 'item_'));
+            const item = document.getElementById(transformStringToId(contact.id, 'item_'));
             item.classList.add("d-none");
 
             for (let y = 0; y < filteredContacts.length; y++) {
@@ -300,32 +300,32 @@ function isDeletededPartOfSeperator(delChar) {
 function deleteFromEndOfContact(input) {
     if (input.includes(", ")) {
         let removedInput = input.substring(input.lastIndexOf(", ") + 2);
-        document.getElementById(transformNameToId(removedInput, 'checkbox_',)).checked = false;
+        document.getElementById(transformStringToId(contact.id, 'checkbox_',)).checked = false;
         refreshContactNamesInInput()
     } else {
         let removedInput = input.substring(input.lastIndexOf("An ") + 3).replace(',', '');
-        document.getElementById(transformNameToId(removedInput, 'checkbox_')).checked = false;
+        document.getElementById(transformStringToId(contact.id, 'checkbox_')).checked = false;
         document.getElementById("dropAssignedTo").value = 'An ';
     }
 }
 
 
-async function deleteInmidOfContact(input) {
-    const allContacts = await getContactsAsArray();
-    const inputPart1 = input.substring(0, input.lastIndexOf(", ") + 2);
-    const inputPart2 = input.substring(input.lastIndexOf(", ") + 2);
-    for (i = 0; i < allContacts.length - 1; i++) {
-        const singleContactName = allContacts[i].name;
-        const checkboxID = transformNameToId(singleContactName, 'checkbox_',);
-        if (inputPart1.includes(singleContactName + ', ')) {
-            document.getElementById(checkboxID).checked = true;
-        } else {
-            document.getElementById(checkboxID).checked = false;
-        }
-    }
-    refreshContactNamesInInput();
-    document.getElementById("dropAssignedTo").value += inputPart2;
-}
+// async function deleteInmidOfContact(input) {
+//     const allContacts = await getContactsAsArray();
+//     const inputPart1 = input.substring(0, input.lastIndexOf(", ") + 2);
+//     const inputPart2 = input.substring(input.lastIndexOf(", ") + 2);
+//     for (i = 0; i < allContacts.length - 1; i++) {
+//         const singleContactName = allContacts[i].name;
+//         const checkboxID = transformNameToId(singleContactName, 'checkbox_',);
+//         if (inputPart1.includes(singleContactName + ', ')) {
+//             document.getElementById(checkboxID).checked = true;
+//         } else {
+//             document.getElementById(checkboxID).checked = false;
+//         }
+//     }
+//     refreshContactNamesInInput();
+//     document.getElementById("dropAssignedTo").value += inputPart2;
+// }
 
 
 /**
@@ -343,15 +343,15 @@ async function createAssignedToDropdown() {
 function createAssignedToDropdownHTML(dropdown, contact) {
     const contactItem = document.createElement("div");
 
-    contactItem.id = transformNameToId(contact.name, 'item_');
+    contactItem.id = transformStringToId(contact.id, 'item_');
     contactItem.className = "contact-item";
     contactItem.innerHTML = `
         ${contact.name}
-        <input type="checkbox" id="${transformNameToId(contact.name, 'checkbox_')}">
+        <input type="checkbox" id="${transformStringToId(contact.id, 'checkbox_')}">
     `;
 
     contactItem.onclick = () => selectContact(contact);
-    const checkbox = contactItem.querySelector(`#${transformNameToId(contact.name, 'checkbox_')}`)
+    const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
     checkbox.onclick = (event) => {
         event.stopPropagation();
         refreshContactNamesInInput()
@@ -366,7 +366,7 @@ function createAssignedToDropdownHTML(dropdown, contact) {
  *  @param {object} contact - This object includes the information of a single contact.
  */
 function selectContact(contact) {
-    let checkbox = document.getElementById(transformNameToId(contact.name, 'checkbox_',))
+    let checkbox = document.getElementById(transformStringToId(contact.id, 'checkbox_',))
     checkbox.checked = !checkbox.checked;
     refreshContactNamesInInput()
 }
@@ -563,6 +563,13 @@ function enableDisableSendButton() {
 }
 
 // Zu Testzwecken
+
+async function fillChoosenContacts(contactId = '-ODwXhjBLtDkSTVtyeHo') {
+    const choosenContacts = document.getElementById('assignedTo-choosen-contacts')
+    choosenContacts.innerHTML = await createNameCirlceWithId(contactId)
+}
+
+
 async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
     let tasksAsArray = await getTasksAsArray();
     const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
