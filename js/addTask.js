@@ -24,13 +24,28 @@ async function refreshChoosenContactCircles() {
     choosenContactsContainer.innerHTML = '';
     for (let i = 0; i < checkedContacts.length; i++) {
         const singleContact = checkedContacts[i];
-        choosenContactsContainer.innerHTML += await createNameCirlceWithId(singleContact)
+        choosenContactsContainer.innerHTML += await createNameCirlceWithRemove(singleContact)
     }
     updateLastStringOfInput();
 }
 
 
-                class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light"
+async function createNameCirlceWithRemove(id) {
+    const contacts = await getContacts();
+    const initials = returnInitialsOfName(contacts[id].name);
+    const color = contacts[id].color.replace('#', '').toLowerCase();
+
+    let HTML = createNameCirlce(initials, color);
+
+    const divId = `transformStringToId(${id}, 'nameCircle-')`;
+    const onclickFunction = `selectContact('${id}')`;
+
+    HTML = HTML.replace('<div', `<div id="${divId}" onclick="${onclickFunction}"`);
+
+    return HTML;
+}
+
+
 function updateLastStringOfInput() {
     lastStringOfInput = document.getElementById("dropAssignedTo").value;
 }
@@ -327,7 +342,7 @@ function createAssignedToDropdownHTML(dropdown, contact) {
         <input type="checkbox" id="${transformStringToId(contact.id, 'checkbox_')}">
     `;
 
-    contactItem.onclick = async() => selectContact(contact);
+    contactItem.onclick = async () => selectContact(contact.id);
     const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
     checkbox.onclick = (event) => {
         event.stopPropagation();
@@ -342,9 +357,9 @@ function createAssignedToDropdownHTML(dropdown, contact) {
  * 
  *  @param {object} contact - This object includes the information of a single contact.
  */
-async function selectContact(contact) {
+async function selectContact(id) {
     const input = document.getElementById("dropAssignedTo")
-    const checkbox = document.getElementById(transformStringToId(contact.id, 'checkbox_',))
+    const checkbox = document.getElementById(transformStringToId(id, 'checkbox_',))
 
     checkbox.checked = !checkbox.checked;
 
