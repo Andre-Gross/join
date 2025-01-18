@@ -127,4 +127,3 @@ function toggleDisplayNone(element, displayMode = 'd-block', shallVisible = '') 
 function upperCaseFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.substring(1);
 }
-

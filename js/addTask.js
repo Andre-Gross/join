@@ -133,6 +133,7 @@ async function addTaskFromBoard(status = 'To do') {
 }
 
 
+
 /**
  * This function prepare the information of the addTask-form with another function and post it to the database.
  * 

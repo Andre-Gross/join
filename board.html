@@ -30,15 +30,15 @@
             <div class="title">
                 <h1 class="m-2 w-100">Board</h1>
                 <div class="searchBar">
-                <input class="search-container mt-3" id="idSearch" type="text" class="form-control" placeholder="Find Task"
-                    oninput="filterAndShowTask()">           
+                    <input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                        placeholder="Find Task" oninput="filterAndShowTask()">
                     <div class="AddTaskBtn" onclick="window.location.href='addTask.html'">
                         <p class="AddTaskBtnText">Add task</p>
                         <img src="./assets/img/board/plus-button-white.svg" alt="plus">
                     </div>
                 </div>
             </div>
-           
+
 
         </div>
 
@@ -46,9 +46,10 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">To Do</h2>
-                    
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'To do')">
-                    
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'To do')">
+
                 </div>
                 <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do">
                     <!-- Tasks will be inserted here by JavaScript -->
@@ -58,9 +59,10 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">In progress</h2>
-                    
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'In progress')">
-                
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'In progress')">
+
                 </div>
                 <div id="progress-container" class="tasks-container" data-empty-message="No Tasks in Progress">
                     <!-- Tasks will be inserted here by JavaScript -->
@@ -70,9 +72,10 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">Await feedback</h2>
-                  
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button" onclick="addTaskFromBoard(status = 'Await feedback')">
-                
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'Await feedback')">
+
                 </div>
                 <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in Await Feedback">
                     <!-- Tasks will be inserted here by JavaScript -->
@@ -118,27 +121,35 @@
                     <p class="information-type">Assigned To:</p>
                     <div id="modalAssignedToValue" class="d-flex flex-column"></div>
                 </div>
-                <div id="modal-card-edit-button" class="d-flex" onclick="">
-                    <img src="assets/img/board/pen.svg" alt="edit">
-                    <span>Edit</span>
+                <div>
+                    <p class="information-type">Subtasks</p>
+                    <div id="modalCard-subtasks-value" class="d-flex flex-column">
+                    </div>
+                </div>
+                <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
+                    <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
+                        <img src="./assets/img/board/bin.svg" alt="delete">
+                        <span>Delete</span>
+                    </div>
+                    <div id="modal-card-edit-button" class="d-flex" onclick="">
+                        <img src="assets/img/board/pen.svg" alt="edit">
+                        <span>Edit</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
-        </div>
+            <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
+            </div>
 
+
+        </div>
     </section>
-    </div>
-    <!-- <script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             boardRender();
-
-            // Für Testzwecke
-            openModal('-ODpZ9440G1qqLZXCplN');
         });
-        hab ich auskommentiert, zum selber dinge testen. K
-    </script> -->
+    </script>
 
 
 </body>

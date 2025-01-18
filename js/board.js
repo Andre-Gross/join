@@ -47,35 +47,35 @@ function renderAssignedContacts(assignedTo, contacts) {
   return `
     <div class="assigned-contacts">
       ${limitedContacts
-        .map((name) => {
-          if (!name) {
-            // Platzhalter für leere Kontakte (transparenter Kreis)
-            return `
+      .map((name) => {
+        if (!name) {
+          // Platzhalter für leere Kontakte (transparenter Kreis)
+          return `
               <div class="contact-circle" style="background-color: transparent; ">
               </div>
             `;
-          }
+        }
 
-          // Finde den Kontakt in den gespeicherten Daten
-          const contact = contactEntries.find((c) => c.name === name);
+        // Finde den Kontakt in den gespeicherten Daten
+        const contact = contactEntries.find((c) => c.name === name);
 
-          // Fallback für unbekannte Kontakte
-          const color = contact ? contact.color : "#ccc";
+        // Fallback für unbekannte Kontakte
+        const color = contact ? contact.color : "#ccc";
 
-          // Kürzel aus Vor- und Nachnamen generieren
-          const nameParts = (contact ? contact.name : name).split(" ");
-          const shortName =
-            nameParts.length > 1
-              ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
-              : nameParts[0][0].toUpperCase();
+        // Kürzel aus Vor- und Nachnamen generieren
+        const nameParts = (contact ? contact.name : name).split(" ");
+        const shortName =
+          nameParts.length > 1
+            ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
+            : nameParts[0][0].toUpperCase();
 
-          return `
+        return `
             <div class="contact-circle" style="background-color: ${color}">
               ${shortName}
             </div>
           `;
-        })
-        .join("")}
+      })
+      .join("")}
     </div>
   `;
 }
