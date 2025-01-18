@@ -50,9 +50,8 @@
                                 <div id="input-group-dropdown-assignedTo" class="input-group d-flex">
                                     <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
                                         placeholder="Select contacts to assign"
-                                        onfocus="removeInvalidBorder(this), toggleDropdown('assignedTo', 'd-block', true)"
-                                        oninput="filterContacts(), deletePartInAssingedTo()"
-                                        onblur="addInvalidBorder(this)">
+                                        onfocus="removeInvalidBorder(this), filterContacts()"
+                                        oninput="filterContacts()" onblur="addInvalidBorder(this)">
                                     <div class="input-single-img-container d-flex justify-content-center align-items-center"
                                         onclick="toggleDropdown('assignedTo', 'd-block')">
                                         <img id="input-assignedTo-arrow-down" src="assets/img/addTask/arrow-down.svg"

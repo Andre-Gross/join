@@ -346,6 +346,11 @@ async function selectContact(contact) {
     const checkbox = document.getElementById(transformStringToId(contact.id, 'checkbox_',))
 
     checkbox.checked = !checkbox.checked;
+
+    if (!(input.value === '')) {
+        input.value = '';
+        input.focus();
+    }
     await refreshChoosenContactCircles()
 }
 
