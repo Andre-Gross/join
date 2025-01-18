@@ -533,13 +533,6 @@ function loadFormFunctions() {
         }
     });
 
-    subtaskInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            addNewSubtask();
-        }
-    });
-
     createAssignedToDropdown()
 
     for (let i = 0; i < dropdownMenues.length; i++) {
@@ -552,6 +545,20 @@ function loadFormFunctions() {
                 toggleDropdown(`${singleDropdown}`, 'd-block', false);
             }
         });
+    }
+}
+
+
+function enableDisableSendButton() {
+    const title = document.getElementById("inputTitle").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const category = document.getElementById("inputCategory").value;
+    const sendButton = document.getElementById("sendButton")
+
+    if (checkAllInputsHasContent(title, dueDate, category)) {
+        sendButton.disabled = false;
+    } else {
+        sendButton.disabled = true;
     }
 }
 
