@@ -14,6 +14,29 @@ async function getContacts() {
 
 
 /**
+ * This function returns the contacts of the loggedInUser as Array
+ * 
+ * @returns {Array} - This array contains the contacts of the loggedInUser
+ */
+async function getContactsAsArray() {
+    let contactsAsArray = [];
+    const contactsData =  await getContacts();
+    for (const KEY in contactsData) {
+        const singleContact = contactsData[KEY];
+        const contact = {
+            id: KEY,
+            color: singleContact.color,
+            email: singleContact.email,
+            name: singleContact.name,
+            phone: singleContact.phone
+        };
+        contactsAsArray.push(contact);
+    }
+    return contactsAsArray;
+}
+
+
+/**
  * This function returns the datas of all tasks. 
  * 
  * @returns {object} - This object includes the datas of all tasks.

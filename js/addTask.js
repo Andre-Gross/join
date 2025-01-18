@@ -6,21 +6,6 @@ const dropdownMenues = ['assignedTo', 'category']
 
 
 /**
- * This function returns the contacts of the loggedInUser as Array
- * 
- * @returns {Array} - This array contains the contacts of the loggedInUser
- */
-async function getContactsAsArray() {
-    let contacts = await getContacts();
-    if (Array.isArray(contacts)) {
-    } else {
-        contacts = Object.values(contacts);
-    }
-    return contacts
-}
-
-
-/**
  * That function read the information, for which contact the task is assigned to.
  * 
  * @returns {string} - The person(s), which are assigned to to do the task.
