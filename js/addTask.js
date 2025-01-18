@@ -17,13 +17,14 @@ function readAssignedTo() {
 }
 
 
-function refreshContactNamesInInput() {
+async function refreshChoosenContactCircles() {
     let checkedContacts = readAssignedTo();
-    const dropAssignedTo = document.getElementById('dropAssignedTo')
-    dropAssignedTo.value = `An `
+    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts')
+
+    choosenContactsContainer.innerHTML = '';
     for (let i = 0; i < checkedContacts.length; i++) {
         const singleContact = checkedContacts[i];
-        dropAssignedTo.value += `${singleContact}, `;
+        choosenContactsContainer.innerHTML += await createNameCirlceWithId(singleContact)
     }
     updateLastStringOfInput();
 }
@@ -36,22 +37,12 @@ function updateLastStringOfInput() {
 
 function transformCheckboxIdToString(id) {
     id = id.replace('checkbox_', '');
-    const seperatedStrings = id.split("_");
-    let string = '';
-    for (let i = 0; i < seperatedStrings.length; i++) {
-        const singleString = upperCaseFirstLetter(seperatedStrings[i]);
-        if (i === seperatedStrings.length - 1) {
-            string += singleString;
-        } else {
-            string = singleString + ' ';
-        }
-    }
-    return string
+    return id
 }
 
 
 function transformStringToId(string, partBeforeString = '', partAfterString = '') {
-    return (partBeforeString + string.trim().replace(/\s+/g, '_').toLowerCase() + partAfterString);
+    return (partBeforeString + string.trim().replace(/\s+/g, '_') + partAfterString);
 }
 
 
@@ -308,7 +299,7 @@ function deleteFromEndOfContact(input) {
 //             document.getElementById(checkboxID).checked = false;
 //         }
 //     }
-//     refreshContactNamesInInput();
+//     refreshChoosenContactCircles();
 //     document.getElementById("dropAssignedTo").value += inputPart2;
 // }
 
@@ -335,11 +326,11 @@ function createAssignedToDropdownHTML(dropdown, contact) {
         <input type="checkbox" id="${transformStringToId(contact.id, 'checkbox_')}">
     `;
 
-    contactItem.onclick = () => selectContact(contact);
+    contactItem.onclick = async() => selectContact(contact);
     const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
     checkbox.onclick = (event) => {
         event.stopPropagation();
-        refreshContactNamesInInput()
+        refreshChoosenContactCircles()
     };
     dropdown.appendChild(contactItem);
 }
@@ -350,10 +341,12 @@ function createAssignedToDropdownHTML(dropdown, contact) {
  * 
  *  @param {object} contact - This object includes the information of a single contact.
  */
-function selectContact(contact) {
-    let checkbox = document.getElementById(transformStringToId(contact.id, 'checkbox_',))
+async function selectContact(contact) {
+    const input = document.getElementById("dropAssignedTo")
+    const checkbox = document.getElementById(transformStringToId(contact.id, 'checkbox_',))
+
     checkbox.checked = !checkbox.checked;
-    refreshContactNamesInInput()
+    await refreshChoosenContactCircles()
 }
 
 
