@@ -30,6 +30,7 @@ async function refreshChoosenContactCircles() {
 }
 
 
+                class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light"
 function updateLastStringOfInput() {
     lastStringOfInput = document.getElementById("dropAssignedTo").value;
 }
