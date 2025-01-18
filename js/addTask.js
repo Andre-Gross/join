@@ -389,7 +389,7 @@ async function selectContact(id) {
 
     checkbox.checked = !checkbox.checked;
 
-    if (!(input.value === '')) {
+    if (!(input.value === '' || input.value === 'An ')) {
         input.value = '';
         input.focus();
     }
