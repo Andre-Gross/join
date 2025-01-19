@@ -6,41 +6,43 @@ const dropdownMenues = ['assignedTo', 'category']
 
 
 /**
- * This function returns the contacts of the loggedInUser as Array
- * 
- * @returns {Array} - This array contains the contacts of the loggedInUser
- */
-async function getContactsAsArray() {
-    let contacts = await getContacts();
-    if (Array.isArray(contacts)) {
-    } else {
-        contacts = Object.values(contacts);
-    }
-    return contacts
-}
-
-
-/**
  * That function read the information, for which contact the task is assigned to.
  * 
  * @returns {string} - The person(s), which are assigned to to do the task.
  */
 function readAssignedTo() {
     const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformCheckboxIdToName(checkbox.id));
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformIdToString(checkbox.id, 'checkbox_'));
     return assignedTo;
 }
 
 
-function refreshContactNamesInInput() {
+async function refreshChoosenContactCircles() {
     let checkedContacts = readAssignedTo();
-    const dropAssignedTo = document.getElementById('dropAssignedTo')
-    dropAssignedTo.value = `An `
+    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts')
+
+    choosenContactsContainer.innerHTML = '';
     for (let i = 0; i < checkedContacts.length; i++) {
         const singleContact = checkedContacts[i];
-        dropAssignedTo.value += `${singleContact}, `;
+        choosenContactsContainer.innerHTML += await createNameCirlceWithRemove(singleContact)
     }
     updateLastStringOfInput();
+}
+
+
+async function createNameCirlceWithRemove(id) {
+    const contacts = await getContacts();
+    const initials = returnInitialsOfName(contacts[id].name);
+    const color = contacts[id].color.replace('#', '').toLowerCase();
+
+    let HTML = createNameCirlce(initials, color);
+
+    const divId = `transformStringToId(${id}, 'nameCircle-')`;
+    const onclickFunction = `selectContact('${id}')`;
+
+    HTML = HTML.replace('<div', `<div id="${divId}" onclick="${onclickFunction}"`);
+
+    return HTML;
 }
 
 
@@ -49,24 +51,14 @@ function updateLastStringOfInput() {
 }
 
 
-function transformCheckboxIdToName(id) {
-    id = id.replace('checkbox_', '');
-    const seperatedNames = id.split("_");
-    let name = '';
-    for (let i = 0; i < seperatedNames.length; i++) {
-        const singleName = upperCaseFirstLetter(seperatedNames[i]);
-        if (i === seperatedNames.length - 1) {
-            name += singleName;
-        } else {
-            name = singleName + ' ';
-        }
-    }
-    return name
+function transformIdToString(string, part1 = '', part2 = '') {
+    string = string.replace(part1, '').replace(part2, '');
+    return string;
 }
 
 
-function transformNameToId(name, partBeforeName = '', partAfterName = '') {
-    return (partBeforeName + name.trim().replace(/\s+/g, '_').toLowerCase() + partAfterName);
+function transformStringToId(string, partBeforeString = '', partAfterString = '') {
+    return (partBeforeString + string.trim().replace(/\s+/g, '_') + partAfterString);
 }
 
 
@@ -216,12 +208,12 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 }
 
 
-function addTextToInput(str = 'An ') {
-    let input = document.getElementById('dropAssignedTo');
-    if (input.value === "") {
-        input.value = str;
-    }
-}
+// function addTextToInput(str = 'An ') {
+//     let input = document.getElementById('dropAssignedTo');
+//     if (input.value === "") {
+//         input.value = str;
+//     }
+// }
 
 
 /**
@@ -231,9 +223,10 @@ function addTextToInput(str = 'An ') {
 async function filterContacts() {
     let contacts = await getContactsAsArray();
     let input = document.getElementById("dropAssignedTo").value.toLowerCase();
-    if (input.includes(", ")) {
-        input = input.substring(input.lastIndexOf(", ") + 1);
-    } else if (input.includes('an ')) {
+    // if (input.includes(", ")) {
+    //     input = input.substring(input.lastIndexOf(", ") + 1);
+    // } else if (input.includes('an ')) {
+    if (input.includes('an ')) {
         input = input.substring(input.lastIndexOf("an ") + 3);
     }
 
@@ -243,7 +236,7 @@ async function filterContacts() {
         toggleDropdown('assignedTo', 'd-block', true);
         for (let i = 0; i < contacts.length; i++) {
             const contact = contacts[i];
-            const item = document.getElementById(transformNameToId(contact.name, 'item_'));
+            const item = document.getElementById(transformStringToId(contact.id, 'item_'));
             item.classList.add("d-none");
 
             for (let y = 0; y < filteredContacts.length; y++) {
@@ -259,20 +252,16 @@ async function filterContacts() {
 }
 
 
-async function deletePartInAssingedTo() {
-    let input = document.getElementById("dropAssignedTo").value;
-    if (input.length < lastStringOfInput.length) {
-        const delChar = findDelChar(input);
-        if ((input.substring(0, input.lastIndexOf(", ") + 2) == lastStringOfInput.substring(0, input.lastIndexOf(", ") + 2)) && (!isDeletededPartOfSeperator(delChar)) && input.includes("An ")) {
-            updateLastStringOfInput();
-        } else {
-            if (isDeletededPartOfSeperator(delChar)) {
-                deleteFromEndOfContact(input);
-            } else if (input.includes(", ")) {
-                deleteInmidOfContact(input);
-            } else {
-                document.getElementById("dropAssignedTo").value = "An ";
-            }
+function savePrefixInAssingedTo() {
+    const input = document.getElementById("dropAssignedTo");
+    const prefix = 'An '
+
+    if (!(input.value.includes(prefix))) {
+        if (input.value.length < 3) {
+            input.value = prefix;
+            updateLastStringOfInput()
+        } else if (lastStringOfInput.includes(prefix)) {
+            input.value = lastStringOfInput()
         }
     } else {
         updateLastStringOfInput();
@@ -280,51 +269,12 @@ async function deletePartInAssingedTo() {
 }
 
 
-function findDelChar(input) {
-    let difference = patienceDiff(input.split(''), lastStringOfInput.split(''));
-    for (i = 0; i < difference.lines.length; i++) {
-        const positionOfCharacter = difference.lines[i].aIndex;
-        if (positionOfCharacter === -1) {
-            return difference.lines[i].line
-        }
+function emptyAssignedTo() {
+    const input = document.getElementById("dropAssignedTo");
+
+    if (input.value.length <= 3) {
+        input.value = '';
     }
-}
-
-
-function isDeletededPartOfSeperator(delChar) {
-    let input = document.getElementById("dropAssignedTo").value;
-    return (delChar == "," || (delChar == " " && input.slice(-1) == ","))
-}
-
-
-function deleteFromEndOfContact(input) {
-    if (input.includes(", ")) {
-        let removedInput = input.substring(input.lastIndexOf(", ") + 2);
-        document.getElementById(transformNameToId(removedInput, 'checkbox_',)).checked = false;
-        refreshContactNamesInInput()
-    } else {
-        let removedInput = input.substring(input.lastIndexOf("An ") + 3).replace(',', '');
-        document.getElementById(transformNameToId(removedInput, 'checkbox_')).checked = false;
-        document.getElementById("dropAssignedTo").value = 'An ';
-    }
-}
-
-
-async function deleteInmidOfContact(input) {
-    const allContacts = await getContactsAsArray();
-    const inputPart1 = input.substring(0, input.lastIndexOf(", ") + 2);
-    const inputPart2 = input.substring(input.lastIndexOf(", ") + 2);
-    for (i = 0; i < allContacts.length - 1; i++) {
-        const singleContactName = allContacts[i].name;
-        const checkboxID = transformNameToId(singleContactName, 'checkbox_',);
-        if (inputPart1.includes(singleContactName + ', ')) {
-            document.getElementById(checkboxID).checked = true;
-        } else {
-            document.getElementById(checkboxID).checked = false;
-        }
-    }
-    refreshContactNamesInInput();
-    document.getElementById("dropAssignedTo").value += inputPart2;
 }
 
 
@@ -343,18 +293,18 @@ async function createAssignedToDropdown() {
 function createAssignedToDropdownHTML(dropdown, contact) {
     const contactItem = document.createElement("div");
 
-    contactItem.id = transformNameToId(contact.name, 'item_');
+    contactItem.id = transformStringToId(contact.id, 'item_');
     contactItem.className = "contact-item";
     contactItem.innerHTML = `
         ${contact.name}
-        <input type="checkbox" id="${transformNameToId(contact.name, 'checkbox_')}">
+        <input type="checkbox" id="${transformStringToId(contact.id, 'checkbox_')}">
     `;
 
-    contactItem.onclick = () => selectContact(contact);
-    const checkbox = contactItem.querySelector(`#${transformNameToId(contact.name, 'checkbox_')}`)
+    contactItem.onclick = async () => selectContact(contact.id);
+    const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
     checkbox.onclick = (event) => {
         event.stopPropagation();
-        refreshContactNamesInInput()
+        refreshChoosenContactCircles()
     };
     dropdown.appendChild(contactItem);
 }
@@ -365,10 +315,17 @@ function createAssignedToDropdownHTML(dropdown, contact) {
  * 
  *  @param {object} contact - This object includes the information of a single contact.
  */
-function selectContact(contact) {
-    let checkbox = document.getElementById(transformNameToId(contact.name, 'checkbox_',))
+async function selectContact(id) {
+    const input = document.getElementById("dropAssignedTo")
+    const checkbox = document.getElementById(transformStringToId(id, 'checkbox_',))
+
     checkbox.checked = !checkbox.checked;
-    refreshContactNamesInInput()
+
+    if (!(input.value === '' || input.value === 'An ')) {
+        input.value = '';
+        input.focus();
+    }
+    await refreshChoosenContactCircles()
 }
 
 
@@ -562,7 +519,9 @@ function enableDisableSendButton() {
     }
 }
 
+
 // Zu Testzwecken
+
 async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
     let tasksAsArray = await getTasksAsArray();
     const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
