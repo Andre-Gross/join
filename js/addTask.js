@@ -1,6 +1,6 @@
 let contactsInitialized = false;
 let dataSubtasks = [];
-let possibleStatuses = ['To do', 'In progress', 'Await Feedback', 'Done'];
+let possibleStatuses = ['To do', 'In progress', 'Await feedback', 'Done'];
 let lastStringOfInput = '';
 const dropdownMenues = ['assignedTo', 'category']
 
@@ -77,10 +77,18 @@ function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '
     const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
     const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
 
-    toggleDisplayNone(dropdown, displayMode, shallVisible);
-    toggleDisplayNone(inputDummy, 'd-block', shallVisible)
-    toggleDisplayNone(arrowDown, displayMode, !shallVisible);
-    toggleDisplayNone(arrowUp, displayMode, shallVisible);
+
+    if (shallVisible === '') {
+        toggleDisplayNone(dropdown, displayMode);
+        toggleDisplayNone(inputDummy, 'd-block')
+        toggleDisplayNone(arrowDown, displayMode);
+        toggleDisplayNone(arrowUp, displayMode);
+    } else {
+        toggleDisplayNone(dropdown, displayMode, shallVisible);
+        toggleDisplayNone(inputDummy, 'd-block', shallVisible)
+        toggleDisplayNone(arrowDown, displayMode, !shallVisible);
+        toggleDisplayNone(arrowUp, displayMode, shallVisible);
+    }
 
     if (shallVisible === '') {
         if (input.classList.contains('active-dropdown-input')) {
@@ -123,6 +131,7 @@ async function addTaskFromBoard(status = 'To do') {
         alert(HTML)
     }
 }
+
 
 
 /**
@@ -524,13 +533,6 @@ function loadFormFunctions() {
         }
     });
 
-    subtaskInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            addNewSubtask();
-        }
-    });
-
     createAssignedToDropdown()
 
     for (let i = 0; i < dropdownMenues.length; i++) {
@@ -543,6 +545,20 @@ function loadFormFunctions() {
                 toggleDropdown(`${singleDropdown}`, 'd-block', false);
             }
         });
+    }
+}
+
+
+function enableDisableSendButton() {
+    const title = document.getElementById("inputTitle").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const category = document.getElementById("inputCategory").value;
+    const sendButton = document.getElementById("sendButton")
+
+    if (checkAllInputsHasContent(title, dueDate, category)) {
+        sendButton.disabled = false;
+    } else {
+        sendButton.disabled = true;
     }
 }
 

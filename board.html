@@ -29,10 +29,16 @@
         <div class="board-header">
             <div class="title">
                 <h1 class="m-2 w-100">Board</h1>
-                <input class="search-container mt-3" id="idSearch" type="text" class="form-control" placeholder="Find Task"
-                    oninput="filterAndShowTask()">
-                <img src="./assets/img/board/search.svg" alt="search icon" class="search-icon">
+                <div class="searchBar">
+                    <input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                        placeholder="Find Task" oninput="filterAndShowTask()">
+                    <div class="AddTaskBtn" onclick="window.location.href='addTask.html'">
+                        <p class="AddTaskBtnText">Add task</p>
+                        <img src="./assets/img/board/plus-button-white.svg" alt="plus">
+                    </div>
+                </div>
             </div>
+
 
         </div>
 
@@ -40,21 +46,23 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">To Do</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'To do')">
+
                 </div>
                 <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do">
-                     <!-- Tasks will be inserted here by JavaScript -->
+                    <!-- Tasks will be inserted here by JavaScript -->
                 </div>
             </div>
 
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">In progress</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'In progress')">
+
                 </div>
                 <div id="progress-container" class="tasks-container" data-empty-message="No Tasks in Progress">
                     <!-- Tasks will be inserted here by JavaScript -->
@@ -64,11 +72,12 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">Await feedback</h2>
-                    <a href="addTask.html">
-                        <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button">
-                    </a>
+
+                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
+                        onclick="addTaskFromBoard(status = 'Await feedback')">
+
                 </div>
-                <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in  Await Feedback">
+                <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in Await Feedback">
                     <!-- Tasks will be inserted here by JavaScript -->
                 </div>
             </div>
@@ -86,60 +95,61 @@
 
     <div w3-include-html="./templates/templates.html"></div>
 
-    <section id="modalCard" class="d-none flex-column" style="margin-bottom: 72px;">
-        <div id="modalCard-first-line" class="d-flex justify-content-between align-items-center">
-            <div id="modalCard-category-value" class="category-label"></div>
-            <div id="modulCard-close" class="d-flex justify-content-center align-items-center"
-                onclick="toggleDisplayModal(), putNextStatus()"><img src="assets/img/general/cross.svg" alt=""></div>
-        </div>
-        <div id="modalCard-no-edit-mode" class="d-block">
-            <h2 id="modalCard-title-value" class="mb-0"></h2>
-            <p id="modalCard-description-value" class="mb-0"></p>
-            <table>
-                <tr>
-                    <td><span class="information-type">Due date:</span></td>
-                    <td id="modalCard-finishedUntil-value"></td>
-                </tr>
-                <tr>
-                    <td><span class="information-type">Priority:</span></td>
-                    <td id="modalCard-priority-value"></td>
-                </tr>
-            </table>
-            <div>
-                <p class="information-type">Assigned To:</p>
-                <div id="modalAssignedToValue" class="d-flex flex-column"></div>
-            </div>
-            <div>
-                <p class="information-type">Subtasks</p>
-                <div id="modalCard-subtasks-value" class="d-flex flex-column">
+    <section id="modalCard-with-background">
+        <div id="modalCard-background" class="d-none"></div>
+        <div id="modalCard" class="d-none flex-column" style="margin-bottom: 72px;">
+            <div id="modalCard-first-line" class="d-flex justify-content-between align-items-center">
+                <div id="modalCard-category-value" class="category-label"></div>
+                <div id="modulCard-close" class="d-flex justify-content-center align-items-center"
+                    onclick="toggleEditMode(false); toggleDisplayModal(), putNextStatus()"><img src="assets/img/general/cross.svg" alt="">
                 </div>
             </div>
-            <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
-                <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
-                    <img src="./assets/img/board/bin.svg" alt="delete">
-                    <span>Delete</span>
+            <div id="modalCard-no-edit-mode" class="d-block">
+                <h2 id="modalCard-title-value" class="mb-0"></h2>
+                <p id="modalCard-description-value" class="mb-0"></p>
+                <table>
+                    <tr>
+                        <td><span class="information-type">Due date:</span></td>
+                        <td id="modalCard-finishedUntil-value"></td>
+                    </tr>
+                    <tr>
+                        <td><span class="information-type">Priority:</span></td>
+                        <td id="modalCard-priority-value"></td>
+                    </tr>
+                </table>
+                <div>
+                    <p class="information-type">Assigned To:</p>
+                    <div id="modalAssignedToValue" class="d-flex flex-column"></div>
                 </div>
-                <div id="modal-card-edit-button" class="d-flex" onclick="">
-                    <img src="assets/img/board/pen.svg" alt="edit">
-                    <span>Edit</span>
+                <div>
+                    <p class="information-type">Subtasks</p>
+                    <div id="modalCard-subtasks-value" class="d-flex flex-column">
+                    </div>
+                </div>
+                <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
+                    <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
+                        <img src="./assets/img/board/bin.svg" alt="delete">
+                        <span>Delete</span>
+                    </div>
+                    <div id="modal-card-edit-button" class="d-flex" onclick="">
+                        <img src="assets/img/board/pen.svg" alt="edit">
+                        <span>Edit</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
-        </div>
+            <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
+            </div>
 
+
+        </div>
     </section>
-    </div>
-    <!-- <script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", () => {
             boardRender();
-
-            // Für Testzwecke
-            openModal('-ODpZ9440G1qqLZXCplN');
         });
-        hab ich auskommentiert, zum selber dinge testen. K
-    </script> -->
+    </script>
 
 
 </body>

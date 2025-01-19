@@ -61,5 +61,8 @@ p {
 .textblue {
     color: #29ABE2;
    }
-   
+
+.linkDev {
+    cursor: pointer;
+}
 

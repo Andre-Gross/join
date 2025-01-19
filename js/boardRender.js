@@ -275,6 +275,7 @@ async function deleteTaskOfModalCard(id) {
 function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("board"));
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
+  toggleDisplayNone(document.getElementById("modalCard-background"))
 }
 
 
@@ -309,11 +310,11 @@ async function openModal(id) {
 
   document.getElementById('modalCard-category-value').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
   renderPriority(singleTask.priority);
-  renderSubtasks(singleTask.id, singleTask.subtasks)
-
+ 
+  // Subtasks in der Modal-Card rendern
+  renderSubtasksInModal(singleTask.id, singleTask.subtasks);
   document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-  document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id) };
-  document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
   toggleDisplayModal();
 }
@@ -363,6 +364,7 @@ function renderSubtasks(taskId, subtasks) {
 //  const subtasksContainer = document.getElementById("modalCard-subtasks-value");
 
 
+
 function renderSubtasksHTML(taskId, subtasks) {
   let HTML = '';
   if (!subtasks || subtasks.length === 0) {
@@ -385,11 +387,27 @@ function renderSubtasksHTML(taskId, subtasks) {
   return HTML;
 }
 
+//   subtasksContainer.innerHTML = "";
+//   subtasksContainer.style.display = "none"; 
+//   subtasksContainer.style.display = "none";
+
+//   if (!subtasks || subtasks.length === 0) {
+//     return;
+//   }
+
+//   subtasksContainer.style.display = "flex";
+
+//   subtasks.forEach((subtask, index) => {
+//     const subtaskItem = document.createElement("div");
+//     subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
+// >>>>>>> main
+
 
 async function deleteTaskOfModalCard(id){
   deleteTaskInDatabase(id);
   toggleDisplayModal()
 }
+
 
 
 function toggleDisplayModal() {
@@ -403,6 +421,24 @@ async function deleteTaskOfModalCard(id) {
   toggleDisplayModal();
   await boardRender()
 }
+
+//     checkbox.addEventListener("change", async () => {
+//       subtask.isChecked = checkbox.checked;
+
+//        await saveSubtaskChange(taskId, subtasks);
+
+//       updateProgressBar(taskId, subtasks);
+//     });
+
+//     subtaskItem.appendChild(checkbox);
+//     subtaskItem.appendChild(label);
+//     subtasksContainer.appendChild(subtaskItem);
+//   });
+// }
+
+// async function saveSubtaskChange(taskId, subtasks) {
+//   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+// >>>>>>> main
 
 
 function readAllKeys(object, without = '') {

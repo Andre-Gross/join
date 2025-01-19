@@ -266,7 +266,7 @@ async function registerNewUser(name, email, password) {
  * @param {boolean} [isSuccess] - Whether the registration was successful.
  */
 function redirectToLogin(isSuccess = false) {
-    const url = isSuccess ? "landingpage.html?registered=true" : "landingpage.html?error=emailExists";
+    const url = isSuccess ? "index.html?registered=true" : "index.html?error=emailExists";
     window.location.href = url;
 }
 

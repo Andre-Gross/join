@@ -41,48 +41,48 @@ function renderAssignedContacts(assignedTo, contacts) {
   const contactEntries = Object.values(contacts);
 
   // Limitiere auf maximal 3 Kontakte oder füge Platzhalter hinzu
-  const limitedContacts = assignedTo && assignedTo.length > 0
-    ? assignedTo.slice(0, 3)
-    : ["", "", ""]; // Drei transparente Platzhalter-Kreise
+  const limitedContacts =
+    assignedTo && assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""]; // Drei transparente Platzhalter-Kreise
 
   return `
     <div class="assigned-contacts">
       ${limitedContacts
-        .map((name) => {
-          if (!name) {
-            // Platzhalter für leere Kontakte (transparenter Kreis)
-            return `
+      .map((name) => {
+        if (!name) {
+          // Platzhalter für leere Kontakte (transparenter Kreis)
+          return `
               <div class="contact-circle" style="background-color: transparent; ">
               </div>
             `;
-          }
+        }
 
-          // Finde den Kontakt in den gespeicherten Daten
-          const contact = contactEntries.find((c) => c.name === name);
+        // Finde den Kontakt in den gespeicherten Daten
+        const contact = contactEntries.find((c) => c.name === name);
 
-          // Fallback für unbekannte Kontakte
-          const color = contact ? contact.color : "#ccc";
+        // Fallback für unbekannte Kontakte
+        const color = contact ? contact.color : "#ccc";
 
-          // Kürzel aus Vor- und Nachnamen generieren
-          const nameParts = (contact ? contact.name : name).split(" ");
-          const shortName =
-            nameParts.length > 1
-              ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
-              : nameParts[0][0].toUpperCase();
+        // Kürzel aus Vor- und Nachnamen generieren
+        const nameParts = (contact ? contact.name : name).split(" ");
+        const shortName =
+          nameParts.length > 1
+            ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
+            : nameParts[0][0].toUpperCase();
 
-          return `
+        return `
             <div class="contact-circle" style="background-color: ${color}">
               ${shortName}
             </div>
           `;
-        })
-        .join("")}
+      })
+      .join("")}
     </div>
   `;
 }
 
 async function loadTasks() {
-  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const firebaseUrl =
+    "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
     // Lade Tasks und Kontakte gleichzeitig
@@ -104,11 +104,14 @@ async function loadTasks() {
     }
 
     // Lösche vorhandene Inhalte in den Containern
-    ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
-      (containerId) => {
-        document.getElementById(containerId).innerHTML = "";
-      }
-    );
+    [
+      "todo-container",
+      "progress-container",
+      "feedback-container",
+      "done-container",
+    ].forEach((containerId) => {
+      document.getElementById(containerId).innerHTML = "";
+    });
 
     // Rendere Tasks basierend auf ihrem Status
     Object.entries(tasksData).forEach(([taskId, task]) => {
@@ -133,7 +136,9 @@ async function loadTasks() {
       // Berechnung des Fortschritts der Subtasks
       let progressHTML = "";
       if (task.subtasks && task.subtasks.length > 0) {
-        const completedSubtasks = task.subtasks.filter((subtask) => subtask.isChecked).length;
+        const completedSubtasks = task.subtasks.filter(
+          (subtask) => subtask.isChecked
+        ).length;
         const totalSubtasks = task.subtasks.length;
         const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
 
@@ -151,7 +156,10 @@ async function loadTasks() {
       const priorityImage = priorityLabelHTML(task.priority);
 
       // Kontakte rendern
-      const contactsHTML = renderAssignedContacts(task.assignedTo, contactsData);
+      const contactsHTML = renderAssignedContacts(
+        task.assignedTo,
+        contactsData
+      );
 
       // Aufgabe rendern
       taskElement.innerHTML = `
@@ -219,7 +227,6 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
-
 async function renderBodySearch() {
   [
     "todo-container",
@@ -238,10 +245,13 @@ async function renderBodySearch() {
     taskElement.innerHTML = `
                 <h4>${task.title}</h4>
                 <p>${task.description}</p>
-                <p>Due by: ${task.finishedUntil}</p>
-                <p><strong>Priority:</strong> <span class="${getPriorityClass(
-      task.priority
-    )}">${task.priority}</span></p>
+                <div class="subtasks-progress-container d-flex align-items-center">
+                <div class="progress-bar-container">
+                <div class="progress-bar" style="width: ${task.progressPercentage}%;"></div>
+                </div>
+                <div class="subtasks-count">${task.completedSubtasks}/${task.totalSubtasks} Subtasks</div>
+                </div>
+                <img src="assets/img/general/prio-${task.priority}.svg" alt="${task.priority}">
             `;
     const containerId = getContainerIdByStatus(task.status);
     if (containerId)
@@ -250,42 +260,24 @@ async function renderBodySearch() {
 }
 
 function priorityLabelHTML(priority) {
-  return `<img src="assets/img/general/prio-${priority}.png" alt="${priority}">`;
+  return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Andres Funktionen
 async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
-  const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
+  const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
   const singleTask = tasksAsArray[singleTaskID];
 
   const title = document.getElementById("inputTitle");
   const description = document.getElementById("textareaDescription");
-  const dueDate = document.getElementById('inputDate');
+  const dueDate = document.getElementById("inputDate");
   const category = document.getElementById("inputCategory");
 
   title.value = singleTask.title;
   description.value = singleTask.description;
   dueDate.value = singleTask.finishedUntil;
-  selectPriority(singleTask.priority)
+  selectPriority(singleTask.priority);
   priority = singleTask.priority;
   category.value = singleTask.category;
   dataSubtasks = singleTask.subtasks;
@@ -294,47 +286,59 @@ async function changeToEditMode(id) {
     renderNewSubtasks();
   }
 
-  toggleDisplayNone(document.getElementById('modalCard-no-edit-mode'));
-  toggleDisplayNone(document.getElementById('modalCard-edit-mode'));
-  toggleDisplayNone(document.getElementById('modalCard-category-value'));
-  document.getElementById('modalCard-first-line').classList.remove('justify-content-between');
-  document.getElementById('modalCard-first-line').classList.add('justify-content-end');
-  loadFormFunctions()
+  toggleEditMode(true);
+  
+  document
+    .getElementById("modalCard-first-line")
+    .classList.remove("justify-content-between");
+  document
+    .getElementById("modalCard-first-line")
+    .classList.add("justify-content-end");
+  loadFormFunctions();
 
-  document.getElementById('modul-card-edit-mode-form').onsubmit = function () { submitTaskForm('put', id); return false };
+  document.getElementById("modul-card-edit-mode-form").onsubmit = function () {
+    submitTaskForm("put", id);
+    return false;
+  };
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+
+function toggleEditMode(shallVisible = '') {
+  toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-category-value"), 'd-block', !shallVisible);
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
   await loadTasks(); // Tasks laden und rendern
   scrollToTaskSection(); // Scrollt zur gewünschten Sektion
 });
-
 
 /**
  * Scrolls to the task section based on the "status" parameter in the URL.
  */
 function scrollToTaskSection() {
   const params = new URLSearchParams(window.location.search);
-  const status = params.get('status'); // Liest den ?status-Parameter aus der URL
+  const status = params.get("status"); // Liest den ?status-Parameter aus der URL
 
   if (!status) return; // Falls kein Status vorhanden ist, abbrechen
 
   // Mapping der Status zu den Container-IDs
   const containerMapping = {
-    'todo': 'todo-container',
-    'inprogress': 'progress-container',
-    'feedback': 'feedback-container',
-    'done': 'done-container',
-    'urgent': 'todo-container' // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+    todo: "todo-container",
+    inprogress: "progress-container",
+    feedback: "feedback-container",
+    done: "done-container",
+    urgent: "todo-container", // Optional: Urgent wird z.B. im To-Do-Container angezeigt
   };
 
   const targetContainerId = containerMapping[status];
   if (targetContainerId) {
     const targetElement = document.getElementById(targetContainerId);
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
       console.log(`Scrolled to section: ${status}`);
     }
   }
 }
-
