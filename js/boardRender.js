@@ -360,10 +360,6 @@ function renderSubtasks(taskId, subtasks) {
 }
 
 
-// function renderSubtasksInModal(taskId, subtasks) {
-//  const subtasksContainer = document.getElementById("modalCard-subtasks-value");
-
-
 
 function renderSubtasksHTML(taskId, subtasks) {
   let HTML = '';
@@ -387,20 +383,40 @@ function renderSubtasksHTML(taskId, subtasks) {
   return HTML;
 }
 
-//   subtasksContainer.innerHTML = "";
-//   subtasksContainer.style.display = "none"; 
-//   subtasksContainer.style.display = "none";
 
-//   if (!subtasks || subtasks.length === 0) {
-//     return;
-//   }
+function renderSubtasksInModal(taskId, subtasks) {
+ const subtasksContainer = document.getElementById("modalCard-subtasks-value");
 
-//   subtasksContainer.style.display = "flex";
+  subtasksContainer.innerHTML = "";
+  subtasksContainer.style.display = "none"; 
+  subtasksContainer.style.display = "none";
 
-//   subtasks.forEach((subtask, index) => {
-//     const subtaskItem = document.createElement("div");
-//     subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
-// >>>>>>> main
+  if (!subtasks || subtasks.length === 0) {
+    return;
+  }
+
+  subtasksContainer.style.display = "flex";
+
+  subtasks.forEach((subtask, index) => {
+    const subtaskItem = document.createElement("div");
+    subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
+
+    checkbox.addEventListener("change", async () => {
+      subtask.isChecked = checkbox.checked;
+
+       await saveSubtaskChange(taskId, subtasks);
+
+      updateProgressBar(taskId, subtasks);
+    });
+
+    subtaskItem.appendChild(checkbox);
+    subtaskItem.appendChild(label);
+    subtasksContainer.appendChild(subtaskItem);
+  });
+}
+
+// async function saveSubtaskChange(taskId, subtasks) {
+//   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
 
 async function deleteTaskOfModalCard(id){
@@ -421,24 +437,6 @@ async function deleteTaskOfModalCard(id) {
   toggleDisplayModal();
   await boardRender()
 }
-
-//     checkbox.addEventListener("change", async () => {
-//       subtask.isChecked = checkbox.checked;
-
-//        await saveSubtaskChange(taskId, subtasks);
-
-//       updateProgressBar(taskId, subtasks);
-//     });
-
-//     subtaskItem.appendChild(checkbox);
-//     subtaskItem.appendChild(label);
-//     subtasksContainer.appendChild(subtaskItem);
-//   });
-// }
-
-// async function saveSubtaskChange(taskId, subtasks) {
-//   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
-// >>>>>>> main
 
 
 function readAllKeys(object, without = '') {
