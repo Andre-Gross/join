@@ -397,7 +397,7 @@ function renderSubtasksInModal(taskId, subtasks) {
 
   subtasksContainer.style.display = "flex";
 
-  subtasks.forEach((subtask, index) => {
+  subtasks.forEach((subtask) => {
     const subtaskItem = document.createElement("div");
     subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
 
@@ -415,8 +415,22 @@ function renderSubtasksInModal(taskId, subtasks) {
   });
 }
 
-// async function saveSubtaskChange(taskId, subtasks) {
-//   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+async function saveSubtaskChange(taskId, subtasks) {
+  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+
+  try {
+    await fetch(firebaseUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ subtasks }),
+    });
+    console.log(`Subtasks für Task ${taskId} erfolgreich aktualisiert.`);
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren der Subtasks:", error);
+  }
+}
 
 
 async function deleteTaskOfModalCard(id){
