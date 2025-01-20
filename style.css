@@ -18,6 +18,7 @@
     /* Hinzugefügt von André */
     --invalid-border-color: #FF001F;
     --input-border-standart: #D1D1D1;
+    --color-invalid: #FF8190;
     --template-height-with-padding: 80px;
 }
 
@@ -84,7 +85,7 @@ textarea {
 
 input:focus,
 textarea:focus {
-    border-color: var(--focus-border-color);
+    border-color: var(--input-border-color-onfocus);
     outline: none;
 }
 
@@ -156,6 +157,11 @@ footer {
 }
 
 
+
+
+.color-invalid {
+    color: var(--color-invalid)
+}
 .name-circle {
     height: 40px;
     width: 40px;

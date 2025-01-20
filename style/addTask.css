@@ -40,11 +40,6 @@ textarea {
 }
 
 
-.c-invalid-border-color {
-    color: var(--invalid-border-color);
-}
-
-
 .mw-396-u1000 {
     max-width: 396px;
 }
