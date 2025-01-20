@@ -275,7 +275,6 @@ async function deleteTaskOfModalCard(id) {
 function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("board"));
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
-  toggleDisplayNone(document.getElementById("modalCard-background"))
 }
 
 
@@ -299,22 +298,38 @@ function readAllKeys(object, without = "") {
 }
 
 
+
+
+
+
+
+// Ab hier beginnt der Modal-Card-Code
 async function openModal(id) {
-  let tasksAsArray = await getTasksAsArray();
-  const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
-  const singleTask = tasksAsArray[singleTaskID];
-  const keys = ['category', 'title', 'description', 'finishedUntil'];
+  const tasksAsArray = await getTasksAsArray();
+  const singleTask = tasksAsArray.find((task) => task.id === id);
 
+  if (!singleTask) {
+    console.error(`Task mit ID ${id} nicht gefunden.`);
+    return;
+  }
+
+  const keys = ["category", "title", "description", "finishedUntil"];
   renderModal(singleTask, keys);
-  renderDate(singleTask)
+  renderDate(singleTask);
 
-  document.getElementById('modalCard-category-value').classList.add(`bc-category-label-${singleTask.category.replace(/\s/g, '').toLowerCase()}`);
+  document
+    .getElementById("modalCard-category-value")
+    .classList.add(
+      `bc-category-label-${singleTask.category
+        .replace(/\s/g, "")
+        .toLowerCase()}`
+    );
   renderPriority(singleTask.priority);
- 
+
   // Subtasks in der Modal-Card rendern
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
-  document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+    document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
+    document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
   toggleDisplayModal();
 }
@@ -322,15 +337,16 @@ async function openModal(id) {
 
 function renderModal(singleTask, allKeys) {
   for (let i = 0; i < allKeys.length; i++) {
-      const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
-      element.innerHTML = singleTask[allKeys[i]];
+    const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
+    element.innerHTML = singleTask[allKeys[i]];
   }
 }
 
 
 function renderDate(singleTask) {
-  let date = singleTask['finishedUntil'];
-  document.getElementById((`modalCard-finishedUntil-value`)).innerHTML = formatDate(date);
+  let date = singleTask["finishedUntil"];
+  document.getElementById(`modalCard-finishedUntil-value`).innerHTML =
+    formatDate(date);
 }
 
 
@@ -341,51 +357,22 @@ function formatDate(date) {
 
 
 function renderPriority(priority) {
-  let priorityLabel = document.getElementById('modalCard-priority-value');
-  priorityLabel.innerHTML = priorityLabelHTML(priority)
+  let priorityLabel = document.getElementById("modalCard-priority-value");
+  priorityLabel.innerHTML = priorityLabelHTML(priority);
 }
 
 
 function priorityLabelHTML(priority) {
   let HTML = `
-  <span>${capitalizeFirstLetter(priority)}<span>
-  <img src="assets/img/general/prio-${priority}.png" alt="">
-  `;
-  return HTML
-}
-
-function renderSubtasks(taskId, subtasks) {
-  let modalSubtasksValue = document.getElementById('modalCard-subtasks-value');
-  modalSubtasksValue.innerHTML = renderSubtasksHTML(taskId, subtasks)
-}
-
-
-
-function renderSubtasksHTML(taskId, subtasks) {
-  let HTML = '';
-  if (!subtasks || subtasks.length === 0) {
-      return HTML;
-  }
-
-  for (let i = 0; i < subtasks.length; i++) {
-      const singleSubtask = subtasks[i];
-      HTML += `
-          <div class="d-flex align-items-center">
-              <label class="custom-checkbox d-flex align-items-center" onclick="changeCheckbox('${taskId}', ${i})">
-                  <input id="checkbox-subtask${i}" type="checkbox" ${singleSubtask.isChecked ? 'checked' : ''}>
-                  <span class="checkbox-image"></span>
-              </label>
-              <p>${singleSubtask.subtask}</p>
-          </div>
-      `;
-  }
-
+    <span>${capitalizeFirstLetter(priority)}<span>
+    <img src="assets/img/general/prio-${priority}.png" alt="">
+    `;
   return HTML;
 }
 
-
 function renderSubtasksInModal(taskId, subtasks) {
- const subtasksContainer = document.getElementById("modalCard-subtasks-value");
+  const subtasksContainer = document.getElementById("modalCard-subtasks-value");
+
 
   subtasksContainer.innerHTML = "";
   subtasksContainer.style.display = "none"; 
@@ -397,9 +384,18 @@ function renderSubtasksInModal(taskId, subtasks) {
 
   subtasksContainer.style.display = "flex";
 
-  subtasks.forEach((subtask) => {
+  subtasks.forEach((subtask, index) => {
     const subtaskItem = document.createElement("div");
     subtaskItem.classList.add("d-flex", "align-items-center", "gap-2");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = subtask.isChecked;
+    checkbox.id = `modal-subtask-${taskId}-${index}`;
+
+    const label = document.createElement("label");
+    label.setAttribute("for", `modal-subtask-${taskId}-${index}`);
+    label.textContent = subtask.subtask;
 
     checkbox.addEventListener("change", async () => {
       subtask.isChecked = checkbox.checked;
@@ -430,47 +426,4 @@ async function saveSubtaskChange(taskId, subtasks) {
   } catch (error) {
     console.error("Fehler beim Aktualisieren der Subtasks:", error);
   }
-}
-
-
-async function deleteTaskOfModalCard(id){
-  deleteTaskInDatabase(id);
-  toggleDisplayModal()
-}
-
-
-
-function toggleDisplayModal() {
-  toggleDisplayNone(document.getElementById('board'));
-  toggleDisplayNone(document.getElementById('modalCard'), 'd-flex');
-}
-
-
-async function deleteTaskOfModalCard(id) {
-  await deleteTaskInDatabase(id),
-  toggleDisplayModal();
-  await boardRender()
-}
-
-
-function readAllKeys(object, without = '') {
-  const allKeys = [];
-  for (let i = 0; i < Object.keys(object).length; i++) {
-      const key = Object.keys(object)[i];
-      if (checkContentOfArray(key, without)) {
-          continue;
-      } else {
-          allKeys.push(key);
-      }
-  }
-  return allKeys;
-}
-
-
-function changeCheckbox(taskId, id) {
-  const checkbox = document.getElementById(`checkbox-subtask${id}`);
-  checkbox.checked = !checkbox.checked;
-  console.log('Checked state:', checkbox.checked);
-
-  putNewCheckedToSubtask(taskId, id, checkbox.checked);
 }
