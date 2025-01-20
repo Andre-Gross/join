@@ -157,7 +157,7 @@ form::-webkit-scrollbar {
     right: 0;
     bottom: 0;
     background-color: white;
-    border: 1.5px solid var(--border-color);
+    border: 1.5px solid white;
     border-radius: 8px;
 }
 
@@ -205,7 +205,22 @@ form::-webkit-scrollbar {
     border-bottom: 1.5px solid var(--input-border-standart);
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
+
+    --sb-track-color: #ffffff;
 }
+
+
+.dropdown:-webkit-scrollbar-track {
+        background: var(--sb-track-color);
+}
+
+
+@supports not selector(::-webkit-scrollbar) {
+    dropdown {
+        scrollbar-color: var(--sb-thumb-color)
+                       var(--sb-track-color);
+    }
+  }
 
 
 .active-dropdown-input {
