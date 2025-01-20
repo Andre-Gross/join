@@ -16,9 +16,9 @@
     --white-color: #FFFFFF;
 
     /* Hinzugefügt von André */
-    --invalid-border-color: #FF001F;
-    --input-border-standart: #D1D1D1;
     --color-invalid: #FF8190;
+    --input-border-color-standart: #D1D1D1;
+    --input-border-color-onfocus: #29ABE2;
     --template-height-with-padding: 80px;
 }
 
@@ -157,6 +157,14 @@ footer {
 }
 
 
+.border-color-onfocus {
+    border-color: var(--input-border-color-onfocus) !important;
+}
+
+
+.border-color-invalid {
+    border-color: var(--color-invalid) !important;
+}
 
 
 .color-invalid {
