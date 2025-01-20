@@ -10,6 +10,7 @@
 
     form {
         padding-bottom: 0;
+        height: calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
     }
 
 
