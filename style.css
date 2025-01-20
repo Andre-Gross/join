@@ -162,6 +162,13 @@ footer {
 .color-invalid {
     color: var(--color-invalid)
 }
+
+
+.input-color-standart-important-always:focus {
+    border-color: var(--input-border-color-standart);
+}
+
+
 .name-circle {
     height: 40px;
     width: 40px;
