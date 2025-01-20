@@ -35,13 +35,13 @@
                         <div class="d-flex flex-column gap-05">
                             <label for="inputTitle">Title<span class="color-invalid">*</span></label>
                             <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
-                                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)">
+                                onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                onblur="changeToRightBorderColor(this)">
                         </div>
 
                         <div class="d-flex flex-column gap-05">
                             <label for="textareaDescription">Description</label>
-                            <textarea id="textareaDescription" placeholder="Enter a Description"
-                                onfocus="removeInvalidBorder(this)" onblur="addInvalidBorder(this)"></textarea>
+                            <textarea id="textareaDescription" placeholder="Enter a Description"></textarea>
                         </div>
 
                         <div class="d-flex flex-column gap-05">
@@ -50,9 +50,11 @@
                                 <div id="input-group-dropdown-assignedTo" class="input-group d-flex">
                                     <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
                                         placeholder="Select contacts to assign"
-                                        onfocus="savePrefixInAssingedTo(), removeInvalidBorder(this), filterContacts()"
-                                        oninput="savePrefixInAssingedTo(), filterContacts()" onblur="addInvalidBorder(this), emptyAssignedTo()">
-                                    <div class="input-single-img-container d-flex justify-content-center align-items-center"
+                                        onfocus="changeBorderColor(document.getElementById('dropAssignedTo-img'), 'border-color-onfocus'), savePrefixInAssingedTo(), filterContacts()"
+                                        oninput="savePrefixInAssingedTo(), filterContacts()"
+                                        onblur="changeBorderColor(document.getElementById('dropAssignedTo-img')), emptyAssignedTo()">
+                                    <div id="dropAssignedTo-img"
+                                        class="input-single-img-container d-flex justify-content-center align-items-center"
                                         onclick="toggleDropdown('assignedTo', 'd-block')">
                                         <img id="input-assignedTo-arrow-down" src="assets/img/addTask/arrow-down.svg"
                                             class="">
@@ -71,8 +73,10 @@
 
                     <div class="form-subcontainer">
                         <div class="d-flex flex-column gap-05">
-                            <label for="inputDate">Due date<span class="c-invalid-border-color">*</span></label>
-                            <input required id="inputDate" type="date">
+                            <label for="inputDate">Due date<span class="color-invalid">*</span></label>
+                            <input required id="inputDate" type="date"
+                                onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                onblur="changeToRightBorderColor(this)">
                         </div>
 
                         <div class="d-flex flex-column gap-05">

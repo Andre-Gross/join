@@ -1,12 +1,24 @@
-function addInvalidBorder(element) {
-    if (element.value == '') {
-        element.classList.add("invalid-border");
+function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
+
+function changeBorderColor(element, borderColorClass = '') {
+    element.classList.remove("border-color-onfocus")
+    element.classList.remove("border-color-invalid")
+
+    if (!(borderColorClass === '')) {
+        element.classList.add(borderColorClass);
     }
 }
 
 
-function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+function changeToRightBorderColor(element) {
+    if (element.value == '') {
+        changeBorderColor(element, "border-color-invalid")
+    } else {
+        changeBorderColor(element);
+    }
 }
 
 
@@ -20,7 +32,6 @@ function checkContentOfArray(key, arrayToCheck) {
         }
     }
 }
-
 
 
 function clearValue(element) {
@@ -44,18 +55,6 @@ async function createNameCirlceWithId(id) {
     const color = contacts[id].color.replace('#', '').toLowerCase();
 
     return createNameCirlce(initials, color)
-}
-
-
-function returnInitialsOfName(name) {
-    const splitName = name.split(' ');
-    let initials = '';
-
-    for (let i = 0; i < splitName.length; i++) {
-        const letter = splitName[i].charAt(0).toUpperCase()
-        initials += letter
-    }
-    return initials;
 }
 
 
@@ -99,8 +98,15 @@ function goBack() {
 }
 
 
-function removeInvalidBorder(element) {
-    element.classList.remove("invalid-border");
+function returnInitialsOfName(name) {
+    const splitName = name.split(' ');
+    let initials = '';
+
+    for (let i = 0; i < splitName.length; i++) {
+        const letter = splitName[i].charAt(0).toUpperCase()
+        initials += letter
+    }
+    return initials;
 }
 
 
