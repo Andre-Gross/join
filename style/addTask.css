@@ -89,12 +89,19 @@ form {
     padding-right: 16px;
     padding-top: 0;
     padding-bottom: 0;
-    height: calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
+    height: calc(100vh - var(--template-height-with-padding) - var(--main-button-container-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
     width: max-content;
     flex-direction: column;
 
     overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+
+form::-webkit-scrollbar {
+    display: none;
+  }
 
 
 #modalCard-edit-mode form {
