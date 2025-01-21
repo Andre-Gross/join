@@ -133,7 +133,7 @@ function logOut() {
 
     // Zur Landing-Page weiterleiten
     setTimeout(() => {
-        window.location.href = 'landingpage.html'; // Weiterleitung zur Landing-Page
+        window.location.href = 'index.html'; // Weiterleitung zur Landing-Page
     }, 50); // Optionale Verzögerung für Animationen
 }
 
