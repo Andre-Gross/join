@@ -185,12 +185,19 @@ textarea {
     width: 100%;
     max-width: 440px;
     flex-direction: column;
+
+
+.fs-12 {
+    font-size: 12px;
+}
 }
 
 
 .gap-05 {
     gap: 0.5rem;
     padding-bottom: 0.5rem;
+.h-0 {
+    height: 0;
 }
 
 

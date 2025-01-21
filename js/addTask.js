@@ -214,6 +214,16 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
 //         input.value = str;
 //     }
 // }
+function changeTextRequired(field) {
+    const input = document.getElementById(`input${upperCaseFirstLetter(field.toLowerCase())}`);
+    const text = document.getElementById(`text-required-input-${field.toLowerCase()}`);
+
+    if (input.value === '') {
+        toggleDisplayNone(text, "d-block", true);
+    } else {
+        toggleDisplayNone(text, "d-block", false);
+    }
+}
 
 
 /**

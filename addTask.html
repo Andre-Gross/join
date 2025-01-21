@@ -34,9 +34,16 @@
                     <div class="form-subcontainer">
                         <div class="d-flex flex-column gap-05">
                             <label for="inputTitle">Title<span class="color-invalid">*</span></label>
-                            <input required id="inputTitle" class="" type="text" placeholder="Enter a title"
-                                onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                                onblur="changeToRightBorderColor(this)">
+                            <div class="w-100 d-flex flex-column gap-1">
+                                <input type="text" placeholder="Enter a title" required class="w-100" id="inputTitle"
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    onblur="changeToRightBorderColor(this), changeTextRequired('title')">
+                                    <div class="h-0 d-flex flex-column">
+                                        <span id="text-required-input-title" 
+                                        class="text-required-input d-none color-invalid fs-12">
+                                        This field is required</span>
+                                    </div>
+                            </div>
                         </div>
 
                         <div class="d-flex flex-column gap-05">
@@ -76,7 +83,12 @@
                             <label for="inputDate">Due date<span class="color-invalid">*</span></label>
                             <input required id="inputDate" type="date"
                                 onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                                onblur="changeToRightBorderColor(this)">
+                                onblur="changeToRightBorderColor(this); changeTextRequired('date')">
+                                <div class="h-0 d-flex flex-column">
+                                    <span id="text-required-input-date" 
+                                    class="text-required-input d-none color-invalid fs-12">
+                                    This field is required</span>
+                                </div>
                         </div>
 
                         <div class="d-flex flex-column gap-05">
@@ -102,9 +114,12 @@
                             <div id="dropdown-container-category" class="dropdown-container">
                                 <div id="input-group-dropdown-category" class="input-group d-flex">
                                     <input required readonly type="text" id="inputCategory"
-                                        class="input-color-standart-important-always border-end-0 flex-fill" placeholder="Select task category"
-                                        onclick="toggleDropdown('category', 'd-block', true)" />
-                                    <div id="input-group-dropdown-category-img" class="input-single-img-container d-flex justify-content-center align-items-center"
+                                        class="input-color-standart-important-always border-end-0 flex-fill"
+                                        placeholder="Select task category"
+                                        onclick="toggleDropdown('category', 'd-block', true)" 
+                                        onblur="changeTextRequired('category')">
+                                    <div id="input-group-dropdown-category-img"
+                                        class="input-single-img-container d-flex justify-content-center align-items-center"
                                         onclick="toggleDropdown('category', 'd-block')">
                                         <img id="input-category-arrow-down" src="assets/img/addTask/arrow-down.svg"
                                             class="">
@@ -112,12 +127,17 @@
                                             class="d-none">
                                     </div>
                                 </div>
+                                <div class="h-0 d-flex flex-column">
+                                    <span id="text-required-input-category" 
+                                    class="text-required-input d-none color-invalid fs-12">
+                                    This field is required</span>
+                                </div>
                                 <div id="dropdown-category" class="d-none dropdown" onclick="">
                                     <div
-                                        onclick="selectCategory('Technical Task', document.getElementById('dropdown-category'))">
+                                        onclick="selectCategory('Technical Task', document.getElementById('dropdown-category')); changeTextRequired('category')">
                                         Technical Task</div>
                                     <div
-                                        onclick="selectCategory('User Story', document.getElementById('dropdown-category'))">
+                                        onclick="selectCategory('User Story', document.getElementById('dropdown-category')); changeTextRequired('category')">
                                         User
                                         Story
                                     </div>
