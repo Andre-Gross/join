@@ -5,6 +5,7 @@
     --standart-input-height: 39.2px;
     --navbar-width-desktop-mode: 230px;
     --form-subcontainer-max-width: 440px;
+    --form-gap: 32px
 }
 
 
@@ -27,6 +28,7 @@ form {
     height: calc(100vh - var(--template-height-with-padding) - var(--main-button-container-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
     width: max-content;
     flex-direction: column;
+    gap: var(--form-gap);
 
     overflow-y: scroll;
     -ms-overflow-style: none;
@@ -184,18 +186,29 @@ textarea {
 .form-subcontainer {
     width: 100%;
     max-width: 440px;
+    display: flex;
     flex-direction: column;
+    gap: var(--form-gap)
+}
 
 
 .fs-12 {
     font-size: 12px;
 }
+
+
+.gap-4p { 
+    gap: 4px;
+    padding-bottom: 4px;
 }
 
 
-.gap-05 {
-    gap: 0.5rem;
-    padding-bottom: 0.5rem;
+.gap-8p {
+    gap: 8px;
+    padding-bottom: 8px;
+}
+
+
 .h-0 {
     height: 0;
 }
