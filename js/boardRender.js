@@ -102,45 +102,82 @@ function renderTaskContacts(assignedTo = []) {
 
 
 function initializeDragAndDrop() {
-  const tasks = document.querySelectorAll(".task");
-  const containers = document.querySelectorAll(".tasks-container");
+  const tasks = document.querySelectorAll(".task")
+  const containers = document.querySelectorAll(".tasks-container")
+  let placeholder = null
+  let draggedTask = null
 
-  // Dragging Events
   tasks.forEach((task) => {
-    task.addEventListener("dragstart", () => {
-      task.classList.add("dragging");
-    });
+    task.addEventListener("dragstart", (e) => {
+      draggedTask = task
+      task.classList.add("dragging")
+
+      // Create a placeholder with the same size as the task
+      placeholder = document.createElement("div")
+      placeholder.classList.add("placeholder")
+      placeholder.style.width = `${task.offsetWidth}px`
+      placeholder.style.height = `${task.offsetHeight}px`
+
+      // Insert the placeholder after the task in the container
+      task.parentNode.insertBefore(placeholder, task.nextSibling)
+
+      // Set a timeout to hide the original element after the drag image has been generated
+      setTimeout(() => {
+        task.style.display = "none"
+      }, 0)
+
+      // Trigger the wiggle animation
+      task.style.animation = "none"
+      task.offsetHeight // Trigger a reflow
+      task.style.animation = null
+    })
+
     task.addEventListener("dragend", () => {
-      task.classList.remove("dragging");
-    });
-  });
+      if (draggedTask) {
+        draggedTask.classList.remove("dragging")
+        draggedTask.style.display = "block"
+        draggedTask = null
+      }
+
+      // Remove the placeholder
+      if (placeholder) {
+        placeholder.remove()
+        placeholder = null
+      }
+    })
+  })
 
   // Dragover Events
   containers.forEach((container) => {
     container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      const afterElement = getDragAfterElement(container, e.clientY);
-      const draggingTask = document.querySelector(".dragging");
-      if (!draggingTask) return;
+      e.preventDefault()
+      const afterElement = getDragAfterElement(container, e.clientY)
+      if (!placeholder) return
 
       if (afterElement == null) {
-        container.appendChild(draggingTask);
+        container.appendChild(placeholder)
       } else {
-        container.insertBefore(draggingTask, afterElement);
+        container.insertBefore(placeholder, afterElement)
       }
-    });
+    })
 
     container.addEventListener("drop", async (e) => {
-      const draggingTask = document.querySelector(".dragging");
-      if (!draggingTask) return;
+      if (!draggedTask || !placeholder) return
 
-      const newStatus = getStatusFromContainerId(container.id);
-      const taskId = draggingTask.id;
+      const newStatus = getStatusFromContainerId(container.id)
+      const taskId = draggedTask.id
 
-      await updateTaskStatus(taskId, newStatus);
-      boardRender();
-    });
-  });
+      // Replace the placeholder with the dragged task
+      container.replaceChild(draggedTask, placeholder)
+
+      // Remove the placeholder
+      placeholder.remove()
+      placeholder = null
+
+      await updateTaskStatus(taskId, newStatus)
+      boardRender()
+    })
+  })
 }
 
 
