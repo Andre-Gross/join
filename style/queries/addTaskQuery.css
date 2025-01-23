@@ -23,9 +23,11 @@
 @media (min-width: 1000px) {
 
     form {
+        padding-right: unset;
         height: max-content;
+        max-width: auto;
+        gap: 0;
         justify-content: start;
-        align-items: center;
         flex-direction: row;
         overflow: hidden;
     }
@@ -55,8 +57,13 @@
 
 
     .form-subcontainer:last-child {
-        border-left: 1px solid var(--input-border-standart);
+        border-left: 1px solid var(--input-border-color-standart);
         padding-left: 48px;
+    }
+
+
+    .input-group {
+        max-width: 307px;
     }
 
 
@@ -78,5 +85,10 @@
 
     #required-text-mobile-mode {
         display: none;
+    }
+
+
+    .w-100u1000p {
+        width: auto;
     }
 }

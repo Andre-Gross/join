@@ -26,7 +26,6 @@ form {
     padding-top: 0;
     padding-bottom: 0;
     height: calc(100vh - var(--template-height-with-padding) - var(--main-button-container-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
-    width: max-content;
     flex-direction: column;
     gap: var(--form-gap);
 
@@ -240,7 +239,6 @@ textarea {
 .input-group {
     flex-wrap: nowrap;
     box-sizing: border-box;
-    max-width: 307px;
 }
 
 
@@ -351,4 +349,9 @@ textarea {
 .single-img-box img {
     max-height: 14px;
     aspect-ratio: 1/1;
+}
+
+
+.w-100u1000p {
+    width: 100%;
 }
