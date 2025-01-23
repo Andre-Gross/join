@@ -330,6 +330,10 @@ function submitAddContact() {
   let color = getRandomColor();
 
   postContactToDatabase(name, mail, phone, color);
+  
+  setTimeout(() => {
+    window.location.reload();
+  }, 100);
 }
 
 function notifSucess() {
@@ -344,6 +348,10 @@ function notifSucess() {
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 100);
 }
 
 function saveEditContact(i) {
@@ -354,6 +362,10 @@ function saveEditContact(i) {
   let color = colors[i];
   let id = ids[i];
   putContactInDatabase(name, mail, phone, color, id);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 100);
 }
 
 async function shortName() {
