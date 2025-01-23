@@ -37,6 +37,7 @@
                             <div class="w-100 d-flex flex-column gap-1">
                                 <input type="text" placeholder="Enter a title" required class="w-100" id="inputTitle"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    oninput="enableDisableSendButton()"
                                     onblur="changeToRightBorderColor(this), changeTextRequired('title')">
                                     <div class="h-0 d-flex flex-column">
                                         <span id="text-required-input-title" 
@@ -83,6 +84,7 @@
                             <label for="inputDate">Due date<span class="color-invalid">*</span></label>
                             <input required id="inputDate" type="date"
                                 onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                oninput="enableDisableSendButton()"
                                 onblur="changeToRightBorderColor(this); changeTextRequired('date')">
                                 <div class="h-0 d-flex flex-column">
                                     <span id="text-required-input-date" 
@@ -117,6 +119,7 @@
                                         class="input-color-standart-important-always border-end-0 flex-fill"
                                         placeholder="Select task category"
                                         onclick="toggleDropdown('category', 'd-block', true)" 
+                                        oninput="enableDisableSendButton()"
                                         onblur="changeTextRequired('category')">
                                     <div id="input-group-dropdown-category-img"
                                         class="input-single-img-container d-flex justify-content-center align-items-center"
@@ -134,10 +137,10 @@
                                 </div>
                                 <div id="dropdown-category" class="d-none dropdown" onclick="">
                                     <div
-                                        onclick="selectCategory('Technical Task', document.getElementById('dropdown-category')); changeTextRequired('category')">
+                                        onclick="selectCategory('Technical Task', document.getElementById('dropdown-category')); enableDisableSendButton(), changeTextRequired('category')">
                                         Technical Task</div>
                                     <div
-                                        onclick="selectCategory('User Story', document.getElementById('dropdown-category')); changeTextRequired('category')">
+                                        onclick="selectCategory('User Story', document.getElementById('dropdown-category')); enableDisableSendButton(), changeTextRequired('category')">
                                         User
                                         Story
                                     </div>
@@ -183,8 +186,7 @@
             </div>
 
             <div id="form-footer" class="w-100 d-flex justify-content-end">
-                <p id="required-text-desktop-mode" class="required-text"><span
-                        class="color-invalid">*</span>This
+                <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
                     field is required</p>
                 <div class="main-btn-container d-flex justify-content-end">
                     <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"

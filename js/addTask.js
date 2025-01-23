@@ -158,6 +158,8 @@ async function submitTaskForm(method = 'post', id = '') {
                 break;
             }
         }
+    } else {
+        alert("Bitte fülle alle Felder aus.");
     }
 }
 
@@ -175,7 +177,6 @@ async function submitTaskForm(method = 'post', id = '') {
  */
 function checkAllInputsHasContent(title, dueDate, category) {
     if (title == '' || dueDate == '' || category == '') {
-        alert("Bitte fülle alle Felder aus.");
         return false;
     } else {
         return true
@@ -535,7 +536,6 @@ function enableDisableSendButton() {
 async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
     let tasksAsArray = await getTasksAsArray();
     const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
-    const singleTask = tasksAsArray[singleTaskID];
 
     const title = document.getElementById("inputTitle");
     const description = document.getElementById("textareaDescription");
