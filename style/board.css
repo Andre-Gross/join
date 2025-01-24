@@ -121,6 +121,28 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
+.task:hover {
+    animation: wiggle 0.8s ease-in-out; /* Wende die Animation an */
+  }
+  
+  /* Keyframe-Animation für das Wippen */
+  @keyframes wiggle {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(5px); /* Nach rechts bewegen */
+    }
+    50% {
+      transform: translateX(0); /* Zurück zur Mitte */
+    }
+    75% {
+      transform: translateX(-5px); /* Nach links bewegen */
+    }
+    100% {
+      transform: translateX(0); /* Zurück zur Mitte */
+    }
+  }
 
 .task h4 {
     margin-top: 1rem;
