@@ -1,18 +1,26 @@
 async function boardRender() {
-  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
-    // Fetch Tasks from Firebase
-    const response = await fetch(firebaseUrl);
-    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-    const tasksData = await response.json();
+    // Lade Tasks und Kontakte aus Firebase
+    const [tasksResponse, contactsResponse] = await Promise.all([
+      fetch(`${firebaseUrl}/tasks.json`),
+      fetch(`${firebaseUrl}/users/contacts.json`),
+    ]);
+
+    if (!tasksResponse.ok || !contactsResponse.ok) {
+      throw new Error("Error fetching data");
+    }
+
+    const tasksData = await tasksResponse.json();
+    const contactsData = await contactsResponse.json();
 
     if (!tasksData || Object.keys(tasksData).length === 0) {
       console.log("No tasks found.");
       return;
     }
 
-    // Clear all task containers
+    // Lösche vorhandene Inhalte in den Containern
     ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
       (containerId) => {
         document.getElementById(containerId).innerHTML = "";
@@ -24,7 +32,7 @@ async function boardRender() {
       const containerId = getContainerIdByStatus(task.status);
       if (!containerId) return;
 
-      // Create Task Element
+      // Erstelle Task-Element
       const taskElement = document.createElement("div");
       taskElement.classList.add("task");
       taskElement.id = taskId;
@@ -40,16 +48,16 @@ async function boardRender() {
           ${task.category || "No category"}
         </div>`;
 
-      // Subtasks HTML
+      // Subtasks-HTML
       const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-      // Priority Image
+      // Priorität-Bild
       const priorityImage = priorityLabelHTML(task.priority);
 
-      // Render Assigned Contacts
-      const contactsHTML = renderTaskContacts(task.assignedTo || []);
+      // Kontakte rendern
+      const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-      // Task HTML
+      // Task-HTML
       taskElement.innerHTML = `
         <div class="task-header">
           ${categoryHTML}
@@ -59,7 +67,7 @@ async function boardRender() {
         <div class="task-subtasks">${subtasksHTML}</div>
         <footer class="task-footer d-flex justify-content-between align-items-center">
           <div class="assigned-contacts d-flex">
-            ${contactsHTML} <!-- Dynamische Kontakte -->
+            ${contactsHTML}
           </div>
           <div class="task-priority">
             ${priorityImage}
@@ -67,118 +75,81 @@ async function boardRender() {
         </footer>
       `;
 
-      // Append Task to Container
+      // Task zum entsprechenden Container hinzufügen
       document.getElementById(containerId).appendChild(taskElement);
     });
 
-    console.log("Tasks rendered successfully.");
-    initializeDragAndDrop();
+    initializeDragAndDrop(); // Drag-and-Drop-Funktion initialisieren
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
 }
 
 
-function renderTaskContacts(assignedTo = []) {
-  if (!assignedTo || assignedTo.length === 0) return "";
+function isValidArray(arr) {
+  return Array.isArray(arr) && arr.length > 0;
+}
 
-  const maxContacts = 3; // Maximal 3 Kontakte anzeigen
+
+function renderSubtasksHTML(taskId, subtasks) {
+  if (!isValidArray(subtasks)) return "";
+
+  const completedSubtasks = subtasks.filter((subtask) => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+
+  return `
+    <div class="subtasks-progress-container d-flex align-items-center">
+      <div class="progress-bar-container">
+        <div class="progress-bar" style="width: ${progressPercentage}%;"></div>
+      </div>
+      <div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks</div>
+    </div>
+  `;
+}
+
+
+function renderTaskContacts(assignedTo = [], contactsData = {}) {
+  // Überprüfen, ob `assignedTo` ein Array ist und Inhalte hat
+  if (!isValidArray(assignedTo)) return "";
+
+  console.log("Zu rendernde Kontakte (IDs oder Namen):", assignedTo);
+
   return assignedTo
-    .slice(0, maxContacts) // Nimm die ersten 3 Kontakte
-    .map((contactName) => {
-      const shortName = contactName
+    .map((contactIdOrName) => {
+      // 1. Versuche den Kontakt über die ID zu finden
+      let contact = contactsData[contactIdOrName];
+
+      // 2. Falls nicht gefunden, versuche den Kontakt über den Namen zu finden
+      if (!contact) {
+        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
+      }
+
+      // 3. Wenn der Kontakt immer noch nicht gefunden wurde, logge eine Warnung und zeige einen Standard-Kreis an
+      if (!contact) {
+        console.warn(`Kontakt mit ID oder Name "${contactIdOrName}" nicht gefunden.`);
+        return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
+      }
+
+      // 4. Initialen und Farbe bestimmen
+      const shortName = contact.name
         .split(" ")
         .map((n) => n[0].toUpperCase())
-        .join(""); // Kürzel z. B. "Max Mustermann" -> "MM"
+        .join("");
+      const backgroundColor = contact.color || "#ccc";
 
+      console.log(`Kontakt gefunden - ID oder Name: ${contactIdOrName}, Farbe: ${backgroundColor}, Initialen: ${shortName}`);
+
+      // 5. Rückgabe des Kontakt-HTML
       return `
-        <div class="contact-circle" style="background-color: #9327FF;">
+        <div class="contact-circle" style="background-color: ${backgroundColor};">
           <span>${shortName}</span>
         </div>
       `;
     })
-    .join(""); // HTML zusammenfügen
+    .join(""); // Alle Kontakte zu einer Zeichenkette zusammenfügen
 }
 
-
-function initializeDragAndDrop() {
-  const tasks = document.querySelectorAll(".task")
-  const containers = document.querySelectorAll(".tasks-container")
-  let placeholder = null
-  let draggedTask = null
-
-  tasks.forEach((task) => {
-    task.addEventListener("dragstart", (e) => {
-      draggedTask = task
-      task.classList.add("dragging")
-
-      // Create a placeholder with the same size as the task
-      placeholder = document.createElement("div")
-      placeholder.classList.add("placeholder")
-      placeholder.style.width = `${task.offsetWidth}px`
-      placeholder.style.height = `${task.offsetHeight}px`
-
-      // Insert the placeholder after the task in the container
-      task.parentNode.insertBefore(placeholder, task.nextSibling)
-
-      // Set a timeout to hide the original element after the drag image has been generated
-      setTimeout(() => {
-        task.style.display = "none"
-      }, 0)
-
-      // Trigger the wiggle animation
-      task.style.animation = "none"
-      task.offsetHeight // Trigger a reflow
-      task.style.animation = null
-    })
-
-    task.addEventListener("dragend", () => {
-      if (draggedTask) {
-        draggedTask.classList.remove("dragging")
-        draggedTask.style.display = "block"
-        draggedTask = null
-      }
-
-      // Remove the placeholder
-      if (placeholder) {
-        placeholder.remove()
-        placeholder = null
-      }
-    })
-  })
-
-  // Dragover Events
-  containers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault()
-      const afterElement = getDragAfterElement(container, e.clientY)
-      if (!placeholder) return
-
-      if (afterElement == null) {
-        container.appendChild(placeholder)
-      } else {
-        container.insertBefore(placeholder, afterElement)
-      }
-    })
-
-    container.addEventListener("drop", async (e) => {
-      if (!draggedTask || !placeholder) return
-
-      const newStatus = getStatusFromContainerId(container.id)
-      const taskId = draggedTask.id
-
-      // Replace the placeholder with the dragged task
-      container.replaceChild(draggedTask, placeholder)
-
-      // Remove the placeholder
-      placeholder.remove()
-      placeholder = null
-
-      await updateTaskStatus(taskId, newStatus)
-      boardRender()
-    })
-  })
-}
 
 
 function getContainerIdByStatus(status) {
@@ -186,19 +157,116 @@ function getContainerIdByStatus(status) {
     "To do": "todo-container",
     "In progress": "progress-container",
     "Await feedback": "feedback-container",
-    Done: "done-container",
+    "Done": "done-container",
   };
   return statusContainers[status] || null;
 }
 
 
-function getPriorityClass(priority) {
-  const priorityClasses = {
-    urgent: "priority-high",
-    medium: "priority-medium",
-    low: "priority-low",
-  };
-  return priorityClasses[priority] || "";
+function priorityLabelHTML(priority) {
+  return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await boardRender(); // Lade und rendere das Board beim Laden der Seite
+});
+
+
+function initializeDragAndDrop() {
+  const tasks = document.querySelectorAll(".task");
+  const containers = document.querySelectorAll(".tasks-container");
+  let placeholder = null;
+  let draggedTask = null;
+
+  tasks.forEach((task) => {
+    task.addEventListener("dragstart", (e) => {
+      draggedTask = task;
+      task.classList.add("dragging");
+
+      // Erstelle einen Platzhalter mit der gleichen Größe wie die Aufgabe
+      placeholder = createPlaceholder(task);
+
+      // Verstecke die Aufgabe nach kurzer Verzögerung
+      setTimeout(() => {
+        task.style.display = "none";
+      }, 0);
+
+      // Animation zurücksetzen
+      resetAnimation(task);
+    });
+
+    task.addEventListener("dragend", () => {
+      endDrag(draggedTask, placeholder);
+      draggedTask = null;
+      placeholder = null;
+    });
+  });
+
+  containers.forEach((container) => {
+    container.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      handleDragOver(container, e.clientY, placeholder);
+    });
+
+    container.addEventListener("drop", async (e) => {
+      if (!draggedTask || !placeholder) return;
+
+      const newStatus = getStatusFromContainerId(container.id);
+      const taskId = draggedTask.id;
+
+      // Ersetze den Platzhalter mit der gezogenen Aufgabe
+      container.replaceChild(draggedTask, placeholder);
+
+      // Entferne den Platzhalter
+      placeholder.remove();
+      placeholder = null;
+
+      await updateTaskStatus(taskId, newStatus);
+      boardRender();
+    });
+  });
+}
+
+// Hilfsfunktion: Erstellt einen Platzhalter
+function createPlaceholder(task) {
+  const placeholder = document.createElement("div");
+  placeholder.classList.add("placeholder");
+  placeholder.style.width = `${task.offsetWidth}px`;
+  placeholder.style.height = `${task.offsetHeight}px`;
+  task.parentNode.insertBefore(placeholder, task.nextSibling);
+  return placeholder;
+}
+
+// Hilfsfunktion: Beendet den Drag-Prozess
+function endDrag(draggedTask, placeholder) {
+  if (draggedTask) {
+    draggedTask.classList.remove("dragging");
+    draggedTask.style.display = "block";
+  }
+
+  if (placeholder) {
+    placeholder.remove();
+  }
+}
+
+// Hilfsfunktion: Drag-Animation zurücksetzen
+function resetAnimation(task) {
+  task.style.animation = "none";
+  task.offsetHeight; // Reflow triggern
+  task.style.animation = null;
+}
+
+// Hilfsfunktion: DragOver-Handling
+function handleDragOver(container, y, placeholder) {
+  const afterElement = getDragAfterElement(container, y);
+  if (!placeholder) return;
+
+  if (afterElement == null) {
+    container.appendChild(placeholder);
+  } else {
+    container.insertBefore(placeholder, afterElement);
+  }
 }
 
 
@@ -257,31 +325,6 @@ function updateProgressBar(taskId, subtasks) {
   if (subtasksCount) {
     subtasksCount.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
   }
-
-  console.log(`Progress für Task ${taskId} aktualisiert: ${progressPercentage}%`);
-}
-
-
-function renderSubtasksHTML(taskId, subtasks) {
-  let HTML = "";
-  if (!subtasks || subtasks.length === 0) {
-    return HTML;
-  }
-
-  const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
-  const totalSubtasks = subtasks.length;
-  const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
-
-  HTML += `
-    <div class="subtasks-progress-container d-flex align-items-center">
-      <div class="progress-bar-container">
-        <div class="progress-bar" style="width: ${progressPercentage}%;"></div>
-      </div>
-      <div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks</div>
-    </div>
-  `;
-
-  return HTML;
 }
 
 
@@ -296,16 +339,9 @@ async function updateTaskStatus(taskId, newStatus) {
       },
       body: JSON.stringify({ status: newStatus }),
     });
-    console.log(`Task ${taskId} updated to status: ${newStatus}`);
   } catch (error) {
     console.error(`Error updating task ${taskId}:`, error);
   }
-}
-
-
-async function deleteTaskOfModalCard(id) {
-  deleteTaskInDatabase(id);
-  toggleDisplayModal();
 }
 
 
@@ -314,24 +350,29 @@ function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
 }
 
-
 async function deleteTaskOfModalCard(id) {
-  await deleteTaskInDatabase(id), toggleDisplayModal();
-  await boardRender();
+  try {
+    await deleteTaskInDatabase(id);
+    toggleDisplayModal();
+    await boardRender();
+  } catch (error) {
+    console.error(`Error deleting task with ID ${id}:`, error);
+  }
 }
 
+async function deleteTaskInDatabase(taskId) {
+  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
-function readAllKeys(object, without = "") {
-  const allKeys = [];
-  for (let i = 0; i < Object.keys(object).length; i++) {
-    const key = Object.keys(object)[i];
-    if (checkContentOfArray(key, without)) {
-      continue;
-    } else {
-      allKeys.push(key);
-    }
+  try {
+    await fetch(firebaseUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error(`Error deleting task ${taskId}:`, error);
   }
-  return allKeys;
 }
 
 
@@ -398,14 +439,6 @@ function renderPriority(priority) {
   priorityLabel.innerHTML = priorityLabelHTML(priority);
 }
 
-
-function priorityLabelHTML(priority) {
-  let HTML = `
-    <span>${capitalizeFirstLetter(priority)}<span>
-    <img src="assets/img/general/prio-${priority}.png" alt="">
-    `;
-  return HTML;
-}
 
 function renderSubtasksInModal(taskId, subtasks) {
   const subtasksContainer = document.getElementById("modalCard-subtasks-value");
