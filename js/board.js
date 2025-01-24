@@ -185,29 +185,6 @@ async function loadTasks() {
   }
 }
 
-function renderTaskContacts(assignedTo = []) {
-  if (!assignedTo || assignedTo.length === 0) return "";
-
-  const maxContacts = 3; // Maximal 3 Kontakte anzeigen
-  return assignedTo
-    .slice(0, maxContacts) // Nimm die ersten 3 Kontakte
-    .map((contactName) => {
-      // Kürzel generieren
-      const shortName = contactName
-        .split(" ")
-        .map((n) => n[0].toUpperCase())
-        .join(""); // Z. B. "Max Mustermann" -> "MM"
-
-      // Rückgabe der HTML-Struktur für den Kontakt
-      return `
-        <div class="contact-circle" style="background-color: #9327FF;">
-          <span>${shortName}</span>
-        </div>
-      `;
-    })
-    .join(""); // HTML zusammenfügen
-}
-
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
