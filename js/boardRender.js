@@ -113,7 +113,6 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
   // Überprüfen, ob `assignedTo` ein Array ist und Inhalte hat
   if (!isValidArray(assignedTo)) return "";
 
-  console.log("Zu rendernde Kontakte (IDs oder Namen):", assignedTo);
 
   return assignedTo
     .map((contactIdOrName) => {
@@ -127,7 +126,6 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
 
       // 3. Wenn der Kontakt immer noch nicht gefunden wurde, logge eine Warnung und zeige einen Standard-Kreis an
       if (!contact) {
-        console.warn(`Kontakt mit ID oder Name "${contactIdOrName}" nicht gefunden.`);
         return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
       }
 
@@ -138,8 +136,6 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
         .join("");
       const backgroundColor = contact.color || "#ccc";
 
-      console.log(`Kontakt gefunden - ID oder Name: ${contactIdOrName}, Farbe: ${backgroundColor}, Initialen: ${shortName}`);
-
       // 5. Rückgabe des Kontakt-HTML
       return `
         <div class="contact-circle" style="background-color: ${backgroundColor};">
@@ -149,7 +145,6 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
     })
     .join(""); // Alle Kontakte zu einer Zeichenkette zusammenfügen
 }
-
 
 
 function getContainerIdByStatus(status) {
@@ -182,17 +177,18 @@ function initializeDragAndDrop() {
   tasks.forEach((task) => {
     task.addEventListener("dragstart", (e) => {
       draggedTask = task;
+  
+      // Verhindere Transparenz
+      task.style.opacity = "1"; // Transparenz auf 1 setzen
       task.classList.add("dragging");
-
-      // Erstelle einen Platzhalter mit der gleichen Größe wie die Aufgabe
+  
+      // Platzhalter erstellen
       placeholder = createPlaceholder(task);
-
-      // Verstecke die Aufgabe nach kurzer Verzögerung
+  
       setTimeout(() => {
-        task.style.display = "none";
+        task.style.display = "none"; // Das eigentliche Element ausblenden
       }, 0);
-
-      // Animation zurücksetzen
+  
       resetAnimation(task);
     });
 
@@ -228,7 +224,7 @@ function initializeDragAndDrop() {
   });
 }
 
-// Hilfsfunktion: Erstellt einen Platzhalter
+
 function createPlaceholder(task) {
   const placeholder = document.createElement("div");
   placeholder.classList.add("placeholder");
@@ -238,7 +234,7 @@ function createPlaceholder(task) {
   return placeholder;
 }
 
-// Hilfsfunktion: Beendet den Drag-Prozess
+
 function endDrag(draggedTask, placeholder) {
   if (draggedTask) {
     draggedTask.classList.remove("dragging");
@@ -250,14 +246,14 @@ function endDrag(draggedTask, placeholder) {
   }
 }
 
-// Hilfsfunktion: Drag-Animation zurücksetzen
+
 function resetAnimation(task) {
   task.style.animation = "none";
   task.offsetHeight; // Reflow triggern
   task.style.animation = null;
 }
 
-// Hilfsfunktion: DragOver-Handling
+
 function handleDragOver(container, y, placeholder) {
   const afterElement = getDragAfterElement(container, y);
   if (!placeholder) return;
