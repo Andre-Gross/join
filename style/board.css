@@ -19,6 +19,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+    max-width: 1060px;
 }
 
 .grid-item {
@@ -56,6 +57,8 @@ body {
     gap: 20px;
     padding: 20px 0;
     justify-content: flex-start;
+    max-width: 1080px;
+    margin-left: 0;
 }
 
 .board-section {
