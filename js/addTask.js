@@ -147,19 +147,20 @@ async function submitTaskForm(method = 'post', id = '') {
         } else {
             await postTaskToDatabase(data);
         }
-        emptyAddTaskInputs();
-        setTimeout(putNextStatus, 2000);
-
-        let allTasks = await getTasksAsArray();
-        for (let i = allTasks.length - 1; i > 0; i--) {
-            const singleTask = allTasks[i];
-            if (singleTask.title === title && singleTask.description === description) {
-                window.location.href = `./board.html`;
-                break;
+        showToast(toastMessage, 'middle', 0);
+        setTimeout(async () => {
+            putNextStatus();
+            const allTasks = await getTasksAsArray();
+            for (let i = allTasks.length - 1; i > 0; i--) {
+                const singleTask = allTasks[i];
+                if (singleTask.title === title && singleTask.description === description) {
+                    window.location.href = `./board.html`;
+                    break;
+                }
             }
-        }
+        }, 3000);
     } else {
-        alert("Bitte fülle alle Felder aus.");
+        alert('Please fill all required fields');
     }
 }
 

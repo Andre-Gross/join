@@ -152,7 +152,6 @@ async function tryPostTaskToDatabase(data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich hinzugefügt.");
 }
 
 

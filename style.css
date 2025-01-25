@@ -177,6 +177,57 @@ footer {
 }
 
 
+/* toast-message */
+#toast-container {
+    z-index: 10000;
+    position: fixed;
+    transform: translate(50%);
+    border-radius: 20px;
+    padding: 16px;
+    height: 74px;
+    width: max-content;
+    background-color: #2A3647;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    color: white;
+    font-size: 20px;
+    line-height: 24px;
+    transition: all 0.5s ease;
+  }
+
+
+  #toast-container img {
+    height: 26pox;
+  }
+  
+  
+  #toast-container.bottom {
+    bottom: -100px;
+  }
+  
+
+  #toast-container.right {
+    right: -300px;
+  }
+
+
+  #toast-container.xMiddle {
+    right: 50% !important;
+  }
+  
+
+  #toast-container.yMiddle {
+    bottom: 50% !important;
+  }
+
+
+  #toast-container.yLow {
+    bottom: 25% !important;
+  }
+
+
 .name-circle {
     height: 40px;
     width: 40px;
