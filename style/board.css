@@ -16,6 +16,10 @@ body {
     width: auto;
 }
 
+body.dragging {
+    cursor: grabbing;
+  }
+
 .title {
     display: flex;
     flex-direction: row;
@@ -131,28 +135,35 @@ body {
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05), 2px 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease-in-out;
+    cursor: pointer;
 }
 
-.task:hover {
-    animation: wiggle 0.8s ease-in-out; /* Wende die Animation an */
+.task.wiggle {
+    animation: wiggle 0.8s ease-in-out;
+    cursor: grabbing;
+  }
+
+  .task.dragging {
+    cursor: grabbing;
   }
   
-  /* Keyframe-Animation für das Wippen */
+ 
   @keyframes wiggle {
+
     0% {
       transform: translateX(0);
     }
     25% {
-      transform: translateX(5px); /* Nach rechts bewegen */
+      transform: translateX(5px);
     }
     50% {
-      transform: translateX(0); /* Zurück zur Mitte */
+      transform: translateX(0);
     }
     75% {
-      transform: translateX(-5px); /* Nach links bewegen */
+      transform: translateX(-5px);
     }
     100% {
-      transform: translateX(0); /* Zurück zur Mitte */
+      transform: translateX(0);
     }
   }
 
