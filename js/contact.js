@@ -135,17 +135,21 @@ function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 
-  // Füge Animation hinzu
+  // Overlay anzeigen
+  document.getElementById("overlay").classList.add("show");
+
+  // Karte mit Animation anzeigen
   setTimeout(() => {
-    document.getElementById("idAddContact").classList.add("show");
-  }, 10); // Timeout sorgt dafür, dass die Transition greift
+      document.getElementById("idAddContact").classList.add("show");
+  }, 10);
 }
 
 function closeAddContact() {
   let addContactElement = document.getElementById("idAddContact");
   if (addContactElement) {
-    addContactElement.remove();
+      addContactElement.remove();
   }
+  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
 async function sortContacts() {
@@ -267,21 +271,22 @@ function getEditContactBtn(i) {
 }
 
 function editContact(i) {
-  // Überprüfen, ob ein bestehendes Edit-Modal geöffnet ist, und entfernen
   const existingEditModal = document.getElementById("idEditContact");
   if (existingEditModal) {
-    existingEditModal.remove();
+      existingEditModal.remove();
   }
 
-  // Neues Edit-Modal erstellen und anhängen
   let editContactModal = document.createElement("div");
   editContactModal.id = "idEditContact";
   editContactModal.innerHTML = getEditContact(i);
   document.body.appendChild(editContactModal);
 
-  // Animation hinzufügen
+  // Overlay anzeigen
+  document.getElementById("overlay").classList.add("show");
+
+  // Karte mit Animation anzeigen
   setTimeout(() => {
-    editContactModal.classList.add("show");
+      editContactModal.classList.add("show");
   }, 10);
 }
 
@@ -318,10 +323,16 @@ function getEditContact(i) {
 function closeEditContact() {
   const editContactModal = document.getElementById("idEditContact");
   if (editContactModal) {
-    editContactModal.remove();
+      editContactModal.remove();
   }
+  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+function closeOverlay() {
+  // Beide Karten schließen
+  closeAddContact();
+  closeEditContact();
+}
 
 function submitAddContact() {
   let name = document.getElementById("idNameAddContact").value;
