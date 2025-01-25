@@ -29,12 +29,20 @@ body {
 .board-header {
     margin-top: 0;
     padding-top: 80px;
+
+}
+
+.searchBar{
+    display:flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .search-container {
     position: relative;
-    width: 100%;
+    width: 312px;
     height: 48px;
+    margin-top: unset !important;
 }
 
 .search-container input {
@@ -513,7 +521,7 @@ a,
     width: 268px;
     height: 48px;
     padding:8px;
-    margin-top: 18px;
+    margin-top: unset !important;
 }
 
 .AddTaskBtnText{
@@ -528,8 +536,4 @@ a,
     background-color: #29ABE2;
 }
 
-.searchBar{
-    display:flex;
-    align-items: center;
-    flex-direction: row;
-}
+
