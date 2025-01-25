@@ -167,37 +167,45 @@ document.addEventListener("DOMContentLoaded", async () => {
   await boardRender(); // Lade und rendere das Board beim Laden der Seite
 });
 
-
 function initializeDragAndDrop() {
-  const tasks = document.querySelectorAll(".task");
-  const containers = document.querySelectorAll(".tasks-container");
-  let placeholder = null;
-  let draggedTask = null;
+  const tasks = document.querySelectorAll(".task")
+  const containers = document.querySelectorAll(".tasks-container")
+  let placeholder = null
+  let draggedTask = null
 
   tasks.forEach((task) => {
+    task.addEventListener("mousedown", () => {
+      task.classList.add("wiggle")
+    })
+
+    task.addEventListener("mouseup", () => {
+      task.classList.remove("wiggle")
+    })
+
     task.addEventListener("dragstart", (e) => {
-      draggedTask = task;
-  
-      // Verhindere Transparenz
-      task.style.opacity = "1"; // Transparenz auf 1 setzen
-      task.classList.add("dragging");
-  
-      // Platzhalter erstellen
-      placeholder = createPlaceholder(task);
-  
+      draggedTask = task
+
+      // Prevent transparency
+      task.style.opacity = "1"
+      task.classList.add("dragging")
+      task.classList.remove("wiggle") // Remove wiggle class when drag starts
+
+      // Create placeholder
+      placeholder = createPlaceholder(task)
+
       setTimeout(() => {
-        task.style.display = "none"; // Das eigentliche Element ausblenden
-      }, 0);
-  
-      resetAnimation(task);
-    });
+        task.style.display = "none" // Hide the actual element
+      }, 0)
+
+      resetAnimation(task)
+    })
 
     task.addEventListener("dragend", () => {
-      endDrag(draggedTask, placeholder);
-      draggedTask = null;
-      placeholder = null;
-    });
-  });
+      endDrag(draggedTask, placeholder)
+      draggedTask = null
+      placeholder = null
+    })
+  })
 
   containers.forEach((container) => {
     container.addEventListener("dragover", (e) => {
@@ -225,6 +233,7 @@ function initializeDragAndDrop() {
 }
 
 
+
 function createPlaceholder(task) {
   const placeholder = document.createElement("div");
   placeholder.classList.add("placeholder");
@@ -248,9 +257,9 @@ function endDrag(draggedTask, placeholder) {
 
 
 function resetAnimation(task) {
-  task.style.animation = "none";
-  task.offsetHeight; // Reflow triggern
-  task.style.animation = null;
+  task.style.animation = "none"
+  task.offsetHeight // Trigger reflow
+  task.style.animation = null
 }
 
 
