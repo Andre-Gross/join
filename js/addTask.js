@@ -3,6 +3,7 @@ let dataSubtasks = [];
 let possibleStatuses = ['To do', 'In progress', 'Await feedback', 'Done'];
 let lastStringOfInput = '';
 const dropdownMenues = ['assignedTo', 'category']
+const toastMessage = '<span>Task added to board</span><img src="assets/img/general/board.svg" alt="board">'
 
 
 /**
