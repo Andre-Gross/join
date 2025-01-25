@@ -61,7 +61,7 @@ textarea {
 
 
 input {
-    padding: 10px 21px;
+    padding: var(--input-padding);
 }
 
 
@@ -131,7 +131,7 @@ textarea {
 
 #content-container {
     margin-top: var(--template-height-with-padding);
-    padding: 12px 16px 20px 16px;
+    padding: 0px 16px 20px 16px;
     justify-content: center;
     align-items: center;
 }
@@ -214,13 +214,13 @@ textarea {
 
 
 .headline-container {
-    top: var(--h1-position-top);
+    /* top: var(--h1-position-top);
     left: 0;
-    right: 0;
+    right: 0; */
     padding: 48px 0 8px 0;
     max-width: var(--form-subcontainer-max-width);
     background-color: unset;
-    z-index: 6000;
+    /* z-index: 6000; */
 }
 
 
@@ -242,13 +242,18 @@ textarea {
 }
 
 
+.input-group input {
+    max-width: calc(100% - 40.8px);
+}
+
+
 .input-single-img-container {
     border-top: 1.5px solid var(--border-color) !important;
     border-right: 1.5px solid var(--border-color) !important;
     border-bottom: 1.5px solid var(--border-color) !important;
     border-top-right-radius: 8px !important;
     border-bottom-right-radius: 8px !important;
-    padding: 12px 16px;
+    padding: var(--input-padding);
     background-color: white;
 }
 
@@ -303,12 +308,15 @@ textarea {
 .prio-btn button {
     border: 1.5px solid #e8e8e8;
     border-radius: 8px;
+    width: calc((100% - (10px/3))/3);
     background-color: #ffffff;
     display: flex;
     flex: 1;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    --prio-btn-gap: 5px;
+    gap: var(--prio-btn-gap);
+    width: calc((100% - (var(--prio-btn-gap)*2/3))/3);
 }
 
 
