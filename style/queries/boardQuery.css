@@ -2,7 +2,7 @@
     .searchBar{
         position: absolute;
         top: 92px;
-        left: 764px;
+        left: 495px;
     }
 }
 
@@ -16,13 +16,14 @@
     .searchBar{
         position: absolute;
         top: 92px;
-        left: 510px;
+        left: 240px;
     }
 }
 
 @media (max-width: 1100px) {
     .title{
         max-width: 520px;
+        justify-content: space-between;
     }
 
     .searchBar{
@@ -35,8 +36,6 @@
 
     .AddTaskBtn{
         width: 48px;
-        position: absolute;
-        left: 740px;
     }
 
     .AddTaskBtnText {
