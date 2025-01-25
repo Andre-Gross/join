@@ -1,6 +1,22 @@
+@media (min-width: 1370px) {
+    .searchBar{
+        position: absolute;
+        top: 92px;
+        left: 764px;
+    }
+}
+
 @media (max-width: 1370px) {
     .title {
         max-width: 792px;
+    }
+}
+
+@media (min-width: 1100px) and (max-width: 1370px) {
+    .searchBar{
+        position: absolute;
+        top: 92px;
+        left: 510px;
     }
 }
 
@@ -9,12 +25,18 @@
         max-width: 520px;
     }
 
+    .searchBar{
+        width: 520px;
+    }
+
     .w-100 {
         width: unset !important;
     }
 
     .AddTaskBtn{
         width: 48px;
+        position: absolute;
+        left: 740px;
     }
 
     .AddTaskBtnText {
@@ -23,45 +45,61 @@
 
     #idSearch {
         margin-right: 0;
+        width: 100%;
     }
 }
 
 @media (max-width: 830px) {
-    .title {
-        flex-direction: column; /* Ändere Layout zu vertikal */
-        align-items: flex-start;
+
+    .container-fluid {
+        justify-content: center;
     }
 
-    .AddTaskBtn {
-        align-self: flex-end; /* Bleibt oben rechts */
-        margin-top: -136px; /* Optional: Feinanpassung */
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .searchBar {
-        width: 100%; /* Nimmt die volle Breite ein */
-        margin-top: 10px; /* Abstand nach oben */
-        flex-direction: column; /* Vertikale Anordnung */
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        order: 2;
+    }
+    .AddTaskBtn {
+        order: 1;
+        position: unset;
     }
 
     .search-container {
-        width: 100%; /* Volle Breite für das Input-Feld */
-    }
-
-    #idSearch {
-        margin-right: 0;
+        width: 100%;
     }
 }
-
 
 @media (max-width: 660px) {
+
+    .board-header {
+        max-width: 520px;
+    }
     .container-fluid {
         padding-bottom: 80px;
+        justify-content: flex-start;
+    }
 
+}
+
+@media (max-width: 658.75px) {
+    .container-fluid {
+        padding-bottom: 80px;
     }
 }
 
-/* Ab 560px: 1 Spalte */
 @media (max-width: 556px) {
+
+    .AddTaskBtn{
+        right: 16px;
+    }
     .container-fluid {
         justify-content: center;
 
