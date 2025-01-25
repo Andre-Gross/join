@@ -10,7 +10,7 @@
     }
 
     .w-100 {
-        width: 50% !important;
+        width: unset !important;
     }
 
     .AddTaskBtn{
@@ -19,6 +19,10 @@
 
     .AddTaskBtnText {
         display: none;
+    }
+
+    #idSearch {
+        margin-right: 0;
     }
 }
 
