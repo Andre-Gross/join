@@ -110,6 +110,126 @@ function returnInitialsOfName(name) {
 }
 
 
+/**
+ * Displays a toast message on the screen with customizable text, position, and animations.
+ * 
+ * @param {string} message - The content of the toast message to display.
+ * @param {string} [height='middle'] - Vertical position of the toast on the screen. Possible values: "yMiddle" (center) or "yLow" (lower area of the display).
+ * @param {number} [visibleTime=3000] - Duration (in milliseconds) the toast message remains visible. If set to 0, the toast will stay on the screen indefinitely.
+ * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen. If false, the toast will appear instantly.
+ * @param {string} [fromWhere='bottom'] - Direction from which the toast should slide in. Only relevant if `shallSlideIn` is true. Possible values: "bottom" or "right".
+ * @param {boolean} [shallSlideOut=true] - Whether the toast should slide out of the screen. If false, the toast will disappear instantly. Only relevant if `visibleTime` > 0.
+ */
+
+function showToast(message, height = 'middle', visibleTime = 3000, shallSlideIn = true, fromWhere = 'bottom', shallSlideOut = true) {
+    const toast = document.getElementById('toast-container');
+
+    prepareToastStartPosition(toast, shallSlideIn, height, fromWhere)
+    toast.innerHTML = message;
+
+    setTimeout (() => {
+        callToast(toast, height, shallSlideIn = true, fromWhere);
+        toastLeaveDisplay(toast, visibleTime, height, fromWhere, shallSlideOut);
+    }, 0)
+}
+
+
+/**
+ * Configures the initial position of the toast element before it appears on the screen.
+ * 
+ * @param {HTMLElement} toast - The toast element to be displayed.
+ * @param {boolean} shallSlideIn - Whether the toast should slide into the screen.
+ * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
+ * @param {string} fromWhere - The direction from which the toast should slide in. Possible values: "bottom", "right".
+ */
+function prepareToastStartPosition(toast, shallSlideIn, height, fromWhere) {
+    toast.classList = '';
+    if (shallSlideIn) {
+        toast.classList.add(fromWhere);
+        if (fromWhere === 'bottom') {
+            toast.classList.add('xMiddle')
+        } else if (fromWhere === 'right') {
+            toast.classList.add('y' + upperCaseFirstLetter(height))
+        }
+    }
+}
+
+
+/**
+ * Handles the appearance of the toast element by either sliding it in or making it appear instantly.
+ * 
+ * @param {HTMLElement} toast - The toast element to be displayed.
+ * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
+ * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen.
+ * @param {string} fromWhere - The direction from which the toast should slide in. Only relevant if `shallSlideIn` is true.
+ */
+function callToast(toast, height, shallSlideIn = true, fromWhere) {
+    if (shallSlideIn) {
+        toastSlideIn(toast, height, fromWhere);
+    } else {
+        toastAppear();
+    }
+}
+
+
+/**
+ * Animates the toast element to slide into the screen from the specified direction.
+ * 
+ * @param {HTMLElement} toast - The toast element to be displayed.
+ * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
+ * @param {string} fromWhere - The direction from which the toast slides in. Possible values: "bottom", "right".
+ */
+function toastSlideIn(toast, height, fromWhere) {
+    toast.classList.add(fromWhere);
+    if (fromWhere === 'bottom') {
+        toast.classList.add('xMiddle')
+        toast.classList.add('y' + upperCaseFirstLetter(height))
+    } else if (fromWhere === 'right') {
+        toast.classList.add('y' + upperCaseFirstLetter(height))
+        toast.classList.add('xMiddle')
+    }
+}
+
+
+/**
+ * Makes the toast element appear instantly at the specified position.
+ * 
+ * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
+ */
+function toastAppear(height) {
+    toast.classList.add('y' + upperCaseFirstLetter(height));
+    toast.classList.add('xMiddle')
+}
+
+
+/**
+ * Handles the disappearance of the toast element after a specified duration.
+ * 
+ * @param {HTMLElement} toast - The toast element to be removed from the screen.
+ * @param {number} visibleTime - The duration (in milliseconds) for which the toast remains visible. If 0, the toast will stay on the screen indefinitely.
+ * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
+ * @param {string} fromWhere - The direction from which the toast was displayed. Possible values: "bottom", "right".
+ * @param {boolean} shallSlideOut - Whether the toast should slide out of the screen. If false, the toast will disappear instantly.
+ */
+function toastLeaveDisplay(toast, visibleTime, height, fromWhere, shallSlideOut) {
+    if (visibleTime > 0) {
+        if (shallSlideOut) {
+            setTimeout(() => {
+                if (fromWhere === 'bottom') {
+                    toast.classList.remove('y' + upperCaseFirstLetter(height))
+                } else if (fromWhere === 'right') {
+                    toast.classList.remove('xMiddle')
+                };
+            }, visibleTime);
+        } else {
+            setTimeout(() => {
+                toast.classList.add('d-none')
+            }, visibleTime);
+        }
+    }
+}
+
+
 function toggleDisplayNone(element, displayMode = 'd-block', shallVisible = '') {
     let eleClass = element.classList;
     if (shallVisible === true) {
