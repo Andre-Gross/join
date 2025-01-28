@@ -34,13 +34,12 @@ async function contactMain() {
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
-  let currentLetter = ""; // Verfolgt den aktuellen Buchstaben
+  let currentLetter = "";
 
   for (let i = 0; i < names.length; i++) {
-    let firstLetter = names[i][0].toUpperCase(); // Erster Buchstabe des Namens
+    let firstLetter = names[i][0].toUpperCase(); 
 
     if (firstLetter !== currentLetter) {
-      // Füge Überschrift für den neuen Buchstaben hinzu
       contactMain.innerHTML += `
         <h2>${firstLetter}</h2>
         <div id="idGreyLine"></div>
@@ -48,7 +47,6 @@ async function contactMain() {
       currentLetter = firstLetter;
     }
 
-    // Füge den Kontakt hinzu
     contactMain.innerHTML += getContactMain(i);
   }
 
@@ -135,10 +133,8 @@ function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 
-  // Overlay anzeigen
   document.getElementById("overlay").classList.add("show");
 
-  // Karte mit Animation anzeigen
   setTimeout(() => {
       document.getElementById("idAddContact").classList.add("show");
   }, 10);
@@ -177,13 +173,11 @@ function openContact(i) {
     openContact.innerHTML = "";
     openContact.innerHTML += getContactView(i);
   } else {
-    // Überprüfen, ob ein vorheriger contactViewContainer existiert
     let existingView = document.getElementById("idViewContactCard");
     if (existingView) {
-      existingView.remove(); // Vorherige Ansicht entfernen
+      existingView.remove(); 
     }
 
-    // Neues contactViewContainer erstellen und hinzufügen
     let contactViewContainer = document.createElement("div");
     contactViewContainer.id = "idViewContactCard";
     contactViewContainer.innerHTML = getContactView(i);
@@ -281,10 +275,8 @@ function editContact(i) {
   editContactModal.innerHTML = getEditContact(i);
   document.body.appendChild(editContactModal);
 
-  // Overlay anzeigen
   document.getElementById("overlay").classList.add("show");
 
-  // Karte mit Animation anzeigen
   setTimeout(() => {
       editContactModal.classList.add("show");
   }, 10);
@@ -329,7 +321,6 @@ function closeEditContact() {
 }
 
 function closeOverlay() {
-  // Beide Karten schließen
   closeAddContact();
   closeEditContact();
 }
@@ -347,15 +338,6 @@ function submitAddContact() {
   }, 100);
 }
 
-function notifSucess() {
-  console.log("Save Contact in Progress");
-  return `
-    <div>
-    <p>Contact successfully created</p>
-    </div>
-    `;
-}
-
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
@@ -366,7 +348,6 @@ async function deleteContact(i) {
 }
 
 function saveEditContact(i) {
-  console.log("Save Contact in Progress");
   let name = document.getElementById("idNameEditContact").value;
   let mail = document.getElementById("idMailEditContact").value;
   let phone = document.getElementById("idPhoneEditContact").value;
@@ -410,11 +391,6 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
     throw new Error(`HTTP-Fehler! Status: ${response.status}`);
   }
   alert("Kontakt erfolgreich hinzugefügt.");
-}
-
-function getAlphabet() {
-  console.log("Save Contact in Progress");
-  Alph = [ABCDEFGHIJKLMNOPQRSTUVWXYZ];
 }
 
 function getRandomColor() {
@@ -475,38 +451,29 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
 }
 
 function toggleContactButtons() {
-  // Werte der Eingabefelder abrufen und trimmen
   const name = document.getElementById("idNameAddContact").value.trim();
   const mail = document.getElementById("idMailAddContact").value.trim();
   const phone = document.getElementById("idPhoneAddContact").value.trim();
 
-  // Buttons abrufen
   const deleteBtn = document.getElementById("idDeleteAddContact");
   const saveBtn = document.getElementById("idSaveAddContact");
   const submitBtn = document.getElementById("idSubmitAddContact");
   const cancelBtn = document.getElementById("idCancelAddContact");
 
-  // Überprüfen, ob alle Felder ausgefüllt sind
   if (name && mail && phone) {
-    // Delete- und Save-Button anzeigen
     deleteBtn.style.display = "block";
     saveBtn.style.display = "block";
 
-    // Submit- und Cancel-Button ausblenden
     submitBtn.style.display = "none";
     cancelBtn.style.display = "none";
   } else {
-    // Delete- und Save-Button ausblenden
     deleteBtn.style.display = "none";
     saveBtn.style.display = "none";
 
-    // Submit- und Cancel-Button anzeigen
     submitBtn.style.display = "block";
     cancelBtn.style.display = "block";
   }
 }
-
-//von Kay hinzugefügt
 
 function callPhoneNumber(phoneNumber) {
   window.location.href = `tel:${phoneNumber}`;
@@ -517,14 +484,10 @@ function openEmailClient(email) {
 }
 
 document.addEventListener('click', (event) => {
-  // Überprüfen, ob das geklickte Element die Klasse 'NameMailShort' hat
   if (event.target.closest('.NameMailShort')) {
-    // Alle vorhandenen ausgewählten Elemente zurücksetzen
     document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
       el.classList.remove('selected');
     });
-
-    // Das aktuelle Element als ausgewählt markieren
     event.target.closest('.NameMailShort').classList.add('selected');
   }
 });
