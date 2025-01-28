@@ -204,37 +204,79 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
+async function fetchContactsData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const response = await fetch(`${firebaseUrl}/users/contacts.json`);
+
+  if (!response.ok) {
+    throw new Error("Error fetching contacts data");
+  }
+
+  return await response.json();
+}
+
 async function renderBodySearch() {
-  [
-    "todo-container",
-    "progress-container",
-    "feedback-container",
-    "done-container",
-  ].forEach((containerId) => {
+  // Leere die Container vor dem Rendern
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
     document.getElementById(containerId).innerHTML = "";
   });
 
+  // Kontakte laden
+  const contactsData = await fetchContactsData();
+
+  // Verwende die Logik von boardRender, um konsistentes Rendering zu gewährleisten
   Object.entries(currentTasks).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
+
+    // Erstelle Task-Element wie in boardRender
     const taskElement = document.createElement("div");
     taskElement.classList.add("task");
     taskElement.id = taskId;
+    taskElement.setAttribute("draggable", "true");
     taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+
+    // Kategorie-Label
+    const categoryClass = task.category
+      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+      : "bc-category-label-unknown";
+    const categoryHTML = `
+      <div class="category-label ${categoryClass}">
+        ${task.category || "No category"}
+      </div>`;
+
+    // Subtasks-HTML
+    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+
+    // Priorität-Bild
+    const priorityImage = priorityLabelHTML(task.priority);
+
+    // Kontakte rendern
+    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+
+    // Task-HTML
     taskElement.innerHTML = `
-                <h4>${task.title}</h4>
-                <p>${task.description}</p>
-                <div class="subtasks-progress-container d-flex align-items-center">
-                <div class="progress-bar-container">
-                <div class="progress-bar" style="width: ${task.progressPercentage}%;"></div>
-                </div>
-                <div class="subtasks-count">${task.completedSubtasks}/${task.totalSubtasks} Subtasks</div>
-                </div>
-                <img src="assets/img/general/prio-${task.priority}.svg" alt="${task.priority}">
-            `;
-    const containerId = getContainerIdByStatus(task.status);
-    if (containerId)
-      document.getElementById(containerId).appendChild(taskElement);
+      <div class="task-header">
+        ${categoryHTML}
+      </div>
+      <h4 class="task-title">${task.title}</h4>
+      <p class="task-description">${task.description}</p>
+      <div class="task-subtasks">${subtasksHTML}</div>
+      <footer class="task-footer d-flex justify-content-between align-items-center">
+        <div class="assigned-contacts d-flex">
+          ${contactsHTML}
+        </div>
+        <div class="task-priority">
+          ${priorityImage}
+        </div>
+      </footer>
+    `;
+
+    // Task in den entsprechenden Container hinzufügen
+    document.getElementById(containerId).appendChild(taskElement);
   });
 }
+
 
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
