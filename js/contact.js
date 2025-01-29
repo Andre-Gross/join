@@ -21,6 +21,9 @@ const COLORS = [
   "#C3FE2B",
   "#FFBB2B",
 ];
+let toastMessageAddContact ='<span>Contact successfully created</span>';
+let toastMessageEditContact ='<span>Contact successfully edited</span>';
+let toastMessageDeleteContact ='<span>Contact successfully edited</span>';
 
 async function contactMain() {
   names = [];
@@ -332,19 +335,23 @@ function submitAddContact() {
   let color = getRandomColor();
 
   postContactToDatabase(name, mail, phone, color);
-  
+
+  showToast(toastMessageAddContact, 'middle', 1000);
+
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
 
+  showToast(toastMessageDeleteContact, 'middle', 1000);
+
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
 function saveEditContact(i) {
@@ -354,10 +361,10 @@ function saveEditContact(i) {
   let color = colors[i];
   let id = ids[i];
   putContactInDatabase(name, mail, phone, color, id);
-
+  showToast(toastMessageEditContact, 'middle', 1000);
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
 async function shortName() {
@@ -390,7 +397,6 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
   if (!response.ok) {
     throw new Error(`HTTP-Fehler! Status: ${response.status}`);
   }
-  alert("Kontakt erfolgreich hinzugefügt.");
 }
 
 function getRandomColor() {
@@ -418,7 +424,7 @@ async function tryDeleteContactInDatabase(id) {
   if (!response.ok) {
     throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
-  alert("Kontakt erfolgreich gelöscht.");
+
 }
 
 async function putContactInDatabase(name, mail, phone, color, id) {
@@ -447,7 +453,6 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
   if (!response.ok) {
     throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
-  alert("Kontakt erfolgreich Bearbeitet.");
 }
 
 function toggleContactButtons() {
