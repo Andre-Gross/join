@@ -1,5 +1,8 @@
 const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
+let toastMessageEditTask ='<span>Task successfully edited</span>';
+let toastMessageDeleteTask='<span>Task successfully deleted</span>';
+let toastMessageCreateTask ='<span>Task successfully created</span>';
 
 /**
  * This function returns the contacts of the user as JSON
@@ -182,7 +185,7 @@ async function tryPutTaskToDatabase(taskId, data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    showToast(toastMessageEditTask, 'middle', 1000);
 }
 
 
@@ -242,7 +245,7 @@ async function tryPutContactToDatabase(contactId, data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    showToast(toastMessageCreateTask, 'middle', 1000);
 }
 
 
@@ -267,7 +270,7 @@ async function tryDeleteTaskInDatabase(id) {
     if (!response.ok) {
         throw new Error(`Fehler: ${response.status} ${response.statusText}`);
     }
-    alert("Aufgabe erfolgreich gelöscht.");
+    showToast(toastMessageDeleteTask, 'middle', 1000);
 }
 
 
