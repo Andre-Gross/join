@@ -206,11 +206,13 @@ function displayNotRegisteredError() {
 async function guestLogIn() {
     try {
         saveLoggedInUser({ id: "guest", name: "Guest" });
+        sessionStorage.setItem("loggedInUserId", "Guest"); // Speichert die Gast-ID für Auth-Check
         redirectToSummary(true);
     } catch {
         displayError("An error occurred during guest login. Please try again later.");
     }
 }
+
 
 /**
  * Fetches all existing users from the database.
