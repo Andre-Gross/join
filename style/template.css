@@ -178,7 +178,6 @@
     cursor: pointer;
 }
 
-/* Versteckt #hellp, wenn die Seite privacyPolicy.html oder legalNotice.html ist */
 body[data-page="privacyPolicy"] .help,
 body[data-page="legalNotice"] .help {
     display: none !important;

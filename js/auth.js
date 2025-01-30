@@ -4,26 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Prüft, ob der Benutzer eingeloggt ist. Falls nicht, wird er zur Login-Seite weitergeleitet.
- * Ausnahme: Wenn der Benutzer als "Guest" eingeloggt ist, bleibt er auf der Seite.
+ * Ausnahme: Wenn der Benutzer als "guest" eingeloggt ist, bleibt er auf der Seite.
  */
 function checkAuth() {
-    const loggedInUserId = localStorage.getItem("loggedInUserId"); // Holen der Benutzer-ID
+    let loggedInUser = sessionStorage.getItem("loggedInUser"); // NUR sessionStorage nutzen
 
-    if (!loggedInUserId || loggedInUserId === "null" || loggedInUserId === "undefined") {
+    console.log("checkAuth - loggedInUser Inhalt:", loggedInUser); // Debugging-Ausgabe
+
+    if (!loggedInUser) {
+        console.log("Kein Nutzer eingeloggt → Weiterleitung zur Login-Seite");
         window.location.href = "index.html";
         return;
     }
 
-    if (loggedInUserId.toLowerCase() === "guest") {
-        return; // Falls der Nutzer als "Guest" eingeloggt ist, bleibt er auf der Seite
-    }
+    try {
+        const user = JSON.parse(loggedInUser);
+        console.log("Eingeloggter Benutzer:", user);
 
-    // Falls kein gültiger Benutzer gefunden wurde, zur Login-Seite weiterleiten
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (!loggedInUser) {
+        // Falls Gast, keine Weiterleitung
+        if (user.id && user.id.toLowerCase() === "guest") {
+            console.log("Gast-Login erkannt → Keine Weiterleitung");
+            return;
+        }
+    } catch (error) {
+        console.error("Fehler beim Parsen von loggedInUser:", error);
         window.location.href = "index.html";
     }
 }
-
-
-
