@@ -183,7 +183,6 @@ async function loadTasks() {
       document.getElementById(containerId).appendChild(taskElement);
     });
 
-    console.log("Tasks loaded successfully.");
     initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
