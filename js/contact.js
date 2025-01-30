@@ -8,6 +8,7 @@ let ids = [];
 let toastMessageAddContact ='<span>Contact successfully created</span>';
 let toastMessageEditContact ='<span>Contact successfully edited</span>';
 let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
+<<<<<<< Updated upstream
 const COLORS = [
   "#FF7A00",
   "#9327FF",
@@ -25,6 +26,8 @@ const COLORS = [
   "#C3FE2B",
   "#FFBB2B",
 ];
+=======
+>>>>>>> Stashed changes
 
 /**
  * Main function to load and display contacts.
@@ -510,6 +513,7 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
   }
 }
 
+<<<<<<< Updated upstream
 
 /**
  * Gets a random color from the predefined list.
@@ -519,6 +523,8 @@ function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
+=======
+>>>>>>> Stashed changes
 
 /**
  * Deletes a contact from the database.
