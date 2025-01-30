@@ -24,11 +24,8 @@ async function includeHTML() {
             element.innerHTML = "Page not found.";
         }
     }
-
-    // Display user initials
     updateUserInitials();
     
-    // Set up dropdown functionality
     setupDropdown();
 }
 
@@ -107,7 +104,6 @@ function getCurrentPage() {
     return fileName.replace('.html', '');
 }
 
-// Dynamically add favicon to the document
 (function addFavicon() {
     const link = document.createElement('link');
     link.rel = 'icon';
@@ -116,28 +112,28 @@ function getCurrentPage() {
     document.head.appendChild(link);
 })();
 
-// Initialize dynamic content inclusion and navigation highlighting
 document.addEventListener('DOMContentLoaded', async () => {
-    await includeHTML();          // Include dynamic HTML content
-    highlightActiveNavItem();     // Highlight the active nav item
+    await includeHTML();          
+    highlightActiveNavItem();     
 });
 
-// Logout-Funktion
+
+/**
+ * Logs out the current user by removing their information from sessionStorage.
+ * After clearing the session data, it redirects the user to the 'index.html' page.
+ */
 function logOut() {
-    // Sitzungsdaten für den eingeloggten Benutzer löschen
     sessionStorage.removeItem('loggedInUser');
     sessionStorage.removeItem('loggedInUserEmail');
     sessionStorage.removeItem('loggedInUserId');
     sessionStorage.removeItem('loggedInUserName');
     sessionStorage.removeItem('loggedInUserPassword');
 
-    // Zur Landing-Page weiterleiten
     setTimeout(() => {
-        window.location.href = 'index.html'; // Weiterleitung zur Landing-Page
-    }, 50); // Optionale Verzögerung für Animationen
+        window.location.href = 'index.html'; 
+    }, 50); 
 }
 
-// Event-Listener für den Logout-Button
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.querySelector('.logout-button');
     if (logoutButton) {
