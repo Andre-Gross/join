@@ -23,7 +23,7 @@ const COLORS = [
 ];
 let toastMessageAddContact ='<span>Contact successfully created</span>';
 let toastMessageEditContact ='<span>Contact successfully edited</span>';
-let toastMessageDeleteContact ='<span>Contact successfully edited</span>';
+let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
 
 async function contactMain() {
   names = [];
