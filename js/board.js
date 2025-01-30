@@ -1,6 +1,7 @@
 let currentTasks = [];
+let toastMessageNoResult ='<span>Keine Ergebnisse gefunden</span>';
 
-// This function searches for the Task name
+
 async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
 
@@ -28,6 +29,11 @@ async function filterAndShowTask() {
       if (!currentTasks[task.id]) {
         currentTasks[task.id] = task;
       }
+    }
+    if (currentTitles.length === 0 && currentDescriptions.length === 0) {
+      showToast(toastMessageNoResult, 'middle', 1000);
+      setTimeout(() => {
+      }, 1000);
     }
 
     await renderBodySearch();
