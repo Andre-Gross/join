@@ -213,6 +213,44 @@ function initializeDragAndDrop() {
 }
 
 
+function initializeTouchDrag() {
+  const tasks = document.querySelectorAll(".task");
+  let draggedTask = null;
+  let placeholder = null;
+
+  tasks.forEach((task) => {
+    task.addEventListener("touchstart", (e) => {
+      draggedTask = e.target.closest(".task");
+      if (!draggedTask) return;
+
+      placeholder = createPlaceholder(draggedTask);
+      draggedTask.parentNode.insertBefore(placeholder, draggedTask.nextSibling);
+      draggedTask.classList.add("dragging");
+    });
+
+    task.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (!draggedTask || !placeholder) return;
+
+      const touch = e.touches[0];
+      handleDragOver(draggedTask.parentNode, touch.clientY, placeholder);
+    });
+
+    task.addEventListener("touchend", () => {
+      if (!draggedTask || !placeholder) return;
+
+      placeholder.replaceWith(draggedTask);
+      draggedTask.classList.remove("dragging");
+      draggedTask = null;
+      placeholder = null;
+    });
+  });
+}
+
+initializeDragAndDrop();
+initializeTouchDrag();
+
+
 
 function createPlaceholder(task) {
   const placeholder = document.createElement("div");
