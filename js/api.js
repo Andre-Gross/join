@@ -301,6 +301,6 @@ async function tryDeleteContactInDatabase(contactId) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    alert("Kontakt erfolgreich gelöscht.");
 }
 
