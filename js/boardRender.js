@@ -2,7 +2,6 @@ async function boardRender() {
   const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
-    // Lade Tasks und Kontakte aus Firebase
     const [tasksResponse, contactsResponse] = await Promise.all([
       fetch(`${firebaseUrl}/tasks.json`),
       fetch(`${firebaseUrl}/users/contacts.json`),
@@ -20,26 +19,22 @@ async function boardRender() {
       return;
     }
 
-    // Lösche vorhandene Inhalte in den Containern
     ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
       (containerId) => {
         document.getElementById(containerId).innerHTML = "";
       }
     );
 
-    // Render Tasks
     Object.entries(tasksData).forEach(([taskId, task]) => {
       const containerId = getContainerIdByStatus(task.status);
       if (!containerId) return;
 
-      // Erstelle Task-Element
       const taskElement = document.createElement("div");
       taskElement.classList.add("task");
       taskElement.id = taskId;
       taskElement.setAttribute("draggable", "true");
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-      // Kategorie-Label
       const categoryClass = task.category
         ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
         : "bc-category-label-unknown";
@@ -48,16 +43,12 @@ async function boardRender() {
           ${task.category || "No category"}
         </div>`;
 
-      // Subtasks-HTML
       const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-      // Priorität-Bild
       const priorityImage = priorityLabelHTML(task.priority);
 
-      // Kontakte rendern
       const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-      // Task-HTML
       taskElement.innerHTML = `
         <div class="task-header">
           ${categoryHTML}
@@ -75,11 +66,10 @@ async function boardRender() {
         </footer>
       `;
 
-      // Task zum entsprechenden Container hinzufügen
       document.getElementById(containerId).appendChild(taskElement);
     });
 
-    initializeDragAndDrop(); // Drag-and-Drop-Funktion initialisieren
+    initializeDragAndDrop(); 
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
@@ -110,40 +100,34 @@ function renderSubtasksHTML(taskId, subtasks) {
 
 
 function renderTaskContacts(assignedTo = [], contactsData = {}) {
-  // Überprüfen, ob `assignedTo` ein Array ist und Inhalte hat
   if (!isValidArray(assignedTo)) return "";
 
 
   return assignedTo
     .map((contactIdOrName) => {
-      // 1. Versuche den Kontakt über die ID zu finden
       let contact = contactsData[contactIdOrName];
 
-      // 2. Falls nicht gefunden, versuche den Kontakt über den Namen zu finden
       if (!contact) {
         contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
       }
 
-      // 3. Wenn der Kontakt immer noch nicht gefunden wurde, logge eine Warnung und zeige einen Standard-Kreis an
       if (!contact) {
         return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
       }
 
-      // 4. Initialen und Farbe bestimmen
       const shortName = contact.name
         .split(" ")
         .map((n) => n[0].toUpperCase())
         .join("");
       const backgroundColor = contact.color || "#ccc";
 
-      // 5. Rückgabe des Kontakt-HTML
       return `
         <div class="contact-circle" style="background-color: ${backgroundColor};">
           <span>${shortName}</span>
         </div>
       `;
     })
-    .join(""); // Alle Kontakte zu einer Zeichenkette zusammenfügen
+    .join(""); 
 }
 
 
@@ -164,7 +148,7 @@ function priorityLabelHTML(priority) {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await boardRender(); // Lade und rendere das Board beim Laden der Seite
+  await boardRender(); 
 });
 
 function initializeDragAndDrop() {
@@ -185,16 +169,14 @@ function initializeDragAndDrop() {
     task.addEventListener("dragstart", (e) => {
       draggedTask = task
 
-      // Prevent transparency
       task.style.opacity = "1"
       task.classList.add("dragging")
-      task.classList.remove("wiggle") // Remove wiggle class when drag starts
+      task.classList.remove("wiggle") 
 
-      // Create placeholder
       placeholder = createPlaceholder(task)
 
       setTimeout(() => {
-        task.style.display = "none" // Hide the actual element
+        task.style.display = "none" 
       }, 0)
 
       resetAnimation(task)
@@ -219,10 +201,8 @@ function initializeDragAndDrop() {
       const newStatus = getStatusFromContainerId(container.id);
       const taskId = draggedTask.id;
 
-      // Ersetze den Platzhalter mit der gezogenen Aufgabe
       container.replaceChild(draggedTask, placeholder);
 
-      // Entferne den Platzhalter
       placeholder.remove();
       placeholder = null;
 
@@ -258,7 +238,7 @@ function endDrag(draggedTask, placeholder) {
 
 function resetAnimation(task) {
   task.style.animation = "none"
-  task.offsetHeight // Trigger reflow
+  task.offsetHeight 
   task.style.animation = null
 }
 
@@ -381,12 +361,6 @@ async function deleteTaskInDatabase(taskId) {
 }
 
 
-
-
-
-
-
-// Ab hier beginnt der Modal-Card-Code
 async function openModal(id) {
   const tasksAsArray = await getTasksAsArray();
   const singleTask = tasksAsArray.find((task) => task.id === id);
@@ -409,7 +383,6 @@ async function openModal(id) {
     );
   renderPriority(singleTask.priority);
 
-  // Subtasks in der Modal-Card rendern
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
     document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
     document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
