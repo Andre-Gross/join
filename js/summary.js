@@ -86,7 +86,6 @@ function fadeOutWelcomeMessage() {
 
     if (welcomeContainer && window.innerWidth < 660) {
         setTimeout(() => {
-            // Warte, bis die Transition abgeschlossen ist
             welcomeContainer.classList.add('fade-out'); 
             welcomeContainer.addEventListener('transitionend', () => {
                 welcomeContainer.classList.add('hidden'); 
