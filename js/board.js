@@ -42,32 +42,26 @@ async function filterAndShowTask() {
 }
 
 function renderAssignedContacts(assignedTo, contacts) {
-  // Kontakte aus der Datenbank herausfiltern
   const contactEntries = Object.values(contacts);
 
-  // Limitiere auf maximal 3 Kontakte oder füge Platzhalter hinzu
   const limitedContacts =
-    assignedTo && assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""]; // Drei transparente Platzhalter-Kreise
+    assignedTo && assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""];
 
   return `
     <div class="assigned-contacts">
       ${limitedContacts
       .map((name) => {
         if (!name) {
-          // Platzhalter für leere Kontakte (transparenter Kreis)
           return `
               <div class="contact-circle" style="background-color: transparent; ">
               </div>
             `;
         }
 
-        // Finde den Kontakt in den gespeicherten Daten
         const contact = contactEntries.find((c) => c.name === name);
 
-        // Fallback für unbekannte Kontakte
         const color = contact ? contact.color : "#ccc";
 
-        // Kürzel aus Vor- und Nachnamen generieren
         const nameParts = (contact ? contact.name : name).split(" ");
         const shortName =
           nameParts.length > 1
@@ -90,7 +84,6 @@ async function loadTasks() {
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
-    // Lade Tasks und Kontakte gleichzeitig
     const [tasksResponse, contactsResponse] = await Promise.all([
       fetch(`${firebaseUrl}/tasks.json`),
       fetch(`${firebaseUrl}/users/contacts.json`),
@@ -108,7 +101,6 @@ async function loadTasks() {
       return;
     }
 
-    // Lösche vorhandene Inhalte in den Containern
     [
       "todo-container",
       "progress-container",
@@ -118,7 +110,6 @@ async function loadTasks() {
       document.getElementById(containerId).innerHTML = "";
     });
 
-    // Rendere Tasks basierend auf ihrem Status
     Object.entries(tasksData).forEach(([taskId, task]) => {
       const containerId = getContainerIdByStatus(task.status);
       if (!containerId) return;
@@ -129,7 +120,6 @@ async function loadTasks() {
       taskElement.setAttribute("draggable", "true");
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-      // Kategorie-Label erstellen
       const categoryClass = task.category
         ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
         : "bc-category-label-unknown";
@@ -138,7 +128,6 @@ async function loadTasks() {
           ${task.category || "No category"}
         </div>`;
 
-      // Berechnung des Fortschritts der Subtasks
       let progressHTML = "";
       if (task.subtasks && task.subtasks.length > 0) {
         const completedSubtasks = task.subtasks.filter(
@@ -157,16 +146,13 @@ async function loadTasks() {
         `;
       }
 
-      // Prioritätsbild rendern
       const priorityImage = priorityLabelHTML(task.priority);
 
-      // Kontakte rendern
       const contactsHTML = renderAssignedContacts(
         task.assignedTo,
         contactsData
       );
 
-      // Aufgabe rendern
       taskElement.innerHTML = `
         <div class="task-header">
           ${categoryHTML}
@@ -220,27 +206,22 @@ async function fetchContactsData() {
 }
 
 async function renderBodySearch() {
-  // Leere die Container vor dem Rendern
   ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
     document.getElementById(containerId).innerHTML = "";
   });
 
-  // Kontakte laden
   const contactsData = await fetchContactsData();
 
-  // Verwende die Logik von boardRender, um konsistentes Rendering zu gewährleisten
   Object.entries(currentTasks).forEach(([taskId, task]) => {
     const containerId = getContainerIdByStatus(task.status);
     if (!containerId) return;
 
-    // Erstelle Task-Element wie in boardRender
     const taskElement = document.createElement("div");
     taskElement.classList.add("task");
     taskElement.id = taskId;
     taskElement.setAttribute("draggable", "true");
     taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-    // Kategorie-Label
     const categoryClass = task.category
       ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
       : "bc-category-label-unknown";
@@ -249,16 +230,12 @@ async function renderBodySearch() {
         ${task.category || "No category"}
       </div>`;
 
-    // Subtasks-HTML
     const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-    // Priorität-Bild
     const priorityImage = priorityLabelHTML(task.priority);
 
-    // Kontakte rendern
     const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-    // Task-HTML
     taskElement.innerHTML = `
       <div class="task-header">
         ${categoryHTML}
@@ -276,7 +253,6 @@ async function renderBodySearch() {
       </footer>
     `;
 
-    // Task in den entsprechenden Container hinzufügen
     document.getElementById(containerId).appendChild(taskElement);
   });
 }
@@ -286,7 +262,6 @@ function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
-// Andres Funktionen
 async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
   const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
@@ -334,8 +309,8 @@ function toggleEditMode(shallVisible = '') {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadTasks(); // Tasks laden und rendern
-  scrollToTaskSection(); // Scrollt zur gewünschten Sektion
+  await loadTasks(); 
+  scrollToTaskSection(); 
 });
 
 /**
@@ -343,17 +318,16 @@ document.addEventListener("DOMContentLoaded", async () => {
  */
 function scrollToTaskSection() {
   const params = new URLSearchParams(window.location.search);
-  const status = params.get("status"); // Liest den ?status-Parameter aus der URL
+  const status = params.get("status"); 
 
-  if (!status) return; // Falls kein Status vorhanden ist, abbrechen
+  if (!status) return; 
 
-  // Mapping der Status zu den Container-IDs
   const containerMapping = {
     todo: "todo-container",
     inprogress: "progress-container",
     feedback: "feedback-container",
     done: "done-container",
-    urgent: "todo-container", // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+    urgent: "todo-container", 
   };
 
   const targetContainerId = containerMapping[status];
