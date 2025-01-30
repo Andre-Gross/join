@@ -18,7 +18,7 @@ body {
 
 body.dragging {
     cursor: grabbing;
-  }
+}
 
 .title {
     display: flex;
@@ -37,8 +37,8 @@ body.dragging {
     position: relative;
 }
 
-.searchBar{
-    display:flex;
+.searchBar {
+    display: flex;
     align-items: center;
     flex-direction: row;
 }
@@ -125,7 +125,7 @@ body.dragging {
 
 .task {
     position: relative;
-    width: 250px;
+    max-width: 250px;
     height: 260px;
     background: #ffffff;
     border-radius: 24px;
@@ -138,34 +138,9 @@ body.dragging {
     cursor: pointer;
 }
 
-.task.wiggle {
-    animation: wiggle 0.8s ease-in-out;
-    cursor: grabbing;
-  }
-
-  .task.dragging {
-    cursor: grabbing;
-  }
-  
- 
-  @keyframes wiggle {
-
-    0% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(5px);
-    }
-    50% {
-      transform: translateX(0);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
+.task:hover {
+    transform: rotate(3deg);
+}
 
 .task h4 {
     margin-top: 1rem;
@@ -179,6 +154,15 @@ body.dragging {
     color: #A8A8A8;
     line-height: 1.2;
     margin-bottom: 0.5rem;
+}
+
+.task-description {
+    font-size: 14px;
+    color: #555;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 
@@ -229,28 +213,10 @@ body.dragging {
     color: #6c757d;
 }
 
-@keyframes wiggle {
-    0% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(-5deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    75% {
-      transform: rotate(5deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-  
-  .task.dragging {
+.task.dragging {
     animation: wiggle 0.5s ease-in-out;
-  }
-  
+}
+
 
 .drag-over {
     border: 2px dashed #29abe1;
@@ -318,8 +284,8 @@ a,
     background-color: transparent;
     margin: 4px 0;
     border-radius: 24px;
-  }
-  
+}
+
 
 #modalCard-background {
     position: absolute;
@@ -494,11 +460,11 @@ a,
     height: 18px;
 }
 
-#idSearch { 
-    background-image: 
-    url('/assets/img/board/search-wall.svg');
+#idSearch {
+    background-image:
+        url('/assets/img/board/search-wall.svg');
     background-repeat: no-repeat;
-    background-position: right center; 
+    background-position: right center;
     margin-right: 40px;
 }
 
@@ -507,7 +473,7 @@ a,
 
 }
 
-.AddTaskBtn{
+.AddTaskBtn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -519,11 +485,11 @@ a,
     transition: background-color 0.1s ease;
     width: 268px;
     height: 48px;
-    padding:8px;
+    padding: 8px;
     margin-top: unset !important;
 }
 
-.AddTaskBtnText{
+.AddTaskBtnText {
     font-size: 21px;
     font-weight: 700;
     color: white;
@@ -531,8 +497,6 @@ a,
     padding-right: 8px;
 }
 
-.AddTaskBtn:hover{
+.AddTaskBtn:hover {
     background-color: #29ABE2;
 }
-
-
