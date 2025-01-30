@@ -89,6 +89,11 @@
     outline: none;
 }
 
+#nav-login{
+    width: 100%;
+    align-items: start;
+}
+
 #profile-icon-container {
     width: clamp(50px, 5vw, 70px);
     height: clamp(50px, 5vw, 70px);
@@ -171,4 +176,10 @@
 .help:hover {
     scale: 130%;
     cursor: pointer;
+}
+
+/* Versteckt #hellp, wenn die Seite privacyPolicy.html oder legalNotice.html ist */
+body[data-page="privacyPolicy"] .help,
+body[data-page="legalNotice"] .help {
+    display: none !important;
 }
