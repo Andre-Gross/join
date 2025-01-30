@@ -150,29 +150,14 @@ async function signUp() {
 
 async function addUserToContacts(name, email) {
     const assignedColor = getRandomColor();
-    const contactId = generateUniqueId();
-
-    const newContact = {
-        name: name,
-        email: email,
-        color: assignedColor,
-        phone: "" 
-    };
 
     try {
-        const response = await fetch(`https://deine-firebase-datenbank.com/users/contacts.json`, {
-            method: "POST",  // POST anstatt PUT, um eine neue ID automatisch zu generieren
-            body: JSON.stringify(newContact),
-            headers: { "Content-Type": "application/json" }
-        });
-
-        if (!response.ok) {
-            throw new Error("Fehler beim Speichern des Kontakts");
-        }
+        await postContactToDatabase(name, email, "", assignedColor);
     } catch (error) {
-        console.error("Fehler beim Speichern in contacts:", error);
+        console.error("Fehler beim Hinzufügen des Kontakts:", error);
     }
 }
+
 
 function generateUniqueId() {
     return '_' + Math.random().toString(36).substr(2, 9);
