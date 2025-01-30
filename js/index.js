@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+
 let failedAttempts = {}; // Speichert fehlgeschlagene Login-Versuche
 
 function switchView() {
@@ -167,8 +169,6 @@ function generateUniqueId() {
 function generateUniqueId() {
     return '_' + Math.random().toString(36).substr(2, 9);
 }
-
-
 
 /**
  * Handles failed login attempts and shows a reset password option after 3 tries.
