@@ -32,8 +32,7 @@ async function filterAndShowTask() {
     }
     if (currentTitles.length === 0 && currentDescriptions.length === 0) {
       showToast(toastMessageNoResult, 'middle', 1000);
-      setTimeout(() => {
-      }, 1000);
+      setTimeout(1000);
     }
 
     await renderBodySearch();
