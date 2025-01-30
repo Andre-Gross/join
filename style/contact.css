@@ -545,3 +545,10 @@ td {
 #overlay.show {
     display: block; /* Aktiviert das Overlay */
 }
+
+.AddContactBtnText{
+    color: white;
+    font-size: 21px;
+    font-weight: 700;
+    padding-right: 16px;
+}
