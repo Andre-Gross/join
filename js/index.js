@@ -1,4 +1,5 @@
 let isSubmitting = false;
+let toastMessageSignUp = '<span>You Signed Up successfully</span>';
 
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
@@ -133,8 +134,11 @@ async function signUp() {
             return;
         }
         await registerNewUser(name, email, password);
-        isSubmitting = false; 
-        redirectToLogin(true);
+        isSubmitting = false;
+        showToast(toastMessageSignUp, 'middle', 1000); 
+        setTimeout(() => {
+            redirectToLogin(true);
+          }, 1000);
     } catch {
         isSubmitting = false; 
         displayError("An error occurred during registration. Please try again.");
