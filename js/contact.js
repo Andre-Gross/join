@@ -8,6 +8,23 @@ let ids = [];
 let toastMessageAddContact ='<span>Contact successfully created</span>';
 let toastMessageEditContact ='<span>Contact successfully edited</span>';
 let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
+const COLORS = [
+  "#FF7A00",
+  "#9327FF",
+  "#FF745E",
+  "#FFC700",
+  "#FFE62B",
+  "#FF5EB3",
+  "#00BEE8",
+  "#FFA45E",
+  "#0038FF",
+  "#FF4546",
+  "#6E52FF",
+  "#1FD7C1",
+  "#FC71FF",
+  "#C3FE2B",
+  "#FFBB2B",
+];
 
 /**
  * Main function to load and display contacts.
@@ -43,6 +60,7 @@ async function contactMain() {
   contactMain.innerHTML += getAddContactBtn();
 }
 
+
 /**
  * Loads contacts from the database and initializes arrays.
  */
@@ -60,6 +78,7 @@ async function loadContacts() {
 
   await sortContacts();
 }
+
 
 /**
  * Generates HTML for a contact entry.
@@ -80,6 +99,7 @@ function getContactMain(i) {
     `;
 }
 
+
 /**
  * Generates HTML for the "Add Contact" button.
  * @returns {string} - HTML string for the "Add Contact" button.
@@ -91,6 +111,7 @@ function getAddContactBtn() {
     `;
 }
 
+
 /**
  * Displays the "Add Contact" form.
  */
@@ -98,6 +119,7 @@ function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 }
+
 
 /**
  * Generates HTML for the "Add Contact" form.
@@ -138,6 +160,7 @@ function getAddContact() {
 `;
 }
 
+
 /**
  * Displays the "Add Contact" form.
  */
@@ -152,6 +175,7 @@ function addContact() {
   }, 10);
 }
 
+
 /**
  * Closes the "Add Contact" form.
  */
@@ -162,6 +186,7 @@ function closeAddContact() {
   }
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
+
 
 /**
  * Sorts contacts alphabetically by name.
@@ -183,6 +208,7 @@ async function sortContacts() {
   colors = contacts.map((contact) => contact.color);
   ids = contacts.map((contact) => contact.id);
 }
+
 
 /**
  * Opens the contact view for a specific contact.
@@ -206,6 +232,7 @@ function openContact(i) {
     document.body.appendChild(contactViewContainer);
   }
 }
+
 
 /**
 * Generates HTML for the contact view.
@@ -276,6 +303,7 @@ function getContactView(i) {
     `;
 }
 
+
 /**
  * Generates HTML for the edit and delete buttons.
  * @param {number} i - Index of the contact.
@@ -319,6 +347,7 @@ function editContact(i) {
   }, 10);
 }
 
+
 /**
  * Generates HTML for the edit contact form.
  * @param {number} i - Index of the contact.
@@ -354,6 +383,7 @@ function getEditContact(i) {
   `;
 }
 
+
 /**
  * Closes the edit contact form.
  */
@@ -365,6 +395,7 @@ function closeEditContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+
 /**
  * Closes both the add and edit contact forms.
  */
@@ -372,6 +403,7 @@ function closeOverlay() {
   closeAddContact();
   closeEditContact();
 }
+
 
 /**
  * Submits the new contact to the database.
@@ -391,6 +423,7 @@ function submitAddContact() {
   }, 1000);
 }
 
+
 /**
  * Deletes a contact from the database.
  * @param {number} i - Index of the contact.
@@ -405,6 +438,7 @@ async function deleteContact(i) {
     window.location.reload();
   }, 1000);
 }
+
 
 /**
 * Saves the edited contact to the database.
@@ -423,12 +457,14 @@ function saveEditContact(i) {
   }, 1000);
 }
 
+
 /**
  * Generates short names (initials) for all contacts.
  */
 async function shortName() {
   shortNames = names.map((name) => getInitialsFromName(name));
 }
+
 
 /**
  * Posts a new contact to the database.
@@ -445,6 +481,7 @@ async function postContactToDatabase(name, mail, phone, color) {
     alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
+
 
 /**
  * Tries to post a new contact to the database.
@@ -475,6 +512,15 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
 
 
 /**
+ * Gets a random color from the predefined list.
+ * @returns {string} - A random color.
+ */
+function getRandomColor() {
+  let randomIndex = Math.floor(Math.random() * COLORS.length);
+  return COLORS[randomIndex];
+}
+
+/**
  * Deletes a contact from the database.
  * @param {string} id - ID of the contact.
  */
@@ -486,6 +532,7 @@ async function deleteContactInDatabase(id) {
     alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
+
 
 /**
  * Tries to delete a contact from the database.
@@ -506,6 +553,7 @@ async function tryDeleteContactInDatabase(id) {
 
 }
 
+
 /**
  * Updates a contact in the database.
  * @param {string} name - Name of the contact.
@@ -522,6 +570,7 @@ async function putContactInDatabase(name, mail, phone, color, id) {
     alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
+
 
 /**
  * Tries to update a contact in the database.
@@ -551,6 +600,7 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
   }
 }
 
+
 /**
  * Toggles the visibility of contact buttons based on input values.
  */
@@ -579,6 +629,7 @@ function toggleContactButtons() {
   }
 }
 
+
 /**
  * Initiates a phone call to the given phone number.
  * @param {string} phoneNumber - Phone number to call.
@@ -587,6 +638,7 @@ function callPhoneNumber(phoneNumber) {
   window.location.href = `tel:${phoneNumber}`;
 }
 
+
 /**
  * Opens the default email client with the given email address.
  * @param {string} email - Email address to send to.
@@ -594,6 +646,7 @@ function callPhoneNumber(phoneNumber) {
 function openEmailClient(email) {
   window.location.href = `mailto:${email}`;
 }
+
 
 /**
  * Adds a 'selected' class to the clicked contact entry.
@@ -606,6 +659,7 @@ document.addEventListener('click', (event) => {
     event.target.closest('.NameMailShort').classList.add('selected');
   }
 });
+
 
 /**
 * Toggles the visibility of the dropdown menu for a specific contact.
