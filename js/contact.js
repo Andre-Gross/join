@@ -449,50 +449,6 @@ async function shortName() {
 }
 
 
-/**
- * Posts a new contact to the database.
- * @param {string} name - Name of the contact.
- * @param {string} mail - Email of the contact.
- * @param {string} phone - Phone number of the contact.
- * @param {string} color - Color associated with the contact.
- */
-async function postContactToDatabase(name, mail, phone, color) {
-  try {
-    tryPostContactToDatabase(name, mail, phone, color);
-  } catch (error) {
-    console.error("Fehler beim Speichern des Kontaktes", error);
-    alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
-  }
-}
-
-
-/**
- * Tries to post a new contact to the database.
- * @param {string} name - Name of the contact.
- * @param {string} mail - Email of the contact.
- * @param {string} phone - Phone number of the contact.
- * @param {string} color - Color associated with the contact.
- * @throws Will throw an error if the request fails.
- */
-async function tryPostContactToDatabase(name, mail, phone, color) {
-  let response = await fetch(BASE_URL + `users/contacts.json`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      color: color,
-      email: mail,
-      name: name,
-      phone: phone,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-  }
-}
-
 
 /**
  * Deletes a contact from the database.
