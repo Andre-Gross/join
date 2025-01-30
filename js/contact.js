@@ -4,6 +4,7 @@ let phones = [];
 let colors = [];
 let shortNames = [];
 let ids = [];
+
 let toastMessageAddContact ='<span>Contact successfully created</span>';
 let toastMessageEditContact ='<span>Contact successfully edited</span>';
 let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
@@ -24,7 +25,6 @@ const COLORS = [
   "#C3FE2B",
   "#FFBB2B",
 ];
-
 
 /**
  * Main function to load and display contacts.
@@ -519,7 +519,6 @@ function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
-
 
 /**
  * Deletes a contact from the database.

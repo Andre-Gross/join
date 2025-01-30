@@ -134,6 +134,8 @@ async function signUp() {
             return;
         }
         await registerNewUser(name, email, password);
+        await addUserToContacts(name, email);
+
         isSubmitting = false;
         showToast(toastMessageSignUp, 'middle', 1000); 
         setTimeout(() => {
@@ -144,6 +146,44 @@ async function signUp() {
         displayError("An error occurred during registration. Please try again.");
     }
 }
+
+
+async function addUserToContacts(name, email) {
+    const assignedColor = getRandomColor();
+    const contactId = generateUniqueId();
+
+    const newContact = {
+        name: name,
+        email: email,
+        color: assignedColor,
+        phone: "" 
+    };
+
+    try {
+        const response = await fetch(`https://deine-firebase-datenbank.com/users/contacts.json`, {
+            method: "POST",  // POST anstatt PUT, um eine neue ID automatisch zu generieren
+            body: JSON.stringify(newContact),
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error("Fehler beim Speichern des Kontakts");
+        }
+    } catch (error) {
+        console.error("Fehler beim Speichern in contacts:", error);
+    }
+}
+
+function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+
+function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+
 
 /**
  * Handles failed login attempts and shows a reset password option after 3 tries.
