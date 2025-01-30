@@ -4,6 +4,9 @@ let phones = [];
 let colors = [];
 let shortNames = [];
 let ids = [];
+let toastMessageAddContact ='<span>Contact successfully created</span>';
+let toastMessageEditContact ='<span>Contact successfully edited</span>';
+let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
 const COLORS = [
   "#FF7A00",
   "#9327FF",
@@ -21,10 +24,10 @@ const COLORS = [
   "#C3FE2B",
   "#FFBB2B",
 ];
-let toastMessageAddContact ='<span>Contact successfully created</span>';
-let toastMessageEditContact ='<span>Contact successfully edited</span>';
-let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
 
+/**
+ * Main function to load and display contacts.
+ */
 async function contactMain() {
   names = [];
   emails = [];
@@ -56,6 +59,9 @@ async function contactMain() {
   contactMain.innerHTML += getAddContactBtn();
 }
 
+/**
+ * Loads contacts from the database and initializes arrays.
+ */
 async function loadContacts() {
   let loadContacts = await getContacts();
   let contactsArray = Object.values(loadContacts);
@@ -71,6 +77,11 @@ async function loadContacts() {
   await sortContacts();
 }
 
+/**
+ * Generates HTML for a contact entry.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the contact entry.
+ */
 function getContactMain(i) {
   return `
     <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
@@ -85,6 +96,10 @@ function getContactMain(i) {
     `;
 }
 
+/**
+ * Generates HTML for the "Add Contact" button.
+ * @returns {string} - HTML string for the "Add Contact" button.
+ */
 function getAddContactBtn() {
   return `
     <div id="idAddContactBtn" onclick="addContact()">
@@ -92,11 +107,18 @@ function getAddContactBtn() {
     `;
 }
 
+/**
+ * Displays the "Add Contact" form.
+ */
 function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 }
 
+/**
+ * Generates HTML for the "Add Contact" form.
+ * @returns {string} - HTML string for the "Add Contact" form.
+ */
 function getAddContact() {
   return `
 <div id="idAddContact">
@@ -132,6 +154,9 @@ function getAddContact() {
 `;
 }
 
+/**
+ * Displays the "Add Contact" form.
+ */
 function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
@@ -143,6 +168,9 @@ function addContact() {
   }, 10);
 }
 
+/**
+ * Closes the "Add Contact" form.
+ */
 function closeAddContact() {
   let addContactElement = document.getElementById("idAddContact");
   if (addContactElement) {
@@ -151,6 +179,9 @@ function closeAddContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+/**
+ * Sorts contacts alphabetically by name.
+ */
 async function sortContacts() {
   let contacts = names.map((name, index) => ({
     name,
@@ -169,6 +200,10 @@ async function sortContacts() {
   ids = contacts.map((contact) => contact.id);
 }
 
+/**
+ * Opens the contact view for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
 function openContact(i) {
   let openContact = document.getElementById("idContactMain");
 
@@ -188,6 +223,11 @@ function openContact(i) {
   }
 }
 
+/**
+* Generates HTML for the contact view.
+* @param {number} i - Index of the contact.
+* @returns {string} - HTML string for the contact view.
+*/
 function getContactView(i) {
   return `
 <div id="idViewContactCard">
@@ -252,6 +292,11 @@ function getContactView(i) {
     `;
 }
 
+/**
+ * Generates HTML for the edit and delete buttons.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the edit and delete buttons.
+ */
 function getEditContactBtn(i) {
   return `
     <div>
@@ -267,6 +312,11 @@ function getEditContactBtn(i) {
     `;
 }
 
+
+/**
+ * Opens the edit contact form for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
 function editContact(i) {
   const existingEditModal = document.getElementById("idEditContact");
   if (existingEditModal) {
@@ -285,6 +335,11 @@ function editContact(i) {
   }, 10);
 }
 
+/**
+ * Generates HTML for the edit contact form.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the edit contact form.
+ */
 function getEditContact(i) {
   return `
 <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
@@ -315,6 +370,9 @@ function getEditContact(i) {
   `;
 }
 
+/**
+ * Closes the edit contact form.
+ */
 function closeEditContact() {
   const editContactModal = document.getElementById("idEditContact");
   if (editContactModal) {
@@ -323,11 +381,17 @@ function closeEditContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+/**
+ * Closes both the add and edit contact forms.
+ */
 function closeOverlay() {
   closeAddContact();
   closeEditContact();
 }
 
+/**
+ * Submits the new contact to the database.
+ */
 function submitAddContact() {
   let name = document.getElementById("idNameAddContact").value;
   let mail = document.getElementById("idMailAddContact").value;
@@ -343,6 +407,10 @@ function submitAddContact() {
   }, 1000);
 }
 
+/**
+ * Deletes a contact from the database.
+ * @param {number} i - Index of the contact.
+ */
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
@@ -354,6 +422,10 @@ async function deleteContact(i) {
   }, 1000);
 }
 
+/**
+* Saves the edited contact to the database.
+* @param {number} i - Index of the contact.
+*/
 function saveEditContact(i) {
   let name = document.getElementById("idNameEditContact").value;
   let mail = document.getElementById("idMailEditContact").value;
@@ -367,10 +439,20 @@ function saveEditContact(i) {
   }, 1000);
 }
 
+/**
+ * Generates short names (initials) for all contacts.
+ */
 async function shortName() {
   shortNames = names.map((name) => getInitialsFromName(name));
 }
 
+/**
+ * Posts a new contact to the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ */
 async function postContactToDatabase(name, mail, phone, color) {
   try {
     tryPostContactToDatabase(name, mail, phone, color);
@@ -380,6 +462,14 @@ async function postContactToDatabase(name, mail, phone, color) {
   }
 }
 
+/**
+ * Tries to post a new contact to the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @throws Will throw an error if the request fails.
+ */
 async function tryPostContactToDatabase(name, mail, phone, color) {
   let response = await fetch(BASE_URL + `users/contacts.json`, {
     method: "POST",
@@ -399,11 +489,20 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
   }
 }
 
+
+/**
+ * Gets a random color from the predefined list.
+ * @returns {string} - A random color.
+ */
 function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
 
+/**
+ * Deletes a contact from the database.
+ * @param {string} id - ID of the contact.
+ */
 async function deleteContactInDatabase(id) {
   try {
     tryDeleteContactInDatabase(id);
@@ -413,6 +512,11 @@ async function deleteContactInDatabase(id) {
   }
 }
 
+/**
+ * Tries to delete a contact from the database.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
 async function tryDeleteContactInDatabase(id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
     method: "DELETE",
@@ -427,6 +531,14 @@ async function tryDeleteContactInDatabase(id) {
 
 }
 
+/**
+ * Updates a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ */
 async function putContactInDatabase(name, mail, phone, color, id) {
   try {
     tryPutContactInDatabase(name, mail, phone, color, id);
@@ -436,6 +548,15 @@ async function putContactInDatabase(name, mail, phone, color, id) {
   }
 }
 
+/**
+ * Tries to update a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
 async function tryPutContactInDatabase(name, mail, phone, color, id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
     method: "PUT",
@@ -455,6 +576,9 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
   }
 }
 
+/**
+ * Toggles the visibility of contact buttons based on input values.
+ */
 function toggleContactButtons() {
   const name = document.getElementById("idNameAddContact").value.trim();
   const mail = document.getElementById("idMailAddContact").value.trim();
@@ -480,14 +604,25 @@ function toggleContactButtons() {
   }
 }
 
+/**
+ * Initiates a phone call to the given phone number.
+ * @param {string} phoneNumber - Phone number to call.
+ */
 function callPhoneNumber(phoneNumber) {
   window.location.href = `tel:${phoneNumber}`;
 }
 
+/**
+ * Opens the default email client with the given email address.
+ * @param {string} email - Email address to send to.
+ */
 function openEmailClient(email) {
   window.location.href = `mailto:${email}`;
 }
 
+/**
+ * Adds a 'selected' class to the clicked contact entry.
+ */
 document.addEventListener('click', (event) => {
   if (event.target.closest('.NameMailShort')) {
     document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
@@ -497,6 +632,10 @@ document.addEventListener('click', (event) => {
   }
 });
 
+/**
+* Toggles the visibility of the dropdown menu for a specific contact.
+* @param {number} index - Index of the contact.
+*/
 function toggleDropdownMenu(index) {
   const dropdown = document.getElementById(`dropdownMenu-${index}`);
   if (dropdown.classList.contains('dm-hidden')) {
