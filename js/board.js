@@ -205,57 +205,68 @@ async function fetchContactsData() {
   return await response.json();
 }
 
-async function renderBodySearch() {
-  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
-    document.getElementById(containerId).innerHTML = "";
-  });
-
-  const contactsData = await fetchContactsData();
-
-  Object.entries(currentTasks).forEach(([taskId, task]) => {
-    const containerId = getContainerIdByStatus(task.status);
-    if (!containerId) return;
-
-    const taskElement = document.createElement("div");
-    taskElement.classList.add("task");
-    taskElement.id = taskId;
-    taskElement.setAttribute("draggable", "true");
-    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-
-    const categoryClass = task.category
-      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-      : "bc-category-label-unknown";
-    const categoryHTML = `
-      <div class="category-label ${categoryClass}">
-        ${task.category || "No category"}
-      </div>`;
-
-    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
-
-    const priorityImage = priorityLabelHTML(task.priority);
-
-    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
-
-    taskElement.innerHTML = `
-      <div class="task-header">
-        ${categoryHTML}
-      </div>
-      <h4 class="task-title">${task.title}</h4>
-      <p class="task-description">${task.description}</p>
-      <div class="task-subtasks">${subtasksHTML}</div>
-      <footer class="task-footer d-flex justify-content-between align-items-center">
-        <div class="assigned-contacts d-flex">
-          ${contactsHTML}
-        </div>
-        <div class="task-priority">
-          ${priorityImage}
-        </div>
-      </footer>
-    `;
-
-    document.getElementById(containerId).appendChild(taskElement);
-  });
+function truncateDescription(description, maxLength = 50) {
+  if (!description) return "";
+  return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
 }
+
+async function renderBodySearch() {
+["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+  document.getElementById(containerId).innerHTML = "";
+});
+
+const contactsData = await fetchContactsData();
+
+Object.entries(currentTasks).forEach(([taskId, task]) => {
+  const containerId = getContainerIdByStatus(task.status);
+  if (!containerId) return;
+
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+
+  // Kategorie-Label
+  const categoryClass = task.category
+    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
+  const categoryHTML = `
+    <div class="category-label ${categoryClass}">
+      ${task.category || "No category"}
+    </div>`;
+
+  // Subtasks-HTML
+  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+
+  // Priorität-Bild
+  const priorityImage = priorityLabelHTML(task.priority);
+
+  // Kontakte rendern
+  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+
+  // Task-HTML mit gekürzter Beschreibung
+  taskElement.innerHTML = `
+    <div class="task-header">
+      ${categoryHTML}
+    </div>
+    <h4 class="task-title">${task.title}</h4>
+    <p class="task-description">${truncateDescription(task.description)}</p>
+    <div class="task-subtasks">${subtasksHTML}</div>
+    <footer class="task-footer d-flex justify-content-between align-items-center">
+      <div class="assigned-contacts d-flex">
+        ${contactsHTML}
+      </div>
+      <div class="task-priority">
+        ${priorityImage}
+      </div>
+    </footer>
+  `;
+
+  document.getElementById(containerId).appendChild(taskElement);
+});
+}
+
 
 
 function priorityLabelHTML(priority) {
