@@ -48,7 +48,7 @@ body.landing-page.loaded .logo-container {
 }
 
 body.landing-page.loaded .login-logo {
-    width: 90px;
+    width: 70px;
     
 }
 
@@ -71,7 +71,25 @@ body.landing-page.loaded .final-logo {
     opacity: 1;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
 
+input[type="text"] {
+    background-image: url(../assets/img/logIn-signUp/person.svg);
+}
+
+input[type="email"] {
+    background-image: url(../assets/img/logIn-signUp/mail.svg);
+}
+
+input[type="password"] {
+    background-image: url(../assets/img/logIn-signUp/lock.svg);
+}
 
 
 
