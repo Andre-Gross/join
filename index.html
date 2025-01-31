@@ -33,11 +33,11 @@
                         <div class="separator horizontal"></div>
                         <form onsubmit="event.preventDefault(); logIn();">
                             <div class="mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                                <input type="email" class="form-control" id="email" placeholder="Email" required onblur="changeToRightBorderColor(this)">
                             </div>
                             <div class="mb-3">
                                 <input type="password" class="form-control" id="password" placeholder="Passwort"
-                                    required>
+                                    required onblur="changeToRightBorderColor(this)">
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -69,7 +69,7 @@
                             </div>
                             <div class="mb-3">
                                 <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()">
+                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()" onblur="changeToRightBorderColor(this)">
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="agreeTerms" required
