@@ -453,7 +453,11 @@ function formatDate(date) {
 
 function renderPriority(priority) {
   let priorityLabel = document.getElementById("modalCard-priority-value");
-  priorityLabel.innerHTML = priorityLabelHTML(priority);
+  priorityLabel.innerHTML = /*HTML*/`
+    <div id="priority-label" class="d-flex">
+      <p>${upperCaseFirstLetter(priority)}</p>
+      ${priorityLabelHTML(priority)}
+    </div>`;
 }
 
 
