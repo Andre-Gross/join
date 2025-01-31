@@ -29,6 +29,7 @@ function changeBorderColor(element, borderColorClass = "") {
   }
 }
 
+
 function changeToRightBorderColor(element) {
   if (element.value == "") {
     changeBorderColor(element, "border-color-invalid");
@@ -84,6 +85,22 @@ function getContactMain(i) {
       `;
 }
 
+
+async function getIdOfContactWithName(name) {
+    const contacts = await getContactsAsArray();
+
+    for (let i = 0; i < contacts.length; i++) {
+        const singleContact = contacts[i];
+        const checkedName = singleContact.name;
+
+        if (checkedName === name) {
+            const id = singleContact.id;
+            return id;
+        }
+    }
+}
+
+
 /**
  * Extracts initials from a user's name.
  *
@@ -99,6 +116,7 @@ function getInitialsFromName(name) {
     .join("");
   return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
+
 
 /**
  * Navigates the user to the previous page in the browser history.

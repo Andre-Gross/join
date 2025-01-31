@@ -420,6 +420,7 @@ async function openModal(id) {
         .toLowerCase()}`
     );
   renderPriority(singleTask.priority);
+  renderAssignedToInModal(singleTask.assignedTo);
 
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
     document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
@@ -453,6 +454,24 @@ function formatDate(date) {
 function renderPriority(priority) {
   let priorityLabel = document.getElementById("modalCard-priority-value");
   priorityLabel.innerHTML = priorityLabelHTML(priority);
+}
+
+
+async function renderAssignedToInModal(assignedTo) {
+  const container = document.getElementById('assignedTo-name-labels-container')
+
+  container.innerHTML = '';
+
+  for (let i = 0; i < assignedTo.length; i++) {
+    const singleContact = assignedTo[i];
+    const id = await getIdOfContactWithName(singleContact);
+    container.innerHTML += /*HTML*/`
+      <div class="assignedTo-name-label d-flex align-items-center gap-16p">
+        ${await createNameCirlceWithId(id)}
+        <p>${singleContact}</p>
+      </div>
+    `
+  }
 }
 
 
