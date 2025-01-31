@@ -80,6 +80,13 @@ textarea {
 }
 
 
+#assignedTo-choosen-contacts {
+    padding-top: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
 .bounding-box-button-icon {
     width: 24px;
     height: 24px;
