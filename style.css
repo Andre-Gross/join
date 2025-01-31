@@ -149,12 +149,8 @@ footer {
 
 
 /* Andrés Hinzufügungen */
-.m-template {
-    margin-bottom: calc(82px - 0.5rem);
-}
-
-.d-list-item {
-    display: list-item;
+.border-color-invalid {
+    border-color: var(--color-invalid) !important;
 }
 
 
@@ -163,18 +159,23 @@ footer {
 }
 
 
-.border-color-invalid {
-    border-color: var(--color-invalid) !important;
-}
-
-
 .color-invalid {
     color: var(--color-invalid)
 }
 
 
+.d-list-item {
+    display: list-item;
+}
+
+
 .input-color-standart-important-always:focus {
     border-color: var(--input-border-color-standart);
+}
+
+
+.m-template {
+    margin-bottom: calc(82px - 0.5rem);
 }
 
 
@@ -229,6 +230,7 @@ footer {
   }
 
 
+/* Classes for name-circles */
 .name-circle {
     height: 40px;
     width: 40px;
