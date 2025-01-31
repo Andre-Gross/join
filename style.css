@@ -95,6 +95,15 @@ footer {
     bottom: 0;
 }
 
+.text-muted{
+    color: #A8A8A8 !important;
+}
+
+.col:hover a {
+    color: #A8A8A8 !important;
+}
+
+
 .btn-primary {
     background-color: var(--primary-color);
     width: var(--button-width);
