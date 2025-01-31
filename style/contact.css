@@ -20,6 +20,7 @@ h3 {
     max-height: 100%;
     margin-right: -20px;
     padding: 20px 0;
+    width: 100%;
 }
 
 #idContactMain h2 {
@@ -382,6 +383,7 @@ h3 {
     padding: 20px;
     max-width: 660px;
     width: 100%;
+    height: 100%;
     position: fixed;
     top: 80px;
     bottom: 80px;
@@ -542,4 +544,11 @@ td {
 
 #overlay.show {
     display: block; /* Aktiviert das Overlay */
+}
+
+.AddContactBtnText{
+    color: white;
+    font-size: 21px;
+    font-weight: 700;
+    padding-right: 16px;
 }

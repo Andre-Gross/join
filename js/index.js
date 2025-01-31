@@ -1,4 +1,5 @@
 let isSubmitting = false;
+let toastMessageSignUp = '<span>You Signed Up successfully</span>';
 
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', checkFormValidity);
     });
 });
+
+
 
 let failedAttempts = {}; // Speichert fehlgeschlagene Login-Versuche
 
@@ -133,12 +136,38 @@ async function signUp() {
             return;
         }
         await registerNewUser(name, email, password);
-        isSubmitting = false; 
-        redirectToLogin(true);
+        await addUserToContacts(name, email);
+
+        isSubmitting = false;
+        showToast(toastMessageSignUp, 'middle', 1000); 
+        setTimeout(() => {
+            redirectToLogin(true);
+          }, 1000);
     } catch {
         isSubmitting = false; 
         displayError("An error occurred during registration. Please try again.");
     }
+}
+
+
+async function addUserToContacts(name, email) {
+    const assignedColor = getRandomColor();
+
+    try {
+        await postContactToDatabase(name, email, "", assignedColor);
+    } catch (error) {
+        console.error("Fehler beim Hinzufügen des Kontakts:", error);
+    }
+}
+
+
+function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+
+function generateUniqueId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
 }
 
 /**
@@ -177,11 +206,13 @@ function displayNotRegisteredError() {
 async function guestLogIn() {
     try {
         saveLoggedInUser({ id: "guest", name: "Guest" });
+        sessionStorage.setItem("loggedInUserId", "Guest"); // Speichert die Gast-ID für Auth-Check
         redirectToSummary(true);
     } catch {
         displayError("An error occurred during guest login. Please try again later.");
     }
 }
+
 
 /**
  * Fetches all existing users from the database.

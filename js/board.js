@@ -1,6 +1,7 @@
 let currentTasks = [];
+let toastMessageNoResult ='<span>Keine Ergebnisse gefunden</span>';
 
-// This function searches for the Task name
+
 async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
 
@@ -29,6 +30,10 @@ async function filterAndShowTask() {
         currentTasks[task.id] = task;
       }
     }
+    if (currentTitles.length === 0 && currentDescriptions.length === 0) {
+      showToast(toastMessageNoResult, 'middle', 1000);
+      setTimeout(1000);
+    }
 
     await renderBodySearch();
   } else if (filterWord.length === 0) {
@@ -37,32 +42,26 @@ async function filterAndShowTask() {
 }
 
 function renderAssignedContacts(assignedTo, contacts) {
-  // Kontakte aus der Datenbank herausfiltern
   const contactEntries = Object.values(contacts);
 
-  // Limitiere auf maximal 3 Kontakte oder füge Platzhalter hinzu
   const limitedContacts =
-    assignedTo && assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""]; // Drei transparente Platzhalter-Kreise
+    assignedTo && assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""];
 
   return `
     <div class="assigned-contacts">
       ${limitedContacts
       .map((name) => {
         if (!name) {
-          // Platzhalter für leere Kontakte (transparenter Kreis)
           return `
               <div class="contact-circle" style="background-color: transparent; ">
               </div>
             `;
         }
 
-        // Finde den Kontakt in den gespeicherten Daten
         const contact = contactEntries.find((c) => c.name === name);
 
-        // Fallback für unbekannte Kontakte
         const color = contact ? contact.color : "#ccc";
 
-        // Kürzel aus Vor- und Nachnamen generieren
         const nameParts = (contact ? contact.name : name).split(" ");
         const shortName =
           nameParts.length > 1
@@ -85,7 +84,6 @@ async function loadTasks() {
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
   try {
-    // Lade Tasks und Kontakte gleichzeitig
     const [tasksResponse, contactsResponse] = await Promise.all([
       fetch(`${firebaseUrl}/tasks.json`),
       fetch(`${firebaseUrl}/users/contacts.json`),
@@ -103,7 +101,6 @@ async function loadTasks() {
       return;
     }
 
-    // Lösche vorhandene Inhalte in den Containern
     [
       "todo-container",
       "progress-container",
@@ -113,7 +110,6 @@ async function loadTasks() {
       document.getElementById(containerId).innerHTML = "";
     });
 
-    // Rendere Tasks basierend auf ihrem Status
     Object.entries(tasksData).forEach(([taskId, task]) => {
       const containerId = getContainerIdByStatus(task.status);
       if (!containerId) return;
@@ -124,7 +120,6 @@ async function loadTasks() {
       taskElement.setAttribute("draggable", "true");
       taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-      // Kategorie-Label erstellen
       const categoryClass = task.category
         ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
         : "bc-category-label-unknown";
@@ -133,7 +128,6 @@ async function loadTasks() {
           ${task.category || "No category"}
         </div>`;
 
-      // Berechnung des Fortschritts der Subtasks
       let progressHTML = "";
       if (task.subtasks && task.subtasks.length > 0) {
         const completedSubtasks = task.subtasks.filter(
@@ -152,16 +146,13 @@ async function loadTasks() {
         `;
       }
 
-      // Prioritätsbild rendern
       const priorityImage = priorityLabelHTML(task.priority);
 
-      // Kontakte rendern
       const contactsHTML = renderAssignedContacts(
         task.assignedTo,
         contactsData
       );
 
-      // Aufgabe rendern
       taskElement.innerHTML = `
         <div class="task-header">
           ${categoryHTML}
@@ -178,7 +169,6 @@ async function loadTasks() {
       document.getElementById(containerId).appendChild(taskElement);
     });
 
-    console.log("Tasks loaded successfully.");
     initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
@@ -204,43 +194,85 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
-async function renderBodySearch() {
-  [
-    "todo-container",
-    "progress-container",
-    "feedback-container",
-    "done-container",
-  ].forEach((containerId) => {
-    document.getElementById(containerId).innerHTML = "";
-  });
+async function fetchContactsData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const response = await fetch(`${firebaseUrl}/users/contacts.json`);
 
-  Object.entries(currentTasks).forEach(([taskId, task]) => {
-    const taskElement = document.createElement("div");
-    taskElement.classList.add("task");
-    taskElement.id = taskId;
-    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-    taskElement.innerHTML = `
-                <h4>${task.title}</h4>
-                <p>${task.description}</p>
-                <div class="subtasks-progress-container d-flex align-items-center">
-                <div class="progress-bar-container">
-                <div class="progress-bar" style="width: ${task.progressPercentage}%;"></div>
-                </div>
-                <div class="subtasks-count">${task.completedSubtasks}/${task.totalSubtasks} Subtasks</div>
-                </div>
-                <img src="assets/img/general/prio-${task.priority}.svg" alt="${task.priority}">
-            `;
-    const containerId = getContainerIdByStatus(task.status);
-    if (containerId)
-      document.getElementById(containerId).appendChild(taskElement);
-  });
+  if (!response.ok) {
+    throw new Error("Error fetching contacts data");
+  }
+
+  return await response.json();
 }
+
+function truncateDescription(description, maxLength = 50) {
+  if (!description) return "";
+  return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
+}
+
+async function renderBodySearch() {
+["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+  document.getElementById(containerId).innerHTML = "";
+});
+
+const contactsData = await fetchContactsData();
+
+Object.entries(currentTasks).forEach(([taskId, task]) => {
+  const containerId = getContainerIdByStatus(task.status);
+  if (!containerId) return;
+
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+
+  // Kategorie-Label
+  const categoryClass = task.category
+    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
+  const categoryHTML = `
+    <div class="category-label ${categoryClass}">
+      ${task.category || "No category"}
+    </div>`;
+
+  // Subtasks-HTML
+  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+
+  // Priorität-Bild
+  const priorityImage = priorityLabelHTML(task.priority);
+
+  // Kontakte rendern
+  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+
+  // Task-HTML mit gekürzter Beschreibung
+  taskElement.innerHTML = `
+    <div class="task-header">
+      ${categoryHTML}
+    </div>
+    <h4 class="task-title">${task.title}</h4>
+    <p class="task-description">${truncateDescription(task.description)}</p>
+    <div class="task-subtasks">${subtasksHTML}</div>
+    <footer class="task-footer d-flex justify-content-between align-items-center">
+      <div class="assigned-contacts d-flex">
+        ${contactsHTML}
+      </div>
+      <div class="task-priority">
+        ${priorityImage}
+      </div>
+    </footer>
+  `;
+
+  document.getElementById(containerId).appendChild(taskElement);
+});
+}
+
+
 
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
-// Andres Funktionen
 async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
   const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
@@ -288,8 +320,8 @@ function toggleEditMode(shallVisible = '') {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadTasks(); // Tasks laden und rendern
-  scrollToTaskSection(); // Scrollt zur gewünschten Sektion
+  await loadTasks(); 
+  scrollToTaskSection(); 
 });
 
 /**
@@ -297,17 +329,16 @@ document.addEventListener("DOMContentLoaded", async () => {
  */
 function scrollToTaskSection() {
   const params = new URLSearchParams(window.location.search);
-  const status = params.get("status"); // Liest den ?status-Parameter aus der URL
+  const status = params.get("status"); 
 
-  if (!status) return; // Falls kein Status vorhanden ist, abbrechen
+  if (!status) return; 
 
-  // Mapping der Status zu den Container-IDs
   const containerMapping = {
     todo: "todo-container",
     inprogress: "progress-container",
     feedback: "feedback-container",
     done: "done-container",
-    urgent: "todo-container", // Optional: Urgent wird z.B. im To-Do-Container angezeigt
+    urgent: "todo-container", 
   };
 
   const targetContainerId = containerMapping[status];

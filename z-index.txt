@@ -1,0 +1,79 @@
+contactQuery.css
+
+#idAddContact
+    z-index: 9999
+    
+#idEditContact 
+    z-index: 9999
+
+
+________________________
+templateQuery.css
+
+.header
+    z-index: 9990
+
+
+________________________
+addTask.css
+
+.active-dropdown-input 
+    z-index: 2000
+
+.dropdown 
+    z-index: 8000
+   
+#form-footer 
+    z-index: 7000
+
+.headline-container 
+    /* z-index: 6000; */
+
+
+________________________
+board.css
+
+.assigned-contacts .contact-circle:nth-child(1)
+    z-index: 1
+
+.assigned-contacts .contact-circle:nth-child(2)
+    z-index: 2
+
+.assigned-contacts .contact-circle:nth-child(3)
+    z-index: 3
+
+#modalCard-background 
+    z-index: 10000
+
+#modalCard
+    z-index: 10001
+
+
+________________________
+contact.css
+
+#idViewContactCard
+    z-index: 1001
+
+.d-menu-2 
+    z-index: 1000
+
+#overlay
+    z-index: 9998
+
+
+________________________
+index.css
+
+.popup-message
+    z-index: 1000
+
+
+________________________
+template.css
+
+.d-menu 
+    z-index: 1000
+
+.navbar
+    z-index: 9995

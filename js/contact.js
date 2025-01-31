@@ -4,24 +4,14 @@ let phones = [];
 let colors = [];
 let shortNames = [];
 let ids = [];
-const COLORS = [
-  "#FF7A00",
-  "#9327FF",
-  "#FF745E",
-  "#FFC700",
-  "#FFE62B",
-  "#FF5EB3",
-  "#00BEE8",
-  "#FFA45E",
-  "#0038FF",
-  "#FF4546",
-  "#6E52FF",
-  "#1FD7C1",
-  "#FC71FF",
-  "#C3FE2B",
-  "#FFBB2B",
-];
 
+let toastMessageAddContact ='<span>Contact successfully created</span>';
+let toastMessageEditContact ='<span>Contact successfully edited</span>';
+let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
+
+/**
+ * Main function to load and display contacts.
+ */
 async function contactMain() {
   names = [];
   emails = [];
@@ -34,13 +24,12 @@ async function contactMain() {
   let contactMain = document.getElementById("idContactMain");
   contactMain.innerHTML = "";
 
-  let currentLetter = ""; // Verfolgt den aktuellen Buchstaben
+  let currentLetter = "";
 
   for (let i = 0; i < names.length; i++) {
-    let firstLetter = names[i][0].toUpperCase(); // Erster Buchstabe des Namens
+    let firstLetter = names[i][0].toUpperCase(); 
 
     if (firstLetter !== currentLetter) {
-      // Füge Überschrift für den neuen Buchstaben hinzu
       contactMain.innerHTML += `
         <h2>${firstLetter}</h2>
         <div id="idGreyLine"></div>
@@ -48,13 +37,16 @@ async function contactMain() {
       currentLetter = firstLetter;
     }
 
-    // Füge den Kontakt hinzu
     contactMain.innerHTML += getContactMain(i);
   }
 
   contactMain.innerHTML += getAddContactBtn();
 }
 
+
+/**
+ * Loads contacts from the database and initializes arrays.
+ */
 async function loadContacts() {
   let loadContacts = await getContacts();
   let contactsArray = Object.values(loadContacts);
@@ -70,6 +62,12 @@ async function loadContacts() {
   await sortContacts();
 }
 
+
+/**
+ * Generates HTML for a contact entry.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the contact entry.
+ */
 function getContactMain(i) {
   return `
     <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
@@ -84,6 +82,11 @@ function getContactMain(i) {
     `;
 }
 
+
+/**
+ * Generates HTML for the "Add Contact" button.
+ * @returns {string} - HTML string for the "Add Contact" button.
+ */
 function getAddContactBtn() {
   return `
     <div id="idAddContactBtn" onclick="addContact()">
@@ -91,11 +94,20 @@ function getAddContactBtn() {
     `;
 }
 
+
+/**
+ * Displays the "Add Contact" form.
+ */
 function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 }
 
+
+/**
+ * Generates HTML for the "Add Contact" form.
+ * @returns {string} - HTML string for the "Add Contact" form.
+ */
 function getAddContact() {
   return `
 <div id="idAddContact">
@@ -131,19 +143,25 @@ function getAddContact() {
 `;
 }
 
+
+/**
+ * Displays the "Add Contact" form.
+ */
 function addContact() {
   let addContact = document.getElementById("idContactMain");
   addContact.innerHTML += getAddContact();
 
-  // Overlay anzeigen
   document.getElementById("overlay").classList.add("show");
 
-  // Karte mit Animation anzeigen
   setTimeout(() => {
       document.getElementById("idAddContact").classList.add("show");
   }, 10);
 }
 
+
+/**
+ * Closes the "Add Contact" form.
+ */
 function closeAddContact() {
   let addContactElement = document.getElementById("idAddContact");
   if (addContactElement) {
@@ -152,6 +170,10 @@ function closeAddContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+
+/**
+ * Sorts contacts alphabetically by name.
+ */
 async function sortContacts() {
   let contacts = names.map((name, index) => ({
     name,
@@ -170,6 +192,11 @@ async function sortContacts() {
   ids = contacts.map((contact) => contact.id);
 }
 
+
+/**
+ * Opens the contact view for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
 function openContact(i) {
   let openContact = document.getElementById("idContactMain");
 
@@ -177,13 +204,11 @@ function openContact(i) {
     openContact.innerHTML = "";
     openContact.innerHTML += getContactView(i);
   } else {
-    // Überprüfen, ob ein vorheriger contactViewContainer existiert
     let existingView = document.getElementById("idViewContactCard");
     if (existingView) {
-      existingView.remove(); // Vorherige Ansicht entfernen
+      existingView.remove(); 
     }
 
-    // Neues contactViewContainer erstellen und hinzufügen
     let contactViewContainer = document.createElement("div");
     contactViewContainer.id = "idViewContactCard";
     contactViewContainer.innerHTML = getContactView(i);
@@ -191,6 +216,12 @@ function openContact(i) {
   }
 }
 
+
+/**
+* Generates HTML for the contact view.
+* @param {number} i - Index of the contact.
+* @returns {string} - HTML string for the contact view.
+*/
 function getContactView(i) {
   return `
 <div id="idViewContactCard">
@@ -255,6 +286,12 @@ function getContactView(i) {
     `;
 }
 
+
+/**
+ * Generates HTML for the edit and delete buttons.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the edit and delete buttons.
+ */
 function getEditContactBtn(i) {
   return `
     <div>
@@ -270,6 +307,11 @@ function getEditContactBtn(i) {
     `;
 }
 
+
+/**
+ * Opens the edit contact form for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
 function editContact(i) {
   const existingEditModal = document.getElementById("idEditContact");
   if (existingEditModal) {
@@ -281,15 +323,19 @@ function editContact(i) {
   editContactModal.innerHTML = getEditContact(i);
   document.body.appendChild(editContactModal);
 
-  // Overlay anzeigen
   document.getElementById("overlay").classList.add("show");
 
-  // Karte mit Animation anzeigen
   setTimeout(() => {
       editContactModal.classList.add("show");
   }, 10);
 }
 
+
+/**
+ * Generates HTML for the edit contact form.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the edit contact form.
+ */
 function getEditContact(i) {
   return `
 <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
@@ -320,6 +366,10 @@ function getEditContact(i) {
   `;
 }
 
+
+/**
+ * Closes the edit contact form.
+ */
 function closeEditContact() {
   const editContactModal = document.getElementById("idEditContact");
   if (editContactModal) {
@@ -328,12 +378,19 @@ function closeEditContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
+
+/**
+ * Closes both the add and edit contact forms.
+ */
 function closeOverlay() {
-  // Beide Karten schließen
   closeAddContact();
   closeEditContact();
 }
 
+
+/**
+ * Submits the new contact to the database.
+ */
 function submitAddContact() {
   let name = document.getElementById("idNameAddContact").value;
   let mail = document.getElementById("idMailAddContact").value;
@@ -341,87 +398,62 @@ function submitAddContact() {
   let color = getRandomColor();
 
   postContactToDatabase(name, mail, phone, color);
-  
+
+  showToast(toastMessageAddContact, 'middle', 1000);
+
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
-function notifSucess() {
-  console.log("Save Contact in Progress");
-  return `
-    <div>
-    <p>Contact successfully created</p>
-    </div>
-    `;
-}
 
+/**
+ * Deletes a contact from the database.
+ * @param {number} i - Index of the contact.
+ */
 async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
 
+  showToast(toastMessageDeleteContact, 'middle', 1000);
+
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
+
+/**
+* Saves the edited contact to the database.
+* @param {number} i - Index of the contact.
+*/
 function saveEditContact(i) {
-  console.log("Save Contact in Progress");
   let name = document.getElementById("idNameEditContact").value;
   let mail = document.getElementById("idMailEditContact").value;
   let phone = document.getElementById("idPhoneEditContact").value;
   let color = colors[i];
   let id = ids[i];
   putContactInDatabase(name, mail, phone, color, id);
-
+  showToast(toastMessageEditContact, 'middle', 1000);
   setTimeout(() => {
     window.location.reload();
-  }, 100);
+  }, 1000);
 }
 
+
+/**
+ * Generates short names (initials) for all contacts.
+ */
 async function shortName() {
   shortNames = names.map((name) => getInitialsFromName(name));
 }
 
-async function postContactToDatabase(name, mail, phone, color) {
-  try {
-    tryPostContactToDatabase(name, mail, phone, color);
-  } catch (error) {
-    console.error("Fehler beim Speichern des Kontaktes", error);
-    alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
-  }
-}
 
-async function tryPostContactToDatabase(name, mail, phone, color) {
-  let response = await fetch(BASE_URL + `users/contacts.json`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      color: color,
-      email: mail,
-      name: name,
-      phone: phone,
-    }),
-  });
 
-  if (!response.ok) {
-    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-  }
-  alert("Kontakt erfolgreich hinzugefügt.");
-}
-
-function getAlphabet() {
-  console.log("Save Contact in Progress");
-  Alph = [ABCDEFGHIJKLMNOPQRSTUVWXYZ];
-}
-
-function getRandomColor() {
-  let randomIndex = Math.floor(Math.random() * COLORS.length);
-  return COLORS[randomIndex];
-}
-
+/**
+ * Deletes a contact from the database.
+ * @param {string} id - ID of the contact.
+ */
 async function deleteContactInDatabase(id) {
   try {
     tryDeleteContactInDatabase(id);
@@ -431,6 +463,12 @@ async function deleteContactInDatabase(id) {
   }
 }
 
+
+/**
+ * Tries to delete a contact from the database.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
 async function tryDeleteContactInDatabase(id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
     method: "DELETE",
@@ -442,9 +480,18 @@ async function tryDeleteContactInDatabase(id) {
   if (!response.ok) {
     throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
-  alert("Kontakt erfolgreich gelöscht.");
+
 }
 
+
+/**
+ * Updates a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ */
 async function putContactInDatabase(name, mail, phone, color, id) {
   try {
     tryPutContactInDatabase(name, mail, phone, color, id);
@@ -454,6 +501,16 @@ async function putContactInDatabase(name, mail, phone, color, id) {
   }
 }
 
+
+/**
+ * Tries to update a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
 async function tryPutContactInDatabase(name, mail, phone, color, id) {
   let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
     method: "PUT",
@@ -471,64 +528,73 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
   if (!response.ok) {
     throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
-  alert("Kontakt erfolgreich Bearbeitet.");
 }
 
+
+/**
+ * Toggles the visibility of contact buttons based on input values.
+ */
 function toggleContactButtons() {
-  // Werte der Eingabefelder abrufen und trimmen
   const name = document.getElementById("idNameAddContact").value.trim();
   const mail = document.getElementById("idMailAddContact").value.trim();
   const phone = document.getElementById("idPhoneAddContact").value.trim();
 
-  // Buttons abrufen
   const deleteBtn = document.getElementById("idDeleteAddContact");
   const saveBtn = document.getElementById("idSaveAddContact");
   const submitBtn = document.getElementById("idSubmitAddContact");
   const cancelBtn = document.getElementById("idCancelAddContact");
 
-  // Überprüfen, ob alle Felder ausgefüllt sind
   if (name && mail && phone) {
-    // Delete- und Save-Button anzeigen
     deleteBtn.style.display = "block";
     saveBtn.style.display = "block";
 
-    // Submit- und Cancel-Button ausblenden
     submitBtn.style.display = "none";
     cancelBtn.style.display = "none";
   } else {
-    // Delete- und Save-Button ausblenden
     deleteBtn.style.display = "none";
     saveBtn.style.display = "none";
 
-    // Submit- und Cancel-Button anzeigen
     submitBtn.style.display = "block";
     cancelBtn.style.display = "block";
   }
 }
 
-//von Kay hinzugefügt
 
+/**
+ * Initiates a phone call to the given phone number.
+ * @param {string} phoneNumber - Phone number to call.
+ */
 function callPhoneNumber(phoneNumber) {
   window.location.href = `tel:${phoneNumber}`;
 }
 
+
+/**
+ * Opens the default email client with the given email address.
+ * @param {string} email - Email address to send to.
+ */
 function openEmailClient(email) {
   window.location.href = `mailto:${email}`;
 }
 
+
+/**
+ * Adds a 'selected' class to the clicked contact entry.
+ */
 document.addEventListener('click', (event) => {
-  // Überprüfen, ob das geklickte Element die Klasse 'NameMailShort' hat
   if (event.target.closest('.NameMailShort')) {
-    // Alle vorhandenen ausgewählten Elemente zurücksetzen
     document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
       el.classList.remove('selected');
     });
-
-    // Das aktuelle Element als ausgewählt markieren
     event.target.closest('.NameMailShort').classList.add('selected');
   }
 });
 
+
+/**
+* Toggles the visibility of the dropdown menu for a specific contact.
+* @param {number} index - Index of the contact.
+*/
 function toggleDropdownMenu(index) {
   const dropdown = document.getElementById(`dropdownMenu-${index}`);
   if (dropdown.classList.contains('dm-hidden')) {

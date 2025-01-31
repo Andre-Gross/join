@@ -62,7 +62,7 @@ async function fetchUserName(email, password) {
 }
 
 function getGreetingMessage() {
-    const hour = parseInt(new Date().getHours(), 10); // Stelle sicher, dass es eine Zahl ist
+    const hour = parseInt(new Date().getHours(), 10); 
     console.log("Current Hour:", hour);
 
     if (hour >= 3 && hour < 6) return 'Good Early Morning,';
@@ -79,29 +79,23 @@ function capitalize(str) {
 
 
 function fadeOutWelcomeMessage() {
-    // Elemente holen
     const welcomeContainer = document.querySelector('.welcome-container');
     const mainContent = document.getElementById('main-content');
 
-    // Initial sicherstellen, dass das Hauptinhalt ausgeblendet ist
     mainContent.classList.add('hidden');
 
-    // Überprüfen, ob das Element existiert und die Bildschirmbreite unter 660px ist
     if (welcomeContainer && window.innerWidth < 660) {
-        // Nach 1 Sekunde Begrüßungscontainer ausblenden
         setTimeout(() => {
-            welcomeContainer.classList.add('fade-out'); // Füge Animationsklasse hinzu
-            // Warte, bis die Transition abgeschlossen ist
+            welcomeContainer.classList.add('fade-out'); 
             welcomeContainer.addEventListener('transitionend', () => {
-                welcomeContainer.classList.add('hidden'); // Verstecke Begrüßung
-                mainContent.classList.remove('hidden'); // Zeige Hauptinhalt
-                mainContent.classList.add('visible'); // Füge Sichtbarkeitsklasse hinzu
-            }, { once: true }); // Stelle sicher, dass der Listener nur einmal ausgelöst wird
-        }, 500); // Wartezeit für die Begrüßung
+                welcomeContainer.classList.add('hidden'); 
+                mainContent.classList.remove('hidden'); 
+                mainContent.classList.add('visible'); 
+            }, { once: true }); 
+        }, 500); 
     }
 }
 
-// Beim Laden der Seite die Funktion aufrufen
 document.addEventListener('DOMContentLoaded', fadeOutWelcomeMessage);
 
 
@@ -111,11 +105,9 @@ function handleResize() {
     const mainContent = document.getElementById('main-content');
 
     if (isLargeScreen) {
-        // Ab 768px: Zeige beide Container
         if (welcomeContainer) welcomeContainer.classList.remove('hidden');
         if (mainContent) mainContent.classList.remove('hidden');
     } else {
-        // Unter 768px: Begrüßung bleibt versteckt, wenn schon animiert
         const animationShown = sessionStorage.getItem('greetingAnimationShown');
         if (animationShown) {
             if (welcomeContainer) welcomeContainer.classList.add('hidden');
@@ -123,10 +115,8 @@ function handleResize() {
     }
 }
 
-// Event-Listener für die Größenänderung
 window.addEventListener('resize', handleResize);
 
-// Initialer Aufruf beim Laden der Seite
 document.addEventListener('DOMContentLoaded', handleResize);
 
 /**
@@ -146,7 +136,7 @@ async function initializeSummary() {
         const tasks = await response.json();
         if (!tasks) {
             console.log("No tasks found.");
-            updateSummaryElements(0, 0, 0, 0, 0); // Setze alle Werte auf 0, wenn keine Tasks vorhanden sind
+            updateSummaryElements(0, 0, 0, 0, 0); 
             return;
         }
 
@@ -215,7 +205,7 @@ function formatDateToLongFormat(dateString) {
     if (isNaN(date)) return "Ungültiges Datum";
     
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('de-DE', options); // Verwendet deutsches Format
+    return date.toLocaleDateString('de-DE', options); 
 }
 
 

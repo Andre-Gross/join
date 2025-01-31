@@ -15,12 +15,13 @@
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./style/queries/styleQuery.css">
-    <script src="./js/boardRender.js"></script>
-    <script src="./js/templates.js"></script>
-    <script src="./js/api.js"></script>
-    <script src="./js/board.js"></script>
-    <script src="./js/addTask.js"></script>
-    <script src="./script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/boardRender.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/addTask.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
@@ -48,7 +49,6 @@
 
                 </div>
                 <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do">
-                    <!-- Tasks will be inserted here by JavaScript -->
                 </div>
             </div>
 
@@ -61,7 +61,6 @@
 
                 </div>
                 <div id="progress-container" class="tasks-container" data-empty-message="No Tasks in Progress">
-                    <!-- Tasks will be inserted here by JavaScript -->
                 </div>
             </div>
 
@@ -74,7 +73,6 @@
 
                 </div>
                 <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in Await Feedback">
-                    <!-- Tasks will be inserted here by JavaScript -->
                 </div>
             </div>
 
@@ -83,7 +81,6 @@
                     <h2 class="h6 mb-0">Done</h2>
                 </div>
                 <div id="done-container" class="tasks-container" data-empty-message="No Tasks in Done">
-                    <!-- Aufgaben werden hier durch JavaScript eingefügt -->
                 </div>
             </div>
         </div>
@@ -136,10 +133,10 @@
             </div>
 
             <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
-            </div>
-
+            </div>           
 
         </div>
+        <div id="toast-container" class="d-none"></div>
     </section>
 
     <script>

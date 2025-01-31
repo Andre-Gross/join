@@ -12,9 +12,10 @@
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="style/contact.css">
     <link rel="stylesheet" href="./style/queries/contactQuery.css">
+    <script src="js/auth.js"></script>
     <script src="js/api.js"></script>
     <script src="js/contact.js"></script>
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 
 </head>
 
@@ -23,12 +24,15 @@
     <div id="contentText">
         <h1>Contacts</h1>
         <div class="separator"></div>
-        <p>Better with a team</p>
+        <p class="">Better with a team</p>
     </div>
     <div id="idAddContactBtnBig" class="btn-primary" onclick="addContact()">
+        <p class="AddContactBtnText">Add new contact</p>
         <img id="idImgAddContact" src="assets/img/contacts/person-add.svg" alt="">
     </div>
     <div id="idContactMain"></div>
+
+    <div id="toast-container" class="d-none"></div>
 
     <div w3-include-html="templates/templates.html"></div>
     <script src="js/templates.js"></script>

@@ -1,5 +1,8 @@
 const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
+let toastMessageEditTask ='<span>Task successfully edited</span>';
+let toastMessageDeleteTask='<span>Task successfully deleted</span>';
+let toastMessageCreateTask ='<span>Task successfully created</span>';
 
 /**
  * This function returns the contacts of the user as JSON
@@ -83,41 +86,48 @@ async function getNextStatus() {
 
 
 /**
- * This function post the datas of a new contact with another function. If the response is an error, it catch it.
- * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact. The standart user is the aktive user.
+ * Posts a new contact to the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
  */
-async function postContactToDatabase(data) {
+async function postContactToDatabase(name, mail, phone, color) {
     try {
-        await tryPostContactToDatabase(data);
+      tryPostContactToDatabase(name, mail, phone, color);
     } catch (error) {
-        console.error("Fehler beim Speichern des Kontaktes:", error);
-        alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+      console.error("Fehler beim Speichern des Kontaktes", error);
+      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
     }
-}
-
-
-/**
- * This function post the datas of a new contact. If there is an error, it give an response. Otherwise it give an positve alert.
- * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact.   
- */
-async function tryPostContactToDatabase(data) {
-    const response = await fetch(BASE_URL + `users/contacts.json`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+  }
+  
+  
+  /**
+   * Tries to post a new contact to the database.
+   * @param {string} name - Name of the contact.
+   * @param {string} mail - Email of the contact.
+   * @param {string} phone - Phone number of the contact.
+   * @param {string} color - Color associated with the contact.
+   * @throws Will throw an error if the request fails.
+   */
+  async function tryPostContactToDatabase(name, mail, phone, color) {
+    let response = await fetch(BASE_URL + `users/contacts.json`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        color: color,
+        email: mail,
+        name: name,
+        phone: phone,
+      }),
     });
-
+  
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Kontakt erfolgreich hinzugefügt.");
-}
+  }
 
 
 /**
@@ -182,7 +192,7 @@ async function tryPutTaskToDatabase(taskId, data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    showToast(toastMessageEditTask, 'middle', 1000);
 }
 
 
@@ -242,7 +252,7 @@ async function tryPutContactToDatabase(contactId, data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    showToast(toastMessageCreateTask, 'middle', 1000);
 }
 
 
@@ -267,7 +277,7 @@ async function tryDeleteTaskInDatabase(id) {
     if (!response.ok) {
         throw new Error(`Fehler: ${response.status} ${response.statusText}`);
     }
-    alert("Aufgabe erfolgreich gelöscht.");
+    showToast(toastMessageDeleteTask, 'middle', 1000);
 }
 
 
@@ -298,6 +308,6 @@ async function tryDeleteContactInDatabase(contactId) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich bearbeitet.");
+    alert("Kontakt erfolgreich gelöscht.");
 }
 
