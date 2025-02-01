@@ -1,49 +1,3 @@
-@media (min-width: 660px) and (max-width: 1150px) {
-    .welcome-container {
-        align-items: flex-start;
-        position: relative;
-        animation: slide-in 1s forwards;
-        padding-left: 30px;
-        right: 0;
-        top: 0;
-    }
-
-    #greeting {
-        transform: none;
-        align-self: flex-start;
-    }
-
-    #userName {
-        transform: none;
-        align-self: flex-start;
-    }
-
-
-    main {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        gap: 16px;
-        max-width: 1920px;
-        width: 100%;
-        top: 150px;
-        position: relative;
-    }
-}
-
-
-@media (min-width: 660px) {
-    .welcome-container.fade-out {
-        opacity: 1;
-    }
-
-    .hidden {
-        display: unset !important;
-    }
-
-    #main-content {
-        top: 0;
-    }
-}
 
 
 @media (min-width: 1150px) {
@@ -76,6 +30,7 @@
         padding-left: 30px;
         right: 0;
         top: 0;
+        opacity: 1;
     }
 
     .w-100 {
