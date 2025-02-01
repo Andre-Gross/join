@@ -86,7 +86,7 @@ main {
 .metric-card {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     padding: 28px 10px;
     height: clamp(150px, 9vw, 170px);
@@ -113,45 +113,54 @@ main {
 }
 
 .metric-content span {
-    color: #000000; /* Standardfarbe: Schwarz */
-    transition: color 0.3s ease; /* Sanfter Übergang bei Farbwechsel */
+    color: #000000;
+    /* Standardfarbe: Schwarz */
+    transition: color 0.3s ease;
+    /* Sanfter Übergang bei Farbwechsel */
 }
 
 /* Standardzustand: Weiß sichtbar, Schwarz versteckt */
 .metric-card .white {
-    display: block; /* Weißes Icon anzeigen */
+    display: block;
+    /* Weißes Icon anzeigen */
     transition: opacity 0.3s ease;
 }
 
 .metric-card .black {
-    display: none; /* Schwarzes Icon verstecken */
+    display: none;
+    /* Schwarzes Icon verstecken */
     transition: opacity 0.3s ease;
 }
 
 /* Hover-Zustand: Schwarz sichtbar, Weiß versteckt */
 .metric-card:hover .white {
-    display: none; /* Weißes Icon verstecken */
+    display: none;
+    /* Weißes Icon verstecken */
 }
 
 .metric-card:hover .black {
-    display: block; /* Schwarzes Icon anzeigen */
+    display: block;
+    /* Schwarzes Icon anzeigen */
 }
 
 
 /* Farbänderung beim Hover der .metric-card */
 .metric-card:hover .metric-content span {
-    color: #FFFFFF; /* Farbe ändern zu Weiß */
+    color: #FFFFFF;
+    /* Farbe ändern zu Weiß */
 }
 
-.metric-card:hover .img-container-pen, 
+.metric-card:hover .img-container-pen,
 .metric-card:hover .img-container-tick {
-    background-color: #FFFFFF; /* Hintergrundfarbe ändern */
+    background-color: #FFFFFF;
+    /* Hintergrundfarbe ändern */
     transition: background-color 0.3s ease;
 }
 
-.metric-card:hover .img-container-pen svg, 
+.metric-card:hover .img-container-pen svg,
 .metric-card:hover .img-container-tick svg {
-    fill: #2A3647; /* SVG-Farbe ändern */
+    fill: #2A3647;
+    /* SVG-Farbe ändern */
     transition: fill 0.3s ease;
 }
 
@@ -162,9 +171,10 @@ main {
     width: 100%;
 }
 
-.img-container-pen, .img-container-tick {
-    width: 50px;
-    height: 50px;
+.img-container-pen,
+.img-container-tick {
+    width: clamp(30px, 10vw, 50px);
+    height: clamp(30px, 10vw, 50px);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -172,9 +182,10 @@ main {
     background-color: #2A3647;
 }
 
-.img-container-tick img, .img-container-pen img {
-    width: 20px;
-    height: 20px;
+.img-container-tick img,
+.img-container-pen img {
+    width: 50%;
+    height: 50%;
 }
 
 .urgent-card {
@@ -204,14 +215,18 @@ main {
     border-radius: 30px;
 }
 
-.urgent-left span, .urgent-info span {
-    color: #000000; /* Standardfarbe: Schwarz */
-    transition: color 0.3s ease; /* Sanfter Übergang bei Farbwechsel */
+.urgent-left span,
+.urgent-info span {
+    color: #000000;
+    /* Standardfarbe: Schwarz */
+    transition: color 0.3s ease;
+    /* Sanfter Übergang bei Farbwechsel */
 }
 
 /* Farbänderung beim Hover der .metric-card */
 .urgent-card:hover .urgent-left span {
-    color: #FFFFFF; /* Farbe ändern zu Weiß */
+    color: #FFFFFF;
+    /* Farbe ändern zu Weiß */
 }
 
 .urgent-left {
@@ -223,7 +238,7 @@ main {
     position: relative;
 }
 
-.urgent-right{
+.urgent-right {
     position: relative;
     right: 16px;
 }
@@ -235,14 +250,15 @@ main {
     padding-right: 10px;
 }
 
-.urgent-right span, .urgent-deadline span {
+.urgent-right span,
+.urgent-deadline span {
     color: #2A3647;
-    transition: color 0.3s ease; 
+    transition: color 0.3s ease;
 }
 
 
 .urgent-card:hover .urgent-right span {
-    color: #FFFFFF; 
+    color: #FFFFFF;
 }
 
 .counter-div {
@@ -268,9 +284,9 @@ main {
     display: block;
 }
 
-.icon {
-    width: 50px;
-    height: 50px;
+.urgent-left img {
+    width: clamp(30px, 10vw, 50px);
+    height: clamp(30px, 10vw, 50px);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -289,13 +305,13 @@ main {
 
 .count {
     font-weight: 600;
-    font-size: clamp(48px, 5vw, 64px);
+    font-size: clamp(32px, 4vw, 64px);
     color: #000000;
 }
 
 .label {
     font-weight: 400;
-    font-size: clamp(12px, 3vw, 20px);
+    font-size: clamp(12px, 2vw, 20px);
     color: #2A3647;
     text-align: center;
 }
@@ -314,13 +330,13 @@ main {
 }
 
 .date {
-    font-size: clamp(16px, 2vw, 20px);
+    font-size: clamp(12px, 1.5vw, 20px);
     font-weight: bold;
 }
 
 .upcoming {
-    font-size: clamp(16px, 2vw, 20px);
-    color: #6b7280;
+    font-size: clamp(12px, 1.5vw, 20px);
+    font-weight: lighter;
 }
 
 .column {
