@@ -248,7 +248,7 @@ a,
 .progress-bar-container {
     position: relative;
     flex: 1;
-    height: 4px;
+    height: 8px;
     background-color: #F4F4F4;
     border-radius: 48px;
     overflow: hidden;
