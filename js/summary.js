@@ -84,18 +84,25 @@ function fadeOutWelcomeMessage() {
 
     mainContent.classList.add('hidden');
 
-    if (welcomeContainer && window.innerWidth < 660) {
+    const animationShown = sessionStorage.getItem('greetingAnimationShown');
+
+    if (!animationShown && welcomeContainer && window.innerWidth < 1150) {
         setTimeout(() => {
             welcomeContainer.classList.add('fade-out'); 
             welcomeContainer.addEventListener('transitionend', () => {
                 welcomeContainer.classList.add('hidden'); 
                 mainContent.classList.remove('hidden'); 
                 mainContent.classList.add('visible'); 
+                
+                sessionStorage.setItem('greetingAnimationShown', 'true');
             }, { once: true }); 
         }, 500); 
+    } else {
+        welcomeContainer?.classList.add('hidden');
+        mainContent?.classList.remove('hidden');
+        mainContent?.classList.add('visible');
     }
 }
-
 document.addEventListener('DOMContentLoaded', fadeOutWelcomeMessage);
 
 
@@ -263,5 +270,3 @@ function displayError(message) {
 
 // Call initializeSummary on page load
 document.addEventListener("DOMContentLoaded", initializeSummary);
-
-
