@@ -350,3 +350,31 @@ function scrollToTaskSection() {
     }
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const taskContainers = document.querySelectorAll(".tasks-container");
+
+  taskContainers.forEach(container => {
+      container.addEventListener("mouseover", (event) => {
+          if (event.target.classList.contains("task")) {
+              removeActiveTask(); // Entfernt den Effekt von anderen Tasks
+              event.target.classList.add("active-task"); // Fügt den Effekt zum aktuellen Task hinzu
+          }
+      });
+  });
+
+  // Entfernt den Effekt, wenn außerhalb eines Task-Elements geklickt wird
+  document.addEventListener("click", (event) => {
+      if (!event.target.classList.contains("task")) {
+          removeActiveTask();
+      }
+  });
+
+  /**
+   * Removes the active class from all tasks.
+   */
+  function removeActiveTask() {
+      document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
+  }
+});
+
