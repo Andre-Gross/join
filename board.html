@@ -25,7 +25,7 @@
 </head>
 
 <body>
-        <section id="board">
+    <section id="board">
         <div class="board-header">
             <div class="title">
                 <h1 class="m-2 w-100">Board</h1>
@@ -99,42 +99,11 @@
                 </div>
             </div>
             <div id="modalCard-no-edit-mode" class="d-block">
-                <h2 id="modalCard-title-value" class="mb-0"></h2>
-                <p id="modalCard-description-value" class="mb-0"></p>
-                <table>
-                    <tr>
-                        <td><span class="information-type">Due date:</span></td>
-                        <td id="modalCard-finishedUntil-value"></td>
-                    </tr>
-                    <tr>
-                        <td><span class="information-type">Priority:</span></td>
-                        <td id="modalCard-priority-value"></td>
-                    </tr>
-                </table>
-                <div>
-                    <p class="information-type">Assigned To:</p>
-                    <div id="modalAssignedToValue" class="d-flex flex-column"></div>
-                    <div id="assignedTo-name-labels-container"></div>
-                </div>
-                <div>
-                    <p class="information-type">Subtasks</p>
-                    <div id="modalCard-subtasks-value" class="d-flex flex-column">
-                    </div>
-                </div>
-                <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
-                    <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
-                        <img src="./assets/img/board/bin.svg" alt="delete">
-                        <span>Delete</span>
-                    </div>
-                    <div id="modal-card-edit-button" class="d-flex" onclick="">
-                        <img src="assets/img/board/pen.svg" alt="edit">
-                        <span>Edit</span>
-                    </div>
-                </div>
+                <div w3-include-html="./templates/board-modul-card-no-edit-mode.html"></div>
             </div>
 
             <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
-            </div>           
+            </div>
 
         </div>
         <div id="toast-container" class="d-none"></div>
