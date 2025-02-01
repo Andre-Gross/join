@@ -96,10 +96,41 @@ input[type="password"] {
     background-image: url(../assets/img/logIn-signUp/lock.svg);
 }
 
-input[type="password"][data-icon="visibility-on"],
-input[type="password"][data-icon="visibility-off"] {
-    cursor: pointer;
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
+
+.password-container input {
+    width: 100%;
+    background-image: url("../assets/img/logIn-signUp/lock.svg");
+}
+
+.password-container input.has-icon {
+    background-image: none; 
+}
+
+.password-toggle {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s;
+    display: none;
+    object-fit: contain;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+}
+
+
 
 /* Karten-Stile */
 .card {
@@ -150,7 +181,6 @@ body.no-animation #loginCard {
     width: 100%;
     border-radius: 8px;
     padding: 0.75rem;
-    margin-bottom: 1rem;
     border: 1px solid #d1d1d1;
 }
 
