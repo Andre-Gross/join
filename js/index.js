@@ -246,11 +246,6 @@ function generateUniqueId() {
     return '_' + Math.random().toString(36).substr(2, 9);
 }
 
-
-function generateUniqueId() {
-    return '_' + Math.random().toString(36).substr(2, 9);
-}
-
 /**
  * Handles failed login attempts and shows a reset password option after 3 tries.
  * @param {string} email - The user's email address.
