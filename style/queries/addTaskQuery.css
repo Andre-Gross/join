@@ -33,12 +33,6 @@
     }
 
 
-    #content-container {
-        justify-content: start;
-        align-items: center;
-    }
-
-
     .dropdown {
         max-height: 160px;
     }
@@ -90,5 +84,15 @@
 
     .w-100u1000p {
         width: auto;
+    }
+}
+
+
+@media (min-width: 1096px) {
+    
+    #content-container {
+        padding-left: 96px;
+        justify-content: start;
+        align-items: start;
     }
 }
