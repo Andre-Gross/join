@@ -59,14 +59,16 @@
 
 body {
     max-width: 1920px;
-    min-height: 100vh;
+    max-height: 100vh;
     padding: 80px 16px;
     box-sizing: border-box;
     background-color: var(--background-color);
     font-family: var(--font-family);
     font-weight: normal;
     font-style: normal;
+    overflow-y: auto;
 }
+
 
 a {
     text-decoration: none;
