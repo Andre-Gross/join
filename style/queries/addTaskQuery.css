@@ -45,8 +45,14 @@
     }
 
 
+    .form-subcontainer {
+        width: calc(50% + 1px / 2);
+    }
+
+
     .form-subcontainer:first-child {
         padding-right: 48px;
+        width: calc(50% - 1px / 2);
     }
 
 
@@ -89,7 +95,7 @@
 
 
 @media (min-width: 1096px) {
-    
+
     #content-container {
         padding-left: 96px;
         justify-content: start;
