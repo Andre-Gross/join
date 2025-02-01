@@ -69,6 +69,7 @@ main {
     position: relative;
     top: 150px;
     max-width: 960px;
+    width: 100%;
     height: 562px;
     box-sizing: border-box;
 
@@ -218,29 +219,27 @@ main {
 .urgent-left span,
 .urgent-info span {
     color: #000000;
-    /* Standardfarbe: Schwarz */
     transition: color 0.3s ease;
-    /* Sanfter Übergang bei Farbwechsel */
 }
 
-/* Farbänderung beim Hover der .metric-card */
+
 .urgent-card:hover .urgent-left span {
     color: #FFFFFF;
-    /* Farbe ändern zu Weiß */
 }
 
 .urgent-left {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     left: 16px;
     position: relative;
+    width: 50%;
 }
 
 .urgent-right {
     position: relative;
-    right: 16px;
+    width: 50%;
 }
 
 .urgent-info {
@@ -274,10 +273,6 @@ main {
 
 }
 
-.deadline {
-    text-align: right;
-}
-
 .icon.grey img {
     width: 20px;
     height: 20px;
@@ -305,13 +300,13 @@ main {
 
 .count {
     font-weight: 600;
-    font-size: clamp(32px, 4vw, 64px);
+    font-size: clamp(32px, 5vw, 64px);
     color: #000000;
 }
 
 .label {
     font-weight: 400;
-    font-size: clamp(12px, 2vw, 20px);
+    font-size: clamp(12px, 3vw, 20px);
     color: #2A3647;
     text-align: center;
 }
