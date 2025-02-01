@@ -1,255 +1,269 @@
-input:-webkit-autofill {
+:root {
+    --background-color: #f6f7f8;
+    --body-padding: 0 20px;
+    --landing-bg-color: #253345;
+    --logo-container-size: 120px;
+    --logo-width: 100px;
+    --logo-height: 120px;
+    --logo-final-width: 70px;
+    --input-bg-position: right 10px center;
+    --input-bg-size: 20px;
+    --card-width: 90%;
+    --card-max-width: 396px;
+    --card-max-height: 515px;
+    --card-border-radius: 30px;
+    --card-padding: 32px 0;
+    --card-gap: 32px;
+    --form-control-border-radius: 8px;
+    --form-control-padding: 0.75rem;
+    --form-control-border-color: #d1d1d1;
+    --separator-color: #29abe2;
+    --separator-width: 150px;
+    --popup-bg-color: #f8d7da;
+    --popup-text-color: #721c24;
+    --popup-border-color: #f5c6cb;
+    --popup-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  input:-webkit-autofill {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
     transition: background-color 5000s ease-in-out 0s;
-}
-
-body {
-    padding: 0 20px;
-}
-
-body.landing-page {
-    background-color: #253345;
+  }
+  
+  body {
+    padding: var(--body-padding);
+  }
+  
+  body.landing-page {
+    background-color: var(--landing-bg-color);
     transition: background-color 0.5s ease-in-out 0.5s;
-}
-
-body.landing-page.loaded {
-    background-color: var(--background-color, #F6F7F8);
-}
-
-.landing-page {
+  }
+  
+  body.landing-page.loaded {
+    background-color: var(--background-color);
+  }
+  
+  .landing-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-/* Logo-Container und Animation */
-.logo-container {
+  }
+  
+  .logo-container {
     position: fixed;
-    display: flex; /* Flexbox nutzen */
-    justify-content: center; /* Horizontal zentrieren */
-    align-items: center; /* Vertikal zentrieren */
-    top: 50%; /* Startposition: Mitte */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Zentrierung */
-    width: 120px; /* Container-Breite */
-    height: 120px; /* Container-Höhe */
-    transition: all 0.8s ease-in-out 0.2s
-}
-
-body.landing-page.loaded .logo-container {
-    top: 10px; /* Verschieben nach oben */
-    left: 10px; /* Verschieben nach links */
-    transform: translate(0, 0); /* Zentrierung entfernen */
-}
-
-/* Logos */
-.login-logo {
-    width: 100px;
-    height: 120px;
+    transform: translate(-50%, -50%);
+    width: var(--logo-container-size);
+    height: var(--logo-container-size);
+    transition: all 0.8s ease-in-out 0.2s;
+  }
+  
+  body.landing-page.loaded .logo-container {
+    top: 10px;
+    left: 10px;
+    transform: translate(0, 0);
+  }
+  
+  .login-logo {
+    width: var(--logo-width);
+    height: var(--logo-height);
     transition: all 1.5s ease-in-out 1s;
     position: absolute;
-}
-
-body.landing-page.loaded .login-logo {
-    width: 70px;
-    
-}
-
-/* Initial- und Final-Logo */
-.initial-logo {
+  }
+  
+  body.landing-page.loaded .login-logo {
+    width: var(--logo-final-width);
+  }
+  
+  .initial-logo,
+  .final-logo {
     opacity: 1;
     transition: opacity 0.3s ease-in-out 0.5s;
-}
-
-.final-logo {
+  }
+  
+  .final-logo {
     opacity: 0;
-    transition: opacity 0.3s ease-in-out 0.5s;
-}
-
-body.landing-page.loaded .initial-logo {
+  }
+  
+  body.landing-page.loaded .initial-logo {
     opacity: 0;
-}
-
-body.landing-page.loaded .final-logo {
+  }
+  
+  body.landing-page.loaded .final-logo {
     opacity: 1;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    background-position: right 10px center;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    background-position: var(--input-bg-position);
     background-repeat: no-repeat;
-    background-size: 20px;
-}
-
-input[type="text"] {
+    background-size: var(--input-bg-size);
+  }
+  
+  input[type="text"] {
     background-image: url(../assets/img/logIn-signUp/person.svg);
-}
-
-input[type="email"] {
+  }
+  
+  input[type="email"] {
     background-image: url(../assets/img/logIn-signUp/mail.svg);
-}
-
-input[type="password"] {
+  }
+  
+  input[type="password"] {
     background-image: url(../assets/img/logIn-signUp/lock.svg);
-}
-
-.password-container {
+  }
+  
+  .password-container {
     position: relative;
     display: flex;
     align-items: center;
-}
-
-.password-container input {
+  }
+  
+  .password-container input {
     width: 100%;
     background-image: url("../assets/img/logIn-signUp/lock.svg");
-}
-
-.password-container input.has-icon {
-    background-image: none; 
-}
-
-.password-toggle {
+  }
+  
+  .password-container input.has-icon {
+    background-image: none;
+  }
+  
+  .password-toggle {
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    width: var(--input-bg-size);
+    height: var(--input-bg-size);
     position: absolute;
     right: 12px;
-    transform: translateY(-50%);
     cursor: pointer;
     opacity: 1;
     transition: opacity 0.2s;
     display: none;
     object-fit: contain;
-}
-
-.password-toggle:hover {
+  }
+  
+  .password-toggle:hover {
     opacity: 1;
-}
-
-
-
-/* Karten-Stile */
-.card {
-    width: 90%;
-    max-width: 396px;
-    max-height: 515px;
+  }
+  
+  .card {
+    width: var(--card-width);
+    max-width: var(--card-max-width);
+    max-height: var(--card-max-height);
     border: none;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 30px;
-    padding: 32px 0;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
     background-color: white;
     margin: 1rem auto;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: var(--card-gap);
     opacity: 1;
     overflow: hidden;
-}
-
-/* Login- und Signup-Karten */
-#loginCard,
-#signupCard {
+  }
+  
+  #loginCard,
+  #signupCard {
     opacity: 0;
     transition: opacity 0.5s ease-in-out 0.5s;
     max-width: 650px;
     width: 100%;
     padding: 0;
     margin: 0;
-}
-
-body.landing-page.loaded #loginCard,
-body.landing-page.loaded #signupCard {
+  }
+  
+  body.landing-page.loaded #loginCard,
+  body.landing-page.loaded #signupCard {
     opacity: 1;
-}
-
-/* Animationen deaktivieren */
-body.no-animation .logo-container,
-body.no-animation .login-logo,
-body.no-animation #loginCard {
+  }
+  
+  body.no-animation .logo-container,
+  body.no-animation .login-logo,
+  body.no-animation #loginCard {
     transition: none;
     opacity: 1;
     transform: none;
     background-color: #f0f0f0;
-}
-
-/* Formulare */
-.form-control {
+  }
+  
+  .form-control {
     width: 100%;
-    border-radius: 8px;
-    padding: 0.75rem;
-    border: 1px solid #d1d1d1;
-}
-
-.d-grid button {
+    border-radius: var(--form-control-border-radius);
+    padding: var(--form-control-padding);
+    border: 1px solid var(--form-control-border-color);
+  }
+  
+  .d-grid button {
     margin: 0 auto;
-}
-
-.footer {
+  }
+  
+  .footer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
-
-}
-
-
-#switchExtras {
+  }
+  
+  #switchExtras {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out 0.3s, visibility 0s linear 0.3s;
-}
-
-body.landing-page.loaded #switchExtras {
+  }
+  
+  body.landing-page.loaded #switchExtras {
     opacity: 1;
     visibility: visible;
-}
-
-
-.popup-message {
+  }
+  
+  .popup-message {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: var(--popup-bg-color);
+    color: var(--popup-text-color);
     padding: 10px 20px;
-    border: 1px solid #f5c6cb;
+    border: 1px solid var(--popup-border-color);
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--popup-box-shadow);
     font-size: 14px;
     z-index: 1000;
     opacity: 0;
     transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
-}
-
-.popup-message.show {
+  }
+  
+  .popup-message.show {
     opacity: 1;
     bottom: 40px;
-}
-
-/* Separator */
-.separator {
-    border: 2px solid #29ABE2;
+  }
+  
+  .separator {
+    border: 2px solid var(--separator-color);
     border-radius: 25px;
-}
-
-.horizontal {
+  }
+  
+  .horizontal {
     display: block;
     height: 2px;
-    width: 150px;
+    width: var(--separator-width);
     margin: 30px auto;
-}
-
-.form-check{
+  }
+  
+  .form-check {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.form-check-label{
+  }
+  
+  .form-check-label {
     margin-left: 8px;
-}
+  }
+  
+  
