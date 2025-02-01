@@ -1,4 +1,9 @@
-/* Globale Stile */
+input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 body {
     padding: 0 20px;
 }
@@ -91,7 +96,10 @@ input[type="password"] {
     background-image: url(../assets/img/logIn-signUp/lock.svg);
 }
 
-
+input[type="password"][data-icon="visibility-on"],
+input[type="password"][data-icon="visibility-off"] {
+    cursor: pointer;
+}
 
 /* Karten-Stile */
 .card {
