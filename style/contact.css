@@ -483,8 +483,8 @@ td {
     cursor: pointer;
     border-radius: 50%;
     position: absolute;
-    bottom: 30px;
-    right: 20px;
+    bottom: 100px;
+    right: 24px;
     transition: background-color 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
