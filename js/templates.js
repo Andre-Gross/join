@@ -138,7 +138,7 @@ function logOut() {
     sessionStorage.removeItem('loggedInUserId');
     sessionStorage.removeItem('loggedInUserName');
     sessionStorage.removeItem('loggedInUserPassword');
-    sessionStorage.removeItem('greetingMessageShown');
+    sessionStorage.removeItem('greetingAnimationShown');
     sessionStorage.removeItem('IsThisFirstTime_Log_From_LiveServer');
 
     setTimeout(() => {
