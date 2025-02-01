@@ -59,7 +59,7 @@
 
 body {
     max-width: 1920px;
-    height: 100vh;
+    min-height: 100vh;
     padding: 80px 16px;
     box-sizing: border-box;
     background-color: var(--background-color);
