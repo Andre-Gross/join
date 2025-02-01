@@ -200,6 +200,7 @@ function prepareToastStartPosition(toast, shallSlideIn, height, fromWhere) {
  * @param {string} fromWhere - The direction from which the toast should slide in. Only relevant if `shallSlideIn` is true.
  */
 function callToast(toast, height, shallSlideIn = true, fromWhere) {
+  toast.classList.remove("d-none")
   if (shallSlideIn) {
     toastSlideIn(toast, height, fromWhere);
   } else {
