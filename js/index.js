@@ -150,6 +150,55 @@ async function signUp() {
 }
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const passwordFields = document.querySelectorAll("input[type='password']");
+    const emailField = document.getElementById("email");
+
+    // Setzt alle Input-Felder auf leer beim Laden
+    if (emailField) emailField.value = "";
+    passwordFields.forEach(input => input.value = "");
+
+    passwordFields.forEach(input => {
+        input.addEventListener("input", () => updatePasswordIcon(input));
+        input.addEventListener("click", () => togglePasswordVisibility(input));
+    });
+});
+
+/**
+ * Updates the background icon and cursor behavior of the password field.
+ *
+ * @param {HTMLInputElement} input - The password input field.
+ */
+function updatePasswordIcon(input) {
+    if (!input.value) {
+        input.style.backgroundImage = "url('../assets/img/logIn-signUp/lock.svg')";
+        input.removeAttribute("data-icon"); // Entfernt den Pointer
+    } else {
+        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-off.svg')";
+        input.setAttribute("data-icon", "off"); // Aktiviert den Pointer
+    }
+}
+
+/**
+ * Toggles the password visibility and updates the background icon.
+ *
+ * @param {HTMLInputElement} input - The password input field.
+ */
+function togglePasswordVisibility(input) {
+    if (!input.value) return; // Falls kein Text eingegeben ist, nichts tun
+
+    if (input.type === "password") {
+        input.type = "text";
+        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-on.svg')";
+        input.setAttribute("data-icon", "on"); // Aktiviert den Pointer
+    } else {
+        input.type = "password";
+        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-off.svg')";
+        input.setAttribute("data-icon", "off"); // Aktiviert den Pointer
+    }
+}
+
+
 async function addUserToContacts(name, email) {
     const assignedColor = getRandomColor();
 
