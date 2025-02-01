@@ -12,7 +12,8 @@ const toastMessage = '<span>Task added to board</span><img src="assets/img/gener
  * @returns {string} - The person(s), which are assigned to to do the task.
  */
 function readAssignedTo() {
-    const assignedToCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const assignedToCheckboxes = dropdown.querySelectorAll('input[type="checkbox"]:checked');
     const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => transformIdToString(checkbox.id, 'checkbox_'));
     return assignedTo;
 }
