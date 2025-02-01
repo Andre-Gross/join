@@ -19,10 +19,10 @@
 
 <body class="landing-page">
 
-        <div class="logo-container">
-            <img class="login-logo initial-logo" src="./assets/img/general/join-logo.svg" alt="Join">
-            <img class="login-logo final-logo" src="./assets/img/general/favicon.svg" alt="Join">
-        </div>
+    <div class="logo-container">
+        <img class="login-logo initial-logo" src="./assets/img/general/join-logo.svg" alt="Join">
+        <img class="login-logo final-logo" src="./assets/img/general/favicon.svg" alt="Join">
+    </div>
 
     <div class="container-fluid d-flex flex-column">
         <main class="row flex-grow-1 justify-content-center align-items-center">
@@ -33,11 +33,14 @@
                         <div class="separator horizontal"></div>
                         <form onsubmit="event.preventDefault(); logIn();">
                             <div class="mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email" required onblur="changeToRightBorderColor(this)" autocomplete="off">
+                                <input type="email" class="form-control" id="email" placeholder="Email" required
+                                    onblur="changeToRightBorderColor(this)" autocomplete="off">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <input type="password" class="form-control" id="password" placeholder="Passwort"
                                     required onblur="changeToRightBorderColor(this)" autocomplete="new-password">
+                                <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
+                                    class="password-toggle" onclick="togglePasswordVisibility('password', this)">
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -45,12 +48,14 @@
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Log in</button>
-                                <button type="button" class="btn btn-outline-secondary" onclick="guestLogIn();">Guest
-                                    Log in</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="guestLogIn();">
+                                    Guest Log in
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
+
                 <div class="card" id="signupCard" style="display: none;">
                     <div class="card-body p-4">
                         <h1 class="text-center mb-4">Sign Up</h1>
@@ -63,27 +68,35 @@
                                 <input type="email" id="signUpEmail" class="form-control" placeholder="Email" required
                                     oninput="checkFormValidity()">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <input type="password" id="signUpPassword" class="form-control" placeholder="Passwort"
                                     required oninput="checkFormValidity()">
+                                <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
+                                    class="password-toggle" onclick="togglePasswordVisibility('signUpPassword', this)">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 password-container">
                                 <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()" onblur="changeToRightBorderColor(this)">
+                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()"
+                                    onblur="changeToRightBorderColor(this)">
+                                <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
+                                    class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">
                             </div>
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="agreeTerms" required
                                     onclick="checkFormValidity()">
-                                <label class="form-check-label" for="agreeTerms">I accept the <span
-                                        class="textblue">privacy policy</span></label>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I accept the <span class="textblue">privacy policy</span>
+                                </label>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary" id="registerButton" disabled>Sign
-                                    Up</button>
+                                <button type="submit" class="btn btn-primary" id="registerButton" disabled>
+                                    Sign Up
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
+
             </div>
         </main>
         <div class="col text-center mt-3" id="switchExtras">
