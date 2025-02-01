@@ -88,6 +88,10 @@
         box-shadow: unset !important;
     }
 
+    #idViewContactCard {
+        height: calc(100vh - 160px);
+    }
+
     #idEditContact {
         top: 80px;
     }
