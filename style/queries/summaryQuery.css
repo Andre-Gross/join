@@ -1,13 +1,11 @@
 @media (min-width: 660px) and (max-width: 1150px) {
     .welcome-container {
+        align-items: flex-start;
         position: relative;
-        width: auto;
-        height: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        top: 700px;
+        animation: slide-in 1s forwards;
+        padding-left: 30px;
+        right: 0;
+        top: 0;
     }
 
     #greeting {
@@ -22,10 +20,13 @@
 
 
     main {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: 20px;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        gap: 16px;
+        max-width: 1920px;
+        width: 100%;
+        top: 150px;
+        position: relative;
     }
 }
 
