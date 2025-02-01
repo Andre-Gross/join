@@ -94,16 +94,6 @@ function getAddContactBtn() {
     `;
 }
 
-
-/**
- * Displays the "Add Contact" form.
- */
-function addContact() {
-  let addContact = document.getElementById("idContactMain");
-  addContact.innerHTML += getAddContact();
-}
-
-
 /**
  * Generates HTML for the "Add Contact" form.
  * @returns {string} - HTML string for the "Add Contact" form.
