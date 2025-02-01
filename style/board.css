@@ -139,8 +139,13 @@ body.dragging {
 }
 
 .task:hover {
-    transform: rotate(3deg);
+    transform: rotate(3deg) scale(1.05);
 }
+
+.task.active-task {
+    transform: rotate(3deg) scale(1.05);
+}
+
 
 .task h4 {
     margin-top: 1rem;
