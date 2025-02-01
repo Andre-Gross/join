@@ -190,7 +190,7 @@ textarea {
 
 
 .form-subcontainer {
-    width: 100%;
+    width: calc(50% + 1px / 2);
     max-width: 440px;
     display: flex;
     flex-direction: column;
@@ -198,8 +198,8 @@ textarea {
 }
 
 
-.fs-12 {
-    font-size: 12px;
+.form-subcontainer:first-child {
+    width: calc(50% - 1px / 2);
 }
 
 
@@ -212,6 +212,8 @@ textarea {
 .gap-8p {
     gap: 8px;
     padding-bottom: 8px;
+.fs-12 {
+    font-size: 12px;
 }
 
 
