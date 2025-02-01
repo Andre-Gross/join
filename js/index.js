@@ -49,11 +49,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let failedAttempts = {}; // Speichert fehlgeschlagene Login-Versuche
 
+/**
+ * Clears all input fields in the signup form when switching views.
+ */
+function clearSignupInputs() {
+    document.querySelectorAll("#signupCard input").forEach(input => {
+        if (input.type === "checkbox") {
+            input.checked = false; // Checkboxen abwählen
+        } else {
+            input.value = ""; // Alle anderen Felder leeren
+        }
+    });
+
+    // Falls ein Icon sichtbar ist, verberge es
+    document.querySelectorAll("#signupCard .password-toggle").forEach(icon => {
+        icon.style.display = "none";
+    });
+
+    // Stelle sicher, dass das lock.svg als Hintergrundbild erscheint
+    document.querySelectorAll("#signupCard input[type='password']").forEach(input => {
+        input.classList.remove("has-icon"); // Setzt das Hintergrundbild zurück
+    });
+}
+
+/**
+ * Switches between login and signup view.
+ */
 function switchView() {
-    const loginCard = document.getElementById('loginCard');
-    const signupCard = document.getElementById('signupCard');
-    const switchButton = document.getElementById('switchButton');
-    const switchText = document.getElementById('switchText');
+    const loginCard = document.getElementById("loginCard");
+    const signupCard = document.getElementById("signupCard");
+    const switchButton = document.getElementById("switchButton");
+    const switchText = document.getElementById("switchText");
 
     // Wechsel ohne Verzögerung
     loginCard.style.transition = 'none';
@@ -68,6 +94,10 @@ function switchView() {
             signupCard.style.display = 'block';
             switchButton.textContent = 'Log in';
             switchText.textContent = 'Already a Join user?';
+
+            // Signup-Felder leeren
+            clearSignupInputs();
+
         } else {
             signupCard.style.display = 'none';
             loginCard.style.display = 'block';
@@ -80,6 +110,7 @@ function switchView() {
         loginCard.style.opacity = '1';
     }, 50);
 }
+
 
 /**
  * Handles the user login process.
@@ -151,50 +182,51 @@ async function signUp() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const passwordFields = document.querySelectorAll("input[type='password']");
-    const emailField = document.getElementById("email");
+    const passwordFields = document.querySelectorAll(".password-container input");
 
-    // Setzt alle Input-Felder auf leer beim Laden
-    if (emailField) emailField.value = "";
+    // Setzt alle Passwort-Felder auf leer beim Laden
     passwordFields.forEach(input => input.value = "");
 
+    // Event-Listener für Icon-Update und Passwort-Anzeige-Umschaltung
     passwordFields.forEach(input => {
-        input.addEventListener("input", () => updatePasswordIcon(input));
-        input.addEventListener("click", () => togglePasswordVisibility(input));
+        const icon = input.nextElementSibling; // Das zugehörige Icon
+        input.addEventListener("input", () => updatePasswordIcon(input, icon));
+        icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
     });
 });
 
 /**
- * Updates the background icon and cursor behavior of the password field.
+ * Updates the visibility icon when text is entered or removed.
  *
  * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The visibility icon.
  */
-function updatePasswordIcon(input) {
+function updatePasswordIcon(input, icon) {
     if (!input.value) {
-        input.style.backgroundImage = "url('../assets/img/logIn-signUp/lock.svg')";
-        input.removeAttribute("data-icon"); // Entfernt den Pointer
+        input.classList.remove("has-icon"); // Zeigt das `background-image`
+        icon.style.display = "none"; // Versteckt das `<img>`-Icon
     } else {
-        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-off.svg')";
-        input.setAttribute("data-icon", "off"); // Aktiviert den Pointer
+        input.classList.add("has-icon"); // Entfernt das `background-image`
+        icon.style.display = "inline"; // Zeigt das `<img>`-Icon
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Zeigt das Auge mit Strich
     }
 }
 
 /**
- * Toggles the password visibility and updates the background icon.
+ * Toggles the password visibility and updates the icon.
  *
  * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The clicked eye icon.
  */
-function togglePasswordVisibility(input) {
-    if (!input.value) return; // Falls kein Text eingegeben ist, nichts tun
+function togglePasswordVisibility(input, icon) {
+    if (!input.value) return; // Falls das Feld leer ist, nichts tun
 
     if (input.type === "password") {
         input.type = "text";
-        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-on.svg')";
-        input.setAttribute("data-icon", "on"); // Aktiviert den Pointer
+        icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; // Auge offen
     } else {
         input.type = "password";
-        input.style.backgroundImage = "url('../assets/img/logIn-signUp/visibility-off.svg')";
-        input.setAttribute("data-icon", "off"); // Aktiviert den Pointer
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Auge geschlossen
     }
 }
 
@@ -407,3 +439,4 @@ function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
     if (password !== confirmPassword) return "Password do not match.";
     return "An unknown validation error occurred.";
 }
+
