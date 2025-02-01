@@ -338,22 +338,12 @@ function getInputValue(id) {
 }
 
 /**
- * Displays an error message to the user.
+ * Displays an error message as a toast notification.
+ * 
  * @param {string} message - The error message to display.
  */
 function displayError(message) {
-    const popup = document.getElementById('popupMessage');
-    if (popup) {
-        popup.textContent = message;
-        popup.classList.remove('d-none');
-        popup.classList.add('show');
-
-        // Entfernt die Meldung nach 3 Sekunden
-        setTimeout(() => {
-            popup.classList.remove('show');
-            setTimeout(() => popup.classList.add('d-none'), 300); // Wartet, bis die Animation vorbei ist
-        }, 3000);
-    }
+    showToast(`<span>${message}</span>`, 'middle', 2000);
 }
 
 /**
