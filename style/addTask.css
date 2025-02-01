@@ -6,6 +6,7 @@
     --navbar-width-desktop-mode: 230px;
     --form-subcontainer-max-width: 440px;
     --form-gap: 32px
+    
 }
 
 
@@ -203,15 +204,6 @@ textarea {
 }
 
 
-.gap-4p { 
-    gap: 4px;
-    padding-bottom: 4px;
-}
-
-
-.gap-8p {
-    gap: 8px;
-    padding-bottom: 8px;
 .fs-12 {
     font-size: 12px;
 }
