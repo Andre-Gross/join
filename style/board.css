@@ -233,11 +233,22 @@ body.dragging {
     cursor: grabbing;
 }
 
-a,
 .plus-button {
-    height: 20px;
     cursor: pointer;
 }
+
+.plus-button-hover {
+    display: none;
+}
+
+.plus-button:hover {
+    display: none;
+}
+
+.plus-button:hover + .plus-button-hover {
+    display: inline-block;
+}
+
 
 .subtasks-progress-container {
     position: absolute;
