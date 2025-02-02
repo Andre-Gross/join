@@ -38,11 +38,37 @@ async function displayUserName() {
         }
     }
 
-    const greeting = getGreetingMessage();
+    if (name === 'Guest') {
+        greetGuest();
+    } else {
+        const greeting = getGreetingMessage();
+        updateGreetingUI(greeting, name);
+    }
+}
+
+/**
+ * Displays a greeting message without a name for guests.
+ */
+function greetGuest() {
+    let greeting = getGreetingMessage();
+    if (greeting.endsWith(',')) {
+        greeting = greeting.slice(0, -1); // Entfernt das Komma nur für Gäste
+    }
+    updateGreetingUI(greeting, '');
+}
+
+/**
+ * Updates the greeting UI with a message and optionally a name.
+ *
+ * @param {string} greeting - The greeting message.
+ * @param {string} name - The user's name (empty string for guests).
+ */
+function updateGreetingUI(greeting, name) {
     const greetingElement = document.getElementById('greeting');
     const userNameElement = document.getElementById('userName');
+    
     if (greetingElement) greetingElement.textContent = greeting;
-    if (userNameElement) userNameElement.textContent = capitalize(name);
+    if (userNameElement) userNameElement.textContent = name ? capitalize(name) : '';
 }
 
 
