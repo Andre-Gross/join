@@ -26,7 +26,7 @@
   
     --greeting-font-weight: 400;
     --greeting-color: #2a3647;
-    --greeting-font-size: clamp(36px, 5vw, 50px);
+    --greeting-font-size: clamp(36px, 4vw, 50px);
   
     --user-name-font-weight: 700;
     --user-name-font-size: clamp(47px, 5vw, 70px);
