@@ -23,14 +23,11 @@ function checkAuth() {
 
     try {
         const user = JSON.parse(loggedInUser);
-        console.log("Eingeloggter Benutzer:", user);
 
         if (user.id && user.id.toLowerCase() === "guest") {
-            console.log("Gast-Login erkannt → Keine Weiterleitung");
             return;
         }
     } catch (error) {
-        console.error("Fehler beim Parsen von loggedInUser:", error);
         window.location.href = "index.html";
     }
 }
