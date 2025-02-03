@@ -83,6 +83,9 @@
 }
 
 @media (max-width: 660px) {
+    body{
+        overflow-y: unset !important;
+    }
     .btn-primary:hover {
         background-color: #2A3647 !important;
         box-shadow: unset !important;
