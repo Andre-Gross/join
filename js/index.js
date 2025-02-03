@@ -1,14 +1,12 @@
 let isSubmitting = false;
 let toastMessageSignUp = '<span>You Signed Up successfully</span>';
-let failedAttempts = {};
 
-
-/**
- * Handles the DOMContentLoaded event to manage the login and signup process.
- * This function checks if the page has been loaded before to determine the display of elements.
- * It also sets up event listeners for login, signup, guest login, and password input elements.
- */
 document.addEventListener('DOMContentLoaded', () => {
+    initializePage();
+    setupEventListeners();
+});
+
+function initializePage() {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
     if (!hasLoadedBefore) {
@@ -19,203 +17,167 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('loaded');
         document.getElementById('loginCard').style.display = 'block';
     }
+}
 
-    document.querySelector('#loginCard form').addEventListener('submit', e => {
+function setupEventListeners() {
+    const loginForm = document.querySelector('#loginCard form');
+    loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         logIn();
     });
 
-    document.querySelector('#signupCard form').addEventListener('submit', e => {
+    const signupForm = document.querySelector('#signupCard form');
+    signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
         signUp();
     });
 
     document.querySelector('button[onclick="guestLogIn();"]').addEventListener('click', guestLogIn);
 
-    document.querySelectorAll(".password-container input").forEach(input => {
-        input.value = "";
-        const icon = input.nextElementSibling;
-        input.addEventListener("input", () => updatePasswordIcon(input, icon));
-        icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
-    });
-});
+    const signupInputs = signupForm.querySelectorAll('input');
+    signupInputs.forEach(input => input.addEventListener('input', checkFormValidity));
+}
 
-
-/**
- * Clears all input fields in the signup form when switching views.
- */
 function clearSignupInputs() {
     document.querySelectorAll("#signupCard input").forEach(input => {
         if (input.type === "checkbox") {
-            input.checked = false; 
+            input.checked = false;
         } else {
-            input.value = ""; 
+            input.value = "";
         }
     });
 
-    document.querySelectorAll("#signupCard .password-toggle").forEach(icon => {
-        icon.style.display = "none";
-    });
-
-   
-    document.querySelectorAll("#signupCard input[type='password']").forEach(input => {
-        input.classList.remove("has-icon"); 
-    });
+    document.querySelectorAll("#signupCard .password-toggle").forEach(icon => icon.style.display = "none");
+    document.querySelectorAll("#signupCard input[type='password']").forEach(input => input.classList.remove("has-icon"));
 }
 
-
-/**
- * Switches between login and signup view.
- */
 function switchView() {
     const loginCard = document.getElementById("loginCard");
     const signupCard = document.getElementById("signupCard");
     const switchButton = document.getElementById("switchButton");
     const switchText = document.getElementById("switchText");
 
-    [loginCard, signupCard].forEach(card => card.style.transition = 'none');
-    
+    loginCard.style.transition = 'none';
+    signupCard.style.transition = 'none';
     loginCard.style.opacity = '0';
     signupCard.style.opacity = '0';
 
     setTimeout(() => {
-        const isLoginVisible = loginCard.style.display !== 'none';
-        loginCard.style.display = isLoginVisible ? 'none' : 'block';
-        signupCard.style.display = isLoginVisible ? 'block' : 'none';
+        if (loginCard.style.display !== 'none') {
+            loginCard.style.display = 'none';
+            signupCard.style.display = 'block';
+            switchButton.textContent = 'Log in';
+            switchText.textContent = 'Already a Join user?';
+            clearSignupInputs();
+        } else {
+            signupCard.style.display = 'none';
+            loginCard.style.display = 'block';
+            switchButton.textContent = 'Sign up';
+            switchText.textContent = 'Not a Join user?';
+        }
 
-        switchButton.textContent = isLoginVisible ? 'Log in' : 'Sign up';
-        switchText.textContent = isLoginVisible ? 'Already a Join user?' : 'Not a Join user?';
-
-        if (isLoginVisible) clearSignupInputs();
-
-        [signupCard, loginCard].forEach(card => card.style.opacity = '1');
+        signupCard.style.opacity = '1';
+        loginCard.style.opacity = '1';
     }, 50);
 }
 
-
-/**
- * Handles the user login process.
- */
 async function logIn() {
     const email = getInputValue("email");
     const password = getInputValue("password");
 
-    if (!email || !password) return displayError("Please enter both email and password.");
+    if (!email || !password) {
+        displayError("Please enter both email and password.");
+        return;
+    }
 
     try {
         const users = await fetchUsers();
         const user = findUserByEmail(users, email);
 
-        if (!user) return displayError("You are not registered. Please sign up to continue.");
+        if (!user) {
+            displayNotRegisteredError();
+            return;
+        }
 
-        if (user.password !== password) return handleFailedAttempt(email);
+        if (user.password !== password) {
+            handleFailedAttempt(email);
+            return;
+        }
 
         resetFailedAttempts(email);
-        await saveLoggedInUser(user);
+        saveLoggedInUser(user);
         redirectToSummary();
     } catch {
         displayError("An error occurred during login. Please try again.");
     }
 }
 
-
-/**
- * Handles the user registration process.
- */
 async function signUp() {
     if (isSubmitting) return;
     isSubmitting = true;
-
     const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
-    
+
     if (!agreeTerms || password !== confirmPassword) {
-        isSubmitting = false;
-        return displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
+        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
+        return;
     }
 
     try {
         const users = await fetchUsers();
-        if (isEmailAlreadyRegistered(users, email)) return redirectToLogin();
-
+        if (isEmailAlreadyRegistered(users, email)) {
+            redirectToLogin();
+            isSubmitting = false;
+            return;
+        }
         await registerNewUser(name, email, password);
         await addUserToContacts(name, email);
 
+        isSubmitting = false;
         showToast(toastMessageSignUp, 'middle', 1000);
         setTimeout(() => redirectToLogin(true), 1000);
     } catch {
-        displayError("An error occurred during registration. Please try again.");
-    } finally {
         isSubmitting = false;
+        displayError("An error occurred during registration. Please try again.");
     }
 }
 
+function updatePasswordIcon(input, icon) {
+    if (!input.value) {
+        input.classList.remove("has-icon");
+        icon.style.display = "none";
+    } else {
+        input.classList.add("has-icon");
+        icon.style.display = "inline";
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
+    }
+}
 
-/**
- * Initializes password field functionality after the page loads.
- * - Clears any existing values in password input fields.
- * - Adds event listeners to password fields to handle password visibility toggling.
- * - Updates the password icon when the input changes.
- * - Toggles the visibility of the password when the icon is clicked.
- */
+function togglePasswordVisibility(input, icon) {
+    if (!input.value) return;
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.src = "../assets/img/logIn-signUp/visibility-on.svg";
+    } else {
+        input.type = "password";
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    initializePage();
+    setupEventListeners();
+
+    // Passwort-Felder und Event-Listener für Sichtbarkeit
     const passwordFields = document.querySelectorAll(".password-container input");
 
-   
-    passwordFields.forEach(input => input.value = "");
-
-    
     passwordFields.forEach(input => {
-        const icon = input.nextElementSibling; 
+        const icon = input.nextElementSibling; // Das zugehörige Icon
         input.addEventListener("input", () => updatePasswordIcon(input, icon));
         icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
     });
 });
 
-/**
- * Updates the visibility icon when text is entered or removed.
- *
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The visibility icon.
- */
-function updatePasswordIcon(input, icon) {
-    if (!input.value) {
-        input.classList.remove("has-icon"); 
-        icon.style.display = "none"; 
-    } else {
-        input.classList.add("has-icon"); 
-        icon.style.display = "inline"; 
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; 
-    }
-}
-
-
-/**
- * Toggles the password visibility and updates the icon.
- *
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The clicked eye icon.
- */
-function togglePasswordVisibility(input, icon) {
-    if (!input.value) return; 
-
-    if (input.type === "password") {
-        input.type = "text";
-        icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; 
-    } else {
-        input.type = "password";
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; 
-    }
-}
-
-
-/**
- * Adds a new user to the contacts database.
- * - Generates a random color for the new contact.
- * - Attempts to post the contact data to the database.
- * 
- * @param {string} name - The name of the contact to add.
- * @param {string} email - The email of the contact to add.
- */
 async function addUserToContacts(name, email) {
     const assignedColor = getRandomColor();
 
@@ -226,91 +188,44 @@ async function addUserToContacts(name, email) {
     }
 }
 
-
-/**
- * Generates a unique identifier.
- * - Uses a combination of a random number and base-36 encoding to generate a short unique string.
- * 
- * @returns {string} A unique identifier in the form of a random string.
- */
-function generateUniqueId() {
-    return '_' + Math.random().toString(36).substr(2, 9);
-}
-
-/**
- * Handles failed login attempts.
- */
 function handleFailedAttempt(email) {
     failedAttempts[email] = (failedAttempts[email] || 0) + 1;
 
     if (failedAttempts[email] >= 3) {
         displayError("Too many failed attempts. Please reset your password.");
+        showResetPasswordOption(email);
     } else {
         displayError("Incorrect password. Please try again.");
     }
 }
 
-
-/**
- * Resets the failed login attempts.
- */
 function resetFailedAttempts(email) {
     delete failedAttempts[email];
 }
 
-
-/**
- * Displays an error message.
- */
-function displayError(message) {
-    showToast(`<span>${message}</span>`, 'middle', 2000);
-}
-
-
-/**
- * Displays an error message if the user is not registered.
- */
 function displayNotRegisteredError() {
     displayError("You are not registered. Please sign up to continue.");
 }
 
-
-/**
- * Logs in as a guest user.
- */
 async function guestLogIn() {
     try {
         saveLoggedInUser({ id: "guest", name: "Guest" });
-        sessionStorage.setItem("loggedInUserId", "Guest"); // Speichert die Gast-ID für Auth-Check
+        sessionStorage.setItem("loggedInUserId", "Guest");
         redirectToSummary(true);
     } catch {
         displayError("An error occurred during guest login. Please try again later.");
     }
 }
 
-
-/**
- * Fetches all existing users from the database.
- */
 async function fetchUsers() {
     const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
     return response.json();
 }
 
-
-/**
- * Finds a user in the database by email.
- */
 function findUserByEmail(users, email) {
     return Object.values(users || {}).find(user => user?.email === email) || null;
 }
 
-
-/**
- * Hashes a password using SHA-256.
- * @param {string} password - The plain text password to hash.
- * @returns {Promise<string>} - The hashed password as a hex string.
- */
 async function hashPassword(password) {
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
@@ -320,59 +235,35 @@ async function hashPassword(password) {
         .join('');
 }
 
-
-/**
- * Saves the logged-in user's information in the session storage.
- */
 async function saveLoggedInUser(user) {
-    user.password = await hashPassword(user.password);
-    sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+    const hashedPassword = await hashPassword(user.password);
+    const userToSave = { ...user, password: hashedPassword };
+    sessionStorage.setItem("loggedInUser", JSON.stringify(userToSave));
 }
 
-
-/**
- * Redirects the user to the summary page.
- * @param {boolean} [isGuest=false] - Whether the login is for a guest user.
- */
 function redirectToSummary(isGuest = false) {
     const url = isGuest ? "summary.html?userId=guest" : "summary.html";
     window.location.href = url;
 }
 
-
-/**
- * Checks if the given email is already registered.
- */
 function isEmailAlreadyRegistered(users, email) {
     return Object.values(users || {}).some(user => user?.email === email);
 }
 
-
-/**
- * Registers a new user.
- */
 async function registerNewUser(name, email, password) {
+    const newUser = { name, email, password, contacts: [] };
     await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, contacts: [] })
+        body: JSON.stringify(newUser)
     });
 }
 
-
-/**
- * Redirects the user to the login page.
- * @param {boolean} [isSuccess] - Whether the registration was successful.
- */
 function redirectToLogin(isSuccess = false) {
     const url = isSuccess ? "index.html?registered=true" : "index.html?error=emailExists";
     window.location.href = url;
 }
 
-
-/**
- * Retrieves and processes input values.
- */
 function getInputValues() {
     return ["name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"].map(id =>
         document.getElementById(id).type === "checkbox"
@@ -381,10 +272,6 @@ function getInputValues() {
     );
 }
 
-
-/**
- * Validates the registration form inputs and updates the register button state.
- */
 function checkFormValidity() {
     const [name, email, password, confirmPassword, agreeTerms] = [
         "name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"
@@ -397,27 +284,16 @@ function checkFormValidity() {
     document.getElementById("registerButton").disabled = !isFormValid;
 }
 
-
-/**
- * Retrieves and processes the value of an input field by its ID.
- * @param {string} id - The ID of the input field.
- * @returns {string} - The trimmed value of the input field.
- */
 function getInputValue(id) {
     return document.getElementById(id).value.trim();
 }
 
+function displayError(message) {
+    showToast(`<span>${message}</span>`, 'middle', 2000);
+}
 
-/**
- * Determines the validation error message.
- * @param {boolean} agreeTerms - Whether the terms were agreed to.
- * @param {string} password - The entered password.
- * @param {string} confirmPassword - The confirmed password.
- * @returns {string} - The appropriate error message.
- */
 function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
     if (!agreeTerms) return "Please agree to the terms and conditions.";
     if (password !== confirmPassword) return "Password do not match.";
     return "An unknown validation error occurred.";
 }
-
