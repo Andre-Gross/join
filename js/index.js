@@ -1,53 +1,38 @@
 let isSubmitting = false;
 let toastMessageSignUp = '<span>You Signed Up successfully</span>';
+let failedAttempts = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
     if (!hasLoadedBefore) {
-        // Erstes Laden: Animation wird ausgeführt
-        setTimeout(() => {
-            document.body.classList.add('loaded');
-        }, 100);
-
-        setTimeout(() => {
-            document.getElementById('loginCard').style.display = 'block';
-        }, 1600);
-
-        localStorage.setItem('hasLoadedBefore', 'true'); // Speichern, dass geladen wurde
+        setTimeout(() => document.body.classList.add('loaded'), 100);
+        setTimeout(() => document.getElementById('loginCard').style.display = 'block', 1600);
+        localStorage.setItem('hasLoadedBefore', 'true');
     } else {
-        // Kein erstes Laden: Sofortige Anzeige ohne Animation
-        document.body.classList.add('loaded'); // Hintergrund direkt anzeigen
+        document.body.classList.add('loaded');
         document.getElementById('loginCard').style.display = 'block';
     }
 
-    // Event-Listener für Login-Formular
-    const loginForm = document.querySelector('#loginCard form');
-    loginForm.addEventListener('submit', (e) => {
+    document.querySelector('#loginCard form').addEventListener('submit', e => {
         e.preventDefault();
         logIn();
     });
 
-    // Event-Listener für Signup-Formular
-    const signupForm = document.querySelector('#signupCard form');
-    signupForm.addEventListener('submit', (e) => {
+    document.querySelector('#signupCard form').addEventListener('submit', e => {
         e.preventDefault();
         signUp();
     });
 
-    // Gast-Login direkt gekoppelt
     document.querySelector('button[onclick="guestLogIn();"]').addEventListener('click', guestLogIn);
 
-    // Event-Listener für Formularvalidierung
-    const signupInputs = signupForm.querySelectorAll('input');
-    signupInputs.forEach(input => {
-        input.addEventListener('input', checkFormValidity);
+    document.querySelectorAll(".password-container input").forEach(input => {
+        input.value = "";
+        const icon = input.nextElementSibling;
+        input.addEventListener("input", () => updatePasswordIcon(input, icon));
+        icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
     });
 });
-
-
-
-let failedAttempts = {}; // Speichert fehlgeschlagene Login-Versuche
 
 /**
  * Clears all input fields in the signup form when switching views.
@@ -81,36 +66,24 @@ function switchView() {
     const switchButton = document.getElementById("switchButton");
     const switchText = document.getElementById("switchText");
 
-    // Wechsel ohne Verzögerung
-    loginCard.style.transition = 'none';
-    signupCard.style.transition = 'none';
-
+    [loginCard, signupCard].forEach(card => card.style.transition = 'none');
+    
     loginCard.style.opacity = '0';
     signupCard.style.opacity = '0';
 
     setTimeout(() => {
-        if (loginCard.style.display !== 'none') {
-            loginCard.style.display = 'none';
-            signupCard.style.display = 'block';
-            switchButton.textContent = 'Log in';
-            switchText.textContent = 'Already a Join user?';
+        const isLoginVisible = loginCard.style.display !== 'none';
+        loginCard.style.display = isLoginVisible ? 'none' : 'block';
+        signupCard.style.display = isLoginVisible ? 'block' : 'none';
 
-            // Signup-Felder leeren
-            clearSignupInputs();
+        switchButton.textContent = isLoginVisible ? 'Log in' : 'Sign up';
+        switchText.textContent = isLoginVisible ? 'Already a Join user?' : 'Not a Join user?';
 
-        } else {
-            signupCard.style.display = 'none';
-            loginCard.style.display = 'block';
-            switchButton.textContent = 'Sign up';
-            switchText.textContent = 'Not a Join user?';
-        }
+        if (isLoginVisible) clearSignupInputs();
 
-        // Sofortiges Anzeigen der entsprechenden Karte
-        signupCard.style.opacity = '1';
-        loginCard.style.opacity = '1';
+        [signupCard, loginCard].forEach(card => card.style.opacity = '1');
     }, 50);
 }
-
 
 /**
  * Handles the user login process.
@@ -119,27 +92,18 @@ async function logIn() {
     const email = getInputValue("email");
     const password = getInputValue("password");
 
-    if (!email || !password) {
-        displayError("Please enter both email and password.");
-        return;
-    }
+    if (!email || !password) return displayError("Please enter both email and password.");
 
     try {
         const users = await fetchUsers();
         const user = findUserByEmail(users, email);
 
-        if (!user) {
-            displayNotRegisteredError(); // Benutzer nicht registriert
-            return;
-        }
+        if (!user) return displayError("You are not registered. Please sign up to continue.");
 
-        if (user.password !== password) {
-            handleFailedAttempt(email); // Verarbeite fehlgeschlagene Versuche
-            return;
-        }
+        if (user.password !== password) return handleFailedAttempt(email);
 
-        resetFailedAttempts(email); // Zurücksetzen der fehlgeschlagenen Versuche
-        saveLoggedInUser(user);
+        resetFailedAttempts(email);
+        await saveLoggedInUser(user);
         redirectToSummary();
     } catch {
         displayError("An error occurred during login. Please try again.");
@@ -150,33 +114,29 @@ async function logIn() {
  * Handles the user registration process.
  */
 async function signUp() {
-    if (isSubmitting) return; // Verhindert mehrfaches Ausführen
+    if (isSubmitting) return;
     isSubmitting = true;
-    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
 
+    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+    
     if (!agreeTerms || password !== confirmPassword) {
-        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
-        return;
+        isSubmitting = false;
+        return displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
     }
 
     try {
         const users = await fetchUsers();
-        if (isEmailAlreadyRegistered(users, email)) {
-            redirectToLogin();
-            isSubmitting = false; 
-            return;
-        }
+        if (isEmailAlreadyRegistered(users, email)) return redirectToLogin();
+
         await registerNewUser(name, email, password);
         await addUserToContacts(name, email);
 
-        isSubmitting = false;
-        showToast(toastMessageSignUp, 'middle', 1000); 
-        setTimeout(() => {
-            redirectToLogin(true);
-          }, 1000);
+        showToast(toastMessageSignUp, 'middle', 1000);
+        setTimeout(() => redirectToLogin(true), 1000);
     } catch {
-        isSubmitting = false; 
         displayError("An error occurred during registration. Please try again.");
+    } finally {
+        isSubmitting = false;
     }
 }
 
@@ -247,26 +207,30 @@ function generateUniqueId() {
 }
 
 /**
- * Handles failed login attempts and shows a reset password option after 3 tries.
- * @param {string} email - The user's email address.
+ * Handles failed login attempts.
  */
 function handleFailedAttempt(email) {
     failedAttempts[email] = (failedAttempts[email] || 0) + 1;
 
     if (failedAttempts[email] >= 3) {
         displayError("Too many failed attempts. Please reset your password.");
-        showResetPasswordOption(email);
     } else {
         displayError("Incorrect password. Please try again.");
     }
 }
 
 /**
- * Resets the failed login attempts for a user.
- * @param {string} email - The user's email address.
+ * Resets the failed login attempts.
  */
 function resetFailedAttempts(email) {
     delete failedAttempts[email];
+}
+
+/**
+ * Displays an error message.
+ */
+function displayError(message) {
+    showToast(`<span>${message}</span>`, 'middle', 2000);
 }
 
 /**
@@ -292,7 +256,6 @@ async function guestLogIn() {
 
 /**
  * Fetches all existing users from the database.
- * @returns {Promise<Object>} - A promise resolving to the users object.
  */
 async function fetchUsers() {
     const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
@@ -301,9 +264,6 @@ async function fetchUsers() {
 
 /**
  * Finds a user in the database by email.
- * @param {Object} users - The existing users object.
- * @param {string} email - The email to find.
- * @returns {Object|null} - The matched user or null if not found.
  */
 function findUserByEmail(users, email) {
     return Object.values(users || {}).find(user => user?.email === email) || null;
@@ -325,13 +285,10 @@ async function hashPassword(password) {
 
 /**
  * Saves the logged-in user's information in the session storage.
- * The password is hashed before saving.
- * @param {Object} user - The user object to save.
  */
 async function saveLoggedInUser(user) {
-    const hashedPassword = await hashPassword(user.password);
-    const userToSave = { ...user, password: hashedPassword }; // Passwort ersetzen
-    sessionStorage.setItem("loggedInUser", JSON.stringify(userToSave));
+    user.password = await hashPassword(user.password);
+    sessionStorage.setItem("loggedInUser", JSON.stringify(user));
 }
 
 /**
@@ -345,26 +302,19 @@ function redirectToSummary(isGuest = false) {
 
 /**
  * Checks if the given email is already registered.
- * @param {Object} users - The existing users object.
- * @param {string} email - The email to check.
- * @returns {boolean} - True if the email is already registered, otherwise false.
  */
 function isEmailAlreadyRegistered(users, email) {
     return Object.values(users || {}).some(user => user?.email === email);
 }
 
 /**
- * Registers a new user in the database.
- * @param {string} name - The user's name.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
+ * Registers a new user.
  */
 async function registerNewUser(name, email, password) {
-    const newUser = { name, email, password, contacts: [] };
     await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser)
+        body: JSON.stringify({ name, email, password, contacts: [] })
     });
 }
 
@@ -378,8 +328,7 @@ function redirectToLogin(isSuccess = false) {
 }
 
 /**
- * Retrieves and processes form input values.
- * @returns {Array} - Array of processed input values.
+ * Retrieves and processes input values.
  */
 function getInputValues() {
     return ["name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"].map(id =>
@@ -413,14 +362,6 @@ function getInputValue(id) {
     return document.getElementById(id).value.trim();
 }
 
-/**
- * Displays an error message as a toast notification.
- * 
- * @param {string} message - The error message to display.
- */
-function displayError(message) {
-    showToast(`<span>${message}</span>`, 'middle', 2000);
-}
 
 /**
  * Determines the validation error message.
