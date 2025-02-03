@@ -100,30 +100,15 @@ function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '
 }
 
 
-/**
- * This function set the status of the next task and open the addTask.html
- * 
- * @param {string} status - the status of the next task 
- */
-async function addTaskFromBoard(status = 'To do') {
-    if (checkContentOfArray(status, possibleStatuses)) {
-        await putNextStatus(status);
-        document.location.href = "addTask.html";
-    } else {
-        let HTML = 'Bitte geben sie einen gültigen Status ein. Möglich sind ';
-        for (let i = 0; i < possibleStatuses.length; i++) {
-            const singlePossibleStatuses = possibleStatuses[i];
-            HTML += `"` + singlePossibleStatuses + `"`;
-            if (i == possibleStatuses.length - 1) {
-                HTML += '.'
-            } else if (i == possibleStatuses.length - 2) {
-                HTML += ' oder '
-            } else {
-                HTML += ', '
-            }
-        }
-        alert(HTML)
-    }
+function addTaskFromBoard() {
+    const modalAddTask = document.getElementById('modalAddTask');
+    const container = document.getElementById('modalAddTask-template-container');
+    const modalBackground = document.getElementById('modalCard-background');
+
+    renderTaskForm(container);
+    toggleDisplayNone(modalBackground, 'd-block', true);
+    modalAddTask.classList.add('xMiddle');
+    loadFormFunctions();
 }
 
 
@@ -184,6 +169,7 @@ function checkAllInputsHasContent(title, dueDate, category) {
     } else {
         return true
     }
+}
 
 
 /**
@@ -220,6 +206,7 @@ function changeTextRequired(field) {
     } else {
         toggleDisplayNone(text, "d-block", false);
     }
+}
 
 
 /**
@@ -403,6 +390,7 @@ function addNewSubtask() {
         input.value = '';
         renderNewSubtasks();
     }
+}
 
 
 function renderNewSubtasks() {
