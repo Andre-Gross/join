@@ -1,3 +1,13 @@
+/**
+ * Renders the task board by fetching tasks and contacts data from Firebase,
+ * and displays them in the appropriate containers based on their status.
+ * Clears the existing task containers and appends the tasks to their respective
+ * status containers (To Do, In Progress, Feedback, Done). Initializes drag-and-drop functionality.
+ *
+ * @async
+ * @function
+ * @throws {Error} Throws an error if the fetch operation fails or if the fetched data is empty.
+ */
 async function boardRender() {
   const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
 
@@ -76,11 +86,24 @@ async function boardRender() {
 }
 
 
+/**
+ * Checks if the provided argument is a valid non-empty array.
+ *
+ * @param {any} arr - The value to check.
+ * @returns {boolean} Returns `true` if the argument is a non-empty array, otherwise `false`.
+ */
 function isValidArray(arr) {
   return Array.isArray(arr) && arr.length > 0;
 }
 
 
+/**
+ * Renders HTML for displaying subtasks progress.
+ *
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {Array} subtasks - An array of subtask objects to be rendered.
+ * @returns {string} Returns HTML string displaying the subtasks' progress.
+ */
 function renderSubtasksHTML(taskId, subtasks) {
   if (!isValidArray(subtasks)) return "";
 
@@ -99,6 +122,13 @@ function renderSubtasksHTML(taskId, subtasks) {
 }
 
 
+/**
+ * Renders HTML for displaying assigned contacts.
+ *
+ * @param {Array} assignedTo - An array of contact IDs or names assigned to the task.
+ * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
+ * @returns {string} Returns HTML string with circles representing assigned contacts.
+ */
 function renderTaskContacts(assignedTo = [], contactsData = {}) {
   if (!isValidArray(assignedTo)) return "";
 
@@ -131,6 +161,12 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
 }
 
 
+/**
+ * Retrieves the container ID based on the task status.
+ *
+ * @param {string} status - The status of the task (e.g., "To do", "In progress", etc.).
+ * @returns {string|null} The ID of the corresponding container element, or null if no matching container is found.
+ */
 function getContainerIdByStatus(status) {
   const statusContainers = {
     "To do": "todo-container",
@@ -142,15 +178,35 @@ function getContainerIdByStatus(status) {
 }
 
 
+/**
+ * Generates HTML for the priority label based on the provided priority.
+ *
+ * @param {string} priority - The priority level of the task (e.g., "urgent", "medium", "low").
+ * @returns {string} The HTML string for displaying the priority label image.
+ */
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
 
+/**
+ * Event listener for when the DOM content is fully loaded.
+ * It calls the `boardRender` function to load and render the tasks on the board.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   await boardRender(); 
 });
 
+
+/**
+ * Initializes drag-and-drop functionality for tasks on the board.
+ * Allows users to drag tasks between different task containers.
+ * 
+ * - Adds event listeners to each task for drag start, drag end, mouse events.
+ * - Adds event listeners to containers to handle drag over and drop actions.
+ * - Updates the task's status based on its new container after being dropped.
+ * - Creates a placeholder element for the dragged task to maintain the layout.
+ */
 function initializeDragAndDrop() {
   const tasks = document.querySelectorAll(".task")
   const containers = document.querySelectorAll(".tasks-container")
@@ -213,6 +269,15 @@ function initializeDragAndDrop() {
 }
 
 
+/**
+ * Initializes touch-based drag-and-drop functionality for tasks on the board.
+ * Allows users to drag tasks using touch events on mobile or touch-enabled devices.
+ * 
+ * - Adds event listeners for touchstart, touchmove, and touchend on tasks.
+ * - Creates a placeholder element while dragging to maintain the layout.
+ * - Handles the touch move event to update the position of the dragged task.
+ * - Replaces the placeholder with the dragged task when the drag ends.
+ */
 function initializeTouchDrag() {
   const tasks = document.querySelectorAll(".task");
   let draggedTask = null;
@@ -247,11 +312,22 @@ function initializeTouchDrag() {
   });
 }
 
+
+/**
+ * Initializes both the desktop drag-and-drop and mobile touch drag functionality on the board.
+ * This function enables users to drag tasks in the board interface, either with a mouse or a touch event.
+ */
 initializeDragAndDrop();
 initializeTouchDrag();
 
 
-
+/**
+ * Creates a placeholder element that mimics the size of the dragged task.
+ * This placeholder is used to show the space where the task will be dropped.
+ *
+ * @param {HTMLElement} task - The task being dragged.
+ * @returns {HTMLElement} - The created placeholder element.
+ */
 function createPlaceholder(task) {
   const placeholder = document.createElement("div");
   placeholder.classList.add("placeholder");
@@ -262,6 +338,13 @@ function createPlaceholder(task) {
 }
 
 
+/**
+ * Ends the drag operation by removing the "dragging" class from the task 
+ * and restoring its display, as well as removing the placeholder element.
+ *
+ * @param {HTMLElement} draggedTask - The task that was being dragged.
+ * @param {HTMLElement} placeholder - The placeholder element that was used during the drag.
+ */
 function endDrag(draggedTask, placeholder) {
   if (draggedTask) {
     draggedTask.classList.remove("dragging");
@@ -274,6 +357,12 @@ function endDrag(draggedTask, placeholder) {
 }
 
 
+/**
+ * Resets the animation of a task by removing the animation and forcing a reflow
+ * before re-enabling the animation.
+ *
+ * @param {HTMLElement} task - The task element whose animation needs to be reset.
+ */
 function resetAnimation(task) {
   task.style.animation = "none"
   task.offsetHeight 
@@ -281,6 +370,14 @@ function resetAnimation(task) {
 }
 
 
+/**
+ * Handles the drag over event by positioning the placeholder element based on
+ * the mouse or touch position within the container.
+ *
+ * @param {HTMLElement} container - The container element that holds the tasks.
+ * @param {number} y - The vertical position of the mouse or touch event.
+ * @param {HTMLElement} placeholder - The placeholder element to be inserted or moved.
+ */
 function handleDragOver(container, y, placeholder) {
   const afterElement = getDragAfterElement(container, y);
   if (!placeholder) return;
@@ -293,6 +390,14 @@ function handleDragOver(container, y, placeholder) {
 }
 
 
+/**
+ * Determines the element that the dragged task will be placed after, based on
+ * the vertical position of the drag event.
+ *
+ * @param {HTMLElement} container - The container element that holds the tasks.
+ * @param {number} y - The vertical position of the mouse or touch event.
+ * @returns {HTMLElement|null} - The element that the dragged task will be placed after, or null if it's at the end.
+ */
 function getDragAfterElement(container, y) {
   const draggableElements = [
     ...container.querySelectorAll(".task:not(.dragging)"),
@@ -324,6 +429,13 @@ function getStatusFromContainerId(containerId) {
 }
 
 
+/**
+ * Updates the progress bar and subtask count for a task based on the completed subtasks.
+ *
+ * @param {string} taskId - The ID of the task whose progress needs to be updated.
+ * @param {Array} subtasks - The list of subtasks associated with the task.
+ * @returns {void}
+ */
 function updateProgressBar(taskId, subtasks) {
   const taskElement = document.getElementById(taskId);
 
@@ -351,6 +463,13 @@ function updateProgressBar(taskId, subtasks) {
 }
 
 
+/**
+ * Updates the status of a specific task in the Firebase database.
+ *
+ * @param {string} taskId - The ID of the task whose status needs to be updated.
+ * @param {string} newStatus - The new status to set for the task.
+ * @returns {Promise<void>} A promise that resolves when the update is complete.
+ */
 async function updateTaskStatus(taskId, newStatus) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
@@ -368,11 +487,23 @@ async function updateTaskStatus(taskId, newStatus) {
 }
 
 
+/**
+ * Toggles the display of the modal and board elements.
+ * Hides the board and shows the modal card when called.
+ */
 function toggleDisplayModal() {
   toggleDisplayNone(document.getElementById("board"));
   toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
 }
 
+
+/**
+ * Deletes a task from the database and refreshes the board.
+ * @param {string} id - The ID of the task to delete.
+ * 
+ * Toggles the modal visibility and calls the boardRender function
+ * to update the board after the task is deleted.
+ */
 async function deleteTaskOfModalCard(id) {
   try {
     await deleteTaskInDatabase(id);
@@ -383,6 +514,13 @@ async function deleteTaskOfModalCard(id) {
   }
 }
 
+
+/**
+ * Deletes a task from the database by sending a DELETE request.
+ * @param {string} taskId - The ID of the task to delete.
+ * 
+ * Sends a DELETE request to the Firebase Realtime Database to remove the specified task.
+ */
 async function deleteTaskInDatabase(taskId) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
@@ -399,6 +537,14 @@ async function deleteTaskInDatabase(taskId) {
 }
 
 
+/**
+ * Opens a modal with details for a specific task.
+ * @param {string} id - The ID of the task to display in the modal.
+ * 
+ * Fetches the task from the database, renders its details inside the modal, and sets up
+ * event listeners for editing or deleting the task. It also updates the UI with task-related
+ * information such as category, priority, and assigned contacts.
+ */
 async function openModal(id) {
   const tasksAsArray = await getTasksAsArray();
   const singleTask = tasksAsArray.find((task) => task.id === id);
@@ -430,6 +576,13 @@ async function openModal(id) {
 }
 
 
+/**
+ * Renders task details inside the modal by populating the relevant fields.
+ * @param {Object} singleTask - The task object containing task details.
+ * @param {Array<string>} allKeys - The list of keys to be displayed in the modal.
+ * 
+ * Loops through the provided keys and updates the corresponding elements in the modal with the task's data.
+ */
 function renderModal(singleTask, allKeys) {
   for (let i = 0; i < allKeys.length; i++) {
     const element = document.getElementById(`modalCard-${allKeys[i]}-value`);
@@ -438,6 +591,12 @@ function renderModal(singleTask, allKeys) {
 }
 
 
+/**
+ * Renders the task's "finishedUntil" date in the modal.
+ * @param {Object} singleTask - The task object containing task details.
+ * 
+ * Retrieves the "finishedUntil" date from the task and displays it in the modal by formatting the date.
+ */
 function renderDate(singleTask) {
   let date = singleTask["finishedUntil"];
   document.getElementById(`modalCard-finishedUntil-value`).innerHTML =
@@ -445,12 +604,22 @@ function renderDate(singleTask) {
 }
 
 
+/**
+ * Formats a date string in the format "YYYY-MM-DD" to "DD/MM/YYYY".
+ * @param {string} date - The date string in "YYYY-MM-DD" format.
+ * @returns {string} - The formatted date string in "DD/MM/YYYY" format.
+ */
 function formatDate(date) {
   const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
 }
 
 
+/**
+ * Renders the priority label in the modal.
+ * Displays the priority in uppercase followed by the corresponding priority icon.
+ * @param {string} priority - The priority level of the task (e.g., "high", "medium", "low").
+ */
 function renderPriority(priority) {
   let priorityLabel = document.getElementById("modalCard-priority-value");
   priorityLabel.innerHTML = /*HTML*/`
@@ -461,6 +630,11 @@ function renderPriority(priority) {
 }
 
 
+/**
+ * Renders the list of assigned contacts in the modal.
+ * For each contact, it creates a label with their name and a corresponding circle icon.
+ * @param {Array<string>} assignedTo - Array of contact names assigned to the task.
+ */
 async function renderAssignedToInModal(assignedTo) {
   const container = document.getElementById('assignedTo-name-labels-container')
 
@@ -479,6 +653,12 @@ async function renderAssignedToInModal(assignedTo) {
 }
 
 
+/**
+ * Renders the list of subtasks in the modal for a given task.
+ * Displays a checkbox for each subtask and updates the task's progress when checked/unchecked.
+ * @param {string} taskId - The ID of the task for which subtasks are being displayed.
+ * @param {Array<Object>} subtasks - Array of subtasks associated with the task, each containing a `subtask` string and `isChecked` boolean.
+ */
 function renderSubtasksInModal(taskId, subtasks) {
   const subtasksContainer = document.getElementById("modalCard-subtasks-value");
 
@@ -520,6 +700,13 @@ function renderSubtasksInModal(taskId, subtasks) {
   });
 }
 
+
+/**
+ * Saves changes made to the subtasks of a task in the Firebase database.
+ * This updates the subtasks' completion status and any changes to the subtask details.
+ * @param {string} taskId - The ID of the task whose subtasks are being updated.
+ * @param {Array<Object>} subtasks - The updated subtasks array, each containing a `subtask` string and an `isChecked` boolean.
+ */
 async function saveSubtaskChange(taskId, subtasks) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
 
