@@ -14,7 +14,7 @@
     --global-margin-top: 100px;
     --button-hover-background-color: #29ABE2;
     --white-color: #FFFFFF;
-
+    --link-hover: #29ABE2;
     --color-invalid: #FF8190;
     --input-border-color-standart: #D1D1D1;
     --input-border-color-onfocus: #29ABE2;
@@ -108,8 +108,8 @@ footer {
 }
 
 
-.col:hover a {
-    color: #A8A8A8 !important;
+.text-muted:hover {
+    color: #29abe1 !important;
 }
 
 
@@ -377,7 +377,3 @@ footer {
     cursor: pointer;
 }
 
-
-.text-muted:hover {
-    color: #29ABE2 !important;
-}
