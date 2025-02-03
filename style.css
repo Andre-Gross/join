@@ -79,7 +79,6 @@ textarea {
 }
 
 textarea {
-    resize: none !important;
     border-color: var(--textarea-border-color);
 }
 
