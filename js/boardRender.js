@@ -25,7 +25,6 @@ async function boardRender() {
     const contactsData = await contactsResponse.json();
 
     if (!tasksData || Object.keys(tasksData).length === 0) {
-      console.log("No tasks found.");
       return;
     }
 
@@ -718,7 +717,6 @@ async function saveSubtaskChange(taskId, subtasks) {
       },
       body: JSON.stringify({ subtasks }),
     });
-    console.log(`Subtasks für Task ${taskId} erfolgreich aktualisiert.`);
   } catch (error) {
     console.error("Fehler beim Aktualisieren der Subtasks:", error);
   }

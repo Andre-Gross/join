@@ -141,7 +141,6 @@ async function loadTasks() {
     const contactsData = await contactsResponse.json();
 
     if (!tasksData) {
-      console.log("No tasks found.");
       return;
     }
 
