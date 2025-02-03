@@ -28,7 +28,7 @@
                     <h1 class="w-100">Add Task</h1>
                 </div>
 
-                <div w3-include-html="./templates/board-modul-card-edit-mode.html"></div>
+                <div id="task-form-container"></div>
             </div>
 
             <div id="form-footer" class="w-100 d-flex justify-content-end">
@@ -66,7 +66,10 @@
 
 
         document.addEventListener("DOMContentLoaded", () => {
-            loadFormFunctions();
+            renderTaskForm(document.getElementById('task-form-container'));
+            setTimeout(() => {
+                loadFormFunctions();
+            }, 500)
         });
     </script>
 

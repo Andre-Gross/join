@@ -21,6 +21,7 @@
     <script src="js/api.js"></script>
     <script src="js/board.js"></script>
     <script src="js/addTask.js"></script>
+    <script src="js/taskForm.js"></script>
     <script src="script.js"></script>
 </head>
 
@@ -102,7 +103,35 @@
                 <div w3-include-html="./templates/board-modul-card-no-edit-mode.html"></div>
             </div>
 
-            <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
+            <div id="modalCard-edit-mode" class="one-column d-none">
+                <div id="modalCard-edit-mode-template-container"></div>
+                <div id="form-footer" class="w-100 bg-white d-flex justify-content-end">
+                    <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+                        field is required</p>
+                    <div class="main-btn-container d-flex justify-content-end">
+                        <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                            onclick="emptyAddTaskInputs()">
+                            Clear
+                            <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                                <img src="./assets/img/general/cross.svg" alt="Clear">
+                            </div>
+                        </button>
+                        <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                            onclick="submitTaskForm()" disabled>
+                            Create Task
+                            <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                                <img src="./assets/img/general/tick.svg" alt="Create Task">
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalAddTask"  class="right yMiddle">
+            <div id="modulCard-close" class="w-100 d-flex justify-content-end align-items-center"
+                onclick="closeModalCard()"><img
+                    src="assets/img/general/cross.svg" alt="">
             </div>
 
         </div>
