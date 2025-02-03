@@ -29,6 +29,7 @@ async function includeHTML() {
     setupDropdown();
 }
 
+
 /**
  * Updates the profile icon with the user's initials or hides it if not logged in.
  */
@@ -57,7 +58,6 @@ function updateUserInitials() {
         console.error("Error parsing loggedInUser from sessionStorage:", error);
     }
 
-    // Profil-Icon wieder sichtbar machen und Initialen setzen
     profileIconContainer.style.display = 'flex';
     profileIcon.textContent = getInitialsFromName(name);
 }
@@ -84,6 +84,7 @@ function setupDropdown() {
     });
 }
 
+
 /**
  * Highlights the current navigation item based on the page URL.
  */
@@ -101,6 +102,7 @@ function highlightActiveNavItem() {
     });
 }
 
+
 /**
  * Extracts the current page name from the URL.
  * 
@@ -112,6 +114,7 @@ function getCurrentPage() {
     return fileName.replace('.html', '');
 }
 
+
 (function addFavicon() {
     const link = document.createElement('link');
     link.rel = 'icon';
@@ -120,9 +123,10 @@ function getCurrentPage() {
     document.head.appendChild(link);
 })();
 
+
 document.addEventListener('DOMContentLoaded', async () => {
-    await includeHTML(); // Lade das Template zuerst!
-    updateNavForAuth(); // Erst danach Navigation aktualisieren
+    await includeHTML();
+    updateNavForAuth(); 
     highlightActiveNavItem();
 });
 
@@ -146,6 +150,7 @@ function logOut() {
     }, 50); 
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.querySelector('.logout-button');
     if (logoutButton) {
@@ -153,20 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
 /**
  * Blendet alle geschützten Navigationspunkte aus, wenn kein Benutzer eingeloggt ist,
  * und zeigt stattdessen den Login-Button. Gäste sind erlaubt.
  */
 function updateNavForAuth() {
-    // Erst `localStorage`, dann `sessionStorage` prüfen
     let loggedInUser = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
-    console.log("loggedInUser Inhalt:", loggedInUser); // Debugging-Ausgabe
-
+    console.log("loggedInUser Inhalt:", loggedInUser); 
     const loginItem = document.getElementById('nav-login'); // Login-Link
     const protectedNavItems = document.querySelectorAll('.nav-item:not(#nav-login)'); // Alle geschützten Links außer Login
 
-    // Falls niemand eingeloggt ist → Geschützte Elemente ausblenden, Login anzeigen
     if (!loggedInUser) {
         console.log("Kein Nutzer eingeloggt → Geschützte Nav-Items verstecken, Login anzeigen");
         protectedNavItems.forEach(item => item.style.display = 'none');
@@ -178,7 +181,6 @@ function updateNavForAuth() {
         const user = JSON.parse(loggedInUser);
         console.log("Eingeloggter Benutzer:", user);
 
-        // Falls ein Benutzer oder Gast eingeloggt ist → Geschützte Elemente anzeigen, Login-Item ausblenden
         if (user.name) {
             console.log("Nutzer eingeloggt als:", user.name, "→ Geschützte Nav-Items anzeigen, Login verstecken");
             protectedNavItems.forEach(item => item.style.display = 'flex');
@@ -186,10 +188,8 @@ function updateNavForAuth() {
         }
     } catch (error) {
         console.error("Fehler beim Parsen von loggedInUser:", error);
-        // Falls ein Fehler auftritt, vorsichtshalber alle geschützten Items ausblenden
         protectedNavItems.forEach(item => item.style.display = 'none');
         if (loginItem) loginItem.style.display = 'flex';
     }
 }
-
 
