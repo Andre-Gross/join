@@ -21,15 +21,16 @@
     <script src="js/api.js"></script>
     <script src="js/board.js"></script>
     <script src="js/addTask.js"></script>
+    <script src="js/taskForm.js"></script>
     <script src="script.js"></script>
 </head>
 
-<body>
-        <section id="board">
+<body class="">
+    <section id="board">
         <div class="board-header">
             <div class="title">
                 <h1 class="m-2 w-100">Board</h1>
-                <div class="AddTaskBtn" onclick="window.location.href='addTask.html'">
+                <div class="AddTaskBtn" onclick="addTaskFromBoard()">
                     <p class="AddTaskBtnText">Add task</p>
                     <img src="./assets/img/board/plus-button-white.svg" alt="plus">
                 </div>
@@ -89,53 +90,58 @@
     <div w3-include-html="./templates/templates.html"></div>
 
     <section id="modalCard-with-background">
-        <div id="modalCard-background" class="d-none"></div>
-        <div id="modalCard" class="d-none flex-column" style="margin-bottom: 72px;">
+        <div id="modalCard-background" class="d-none" onclick="closeModalCard()"></div>
+        <div id="modalCard"  class="d-none flex-column">
             <div id="modalCard-first-line" class="d-flex justify-content-between align-items-center">
                 <div id="modalCard-category-value" class="category-label"></div>
                 <div id="modulCard-close" class="d-flex justify-content-center align-items-center"
-                    onclick="toggleEditMode(false); toggleDisplayModal(), putNextStatus()"><img
+                    onclick="closeModalCard()"><img
                         src="assets/img/general/cross.svg" alt="">
                 </div>
             </div>
             <div id="modalCard-no-edit-mode" class="d-block">
-                <h2 id="modalCard-title-value" class="mb-0"></h2>
-                <p id="modalCard-description-value" class="mb-0"></p>
-                <table>
-                    <tr>
-                        <td><span class="information-type">Due date:</span></td>
-                        <td id="modalCard-finishedUntil-value"></td>
-                    </tr>
-                    <tr>
-                        <td><span class="information-type">Priority:</span></td>
-                        <td id="modalCard-priority-value"></td>
-                    </tr>
-                </table>
-                <div>
-                    <p class="information-type">Assigned To:</p>
-                    <div id="modalAssignedToValue" class="d-flex flex-column"></div>
-                    <div id="assignedTo-name-labels-container"></div>
-                </div>
-                <div>
-                    <p class="information-type">Subtasks</p>
-                    <div id="modalCard-subtasks-value" class="d-flex flex-column">
-                    </div>
-                </div>
-                <div id="modalCard-delete-edit-bar" class="d-flex justify-content-end">
-                    <div id="modalCard-delete-button" class="d-flex align-items-center" onclick="">
-                        <img src="./assets/img/board/bin.svg" alt="delete">
-                        <span>Delete</span>
-                    </div>
-                    <div id="modal-card-edit-button" class="d-flex" onclick="">
-                        <img src="assets/img/board/pen.svg" alt="edit">
-                        <span>Edit</span>
+                <div w3-include-html="./templates/board-modul-card-no-edit-mode.html"></div>
+            </div>
+
+            <div id="modalCard-edit-mode" class="one-column d-none">
+                <div id="modalCard-edit-mode-template-container"></div>
+                <div id="form-footer" class="w-100 bg-white d-flex justify-content-end">
+                    <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+                        field is required</p>
+                    <div class="main-btn-container d-flex justify-content-end">
+                        <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                            onclick="emptyAddTaskInputs()">
+                            Clear
+                            <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                                <img src="./assets/img/general/cross.svg" alt="Clear">
+                            </div>
+                        </button>
+                        <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                            onclick="submitTaskForm()" disabled>
+                            Create Task
+                            <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                                <img src="./assets/img/general/tick.svg" alt="Create Task">
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div id="modalCard-edit-mode" class="d-none" w3-include-html="templates\board-modul-card-edit-mode.html">
-            </div>           
+        <div id="modalAddTask"  class="right yMiddle">
+            <div id="modulCard-close" class="w-100 d-flex justify-content-end align-items-center"
+                onclick="closeModalCard()"><img
+                    src="assets/img/general/cross.svg" alt="">
+            </div>
+            <div class="h-100 d-flex flex-column justify-content-between align-items-center">
+                <div class="w-100">
+                    <div class="headline-container w-100 mw-396-u1000">
+                        <h1 class="w-100">Add Task</h1>
+                    </div>
 
+                    <div id="modalAddTask-template-container"></div>
+                </div>
+            </div>
         </div>
         <div id="toast-container" class="d-none"></div>
     </section>

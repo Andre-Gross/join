@@ -92,17 +92,17 @@ function getContactMain(i) {
 
 
 async function getIdOfContactWithName(name) {
-    const contacts = await getContactsAsArray();
+  const contacts = await getContactsAsArray();
 
-    for (let i = 0; i < contacts.length; i++) {
-        const singleContact = contacts[i];
-        const checkedName = singleContact.name;
+  for (let i = 0; i < contacts.length; i++) {
+    const singleContact = contacts[i];
+    const checkedName = singleContact.name;
 
-        if (checkedName === name) {
-            const id = singleContact.id;
-            return id;
-        }
+    if (checkedName === name) {
+      const id = singleContact.id;
+      return id;
     }
+  }
 }
 
 

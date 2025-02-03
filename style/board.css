@@ -331,8 +331,39 @@ body.dragging {
 }
 
 
+#modalAddTask {
+    z-index: 10000;
+    position: fixed;
+    transform: translateX(50%) translateY(50%);
+    border-radius: 20px;
+    padding: 32px;
+    background-color: white;
+    transition: all 0.5s ease;
+}
+
+
+#modalCard {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    border-radius: 30px;
+    box-shadow: 0px 0px 4px 0px #00000029;
+    padding: 16px 12px;
+    max-height: calc(100vh - 32px);
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    width: calc(100vw - 32px);
+    max-width: 525px;
+    background-color: white;
+    gap: 16px;
+    z-index: 10001;
+}
+
+
 #modalCard-background {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
@@ -342,19 +373,17 @@ body.dragging {
 }
 
 
-#modalCard {
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    border-radius: 30px;
-    box-shadow: 0px 0px 4px 0px #00000029;
-    padding: 32px 24px;
-    width: calc(100vw - 32px);
-    max-width: 525px;
-    background-color: white;
-    gap: 16px;
-    z-index: 10001;
+/* #modalCard-no-edit-mode form {
+    height: max-content !important;
+} */
+
+
+#modalCard-edit-mode form {
+    margin: 0;
+    height: calc(100vh - 32px - 32px - 50px);
+    width: 100%;
+    overflow: scroll;
+    scrollbar-width: none;
 }
 
 

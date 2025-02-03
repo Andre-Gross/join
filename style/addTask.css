@@ -190,8 +190,12 @@ textarea {
 }
 
 
+.one-column #form-footer {
+    padding-bottom: 12px;
+}
+
+
 .form-subcontainer {
-    width: 301px;
     max-width: 440px;
     display: flex;
     flex-direction: column;
@@ -262,6 +266,11 @@ textarea {
 }
 
 
+.two-img-box {
+    min-width: max-content;
+}
+
+
 .input-two-img-container {
     border-left: none;
     border-top: 1.5px solid var(--border-color) !important;
@@ -278,12 +287,6 @@ textarea {
 
 .main-btn-container {
     gap: 32px;
-}
-
-
-#modalCard-edit-mode form {
-    width: 100%;
-    margin: 0;
 }
 
 

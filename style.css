@@ -224,6 +224,11 @@ footer {
 }
 
 
+.no-scroll {
+    overflow: hidden !important;
+}
+
+
 #priority-label {
     padding: 4px 18px;
     gap: 10px;
@@ -258,27 +263,27 @@ footer {
   }
   
   
-  #toast-container.bottom {
+  .bottom {
     bottom: -100px;
   }
   
 
-  #toast-container.right {
-    right: -300px;
+  .right {
+    right: -600px;
   }
 
 
-  #toast-container.xMiddle {
+  .xMiddle {
     right: 50% !important;
   }
   
 
-  #toast-container.yMiddle {
+  .yMiddle {
     bottom: 50% !important;
   }
 
 
-  #toast-container.yLow {
+  .yLow {
     bottom: 25% !important;
   }
 
