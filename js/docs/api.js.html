@@ -26,49 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
+            <pre class="prettyprint source linenums"><code>const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
-
-/**
- * This function returns the loggedInUser from the database.
- * 
- * @returns {string} - the value of the loggedInUser in the database 
- */
-async function getLoggedInUser() {
-    let response = await fetch(BASE_URL + 'users/.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['loggedInUser'];
-}
-
-
-/*
- * This function set value if the loggedInUser of the database in the global variable if loggedInUser.
- * 
- */
-async function setLoggedInUser() {
-    loggedInUser = await getLoggedInUser();
-}
-
-
-setLoggedInUser();
-
-
-/**
- * This function set who is the loggedInUser to the Database
- * 
- * @param {string} user - the user who shall be the new loggedInUser
- */
-async function putLoggedInUser(user) {
-    fetch(BASE_URL + '/users/loggedInUser.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-        .then(response => response.json())
-}
-
+let toastMessageEditTask ='&lt;span>Task successfully edited&lt;/span>';
+let toastMessageDeleteTask='&lt;span>Task successfully deleted&lt;/span>';
+let toastMessageCreateTask ='&lt;span>Task successfully created&lt;/span>';
 
 /**
  * This function returns the contacts of the user as JSON
@@ -76,47 +38,32 @@ async function putLoggedInUser(user) {
  * @returns {JSON} - This object includes all datas of all contacts of the user.
  */
 async function getContacts() {
-    let response = await fetch(BASE_URL + 'users/' + loggedInUser + '/contacts' + '.json');
+    let response = await fetch(BASE_URL + 'users/' + '/contacts' + '.json');
     let responseAsJSON = await response.json();
     return responseAsJSON;
 }
 
 
 /**
- * This function post the datas of a new contact with another function. If the response is an error, it catch it.
+ * This function returns the contacts of the loggedInUser as Array
  * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact. The standart user is the aktive user.
+ * @returns {Array} - This array contains the contacts of the loggedInUser
  */
-async function postContactToDatabase(data, user = loggedInUser) {
-    try {
-        tryPostContactToDatabase(data, user);
-    } catch (error) {
-        console.error("Fehler beim Speichern des Kontaktes:", error);
-        alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+async function getContactsAsArray() {
+    let contactsAsArray = [];
+    const contactsData =  await getContacts();
+    for (const KEY in contactsData) {
+        const singleContact = contactsData[KEY];
+        const contact = {
+            id: KEY,
+            color: singleContact.color,
+            email: singleContact.email,
+            name: singleContact.name,
+            phone: singleContact.phone
+        };
+        contactsAsArray.push(contact);
     }
-}
-
-
-/**
- * This function post the datas of a new contact. If there is an error, it give an response. Otherwise it give an positve alert.
- * 
- * @param {object} data - Datas of the new contact.
- * @param {string} user - ID of the user, who should get the datas of the new contact.   
- */
-async function tryPostContactToDatabase(data, user) {
-    const response = await fetch(BASE_URL + `users/${user}/contacts.json`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-    alert("Kontakt erfolgreich hinzugefügt.");
+    return contactsAsArray;
 }
 
 
@@ -129,6 +76,28 @@ async function getTasks() {
     let response = await fetch(BASE_URL + 'tasks/.json');
     let responseAsJSON = await response.json();
     return responseAsJSON;
+}
+
+
+async function getTasksAsArray() {
+    let tasksAsArray = [];
+    let tasksData = await getTasks();
+    for (const KEY in tasksData) {
+        const singleTask = tasksData[KEY];
+        const task = {
+            id: KEY,
+            category: singleTask.category,
+            title: singleTask.title,
+            description: singleTask.description,
+            finishedUntil: singleTask.finishedUntil,
+            priority: singleTask.priority,
+            assignedTo: singleTask.assignedTo,
+            subtasks: singleTask.subtasks,
+            status: singleTask.status
+        };
+        tasksAsArray.push(task);
+    }
+    return tasksAsArray;
 }
 
 
@@ -145,20 +114,48 @@ async function getNextStatus() {
 
 
 /**
- * This string put the staus of the next task to the database
- * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ * Posts a new contact to the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
  */
-async function putNextStatus(status = 'To do') {
-    fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
-}
+async function postContactToDatabase(name, mail, phone, color) {
+    try {
+      tryPostContactToDatabase(name, mail, phone, color);
+    } catch (error) {
+      console.error("Fehler beim Speichern des Kontaktes", error);
+      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
+    }
+  }
+  
+  
+  /**
+   * Tries to post a new contact to the database.
+   * @param {string} name - Name of the contact.
+   * @param {string} mail - Email of the contact.
+   * @param {string} phone - Phone number of the contact.
+   * @param {string} color - Color associated with the contact.
+   * @throws Will throw an error if the request fails.
+   */
+  async function tryPostContactToDatabase(name, mail, phone, color) {
+    let response = await fetch(BASE_URL + `users/contacts.json`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        color: color,
+        email: mail,
+        name: name,
+        phone: phone,
+      }),
+    });
+  
+    if (!response.ok) {
+      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+  }
 
 
 /**
@@ -168,7 +165,7 @@ async function putNextStatus(status = 'To do') {
  */
 async function postTaskToDatabase(data) {
     try {
-        tryPostTaskToDatabase(data);
+        await tryPostTaskToDatabase(data);
     } catch (error) {
         console.error("Fehler beim Speichern der Aufgabe:", error);
         alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
@@ -193,13 +190,103 @@ async function tryPostTaskToDatabase(data) {
     if (!response.ok) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
-    alert("Aufgabe erfolgreich hinzugefügt.");
+}
+
+
+async function putTaskToDatabase(taskId, data) {
+    try {
+        await tryPutTaskToDatabase(taskId, data);
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryPutTaskToDatabase(taskId, data) {
+    const response = await fetch(BASE_URL + `tasks/${taskId}.json`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    showToast(toastMessageEditTask, 'middle', 1000);
+}
+
+
+/**
+ * This string put the staus of the next task to the database
+ * 
+ * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ */
+async function putNextStatus(status = 'To do') {
+    await fetch(BASE_URL + '/nextStatus.json', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(status)
+    })
+        .then(response => response.json())
+}
+
+
+async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
+    await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(isChecked)
+    })
+        .then(response => response.json())
+}
+
+
+async function putContactToDatabase(contactId, data) {
+    try {
+        await tryPutTaskToDatabase(contactId, data);
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+    }
+}
+
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryPutContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    showToast(toastMessageCreateTask, 'middle', 1000);
 }
 
 
 async function deleteTaskInDatabase(id){
     try {
-        tryDeleteTaskInDatabase(id);
+        await tryDeleteTaskInDatabase(id);
     } catch (error) {
         console.error("Fehler beim Löschen der Aufgabe:", error);
         alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
@@ -218,16 +305,39 @@ async function tryDeleteTaskInDatabase(id) {
     if (!response.ok) {
         throw new Error(`Fehler: ${response.status} ${response.statusText}`);
     }
-    alert("Aufgabe erfolgreich gelöscht.");
+    showToast(toastMessageDeleteTask, 'middle', 1000);
 }
 
 
-async function getIdOfTask(i) {
-    let tasks = await getTasks();
-    let idsOfTasks = Object.keys(tasks);
-    return toString(idsOfTasks[i]);
+async function deleteContactInDatabase(contactId) {
+    try {
+        await tryPutTaskToDatabase(contactId);
+    } catch (error) {
+        console.error("Fehler beim Löschen der Aufgabe:", error);
+        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
+    }
 }
 
+
+/**
+ * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * 
+ * @param {object} data - datas of the task
+ */
+async function tryDeleteContactInDatabase(contactId) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+    }
+    alert("Kontakt erfolgreich gelöscht.");
+}
 
 </code></pre>
         </article>
@@ -239,13 +349,13 @@ async function getIdOfTask(i) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#displayUserInitials">displayUserInitials</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getLoggedInUser">getLoggedInUser</a></li><li><a href="global.html#getNamesOfContacts">getNamesOfContacts</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getPriorityClass">getPriorityClass</a></li><li><a href="global.html#getSelectedPriority">getSelectedPriority</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getTitlesOfTasks">getTitlesOfTasks</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#hideAssignedToDropdown">hideAssignedToDropdown</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareData">prepareData</a></li><li><a href="global.html#putLoggedInUser">putLoggedInUser</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#showAssignedToDropdown">showAssignedToDropdown</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#patienceDiff">patienceDiff</a></li><li><a href="global.html#patienceDiffPlus">patienceDiffPlus</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 16 2024 10:10:25 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Feb 01 2025 22:36:02 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

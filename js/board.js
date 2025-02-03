@@ -97,7 +97,6 @@ async function loadTasks() {
     const contactsData = await contactsResponse.json();
 
     if (!tasksData) {
-      console.log("No tasks found.");
       return;
     }
 
@@ -236,17 +235,14 @@ async function renderBodySearch() {
       ${task.category || "No category"}
     </div>`;
 
-    // Subtasks-HTML
-    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-    // Priorität-Bild
-    const priorityImage = priorityLabelHTML(task.priority);
+  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-    // Kontakte rendern
-    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+  const priorityImage = priorityLabelHTML(task.priority);
+  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-    // Task-HTML mit gekürzter Beschreibung
-    taskElement.innerHTML = `
+   taskElement.innerHTML = `
+
     <div class="task-header">
       ${categoryHTML}
     </div>
@@ -375,3 +371,29 @@ function scrollToTaskSection() {
     }
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const taskContainers = document.querySelectorAll(".tasks-container");
+
+  taskContainers.forEach(container => {
+      container.addEventListener("mouseover", (event) => {
+          if (event.target.classList.contains("task")) {
+              removeActiveTask();
+              event.target.classList.add("active-task");
+          }
+      });
+  });
+
+  document.addEventListener("click", (event) => {
+      if (!event.target.classList.contains("task")) {
+          removeActiveTask();
+      }
+  });
+
+  /**
+   * Removes the active class from all tasks.
+   */
+  function removeActiveTask() {
+      document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
+  }
+});

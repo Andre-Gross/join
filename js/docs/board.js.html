@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: board.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: board.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let currentTasks = [];
+let toastMessageNoResult ='&lt;span>Keine Ergebnisse gefunden&lt;/span>';
+
+
+async function filterAndShowTask() {
+  let filterWord = document.getElementById("idSearch").value;
+
+  if (filterWord.length >= 3) {
+    let tasksAsArray = await getTasksAsArray();
+    let filterWordLow = filterWord.toLowerCase();
+    let currentTitles = tasksAsArray.filter((title) =>
+      title.title.toLowerCase().includes(filterWordLow)
+    );
+    let currentDescriptions = tasksAsArray.filter((description) =>
+      description.description.toLowerCase().includes(filterWordLow)
+    );
+    let descriptionIds = new Set(currentDescriptions.map((task) => task.id));
+    currentTitles = currentTitles.filter(
+      (task) => !descriptionIds.has(task.id)
+    );
+
+    for (let task of currentTitles) {
+      if (!currentTasks[task.id]) {
+        currentTasks[task.id] = task;
+      }
+    }
+
+    for (let task of currentDescriptions) {
+      if (!currentTasks[task.id]) {
+        currentTasks[task.id] = task;
+      }
+    }
+    if (currentTitles.length === 0 &amp;&amp; currentDescriptions.length === 0) {
+      showToast(toastMessageNoResult, 'middle', 1000);
+      setTimeout(1000);
+    }
+
+    await renderBodySearch();
+  } else if (filterWord.length === 0) {
+    location.reload();
+  }
+}
+
+function renderAssignedContacts(assignedTo, contacts) {
+  const contactEntries = Object.values(contacts);
+
+  const limitedContacts =
+    assignedTo &amp;&amp; assignedTo.length > 0 ? assignedTo.slice(0, 3) : ["", "", ""];
+
+  return `
+    &lt;div class="assigned-contacts">
+      ${limitedContacts
+      .map((name) => {
+        if (!name) {
+          return `
+              &lt;div class="contact-circle" style="background-color: transparent; ">
+              &lt;/div>
+            `;
+        }
+
+        const contact = contactEntries.find((c) => c.name === name);
+
+        const color = contact ? contact.color : "#ccc";
+
+        const nameParts = (contact ? contact.name : name).split(" ");
+        const shortName =
+          nameParts.length > 1
+            ? `${nameParts[0][0].toUpperCase()}${nameParts[1][0].toUpperCase()}`
+            : nameParts[0][0].toUpperCase();
+
+        return `
+            &lt;div class="contact-circle" style="background-color: ${color}">
+              ${shortName}
+            &lt;/div>
+          `;
+      })
+      .join("")}
+    &lt;/div>
+  `;
+}
+
+async function loadTasks() {
+  const firebaseUrl =
+    "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+
+  try {
+    const [tasksResponse, contactsResponse] = await Promise.all([
+      fetch(`${firebaseUrl}/tasks.json`),
+      fetch(`${firebaseUrl}/users/contacts.json`),
+    ]);
+
+    if (!tasksResponse.ok || !contactsResponse.ok) {
+      throw new Error("Error fetching data");
+    }
+
+    const tasksData = await tasksResponse.json();
+    const contactsData = await contactsResponse.json();
+
+    if (!tasksData) {
+      console.log("No tasks found.");
+      return;
+    }
+
+    [
+      "todo-container",
+      "progress-container",
+      "feedback-container",
+      "done-container",
+    ].forEach((containerId) => {
+      document.getElementById(containerId).innerHTML = "";
+    });
+
+    Object.entries(tasksData).forEach(([taskId, task]) => {
+      const containerId = getContainerIdByStatus(task.status);
+      if (!containerId) return;
+
+      const taskElement = document.createElement("div");
+      taskElement.classList.add("task");
+      taskElement.id = taskId;
+      taskElement.setAttribute("draggable", "true");
+      taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+
+      const categoryClass = task.category
+        ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+        : "bc-category-label-unknown";
+      const categoryHTML = `
+        &lt;div class="category-label ${categoryClass}">
+          ${task.category || "No category"}
+        &lt;/div>`;
+
+      let progressHTML = "";
+      if (task.subtasks &amp;&amp; task.subtasks.length > 0) {
+        const completedSubtasks = task.subtasks.filter(
+          (subtask) => subtask.isChecked
+        ).length;
+        const totalSubtasks = task.subtasks.length;
+        const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+
+        progressHTML = `
+          &lt;div class="subtasks-progress-container d-flex align-items-center">
+            &lt;div class="progress-bar-container">
+              &lt;div class="progress-bar" style="width: ${progressPercentage}%;">&lt;/div>
+            &lt;/div>
+            &lt;div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks&lt;/div>
+          &lt;/div>
+        `;
+      }
+
+      const priorityImage = priorityLabelHTML(task.priority);
+
+      const contactsHTML = renderAssignedContacts(
+        task.assignedTo,
+        contactsData
+      );
+
+      taskElement.innerHTML = `
+        &lt;div class="task-header">
+          ${categoryHTML}
+        &lt;/div>
+        &lt;h4>${task.title}&lt;/h4>
+        &lt;p>${task.description}&lt;/p>
+        ${progressHTML}
+        &lt;div class="task-footer">
+          ${contactsHTML}
+          &lt;div class="task-priority">${priorityImage}&lt;/div>
+        &lt;/div>
+      `;
+
+      document.getElementById(containerId).appendChild(taskElement);
+    });
+
+    initializeDragAndDrop();
+  } catch (error) {
+    console.error("Error loading tasks:", error);
+  }
+}
+
+function getPriorityClass(priority) {
+  const priorityClasses = {
+    urgent: "priority-high",
+    medium: "priority-medium",
+    low: "priority-low",
+  };
+  return priorityClasses[priority] || "";
+}
+
+function getContainerIdByStatus(status) {
+  const statusContainers = {
+    "To do": "todo-container",
+    "In progress": "progress-container",
+    "Await feedback": "feedback-container",
+    Done: "done-container",
+  };
+  return statusContainers[status] || null;
+}
+
+async function fetchContactsData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const response = await fetch(`${firebaseUrl}/users/contacts.json`);
+
+  if (!response.ok) {
+    throw new Error("Error fetching contacts data");
+  }
+
+  return await response.json();
+}
+
+function truncateDescription(description, maxLength = 50) {
+  if (!description) return "";
+  return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
+}
+
+async function renderBodySearch() {
+["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+  document.getElementById(containerId).innerHTML = "";
+});
+
+const contactsData = await fetchContactsData();
+
+Object.entries(currentTasks).forEach(([taskId, task]) => {
+  const containerId = getContainerIdByStatus(task.status);
+  if (!containerId) return;
+
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+
+  // Kategorie-Label
+  const categoryClass = task.category
+    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
+  const categoryHTML = `
+    &lt;div class="category-label ${categoryClass}">
+      ${task.category || "No category"}
+    &lt;/div>`;
+
+  // Subtasks-HTML
+  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+
+  // Priorität-Bild
+  const priorityImage = priorityLabelHTML(task.priority);
+
+  // Kontakte rendern
+  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+
+  // Task-HTML mit gekürzter Beschreibung
+  taskElement.innerHTML = `
+    &lt;div class="task-header">
+      ${categoryHTML}
+    &lt;/div>
+    &lt;h4 class="task-title">${task.title}&lt;/h4>
+    &lt;p class="task-description">${truncateDescription(task.description)}&lt;/p>
+    &lt;div class="task-subtasks">${subtasksHTML}&lt;/div>
+    &lt;footer class="task-footer d-flex justify-content-between align-items-center">
+      &lt;div class="assigned-contacts d-flex">
+        ${contactsHTML}
+      &lt;/div>
+      &lt;div class="task-priority">
+        ${priorityImage}
+      &lt;/div>
+    &lt;/footer>
+  `;
+
+  document.getElementById(containerId).appendChild(taskElement);
+});
+}
+
+
+
+function priorityLabelHTML(priority) {
+  return `&lt;img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
+}
+
+async function changeToEditMode(id) {
+  let tasksAsArray = await getTasksAsArray();
+  const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
+  const singleTask = tasksAsArray[singleTaskID];
+
+  const title = document.getElementById("inputTitle");
+  const description = document.getElementById("textareaDescription");
+  const dueDate = document.getElementById("inputDate");
+  const category = document.getElementById("inputCategory");
+
+  title.value = singleTask.title;
+  description.value = singleTask.description;
+  dueDate.value = singleTask.finishedUntil;
+  selectPriority(singleTask.priority);
+  priority = singleTask.priority;
+  category.value = singleTask.category;
+  dataSubtasks = singleTask.subtasks;
+
+  if (dataSubtasks) {
+    renderNewSubtasks();
+  }
+
+  toggleEditMode(true);
+  
+  document
+    .getElementById("modalCard-first-line")
+    .classList.remove("justify-content-between");
+  document
+    .getElementById("modalCard-first-line")
+    .classList.add("justify-content-end");
+  loadFormFunctions();
+
+  document.getElementById("modul-card-edit-mode-form").onsubmit = function () {
+    submitTaskForm("put", id);
+    return false;
+  };
+}
+
+
+function toggleEditMode(shallVisible = '') {
+  toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
+  toggleDisplayNone(document.getElementById("modalCard-category-value"), 'd-block', !shallVisible);
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadTasks(); 
+  scrollToTaskSection(); 
+});
+
+/**
+ * Scrolls to the task section based on the "status" parameter in the URL.
+ */
+function scrollToTaskSection() {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get("status"); 
+
+  if (!status) return; 
+
+  const containerMapping = {
+    todo: "todo-container",
+    inprogress: "progress-container",
+    feedback: "feedback-container",
+    done: "done-container",
+    urgent: "todo-container", 
+  };
+
+  const targetContainerId = containerMapping[status];
+  if (targetContainerId) {
+    const targetElement = document.getElementById(targetContainerId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      console.log(`Scrolled to section: ${status}`);
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const taskContainers = document.querySelectorAll(".tasks-container");
+
+  taskContainers.forEach(container => {
+      container.addEventListener("mouseover", (event) => {
+          if (event.target.classList.contains("task")) {
+              removeActiveTask(); // Entfernt den Effekt von anderen Tasks
+              event.target.classList.add("active-task"); // Fügt den Effekt zum aktuellen Task hinzu
+          }
+      });
+  });
+
+  // Entfernt den Effekt, wenn außerhalb eines Task-Elements geklickt wird
+  document.addEventListener("click", (event) => {
+      if (!event.target.classList.contains("task")) {
+          removeActiveTask();
+      }
+  });
+
+  /**
+   * Removes the active class from all tasks.
+   */
+  function removeActiveTask() {
+      document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
+  }
+});
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#patienceDiff">patienceDiff</a></li><li><a href="global.html#patienceDiffPlus">patienceDiffPlus</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Feb 01 2025 22:36:02 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

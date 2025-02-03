@@ -1,13 +1,14 @@
 body {
     overflow: hidden;
+    overflow-y: hidden !important;
 }
+
 
 h3 {
     font-weight: 400;
     font-size: 20px;
     color: #FFFFFF;
 }
-
 
 
 #idContactMain {
@@ -23,26 +24,32 @@ h3 {
     width: 100%;
 }
 
+
 #idContactMain h2 {
     margin: 20px;
 }
 
+
 #idContactMain::-webkit-scrollbar {
     width: 8px;
 }
+
 
 #idContactMain::-webkit-scrollbar-thumb {
     background: #A8A8A8;
     border-radius: 25%;
 }
 
+
 #idContactMain::-webkit-scrollbar-track {
     background: transparent;
 }
 
+
 #idContactMain::-webkit-scrollbar-button {
     display: none;
 }
+
 
 @supports (scrollbar-width: thin) {
     #idContactMain {
@@ -63,10 +70,12 @@ h3 {
 
 }
 
+
 #idGreyLine {
     width: 100%;
     border: 1px solid #d1d1d1;
 }
+
 
 #idShortName {
     display: flex;
@@ -81,6 +90,7 @@ h3 {
     border: 2px solid #FFFFFF;
 }
 
+
 #idNameMailshort {
     margin-top: 5px;
     display: flex;
@@ -91,6 +101,7 @@ h3 {
     width: 100%;
     height: 80px;
 }
+
 
 #idName {
     font-size: 20px;
@@ -108,12 +119,14 @@ h3 {
     cursor: pointer;
 }
 
+
 #idPhone {
     font-size: 16px;
     font-weight: 400;
     color: #000000;
     cursor: pointer;
 }
+
 
 #idShortAlph {
     font-size: 12px;
@@ -126,12 +139,14 @@ h3 {
     color: #FFFFFF;
 }
 
+
 .editShortAlph {
     font-size: 47px ! important;
     color: #FFFFFF;
     font-weight: 500 ! important;
     ;
 }
+
 
 #idNameMail {
     display: flex;
@@ -160,6 +175,7 @@ h3 {
     background-color: #FF8A00;
 }
 
+
 #idAddContactBtn {
     display: flex;
     justify-content: center;
@@ -175,15 +191,18 @@ h3 {
     transition: background-color 0.2s ease;
 }
 
+
 #idAddContactBtn:hover {
     background-color: #29ABE2;
 }
+
 
 #idImgAddContact {
     width: 24px;
     height: 24px;
     filter: brightness(0) invert(1);
 }
+
 
 #idAddContact {
     top: 0;
@@ -202,6 +221,7 @@ h3 {
     display: flex;
     flex-direction: column;
 }
+
 
 #idAddContact.show {
     bottom: 80px;
@@ -228,6 +248,7 @@ h3 {
     opacity: 0;
 }
 
+
 #idEditContact.show {
     transform: translateX(-50%);
     bottom: 80px;
@@ -236,6 +257,7 @@ h3 {
     left: 50%;
     transform: translateX(-50%);
 }
+
 
 #headTitle {
     height: 45%;
@@ -266,6 +288,7 @@ h3 {
     width: 100px;
 }
 
+
 #idPersonBackground,
 #idShortName-2 {
     position: absolute;
@@ -284,6 +307,7 @@ h3 {
     margin-bottom: 32px;
 }
 
+
 #idPerson {
     display: flex;
     justify-content: center;
@@ -292,6 +316,7 @@ h3 {
     height: 43px;
     filter: brightness(0) invert(1);
 }
+
 
 #idInput {
     display: flex;
@@ -302,12 +327,14 @@ h3 {
     bottom: 110px;
 }
 
+
 #idNameAddContact,
 #idNameEditContact {
     background-image: url('../assets/img/contacts/person.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
 }
+
 
 #idMailAddContact,
 #idMailEditContact {
@@ -316,12 +343,14 @@ h3 {
     background-position: calc(100% - 10px) center;
 }
 
+
 #idPhoneAddContact,
 #idPhoneEditContact {
     background-image: url('../assets/img/contacts/phone.svg');
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
 }
+
 
 #idNameAddContact,
 #idMailAddContact,
@@ -347,6 +376,7 @@ h3 {
     font-weight: 700;
 }
 
+
 #idContactBtns {
     width: 100%;
     display: flex;
@@ -361,9 +391,11 @@ h3 {
     font-weight: 700;
 }
 
+
 #idDeleteBtn {
     width: 82px;
 }
+
 
 #idSaveEditBtn {
     width: 99px;
@@ -373,6 +405,7 @@ h3 {
 #idSubmitAddContact svg {
     fill: white;
 }
+
 
 #idViewContactCard {
     display: flex;
@@ -392,6 +425,7 @@ h3 {
     background-color: #F6F7F8;
 }
 
+
 #idHeadContactView {
     display: flex;
     justify-content: space-between;
@@ -399,6 +433,7 @@ h3 {
     width: 100%;
     margin-top: 20px;
 }
+
 
 #idVector {
     width: 32px;
@@ -411,11 +446,13 @@ h3 {
     font-size: 20px;
 }
 
+
 #idBlueLine {
     border: 2px solid #29ABE2;
     border-radius: 25px;
     width: 100px;
 }
+
 
 #idContactName {
     display: flex;
@@ -430,10 +467,12 @@ h3 {
     border: 2px solid #FFFFFF;
 }
 
+
 .classShortAlph {
     font-size: 27px !important;
     color: #FFFFFF !important;
 }
+
 
 #idH1Name {
     display: flex;
@@ -444,11 +483,13 @@ h3 {
     color: #2A3647;
 }
 
+
 #idH3Title {
     font-size: 20px;
     font-weight: 400;
     color: #000000;
 }
+
 
 #idContactInfoContainer {
     display: flex;
@@ -457,16 +498,19 @@ h3 {
     margin-top: 20px;
 }
 
+
 table {
     width: 100%;
     border-collapse: collapse;
 }
+
 
 th {
     font-weight: 700;
     font-size: 16px;
     color: #000000;
 }
+
 
 th,
 td {
@@ -484,19 +528,22 @@ td {
     cursor: pointer;
     border-radius: 50%;
     position: absolute;
-    bottom: 30px;
-    right: 20px;
+    bottom: 100px;
+    right: 24px;
     transition: background-color 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
 
 #idEditDeleteBtn:hover {
     background-color: #29ABE2;
 }
 
+
 .dm-hidden {
     display: none;
 }
+
 
 .d-menu-2 {
     top: unset;
@@ -531,6 +578,7 @@ td {
     }
 }
 
+
 #overlay {
     position: fixed;
     top: 0;
@@ -542,9 +590,11 @@ td {
     display: none; /* Standardmäßig ausgeblendet */
 }
 
+
 #overlay.show {
     display: block; /* Aktiviert das Overlay */
 }
+
 
 .AddContactBtnText{
     color: white;

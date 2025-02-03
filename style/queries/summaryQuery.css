@@ -1,46 +1,25 @@
-@media (min-width: 660px) and (max-width: 1150px) {
-    .welcome-container {
-        position: relative;
-        width: auto;
-        height: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-        top: 700px;
+@media (max-width: 660px) {
+    .date {
+        font-size: clamp(12px, 2.5vw, 17.25px);
+        font-weight: bold;
     }
-
-    #greeting {
-        transform: none;
-        align-self: flex-start;
-    }
-
-    #userName {
-        transform: none;
-        align-self: flex-start;
-    }
-
-
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        gap: 20px;
+    
+    .upcoming {
+        font-size: clamp(12px, 2.5vw, 17.25px);
+        font-weight: lighter;
     }
 }
 
 
-@media (min-width: 660px) {
-    .welcome-container.fade-out {
-        opacity: 1;
+@media (max-width: 1150px) {
+    .date {
+        font-size: clamp(12px, 2vw, 17.25px);
+        font-weight: bold;
     }
-
-    .hidden {
-        display: unset !important;
-    }
-
-    #main-content {
-        top: 0;
+    
+    .upcoming {
+        font-size: clamp(12px, 2vw, 17.25px);
+        font-weight: lighter;
     }
 }
 
@@ -49,7 +28,7 @@
 
     main {
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 60% 40%;
         gap: 16px;
         max-width: 1920px;
         width: 100%;
@@ -75,6 +54,7 @@
         padding-left: 30px;
         right: 0;
         top: 0;
+        opacity: 1;
     }
 
     .w-100 {
@@ -127,3 +107,4 @@
     }
 
 }
+
