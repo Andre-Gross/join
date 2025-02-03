@@ -25,25 +25,30 @@
     --popup-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
+
   input:-webkit-autofill {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0px 1000px white inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
   
+
   body {
     padding: var(--body-padding);
   }
   
+
   body.landing-page {
     background-color: var(--landing-bg-color);
     transition: background-color 0.5s ease-in-out 0.5s;
   }
   
+
   body.landing-page.loaded {
     background-color: var(--background-color);
   }
   
+
   .landing-page {
     display: flex;
     justify-content: center;
@@ -51,6 +56,7 @@
     height: 100vh;
   }
   
+
   .logo-container {
     position: fixed;
     display: flex;
@@ -64,11 +70,13 @@
     transition: all 0.8s ease-in-out 0.2s;
   }
   
+
   body.landing-page.loaded .logo-container {
     top: 10px;
     left: 10px;
     transform: translate(0, 0);
   }
+  
   
   .login-logo {
     width: var(--logo-width);
@@ -77,28 +85,34 @@
     position: absolute;
   }
   
+
   body.landing-page.loaded .login-logo {
     width: var(--logo-final-width);
   }
   
+
   .initial-logo,
   .final-logo {
     opacity: 1;
     transition: opacity 0.3s ease-in-out 0.5s;
   }
+
   
   .final-logo {
     opacity: 0;
   }
   
+
   body.landing-page.loaded .initial-logo {
     opacity: 0;
   }
   
+
   body.landing-page.loaded .final-logo {
     opacity: 1;
   }
   
+
   input[type="text"],
   input[type="email"],
   input[type="password"] {
@@ -107,18 +121,22 @@
     background-size: var(--input-bg-size);
   }
   
+
   input[type="text"] {
     background-image: url(../assets/img/logIn-signUp/person.svg);
   }
   
+
   input[type="email"] {
     background-image: url(../assets/img/logIn-signUp/mail.svg);
   }
   
+
   input[type="password"] {
     background-image: url(../assets/img/logIn-signUp/lock.svg);
   }
   
+
   .password-container {
     position: relative;
     display: flex;
@@ -130,10 +148,12 @@
     background-image: url("../assets/img/logIn-signUp/lock.svg");
   }
   
+
   .password-container input.has-icon {
     background-image: none;
   }
   
+
   .password-toggle {
     top: 50%;
     transform: translateY(-50%);
@@ -148,10 +168,12 @@
     object-fit: contain;
   }
   
+
   .password-toggle:hover {
     opacity: 1;
   }
   
+
   .card {
     width: var(--card-width);
     max-width: var(--card-max-width);
@@ -169,6 +191,7 @@
     overflow: hidden;
   }
   
+
   #loginCard,
   #signupCard {
     opacity: 0;
@@ -179,11 +202,13 @@
     margin: 0;
   }
   
+
   body.landing-page.loaded #loginCard,
   body.landing-page.loaded #signupCard {
     opacity: 1;
   }
   
+
   body.no-animation .logo-container,
   body.no-animation .login-logo,
   body.no-animation #loginCard {
@@ -193,6 +218,7 @@
     background-color: #f0f0f0;
   }
   
+
   .form-control {
     width: 100%;
     border-radius: var(--form-control-border-radius);
@@ -200,10 +226,12 @@
     border: 1px solid var(--form-control-border-color);
   }
   
+
   .d-grid button {
     margin: 0 auto;
   }
   
+
   .footer {
     display: flex;
     justify-content: center;
@@ -211,17 +239,20 @@
     width: 100vw;
   }
   
+
   #switchExtras {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out 0.3s, visibility 0s linear 0.3s;
   }
   
+
   body.landing-page.loaded #switchExtras {
     opacity: 1;
     visibility: visible;
   }
   
+
   .popup-message {
     position: fixed;
     bottom: 20px;
@@ -239,16 +270,19 @@
     transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
   }
   
+
   .popup-message.show {
     opacity: 1;
     bottom: 40px;
   }
   
+
   .separator {
     border: 2px solid var(--separator-color);
     border-radius: 25px;
   }
   
+
   .horizontal {
     display: block;
     height: 2px;
@@ -256,11 +290,13 @@
     margin: 30px auto;
   }
   
+
   .form-check {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  
   
   .form-check-label {
     margin-left: 8px;
