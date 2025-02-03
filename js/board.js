@@ -1,7 +1,21 @@
 let currentTasks = [];
 let toastMessageNoResult ='<span>Keine Ergebnisse gefunden</span>';
 
-
+/**
+ * Filtert und zeigt Aufgaben basierend auf einem Suchbegriff an, der in ein Suchfeld eingegeben wird.
+ *
+ * - Liest den Suchbegriff aus dem Eingabefeld mit der ID `idSearch`.
+ * - Wenn der Suchbegriff mindestens 3 Zeichen enthält, wird nach Aufgaben gefiltert, deren Titel oder Beschreibung den Begriff enthalten.
+ * - Aufgaben, die im Titel oder in der Beschreibung übereinstimmen, werden in einem Set von `currentTasks` hinzugefügt.
+ * - Falls keine Ergebnisse gefunden werden, wird eine Benachrichtigung (Toast) angezeigt.
+ * - Wenn das Suchfeld leer ist, wird die Seite neu geladen, um die ursprüngliche Ansicht wiederherzustellen.
+ * - Ruft nach der Filterung die Funktion `renderBodySearch()` auf, um die gefilterten Aufgaben anzuzeigen.
+ *
+ * @async
+ * @function filterAndShowTask
+ * @returns {Promise<void>} - Ein Promise, das angibt, ob die Aufgaben erfolgreich gefiltert und angezeigt wurden.
+ * @throws {Error} - Wird ausgelöst, wenn beim Abrufen der Aufgaben oder beim Filtern ein Fehler auftritt.
+ */
 async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
 
@@ -41,6 +55,19 @@ async function filterAndShowTask() {
   }
 }
 
+/**
+ * Rendert die zugewiesenen Kontakte für eine Aufgabe als visuelle Darstellung.
+ *
+ * - Nimmt eine Liste von zugewiesenen Kontakten (`assignedTo`) und sucht die entsprechenden Kontaktdaten in der `contacts`-Datenbank.
+ * - Zeigt maximal 3 zugewiesene Kontakte an. Falls weniger als 3 zugewiesene Kontakte existieren, werden leere Kreise mit transparenter Hintergrundfarbe gerendert.
+ * - Für jeden Kontakt wird ein Kreis mit den Initialen des Kontakts angezeigt. Der Hintergrund des Kreises entspricht der Farbe des Kontakts (falls vorhanden).
+ * - Falls kein Kontakt gefunden wird, wird ein Standardkreis mit grauer Farbe angezeigt.
+ *
+ * @function renderAssignedContacts
+ * @param {Array<string>} assignedTo - Ein Array von Namen der zugewiesenen Kontakte.
+ * @param {Object} contacts - Ein Objekt mit den Kontaktdaten, wobei der Name als Schlüssel und die Farbe als Wert enthalten ist.
+ * @returns {string} - Ein HTML-String, der die visuelle Darstellung der zugewiesenen Kontakte enthält.
+ */
 function renderAssignedContacts(assignedTo, contacts) {
   const contactEntries = Object.values(contacts);
 
@@ -79,6 +106,23 @@ function renderAssignedContacts(assignedTo, contacts) {
   `;
 }
 
+
+/**
+ * Lädt Aufgaben und Kontaktdaten asynchron aus der Firebase-Datenbank und zeigt sie auf der Seite an.
+ *
+ * - Ruft die Aufgaben- und Kontaktdaten von der Firebase-Datenbank ab.
+ * - Löscht den Inhalt der Container für jede Aufgabenstatuskategorie (To Do, In Progress, Feedback, Done).
+ * - Erstellt für jede Aufgabe ein `div`-Element, das die Kategorie, den Titel, die Beschreibung, den Fortschritt der Subtasks,
+ *   zugewiesene Kontakte und die Priorität enthält.
+ * - Füge die Aufgabe dem richtigen Container basierend auf ihrem Status hinzu.
+ * - Aktiviert Drag-and-Drop-Funktionalität für die Aufgaben.
+ * - Zeigt eine Fehlermeldung an, wenn beim Abrufen der Daten ein Fehler auftritt.
+ *
+ * @async
+ * @function loadTasks
+ * @returns {Promise<void>} - Ein Promise, das anzeigt, ob die Aufgaben erfolgreich geladen und angezeigt wurden.
+ * @throws {Error} - Wird ausgelöst, wenn ein Fehler beim Abrufen der Daten oder beim Rendern der Aufgaben auftritt.
+ */
 async function loadTasks() {
   const firebaseUrl =
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
@@ -175,6 +219,20 @@ async function loadTasks() {
   }
 }
 
+
+/**
+ * Gibt die CSS-Klasse für die Priorität einer Aufgabe zurück.
+ *
+ * - Die Funktion ordnet bestimmten Prioritätswerten CSS-Klassen zu:
+ *   - "urgent" → "priority-high"
+ *   - "medium" → "priority-medium"
+ *   - "low" → "priority-low"
+ * - Gibt eine leere Zeichenkette zurück, wenn der Prioritätswert keinen gültigen Eintrag hat.
+ *
+ * @function getPriorityClass
+ * @param {string} priority - Der Prioritätswert der Aufgabe (z. B. "urgent", "medium", "low").
+ * @returns {string} - Die zugehörige CSS-Klasse für die Priorität.
+ */
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -184,6 +242,21 @@ function getPriorityClass(priority) {
   return priorityClasses[priority] || "";
 }
 
+
+/**
+ * Gibt die Container-ID basierend auf dem Status einer Aufgabe zurück.
+ *
+ * - Die Funktion ordnet bestimmte Statuswerten Container-IDs zu: 
+ *   - "To do" → "todo-container"
+ *   - "In progress" → "progress-container"
+ *   - "Await feedback" → "feedback-container"
+ *   - "Done" → "done-container"
+ * - Gibt `null` zurück, wenn der Status keinen gültigen Container zugeordnet hat.
+ *
+ * @function getContainerIdByStatus
+ * @param {string} status - Der Status der Aufgabe (z. B. "To do", "In progress", "Done").
+ * @returns {string|null} - Die ID des zugehörigen Containers oder `null`, wenn kein Container gefunden wurde.
+ */
 function getContainerIdByStatus(status) {
   const statusContainers = {
     "To do": "todo-container",
@@ -194,6 +267,18 @@ function getContainerIdByStatus(status) {
   return statusContainers[status] || null;
 }
 
+
+/**
+ * Ruft die Kontaktdaten von der Firebase-Datenbank ab.
+ *
+ * - Lädt die Kontaktdaten von der URL `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/contacts.json`.
+ * - Wenn der Abruf fehlschlägt, wird ein Fehler ausgelöst.
+ *
+ * @async
+ * @function fetchContactsData
+ * @returns {Promise<Object>} - Ein Promise, das die abgerufenen Kontaktdaten als JSON-Objekt enthält.
+ * @throws {Error} - Wird ausgelöst, wenn der Abruf der Kontaktdaten fehlschlägt.
+ */
 async function fetchContactsData() {
   const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
   const response = await fetch(`${firebaseUrl}/users/contacts.json`);
@@ -205,18 +290,63 @@ async function fetchContactsData() {
   return await response.json();
 }
 
+
+/**
+ * Kürzt eine Beschreibung auf eine maximale Länge und fügt "..." hinzu, wenn sie zu lang ist.
+ *
+ * - Wenn die Beschreibung länger als die angegebene `maxLength` ist, wird sie abgeschnitten und mit "..." versehen.
+ * - Wenn die Beschreibung kürzer oder gleich der maximalen Länge ist, wird sie unverändert zurückgegeben.
+ *
+ * @function truncateDescription
+ * @param {string} description - Die Beschreibung, die gekürzt werden soll.
+ * @param {number} [maxLength=50] - Die maximale Länge der Beschreibung. Standardwert ist 50.
+ * @returns {string} - Die gekürzte Beschreibung oder die ursprüngliche, wenn sie kürzer als die maximale Länge ist.
+ */
 function truncateDescription(description, maxLength = 50) {
   if (!description) return "";
   return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
 }
 
+
+/**
+ * Leert den Inhalt der Container für verschiedene Aufgabenkategorien.
+ *
+ * - Diese Funktion iteriert über die Container-IDs für "todo", "progress", "feedback" und "done" und setzt deren innerHTML auf einen leeren String.
+ *
+ * @async
+ * @function renderBodySearch
+ * @returns {void}
+ */
 async function renderBodySearch() {
 ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
   document.getElementById(containerId).innerHTML = "";
 });
 
+
+/**
+ * Ruft die Kontaktdaten asynchron ab und speichert sie in der Variable `contactsData`.
+ *
+ * - Die Daten werden durch einen Aufruf der Funktion `fetchContactsData` geladen.
+ *
+ * @async
+ * @function fetchContactsData
+ * @returns {Promise<Object>} - Ein Promise, das die abgerufenen Kontaktdaten als Objekt enthält.
+ */
 const contactsData = await fetchContactsData();
 
+
+/**
+ * Erstellt für jede Aufgabe ein HTML-Element und fügt es dem Container basierend auf dem Status der Aufgabe hinzu.
+ *
+ * - Jede Aufgabe wird als `div` mit verschiedenen Details wie Kategorie, Titel, Beschreibung, Subtasks, Priorität und zugewiesene Kontakte dargestellt.
+ * - Das `taskElement` ist draggable und öffnet ein Modal beim Klicken auf die Aufgabe.
+ * - Das erstellte `taskElement` wird in den entsprechenden Container eingefügt.
+ *
+ * @function renderTasks
+ * @param {Object} currentTasks - Ein Objekt, das alle Aufgaben mit ihren Details enthält.
+ * @param {Object} contactsData - Ein Objekt mit den Kontaktdaten der zugewiesenen Nutzer.
+ * @returns {void}
+ */
 Object.entries(currentTasks).forEach(([taskId, task]) => {
   const containerId = getContainerIdByStatus(task.status);
   if (!containerId) return;
@@ -227,7 +357,6 @@ Object.entries(currentTasks).forEach(([taskId, task]) => {
   taskElement.setAttribute("draggable", "true");
   taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-  // Kategorie-Label
   const categoryClass = task.category
     ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
     : "bc-category-label-unknown";
@@ -236,16 +365,12 @@ Object.entries(currentTasks).forEach(([taskId, task]) => {
       ${task.category || "No category"}
     </div>`;
 
-  // Subtasks-HTML
   const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-  // Priorität-Bild
   const priorityImage = priorityLabelHTML(task.priority);
 
-  // Kontakte rendern
   const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-  // Task-HTML mit gekürzter Beschreibung
   taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
@@ -268,11 +393,30 @@ Object.entries(currentTasks).forEach(([taskId, task]) => {
 }
 
 
-
+/**
+ * Gibt das HTML für das Prioritätslabel einer Aufgabe zurück, basierend auf der Priorität.
+ *
+ * - Verwendet eine Bildquelle, die den Prioritätswert in der Bilddatei widerspiegelt.
+ *
+ * @function priorityLabelHTML
+ * @param {string} priority - Der Prioritätswert der Aufgabe (z.B. "high", "medium", "low").
+ * @returns {string} - Das HTML-Markup für das Prioritätslabel als `<img>`-Tag.
+ */
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
+/**
+ * Wechselt in den Bearbeitungsmodus für eine Aufgabe und füllt das Formular mit den aktuellen Aufgabendaten.
+ *
+ * - Lädt die Aufgaben, sucht die Aufgabe anhand der ID und füllt die Eingabefelder im Formular.
+ * - Zeigt den Bearbeitungsmodus an und passt die Layout-Elemente an.
+ * - Setzt die Formularübermittlung auf die Funktion zum Aktualisieren der Aufgabe.
+ *
+ * @async
+ * @function changeToEditMode
+ * @param {string} id - Die ID der Aufgabe, die in den Bearbeitungsmodus versetzt werden soll.
+ */
 async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
   const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
@@ -312,6 +456,15 @@ async function changeToEditMode(id) {
 }
 
 
+/**
+ * Schaltet zwischen Bearbeitungsmodus und Normalmodus für die Modalkarten-Anzeige um.
+ *
+ * - Wenn `shallVisible` wahr ist, wird der Bearbeitungsmodus angezeigt.
+ * - Andernfalls wird der Nicht-Bearbeitungsmodus angezeigt.
+ *
+ * @param {boolean|string} [shallVisible=''] - Bestimmt, ob der Bearbeitungsmodus angezeigt werden soll.
+ * @function toggleEditMode
+ */
 function toggleEditMode(shallVisible = '') {
   toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
   toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
@@ -319,13 +472,29 @@ function toggleEditMode(shallVisible = '') {
 }
 
 
+/**
+ * Wartet, bis das DOM vollständig geladen ist, lädt die Aufgaben und scrollt zur entsprechenden Sektion.
+ *
+ * - Ruft die Funktion `loadTasks` auf, um Aufgaben zu laden.
+ * - Scrollt anschließend zur Sektion, die durch den "status"-Parameter in der URL bestimmt wird.
+ *
+ * @event DOMContentLoaded
+ * @async
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   await loadTasks(); 
   scrollToTaskSection(); 
 });
 
+
 /**
- * Scrolls to the task section based on the "status" parameter in the URL.
+ * Scrollt zu einer bestimmten Aufgaben-Sektion basierend auf dem "status"-Parameter in der URL.
+ *
+ * - Unterstützte Statuswerte: "todo", "inprogress", "feedback", "done", "urgent".
+ * - Der Status "urgent" wird zur "todo"-Sektion weitergeleitet.
+ * - Falls kein gültiger Status vorhanden ist, wird nichts unternommen.
+ *
+ * @function scrollToTaskSection
  */
 function scrollToTaskSection() {
   const params = new URLSearchParams(window.location.search);
@@ -351,28 +520,33 @@ function scrollToTaskSection() {
   }
 }
 
+
+/**
+ * Wartet, bis das DOM vollständig geladen ist, und fügt Ereignislistener für Hover- und Klick-Interaktionen mit Aufgaben hinzu.
+ *
+ * - Beim Überfahren einer Aufgabe mit der Maus wird sie als aktive Aufgabe markiert.
+ * - Beim Klicken außerhalb einer Aufgabe wird die Markierung entfernt.
+ *
+ * @event DOMContentLoaded
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const taskContainers = document.querySelectorAll(".tasks-container");
 
   taskContainers.forEach(container => {
       container.addEventListener("mouseover", (event) => {
           if (event.target.classList.contains("task")) {
-              removeActiveTask(); // Entfernt den Effekt von anderen Tasks
-              event.target.classList.add("active-task"); // Fügt den Effekt zum aktuellen Task hinzu
+              removeActiveTask(); 
+              event.target.classList.add("active-task"); 
           }
       });
   });
 
-  // Entfernt den Effekt, wenn außerhalb eines Task-Elements geklickt wird
   document.addEventListener("click", (event) => {
       if (!event.target.classList.contains("task")) {
           removeActiveTask();
       }
   });
 
-  /**
-   * Removes the active class from all tasks.
-   */
   function removeActiveTask() {
       document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
   }
