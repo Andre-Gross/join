@@ -6,19 +6,23 @@
     padding-top: 80px;
 }
 
+
 h1 {
     position: relative;
     top: unset;
 }
+
 
 body {
     position: unset;
     width: auto;
 }
 
+
 body.dragging {
     cursor: grabbing;
 }
+
 
 .title {
     display: flex;
@@ -27,9 +31,11 @@ body.dragging {
     max-width: 1060px;
 }
 
+
 .grid-item {
     width: clamp(180px, 18vw, 300px);
 }
+
 
 .board-header {
     margin-top: 0;
@@ -37,11 +43,13 @@ body.dragging {
     position: relative;
 }
 
+
 .searchBar {
     display: flex;
     align-items: center;
     flex-direction: row;
 }
+
 
 .search-container {
     position: relative;
@@ -50,11 +58,13 @@ body.dragging {
     margin-top: unset !important;
 }
 
+
 .search-container input {
     width: 80%;
     height: 30px;
     padding-right: 40px;
 }
+
 
 .search-container .search-icon {
     position: absolute;
@@ -63,6 +73,7 @@ body.dragging {
     transform: translateY(-50%);
     color: #6c757d;
 }
+
 
 .container-fluid {
     display: flex;
@@ -81,6 +92,7 @@ body.dragging {
 
 }
 
+
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -88,10 +100,12 @@ body.dragging {
     width: 100%;
 }
 
+
 .section-header h2 {
     margin: 0;
     font-size: 16px;
 }
+
 
 .tasks-container {
     width: 100%;
@@ -108,6 +122,7 @@ body.dragging {
     color: #A8A8A8;
     text-align: center;
 }
+
 
 #todo-container:empty,
 #progress-container:empty,
@@ -138,9 +153,11 @@ body.dragging {
     cursor: pointer;
 }
 
+
 .task:hover {
     transform: rotate(3deg) scale(1.05);
 }
+
 
 .task.active-task {
     transform: rotate(3deg) scale(1.05);
@@ -153,6 +170,7 @@ body.dragging {
     font-weight: 700;
 }
 
+
 .task p {
     font-size: 16px;
     font-weight: 400;
@@ -160,6 +178,7 @@ body.dragging {
     line-height: 1.2;
     margin-bottom: 0.5rem;
 }
+
 
 .task-description {
     font-size: 14px;
@@ -182,6 +201,7 @@ body.dragging {
     bottom: 0;
 }
 
+
 .assigned-contacts {
     display: flex;
     position: relative;
@@ -190,6 +210,7 @@ body.dragging {
     align-items: center;
     left: 8px;
 }
+
 
 .contact-circle {
     width: 32px;
@@ -206,6 +227,7 @@ body.dragging {
     position: relative;
     margin-left: -8px;
 }
+
 
 .add-button {
     position: absolute;
@@ -232,21 +254,26 @@ body.dragging {
     cursor: grabbing;
 }
 
+
 .plus-button, .plus-button-hover {
     cursor: pointer;
 }
+
 
 .plus-button-hover {
     display: none;
 }
 
+
 .plus-button:hover {
     display: none;
 }
 
+
 .plus-button:hover + .plus-button-hover {
     display: inline-block;
 }
+
 
 .subtasks-progress-container {
     position: absolute;
@@ -257,6 +284,7 @@ body.dragging {
     margin-top: 10px;
     gap: 16px;
 }
+
 
 .progress-bar-container {
     position: relative;
@@ -274,6 +302,7 @@ body.dragging {
     transition: width 0.3s ease-in-out;
 }
 
+
 .subtasks-count {
     font-size: 12px;
     color: #000000;
@@ -284,6 +313,7 @@ body.dragging {
     display: none;
 }
 
+
 .no-tasks {
     text-align: center;
     font-size: 16px;
@@ -291,6 +321,7 @@ body.dragging {
     padding: 20px 0;
     font-style: italic;
 }
+
 
 .placeholder {
     border: 2px dashed #A8A8A8;
@@ -428,6 +459,7 @@ body.dragging {
     position: relative;
 }
 
+
 .custom-checkbox input[type="checkbox"] {
     display: none;
 }
@@ -440,6 +472,7 @@ body.dragging {
     background-size: cover;
     transition: transform 0.2s ease;
 }
+
 
 .custom-checkbox input[type="checkbox"]:checked+.checkbox-image {
     background-image: url('../assets/img/board/checkbox-checked.svg');
@@ -475,6 +508,7 @@ body.dragging {
     height: 18px;
 }
 
+
 #idSearch {
     background-image:
         url('/assets/img/board/search-wall.svg');
@@ -483,10 +517,12 @@ body.dragging {
     margin-right: 40px;
 }
 
+
 #idSearch:focus {
     border: #29ABE2 1px solid;
 
 }
+
 
 .AddTaskBtn {
     display: flex;
@@ -504,6 +540,7 @@ body.dragging {
     margin-top: unset !important;
 }
 
+
 .AddTaskBtnText {
     font-size: 21px;
     font-weight: 700;
@@ -511,6 +548,7 @@ body.dragging {
     margin: 0;
     padding-right: 8px;
 }
+
 
 .AddTaskBtn:hover {
     background-color: #29ABE2;
