@@ -27,6 +27,7 @@
     --animation-slide-in: 0.3s ease-out forwards;
 }
 
+
 .header {
     position: fixed;
     top: 0;
@@ -41,6 +42,7 @@
     box-shadow: var(--header-shadow);
     height: var(--header-height);
 }
+
 
 .profile-icon-circle {
     width: 100%;
@@ -57,11 +59,12 @@
     cursor: pointer;
 }
 
+
 .profile-icon-circle:hover {
     background-color: var(--profile-icon-hover-bg);
 }
 
-/* Navigation */
+
 .navbar {
     position: fixed;
     bottom: 0;
@@ -76,6 +79,7 @@
     height: var(--navbar-height);
     z-index: 9995;
 }
+
 
 .nav-item {
     display: flex;
@@ -93,9 +97,11 @@
     text-align: center;
 }
 
+
 .nav-item.active {
     background-color: var(--nav-item-active-bg);
 }
+
 
 .nav-icon {
     display: block;
@@ -104,15 +110,18 @@
     margin-bottom: 4px;
 }
 
+
 .nav-item span {
     display: block;
     line-height: 1;
     white-space: nowrap;
 }
 
+
 .nav-item:hover {
     background-color: var(--nav-item-hover-bg);
 }
+
 
 #profile-icon-container {
     width: var(--profile-icon-size);
@@ -123,7 +132,7 @@
     position: relative;
 }
 
-/* Dropdown-Menü */
+
 .d-menu {
     position: absolute;
     top: 105%;
@@ -138,6 +147,7 @@
     animation: slideIn var(--animation-slide-in);
 }
 
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -146,6 +156,7 @@
         transform: translateX(0);
     }
 }
+
 
 .dropdown-item {
     display: block;
@@ -156,9 +167,11 @@
     width: 100%;
 }
 
+
 .dropdown-item:hover {
     background-color: var(--nav-item-hover-bg);
 }
+
 
 .logout-button {
     width: 100%;
@@ -170,6 +183,7 @@
     color: var(--logout-btn-color);
 }
 
+
 .logout-button:hover {
     background-color: var(--logout-btn-hover-bg);
 }
@@ -178,17 +192,19 @@
     display: none;
 }
 
-/* Hilfe-Symbol */
+
 .help {
     position: absolute;
     top: 40%;
     right: 108px;
 }
 
+
 .help:hover {
     scale: 130%;
     cursor: pointer;
 }
+
 
 body[data-page="privacyPolicy"] .help,
 body[data-page="legalNotice"] .help {
