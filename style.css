@@ -22,12 +22,14 @@
     --template-height-with-padding: 80px;
 }
 
+
 @font-face {
     font-family: 'Inter';
     src: url('./font/Inter/Inter-VariableFont.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
+
 
 * {
     margin: 0;
@@ -74,15 +76,18 @@ a {
     text-decoration: none;
 }
 
+
 input,
 textarea {
     border: 1.5px solid var(--border-color);
     border-radius: var(--border-radius);
 }
 
+
 textarea {
     border-color: var(--textarea-border-color);
 }
+
 
 input:focus,
 textarea:focus {
@@ -90,15 +95,18 @@ textarea:focus {
     outline: none;
 }
 
+
 footer {
     width: 100%;
     position: fixed;
     bottom: 0;
 }
 
+
 .text-muted{
     color: #A8A8A8 !important;
 }
+
 
 .col:hover a {
     color: #A8A8A8 !important;
@@ -116,11 +124,13 @@ footer {
     --bs-btn-active-bg: var(--button-hover-background-color) !important;
 }
 
+
 .btn-primary:hover,
 .btn-dark:hover {
     background-color: var(--button-hover-background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 
 .btn-outline-secondary {
     width: var(--button-width);
@@ -134,12 +144,14 @@ footer {
     --bs-btn-active-color: #2A3647;
 }
 
+
 .btn-outline-secondary:hover {
     border-color: var(--button-hover-background-color);
     background-color: var(--white-color);
     color: var(--button-hover-background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 
 .btn-dark {
     width: 104px;
@@ -149,6 +161,7 @@ footer {
     --bs-btn-active-bg: var(--button-hover-background-color);
 }
 
+
 .col-md-4 {
     padding: 0;
     display: flex;
@@ -157,7 +170,6 @@ footer {
 }
 
 
-/* Andrés Hinzufügungen */
 .assignedTo-name-label {
     padding: 7px 16px;
     font-size: 19px;
@@ -221,7 +233,6 @@ footer {
 }
 
 
-/* toast-message */
 #toast-container {
     z-index: 10000;
     position: fixed;
@@ -272,7 +283,6 @@ footer {
   }
 
 
-/* Classes for name-circles */
 .name-circle {
     height: 40px;
     width: 40px;
@@ -358,12 +368,11 @@ footer {
 }
 
 
-/* Der Code von Kay */
 #idVector:hover {
     cursor: pointer;
 }
 
-/* Der Code von Relja */
+
 .text-muted:hover {
     color: #29ABE2 !important;
 }
