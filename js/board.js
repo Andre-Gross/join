@@ -278,10 +278,14 @@ async function changeToEditMode(id) {
   const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
   const singleTask = tasksAsArray[singleTaskID];
 
+  const modalCardEditMode = document.getElementById('modalCard-edit-mode-template-container');
+  renderTaskForm(modalCardEditMode);
+
   const title = document.getElementById("inputTitle");
   const description = document.getElementById("textareaDescription");
   const dueDate = document.getElementById("inputDate");
   const category = document.getElementById("inputCategory");
+
 
   title.value = singleTask.title;
   description.value = singleTask.description;
@@ -305,7 +309,7 @@ async function changeToEditMode(id) {
     .classList.add("justify-content-end");
   loadFormFunctions();
 
-  document.getElementById("modul-card-edit-mode-form").onsubmit = function () {
+  modalCardEditMode.querySelector("form").onsubmit = function () {
     submitTaskForm("put", id);
     return false;
   };
