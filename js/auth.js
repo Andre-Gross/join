@@ -14,12 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
  * Ausnahme: Wenn der Benutzer als "guest" eingeloggt ist, bleibt er auf der Seite.
  */
 function checkAuth() {
-    let loggedInUser = sessionStorage.getItem("loggedInUser"); // NUR sessionStorage nutzen
-
-    console.log("checkAuth - loggedInUser Inhalt:", loggedInUser); // Debugging-Ausgabe
+    let loggedInUser = sessionStorage.getItem("loggedInUser");
 
     if (!loggedInUser) {
-        console.log("Kein Nutzer eingeloggt → Weiterleitung zur Login-Seite");
         window.location.href = "index.html";
         return;
     }
@@ -28,7 +25,6 @@ function checkAuth() {
         const user = JSON.parse(loggedInUser);
         console.log("Eingeloggter Benutzer:", user);
 
-        // Falls Gast, keine Weiterleitung
         if (user.id && user.id.toLowerCase() === "guest") {
             console.log("Gast-Login erkannt → Keine Weiterleitung");
             return;
