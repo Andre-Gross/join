@@ -16,9 +16,11 @@ const COLORS = [
   "#FFBB2B",
 ];
 
+
 function capitalizeFirstLetter(val) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
+
 
 function changeBorderColor(element, borderColorClass = "") {
   element.classList.remove("border-color-onfocus");
@@ -38,6 +40,7 @@ function changeToRightBorderColor(element) {
   }
 }
 
+
 function checkContentOfArray(key, arrayToCheck) {
   for (i = 0; i < arrayToCheck.length; i++) {
     const checkValue = arrayToCheck[i];
@@ -49,6 +52,7 @@ function checkContentOfArray(key, arrayToCheck) {
     }
   }
 }
+
 
 function clearValue(element) {
   element.value = "";
@@ -70,6 +74,7 @@ async function createNameCirlceWithId(id) {
 
   return createNameCirlce(initials, color);
 }
+
 
 function getContactMain(i) {
   return `
@@ -151,7 +156,6 @@ function returnInitialsOfName(name) {
  * @param {string} [fromWhere='bottom'] - Direction from which the toast should slide in. Only relevant if `shallSlideIn` is true. Possible values: "bottom" or "right".
  * @param {boolean} [shallSlideOut=true] - Whether the toast should slide out of the screen. If false, the toast will disappear instantly. Only relevant if `visibleTime` > 0.
  */
-
 function showToast(
   message,
   height = "middle",
@@ -170,6 +174,7 @@ function showToast(
     toastLeaveDisplay(toast, visibleTime, height, fromWhere, shallSlideOut);
   }, 0);
 }
+
 
 /**
  * Configures the initial position of the toast element before it appears on the screen.
@@ -191,6 +196,7 @@ function prepareToastStartPosition(toast, shallSlideIn, height, fromWhere) {
   }
 }
 
+
 /**
  * Handles the appearance of the toast element by either sliding it in or making it appear instantly.
  *
@@ -207,6 +213,7 @@ function callToast(toast, height, shallSlideIn = true, fromWhere) {
     toastAppear();
   }
 }
+
 
 /**
  * Animates the toast element to slide into the screen from the specified direction.
@@ -225,6 +232,7 @@ function toastSlideIn(toast, height, fromWhere) {
     toast.classList.add("xMiddle");
   }
 }
+
 
 /**
  * Makes the toast element appear instantly at the specified position.
@@ -269,6 +277,7 @@ function toastLeaveDisplay(
   }
 }
 
+
 function toggleDisplayNone(
   element,
   displayMode = "d-block",
@@ -291,6 +300,7 @@ function toggleDisplayNone(
     }
   }
 }
+
 
 function upperCaseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
