@@ -174,12 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateNavForAuth() {
     let loggedInUser = localStorage.getItem("loggedInUser") || sessionStorage.getItem("loggedInUser");
 
-    console.log("loggedInUser Inhalt:", loggedInUser); 
     const loginItem = document.getElementById('nav-login'); // Login-Link
     const protectedNavItems = document.querySelectorAll('.nav-item:not(#nav-login)'); // Alle geschützten Links außer Login
 
     if (!loggedInUser) {
-        console.log("Kein Nutzer eingeloggt → Geschützte Nav-Items verstecken, Login anzeigen");
         protectedNavItems.forEach(item => item.style.display = 'none');
         if (loginItem) loginItem.style.display = 'flex';
         return;
@@ -187,15 +185,12 @@ function updateNavForAuth() {
 
     try {
         const user = JSON.parse(loggedInUser);
-        console.log("Eingeloggter Benutzer:", user);
 
         if (user.name) {
-            console.log("Nutzer eingeloggt als:", user.name, "→ Geschützte Nav-Items anzeigen, Login verstecken");
             protectedNavItems.forEach(item => item.style.display = 'flex');
             if (loginItem) loginItem.style.display = 'none';
         }
     } catch (error) {
-        console.error("Fehler beim Parsen von loggedInUser:", error);
         protectedNavItems.forEach(item => item.style.display = 'none');
         if (loginItem) loginItem.style.display = 'flex';
     }
