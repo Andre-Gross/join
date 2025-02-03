@@ -1,3 +1,13 @@
+/**
+ * Event listener for the DOMContentLoaded event.
+ * - Includes external HTML content.
+ * - Initializes user data (e.g., session, preferences).
+ * - Displays the logged-in user's name or greets as a guest.
+ * - Fades out the welcome message after loading.
+ * - Initializes the summary section of the page.
+ * 
+ * @returns {void}
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     await includeHTML();
     initializeUserData();
@@ -5,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     fadeOutWelcomeMessage();
     initializeSummary();
 });
+
 
 /**
  * Initializes user data from session storage.
@@ -23,6 +34,15 @@ function initializeUserData() {
 }
 
 
+/**
+ * Displays the user's name based on the stored session data.
+ * - Checks if a logged-in user is available from session storage.
+ * - Fetches the user's name from the database if logged in.
+ * - If no name is found, displays an error or greets as a guest.
+ * - Updates the UI with an appropriate greeting message for the user.
+ * 
+ * @returns {void}
+ */
 async function displayUserName() {
     let name = 'Guest';
     const email = sessionStorage.getItem('loggedInUserEmail');
@@ -46,6 +66,7 @@ async function displayUserName() {
     }
 }
 
+
 /**
  * Displays a greeting message without a name for guests.
  */
@@ -56,6 +77,7 @@ function greetGuest() {
     }
     updateGreetingUI(greeting, '');
 }
+
 
 /**
  * Updates the greeting UI with a message and optionally a name.
@@ -72,6 +94,13 @@ function updateGreetingUI(greeting, name) {
 }
 
 
+/**
+ * Fetches the user's name from the database based on the provided email and password.
+ * 
+ * @param {string} email - The user's email address.
+ * @param {string} password - The user's password.
+ * @returns {Promise<string|null>} - Returns the user's name if found, or null if not found or an error occurs.
+ */
 async function fetchUserName(email, password) {
     try {
         const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
@@ -87,6 +116,12 @@ async function fetchUserName(email, password) {
     }
 }
 
+
+/**
+ * Returns a greeting message based on the current time of day.
+ * 
+ * @returns {string} - A greeting message appropriate for the current time (e.g., "Good Morning,", "Good Evening,").
+ */
 function getGreetingMessage() {
     const hour = parseInt(new Date().getHours(), 10); 
     console.log("Current Hour:", hour);
@@ -99,11 +134,22 @@ function getGreetingMessage() {
 }
 
 
+/**
+ * Capitalizes the first letter of a string.
+ *
+ * @param {string} str - The string to capitalize.
+ * @returns {string} - The input string with the first letter capitalized.
+ */
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 
+/**
+ * Fades out the welcome message and shows the main content of the page.
+ * The welcome message will only fade out if it has not been shown before and the screen width is smaller than 1150px.
+ * Uses sessionStorage to track whether the animation has been shown.
+ */
 function fadeOutWelcomeMessage() {
     const welcomeContainer = document.querySelector('.welcome-container');
     const mainContent = document.getElementById('main-content');
@@ -129,9 +175,19 @@ function fadeOutWelcomeMessage() {
         mainContent?.classList.add('visible');
     }
 }
+
+
+/**
+ * Adds an event listener that triggers the `fadeOutWelcomeMessage` function once the DOM is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', fadeOutWelcomeMessage);
 
 
+/**
+ * Handles window resize events to adjust the visibility of the welcome message and main content.
+ * - On large screens (>=1000px), both the welcome message and main content are visible.
+ * - On smaller screens, the welcome message is hidden if the greeting animation has already been shown.
+ */
 function handleResize() {
     const isLargeScreen = window.innerWidth >= 1000;
     const welcomeContainer = document.querySelector('.welcome-container');
@@ -148,9 +204,18 @@ function handleResize() {
     }
 }
 
+
+/**
+ * Adds an event listener that triggers the `handleResize` function when the window is resized.
+ */
 window.addEventListener('resize', handleResize);
 
+
+/**
+ * Adds an event listener to trigger the `handleResize` function once the DOM content has loaded.
+ */
 document.addEventListener('DOMContentLoaded', handleResize);
+
 
 /**
  * Fetches and calculates the summary of tasks from Firebase.
@@ -185,6 +250,7 @@ async function initializeSummary() {
     }
 }
 
+
 /**
  * Calculates the number of tasks for each status.
  *
@@ -206,6 +272,7 @@ function calculateTaskStatusCounts(tasks) {
     return { todo, inProgress, feedback, done };
 }
 
+
 /**
  * Updates the summary UI with the calculated task counts.
  *
@@ -223,6 +290,7 @@ function updateSummaryElements(todo, done, inProgress, feedback, total) {
     setElementText("#feedback-tasks", feedback);
     setElementText("#total-tasks", total);
 }
+
 
 /**
  * Formatiert einen Datumsstring in ein lesbares, langes Format (z. B. "1. Januar 2025").
@@ -264,6 +332,7 @@ function updateUrgentDeadline(tasks) {
     }
 }
 
+
 /**
  * Sets the text content of an element selected by the given selector.
  *
@@ -293,6 +362,7 @@ function displayError(message) {
         }, 5000); // Fehlernachricht nach 5 Sekunden ausblenden
     }
 }
+
 
 // Call initializeSummary on page load
 document.addEventListener("DOMContentLoaded", initializeSummary);
