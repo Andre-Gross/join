@@ -375,8 +375,25 @@ function toggleDisplayModal(shallVisible = '') {
 
   toggleDisplayNone(background, "d-block", shallVisible);
   toggleDisplayNone(card, "d-flex", shallVisible);
+
+  provideScrollingofElement(body)
 }
+
+
+function provideScrollingofElement(element, provideScrolling = '') {
+  if (provideScrolling === '') {
+    if (element.classList.contains("no-scroll")) {
+      element.classList.remove('no-scroll');
+    } else {
+      element.classList.add('no-scroll');
+    }
+  } else if (!provideScrolling) {
+    element.classList.remove('no-scroll');
+  } else  if (provideScrolling){
+    element.classList.add('no-scroll');
+  }
 }
+
 
 async function deleteTaskOfModalCard(id) {
   try {
