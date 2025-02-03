@@ -39,26 +39,31 @@
     --text-blue-color: #29abe2;
   }
   
+
   h1 {
     font-weight: var(--h1-font-weight);
     font-size: var(--h1-font-size);
     color: var(--h1-color);
   }
+
   
   h2 {
     font-size: var(--h2-font-size);
   }
+
   
   h5 {
     font-weight: var(--h5-font-weight);
     font-size: var(--h5-font-size);
   }
   
+
   h6 {
     font-size: var(--h6-font-size);
     font-weight: var(--h6-font-weight);
   }
   
+
   .h6 {
     font-size: var(--h6-font-size) !important;
     font-weight: var(--h6-font-weight);
@@ -66,6 +71,7 @@
     margin-bottom: var(--h6-class-margin-bottom);
   }
   
+
   .login-container h2,
   .signup-container h2 {
     font-size: var(--login-signup-h2-font-size);
@@ -74,6 +80,7 @@
     margin-bottom: var(--login-signup-h2-margin-bottom);
   }
   
+
   .subtitle {
     font-size: var(--subtitle-font-size);
     color: var(--subtitle-color);
@@ -81,27 +88,32 @@
     line-height: var(--subtitle-line-height);
   }
   
+
   #greeting {
     font-weight: var(--greeting-font-weight);
     color: var(--greeting-color);
     font-size: var(--greeting-font-size);
   }
   
+
   #userName {
     font-weight: var(--user-name-font-weight);
     font-size: var(--user-name-font-size);
     color: var(--user-name-color) !important;
   }
   
+
   p {
     color: var(--p-color);
     line-height: var(--p-line-height);
     margin-bottom: var(--p-margin-bottom);
   }
+
   
   .textblue {
     color: var(--text-blue-color);
   }
+  
   
   .linkDev {
     cursor: pointer;
