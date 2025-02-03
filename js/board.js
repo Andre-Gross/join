@@ -312,6 +312,27 @@ async function changeToEditMode(id) {
 }
 
 
+function closeModalCard() {
+  const modalBackground = document.getElementById("modalCard-background");
+  const modalCardEditModeContainer = document.getElementById('modalCard-edit-mode-template-container');
+  const modalAddTask = document.getElementById('modalAddTask');
+  const modalAddTaskContainer = document.getElementById('modalAddTask-template-container');
+
+  if (!(modalAddTaskContainer.innerHTML === '')) {
+    modalAddTask.classList.remove('xMiddle');
+    toggleDisplayNone(modalBackground, 'd-block', false);
+    setTimeout(() => {
+      modalAddTaskContainer.innerHTML = '';
+    },500)
+  } else {
+    modalCardEditModeContainer.innerHTML = '';
+    toggleEditMode(false);
+    toggleDisplayModal(false);
+  }
+  putNextStatus()
+}
+
+
 function toggleEditMode(shallVisible = '') {
   toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
   toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
