@@ -40,20 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
 function clearSignupInputs() {
     document.querySelectorAll("#signupCard input").forEach(input => {
         if (input.type === "checkbox") {
-            input.checked = false; // Checkboxen abwählen
+            input.checked = false; 
         } else {
-            input.value = ""; // Alle anderen Felder leeren
+            input.value = ""; 
         }
     });
 
-    // Falls ein Icon sichtbar ist, verberge es
     document.querySelectorAll("#signupCard .password-toggle").forEach(icon => {
         icon.style.display = "none";
     });
 
-    // Stelle sicher, dass das lock.svg als Hintergrundbild erscheint
+   
     document.querySelectorAll("#signupCard input[type='password']").forEach(input => {
-        input.classList.remove("has-icon"); // Setzt das Hintergrundbild zurück
+        input.classList.remove("has-icon"); 
     });
 }
 
@@ -144,12 +143,12 @@ async function signUp() {
 document.addEventListener("DOMContentLoaded", () => {
     const passwordFields = document.querySelectorAll(".password-container input");
 
-    // Setzt alle Passwort-Felder auf leer beim Laden
+   
     passwordFields.forEach(input => input.value = "");
 
-    // Event-Listener für Icon-Update und Passwort-Anzeige-Umschaltung
+    
     passwordFields.forEach(input => {
-        const icon = input.nextElementSibling; // Das zugehörige Icon
+        const icon = input.nextElementSibling; 
         input.addEventListener("input", () => updatePasswordIcon(input, icon));
         icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
     });
@@ -163,12 +162,12 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function updatePasswordIcon(input, icon) {
     if (!input.value) {
-        input.classList.remove("has-icon"); // Zeigt das `background-image`
-        icon.style.display = "none"; // Versteckt das `<img>`-Icon
+        input.classList.remove("has-icon"); 
+        icon.style.display = "none"; 
     } else {
-        input.classList.add("has-icon"); // Entfernt das `background-image`
-        icon.style.display = "inline"; // Zeigt das `<img>`-Icon
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Zeigt das Auge mit Strich
+        input.classList.add("has-icon"); 
+        icon.style.display = "inline"; 
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; 
     }
 }
 
@@ -179,14 +178,14 @@ function updatePasswordIcon(input, icon) {
  * @param {HTMLImageElement} icon - The clicked eye icon.
  */
 function togglePasswordVisibility(input, icon) {
-    if (!input.value) return; // Falls das Feld leer ist, nichts tun
+    if (!input.value) return; 
 
     if (input.type === "password") {
         input.type = "text";
-        icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; // Auge offen
+        icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; 
     } else {
         input.type = "password";
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Auge geschlossen
+        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; 
     }
 }
 
