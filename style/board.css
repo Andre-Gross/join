@@ -255,25 +255,14 @@ body.dragging {
 }
 
 
-.plus-button, .plus-button-hover {
+.plus-button {
     cursor: pointer;
 }
 
-
-.plus-button-hover {
-    display: none;
-}
-
-
-.plus-button:hover {
-    display: none;
-}
-
-
-.plus-button:hover + .plus-button-hover {
-    display: inline-block;
-}
-
+.plus-button:hover svg rect,
+    .plus-button:hover svg path {
+        stroke: #29abe1;
+    }
 
 .subtasks-progress-container {
     position: absolute;

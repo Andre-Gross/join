@@ -41,25 +41,30 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="board-section ">
+            <div class="board-section">
                 <div class="section-header">
                     <h2 class="h6 mb-0">To Do</h2>
-                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
-                        onclick="addTaskFromBoard(status = 'To do')">
-                        <img src="./assets/img/board/plus-button-clear-blue.svg" alt="plusButtonBlue" class="plus-button-hover"
-                        onclick="addTaskFromBoard(status = 'To do')">
+                    <div class="plus-button">
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                 </div>
-                <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do">
-                </div>
+                <div id="todo-container" class="tasks-container" data-empty-message="No Tasks in To Do"></div>
             </div>
 
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">In progress</h2>
-                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
-                        onclick="addTaskFromBoard(status = 'In progress')">
-                        <img src="./assets/img/board/plus-button-clear-blue.svg" alt="plusButtonBlue" class="plus-button-hover"
-                        onclick="addTaskFromBoard(status = 'In progress')">
+                    <div class="plus-button">
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                 </div>
                 <div id="progress-container" class="tasks-container" data-empty-message="No Tasks in Progress">
                 </div>
@@ -68,10 +73,13 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">Await feedback</h2>
-                    <img src="./assets/img/board/plus-button-clear.svg" alt="plusButton" class="plus-button"
-                        onclick="addTaskFromBoard(status = 'Await feedback')">
-                        <img src="./assets/img/board/plus-button-clear-blue.svg" alt="plusButtonBlue" class="plus-button-hover"
-                        onclick="addTaskFromBoard(status = 'Await feedback')">
+                    <div class="plus-button">
+                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                 </div>
                 <div id="feedback-container" class="tasks-container" data-empty-message="No Tasks in Await Feedback">
                 </div>
@@ -91,12 +99,11 @@
 
     <section id="modalCard-with-background">
         <div id="modalCard-background" class="d-none" onclick="closeModalCard()"></div>
-        <div id="modalCard"  class="d-none flex-column">
+        <div id="modalCard" class="d-none flex-column">
             <div id="modalCard-first-line" class="d-flex justify-content-between align-items-center">
                 <div id="modalCard-category-value" class="category-label"></div>
                 <div id="modulCard-close" class="d-flex justify-content-center align-items-center"
-                    onclick="closeModalCard()"><img
-                        src="assets/img/general/cross.svg" alt="">
+                    onclick="closeModalCard()"><img src="assets/img/general/cross.svg" alt="">
                 </div>
             </div>
             <div id="modalCard-no-edit-mode" class="d-block">
@@ -128,10 +135,9 @@
             </div>
         </div>
 
-        <div id="modalAddTask"  class="right yMiddle">
+        <div id="modalAddTask" class="right yMiddle">
             <div id="modulCard-close" class="w-100 d-flex justify-content-end align-items-center"
-                onclick="closeModalCard()"><img
-                    src="assets/img/general/cross.svg" alt="">
+                onclick="closeModalCard()"><img src="assets/img/general/cross.svg" alt="">
             </div>
             <div class="h-100 d-flex flex-column justify-content-between align-items-center">
                 <div class="w-100">
