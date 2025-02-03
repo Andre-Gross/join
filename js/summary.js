@@ -124,7 +124,6 @@ async function fetchUserName(email, password) {
  */
 function getGreetingMessage() {
     const hour = parseInt(new Date().getHours(), 10); 
-    console.log("Current Hour:", hour);
 
     if (hour >= 3 && hour < 6) return 'Good Early Morning,';
     if (hour >= 6 && hour < 12) return 'Good Morning,';
@@ -233,7 +232,6 @@ async function initializeSummary() {
 
         const tasks = await response.json();
         if (!tasks) {
-            console.log("No tasks found.");
             updateSummaryElements(0, 0, 0, 0, 0); 
             return;
         }
