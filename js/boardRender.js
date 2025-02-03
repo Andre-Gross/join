@@ -368,9 +368,14 @@ async function updateTaskStatus(taskId, newStatus) {
 }
 
 
-function toggleDisplayModal() {
-  toggleDisplayNone(document.getElementById("board"));
-  toggleDisplayNone(document.getElementById("modalCard"), "d-flex");
+function toggleDisplayModal(shallVisible = '') {
+  const body = document.body;
+  const card = document.getElementById("modalCard");
+  const background = document.getElementById("modalCard-background");
+
+  toggleDisplayNone(background, "d-block", shallVisible);
+  toggleDisplayNone(card, "d-flex", shallVisible);
+}
 }
 
 async function deleteTaskOfModalCard(id) {
@@ -426,7 +431,7 @@ async function openModal(id) {
   document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
   document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
-  toggleDisplayModal();
+  toggleDisplayModal(true);
 }
 
 
