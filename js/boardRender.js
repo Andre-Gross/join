@@ -69,7 +69,7 @@ async function boardRender() {
       document.getElementById(containerId).appendChild(taskElement);
     });
 
-    initializeDragAndDrop(); 
+    initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
@@ -127,7 +127,7 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
         </div>
       `;
     })
-    .join(""); 
+    .join("");
 }
 
 
@@ -148,7 +148,7 @@ function priorityLabelHTML(priority) {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await boardRender(); 
+  await boardRender();
 });
 
 function initializeDragAndDrop() {
@@ -171,12 +171,12 @@ function initializeDragAndDrop() {
 
       task.style.opacity = "1"
       task.classList.add("dragging")
-      task.classList.remove("wiggle") 
+      task.classList.remove("wiggle")
 
       placeholder = createPlaceholder(task)
 
       setTimeout(() => {
-        task.style.display = "none" 
+        task.style.display = "none"
       }, 0)
 
       resetAnimation(task)
@@ -276,7 +276,7 @@ function endDrag(draggedTask, placeholder) {
 
 function resetAnimation(task) {
   task.style.animation = "none"
-  task.offsetHeight 
+  task.offsetHeight
   task.style.animation = null
 }
 
@@ -334,9 +334,9 @@ function updateProgressBar(taskId, subtasks) {
 
   const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
   const totalSubtasks = subtasks.length;
-  const progressPercentage = totalSubtasks > 0 
-      ? Math.round((completedSubtasks / totalSubtasks) * 100) 
-      : 0;
+  const progressPercentage = totalSubtasks > 0
+    ? Math.round((completedSubtasks / totalSubtasks) * 100)
+    : 0;
 
   const progressBarContainer = taskElement.querySelector(".progress-bar");
   const subtasksCount = taskElement.querySelector(".subtasks-count");
@@ -423,8 +423,8 @@ async function openModal(id) {
   renderAssignedToInModal(singleTask.assignedTo);
 
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
-    document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-    document.getElementById('modal-card-edit-button').onclick =  function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+  document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
+  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
 
   toggleDisplayModal();
 }
@@ -484,7 +484,7 @@ function renderSubtasksInModal(taskId, subtasks) {
 
 
   subtasksContainer.innerHTML = "";
-  subtasksContainer.style.display = "none"; 
+  subtasksContainer.style.display = "none";
   subtasksContainer.style.display = "none";
 
   if (!subtasks || subtasks.length === 0) {
@@ -509,7 +509,7 @@ function renderSubtasksInModal(taskId, subtasks) {
     checkbox.addEventListener("change", async () => {
       subtask.isChecked = checkbox.checked;
 
-       await saveSubtaskChange(taskId, subtasks);
+      await saveSubtaskChange(taskId, subtasks);
 
       updateProgressBar(taskId, subtasks);
     });
@@ -519,6 +519,7 @@ function renderSubtasksInModal(taskId, subtasks) {
     subtasksContainer.appendChild(subtaskItem);
   });
 }
+
 
 async function saveSubtaskChange(taskId, subtasks) {
   const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;

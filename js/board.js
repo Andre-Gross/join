@@ -211,42 +211,42 @@ function truncateDescription(description, maxLength = 50) {
 }
 
 async function renderBodySearch() {
-["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
-  document.getElementById(containerId).innerHTML = "";
-});
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+    document.getElementById(containerId).innerHTML = "";
+  });
 
-const contactsData = await fetchContactsData();
+  const contactsData = await fetchContactsData();
 
-Object.entries(currentTasks).forEach(([taskId, task]) => {
-  const containerId = getContainerIdByStatus(task.status);
-  if (!containerId) return;
+  Object.entries(currentTasks).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
 
-  const taskElement = document.createElement("div");
-  taskElement.classList.add("task");
-  taskElement.id = taskId;
-  taskElement.setAttribute("draggable", "true");
-  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+    const taskElement = document.createElement("div");
+    taskElement.classList.add("task");
+    taskElement.id = taskId;
+    taskElement.setAttribute("draggable", "true");
+    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-  // Kategorie-Label
-  const categoryClass = task.category
-    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-    : "bc-category-label-unknown";
-  const categoryHTML = `
+    // Kategorie-Label
+    const categoryClass = task.category
+      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+      : "bc-category-label-unknown";
+    const categoryHTML = `
     <div class="category-label ${categoryClass}">
       ${task.category || "No category"}
     </div>`;
 
-  // Subtasks-HTML
-  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+    // Subtasks-HTML
+    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
 
-  // Priorität-Bild
-  const priorityImage = priorityLabelHTML(task.priority);
+    // Priorität-Bild
+    const priorityImage = priorityLabelHTML(task.priority);
 
-  // Kontakte rendern
-  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+    // Kontakte rendern
+    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-  // Task-HTML mit gekürzter Beschreibung
-  taskElement.innerHTML = `
+    // Task-HTML mit gekürzter Beschreibung
+    taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
     </div>
@@ -263,8 +263,8 @@ Object.entries(currentTasks).forEach(([taskId, task]) => {
     </footer>
   `;
 
-  document.getElementById(containerId).appendChild(taskElement);
-});
+    document.getElementById(containerId).appendChild(taskElement);
+  });
 }
 
 
@@ -296,7 +296,7 @@ async function changeToEditMode(id) {
   }
 
   toggleEditMode(true);
-  
+
   document
     .getElementById("modalCard-first-line")
     .classList.remove("justify-content-between");
@@ -320,8 +320,8 @@ function toggleEditMode(shallVisible = '') {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadTasks(); 
-  scrollToTaskSection(); 
+  await loadTasks();
+  scrollToTaskSection();
 });
 
 /**
@@ -329,16 +329,16 @@ document.addEventListener("DOMContentLoaded", async () => {
  */
 function scrollToTaskSection() {
   const params = new URLSearchParams(window.location.search);
-  const status = params.get("status"); 
+  const status = params.get("status");
 
-  if (!status) return; 
+  if (!status) return;
 
   const containerMapping = {
     todo: "todo-container",
     inprogress: "progress-container",
     feedback: "feedback-container",
     done: "done-container",
-    urgent: "todo-container", 
+    urgent: "todo-container",
   };
 
   const targetContainerId = containerMapping[status];

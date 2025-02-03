@@ -168,255 +168,252 @@ async function submitTaskForm(method = 'post', id = '') {
 
 
 
-    /**
-     * This function, check if all inputs of the addTask-form includes content.
-     * 
-     * @param {string} title - Title of the task
-     * @param {string} description - description of the task
-     * @param {Date} dueDate - Date, until the task should be finished
-     * @param {string} priority - Priority, how important the task is
-     * @param {Array} assignedTo - The person(s), who are assigned to do the task
-     * @returns {boolean} - Giv the feedback if all inputs contain informations. 
-     */
-    function checkAllInputsHasContent(title, dueDate, category) {
-        if (title == '' || dueDate == '' || category == '') {
-            return false;
-        } else {
-            return true
-        }
+/**
+ * This function, check if all inputs of the addTask-form includes content.
+ * 
+ * @param {string} title - Title of the task
+ * @param {string} description - description of the task
+ * @param {Date} dueDate - Date, until the task should be finished
+ * @param {string} priority - Priority, how important the task is
+ * @param {Array} assignedTo - The person(s), who are assigned to do the task
+ * @returns {boolean} - Giv the feedback if all inputs contain informations. 
+ */
+function checkAllInputsHasContent(title, dueDate, category) {
+    if (title == '' || dueDate == '' || category == '') {
+        return false;
+    } else {
+        return true
     }
 
 
-    /**
-     * 
-     * @param {string} dataTitle - contains the title of the task
-     * @param {string} dataDescription contains the description of the task
-     * @param {Date} dataDueDate - contains the date, when the task shall be finished
-     * @param {string} dataPriority - contains the priority of the task
-     * @param {string} dataCategory - contains if the task is a task is a "Technical Task" or a "User Story"
-     * @param {Array} dataAssignedTo - contains the person(s) which the task is adressed 
-     * @returns {object} - contains the all datas of the task
-     */
-    async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
-        const data = {
-            title: dataTitle,
-            description: dataDescription,
-            finishedUntil: dataDueDate,
-            priority: dataPriority,
-            assignedTo: dataAssignedTo,
-            category: dataCategory,
-            subtasks: dataSubtasks,
-            status: await getNextStatus(),
-        };
-        return data;
+/**
+ * 
+ * @param {string} dataTitle - contains the title of the task
+ * @param {string} dataDescription contains the description of the task
+ * @param {Date} dataDueDate - contains the date, when the task shall be finished
+ * @param {string} dataPriority - contains the priority of the task
+ * @param {string} dataCategory - contains if the task is a task is a "Technical Task" or a "User Story"
+ * @param {Array} dataAssignedTo - contains the person(s) which the task is adressed 
+ * @returns {object} - contains the all datas of the task
+ */
+async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+    const data = {
+        title: dataTitle,
+        description: dataDescription,
+        finishedUntil: dataDueDate,
+        priority: dataPriority,
+        assignedTo: dataAssignedTo,
+        category: dataCategory,
+        subtasks: dataSubtasks,
+        status: await getNextStatus(),
+    };
+    return data;
+}
+
+
+function changeTextRequired(field) {
+    const input = document.getElementById(`input${upperCaseFirstLetter(field.toLowerCase())}`);
+    const text = document.getElementById(`text-required-input-${field.toLowerCase()}`);
+
+    if (input.value === '') {
+        toggleDisplayNone(text, "d-block", true);
+    } else {
+        toggleDisplayNone(text, "d-block", false);
     }
 
 
-    function changeTextRequired(field) {
-        const input = document.getElementById(`input${upperCaseFirstLetter(field.toLowerCase())}`);
-        const text = document.getElementById(`text-required-input-${field.toLowerCase()}`);
-
-        if (input.value === '') {
-            toggleDisplayNone(text, "d-block", true);
-        } else {
-            toggleDisplayNone(text, "d-block", false);
-        }
+/**
+ * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
+ * 
+ */
+async function filterContacts() {
+    let contacts = await getContactsAsArray();
+    let input = document.getElementById("dropAssignedTo").value.toLowerCase();
+    // if (input.includes(", ")) {
+    //     input = input.substring(input.lastIndexOf(", ") + 1);
+    // } else if (input.includes('an ')) {
+    if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
     }
 
+    const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
 
-    /**
-     * This function filter your contacts with the input of addTasks and show the result in a dropdown menu.
-     * 
-     */
-    async function filterContacts() {
-        let contacts = await getContactsAsArray();
-        let input = document.getElementById("dropAssignedTo").value.toLowerCase();
-        // if (input.includes(", ")) {
-        //     input = input.substring(input.lastIndexOf(", ") + 1);
-        // } else if (input.includes('an ')) {
-        if (input.includes('an ')) {
-            input = input.substring(input.lastIndexOf("an ") + 3);
-        }
+    if (filteredContacts.length > 0) {
+        toggleDropdown('assignedTo', 'd-block', true);
+        for (let i = 0; i < contacts.length; i++) {
+            const contact = contacts[i];
+            const item = document.getElementById(transformStringToId(contact.id, 'item_'));
+            item.classList.add("d-none");
 
-        const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
-
-        if (filteredContacts.length > 0) {
-            toggleDropdown('assignedTo', 'd-block', true);
-            for (let i = 0; i < contacts.length; i++) {
-                const contact = contacts[i];
-                const item = document.getElementById(transformStringToId(contact.id, 'item_'));
-                item.classList.add("d-none");
-
-                for (let y = 0; y < filteredContacts.length; y++) {
-                    if (filteredContacts[y].name === contact.name) {
-                        item.classList.remove("d-none");
-                        break;
-                    }
+            for (let y = 0; y < filteredContacts.length; y++) {
+                if (filteredContacts[y].name === contact.name) {
+                    item.classList.remove("d-none");
+                    break;
                 }
             }
-        } else {
-            toggleDropdown('assignedTo', 'd-block', false);
         }
+    } else {
+        toggleDropdown('assignedTo', 'd-block', false);
     }
+}
 
 
-    function savePrefixInAssingedTo() {
-        const input = document.getElementById("dropAssignedTo");
-        const prefix = 'An '
+function savePrefixInAssingedTo() {
+    const input = document.getElementById("dropAssignedTo");
+    const prefix = 'An '
 
-        if (!(input.value.includes(prefix))) {
-            if (input.value.length < 3) {
-                input.value = prefix;
-                updateLastStringOfInput()
-            } else if (lastStringOfInput.includes(prefix)) {
-                input.value = lastStringOfInput()
-            }
-        } else {
-            updateLastStringOfInput();
+    if (!(input.value.includes(prefix))) {
+        if (input.value.length < 3) {
+            input.value = prefix;
+            updateLastStringOfInput()
+        } else if (lastStringOfInput.includes(prefix)) {
+            input.value = lastStringOfInput()
         }
+    } else {
+        updateLastStringOfInput();
     }
+}
 
 
-    function emptyAssignedTo() {
-        const input = document.getElementById("dropAssignedTo");
+function emptyAssignedTo() {
+    const input = document.getElementById("dropAssignedTo");
 
-        if (input.value.length <= 3) {
-            input.value = '';
-        }
+    if (input.value.length <= 3) {
+        input.value = '';
     }
+}
 
 
-    /**
-     * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
-     */
-    async function createAssignedToDropdown() {
-        const dropdown = document.getElementById("dropdown-assignedTo");
-        const contacts = await getContactsAsArray();
-        dropdown.innerHTML = "";
-        contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
-        contactsInitialized = true;
-    }
+/**
+ * This function create the assignedTo-Dropdown-Menu, if is not already initialized.
+ */
+async function createAssignedToDropdown() {
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const contacts = await getContactsAsArray();
+    dropdown.innerHTML = "";
+    contacts.forEach(contact => createAssignedToDropdownHTML(dropdown, contact));
+    contactsInitialized = true;
+}
 
 
-    function createAssignedToDropdownHTML(dropdown, contact) {
-        const contactItem = document.createElement("div");
+function createAssignedToDropdownHTML(dropdown, contact) {
+    const contactItem = document.createElement("div");
 
-        contactItem.id = transformStringToId(contact.id, 'item_');
-        contactItem.className = "contact-item";
-        contactItem.innerHTML = `
+    contactItem.id = transformStringToId(contact.id, 'item_');
+    contactItem.className = "contact-item";
+    contactItem.innerHTML = `
         ${contact.name}
         <input type="checkbox" id="${transformStringToId(contact.id, 'checkbox_')}">
     `;
 
-        contactItem.onclick = async () => selectContact(contact.id);
-        const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
-        checkbox.onclick = (event) => {
-            event.stopPropagation();
-            refreshChoosenContactCircles()
+    contactItem.onclick = async () => selectContact(contact.id);
+    const checkbox = contactItem.querySelector(`#${transformStringToId(contact.id, 'checkbox_')}`)
+    checkbox.onclick = (event) => {
+        event.stopPropagation();
+        refreshChoosenContactCircles()
+    };
+    dropdown.appendChild(contactItem);
+}
+
+
+/**
+ * This function allow to select the checkbox of an contact in the assingedTo-Dropdown-Menu by clicking on the contact (not necessary to click specificly on the checkbox)
+ * 
+ *  @param {object} contact - This object includes the information of a single contact.
+ */
+async function selectContact(id) {
+    const input = document.getElementById("dropAssignedTo")
+    const checkbox = document.getElementById(transformStringToId(id, 'checkbox_',))
+
+    checkbox.checked = !checkbox.checked;
+
+    if (!(input.value === '' || input.value === 'An ')) {
+        input.value = '';
+        input.focus();
+    }
+    await refreshChoosenContactCircles()
+}
+
+
+/**
+ * This function allow to select and change the priority-button.
+ * 
+ * @param {string} priority - That includes the name of the selected priority.
+ */
+function selectPriority(priority) {
+    let allPriorities = ['urgent', 'medium', 'low']
+
+    for (let i = 0; i < allPriorities.length; i++) {
+        const singlePriority = allPriorities[i];
+        const element = document.getElementById(singlePriority);
+
+        element.classList.remove(`btn-selected`);
+        element.classList.remove(`btn-selected-${singlePriority}`);
+        document.getElementById(`img-${singlePriority}`).src = `assets/img/addTask/prio-${singlePriority}.svg`
+    }
+
+    document.getElementById(priority).classList.add("btn-selected");
+    document.getElementById(priority).classList.add(`btn-selected-${priority}`);
+    document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
+}
+
+
+/**
+ * This function set the choosen category in the category input field and close the category dropdown menu.
+ * 
+ * @param {string} category - set the category of the next task as value in the input field
+ * @param {element} element - the element what should be hide
+ */
+function selectCategory(category, element) {
+    document.getElementById('inputCategory').value = category;
+    const inputDummy = document.getElementById('input-dummy-category');
+    toggleDisplayNone(element);
+    toggleDisplayNone(inputDummy, 'd-block', false);
+}
+
+
+function focusElement(element) {
+    element.focus();
+}
+
+
+function changeVisibleImages() {
+    const plusImg = document.getElementById('input-subtask-plus-box');
+    const twoImgBox = document.getElementById('input-subtask-two-img-box')
+    toggleDisplayNone(plusImg, 'd-flex');
+    toggleDisplayNone(twoImgBox, 'd-flex');
+}
+
+
+function addNewSubtask() {
+    const minLength = 3;
+    const maxLength = 20;
+    const input = document.getElementById('input-subtask');
+
+    if (input.value.length < minLength) {
+        alert(`Der Subtask ist zu kurz. Bitte verwende mindestens ${minLength} Zeichen`)
+    } else if (input.value.length > maxLength) {
+        alert(`Der Subtask ist zu lang. Bitte begrenze dich auf ${maxLength}`)
+    } else {
+        const subtask = {
+            'subtask': input.value,
+            'isChecked': false,
         };
-        dropdown.appendChild(contactItem);
+        dataSubtasks.push(subtask);
+        input.value = '';
+        renderNewSubtasks();
     }
 
 
-    /**
-     * This function allow to select the checkbox of an contact in the assingedTo-Dropdown-Menu by clicking on the contact (not necessary to click specificly on the checkbox)
-     * 
-     *  @param {object} contact - This object includes the information of a single contact.
-     */
-    async function selectContact(id) {
-        const input = document.getElementById("dropAssignedTo")
-        const checkbox = document.getElementById(transformStringToId(id, 'checkbox_',))
-
-        checkbox.checked = !checkbox.checked;
-
-        if (!(input.value === '' || input.value === 'An ')) {
-            input.value = '';
-            input.focus();
-        }
-        await refreshChoosenContactCircles()
-    }
-
-
-    /**
-     * This function allow to select and change the priority-button.
-     * 
-     * @param {string} priority - That includes the name of the selected priority.
-     */
-    function selectPriority(priority) {
-        let allPriorities = ['urgent', 'medium', 'low']
-
-        for (let i = 0; i < allPriorities.length; i++) {
-            const singlePriority = allPriorities[i];
-            const element = document.getElementById(singlePriority);
-
-            element.classList.remove(`btn-selected`);
-            element.classList.remove(`btn-selected-${singlePriority}`);
-            document.getElementById(`img-${singlePriority}`).src = `assets/img/addTask/prio-${singlePriority}.svg`
-        }
-
-        document.getElementById(priority).classList.add("btn-selected");
-        document.getElementById(priority).classList.add(`btn-selected-${priority}`);
-        document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
-    }
-
-
-    /**
-     * This function set the choosen category in the category input field and close the category dropdown menu.
-     * 
-     * @param {string} category - set the category of the next task as value in the input field
-     * @param {element} element - the element what should be hide
-     */
-    function selectCategory(category, element) {
-        document.getElementById('inputCategory').value = category;
-        const inputDummy = document.getElementById('input-dummy-category');
-        toggleDisplayNone(element);
-        toggleDisplayNone(inputDummy, 'd-block', false);
-    }
-
-
-    function focusElement(element) {
-        element.focus();
-    }
-
-
-    function changeVisibleImages() {
-        const plusImg = document.getElementById('input-subtask-plus-box');
-        const twoImgBox = document.getElementById('input-subtask-two-img-box')
-        toggleDisplayNone(plusImg, 'd-flex');
-        toggleDisplayNone(twoImgBox, 'd-flex');
-    }
-
-
-    function addNewSubtask() {
-        const minLength = 3;
-        const maxLength = 20;
-        const input = document.getElementById('input-subtask');
-
-        if (input.value.length < minLength) {
-            alert(`Der Subtask ist zu kurz. Bitte verwende mindestens ${minLength} Zeichen`)
-        } else if (input.value.length > maxLength) {
-            alert(`Der Subtask ist zu lang. Bitte begrenze dich auf ${maxLength}`)
-        } else {
-            const subtask = {
-                'subtask': input.value,
-                'isChecked': false,
-            };
-            dataSubtasks.push(subtask);
-            input.value = '';
-            renderNewSubtasks();
-        }
-    }
-
-
-    function renderNewSubtasks() {
-        const listContainer = document.getElementById('list-subtasks-container')
-        const list = document.getElementById('list-subtasks')
-        if (dataSubtasks.length > 0) {
-            toggleDisplayNone(listContainer, 'd-block', true);
-            list.innerHTML = '';
-            for (let i = 0; i < dataSubtasks.length; i++) {
-                const singleSubtask = dataSubtasks[i].subtask;
-                list.innerHTML += /*HTML*/`
+function renderNewSubtasks() {
+    const listContainer = document.getElementById('list-subtasks-container')
+    const list = document.getElementById('list-subtasks')
+    if (dataSubtasks.length > 0) {
+        toggleDisplayNone(listContainer, 'd-block', true);
+        list.innerHTML = '';
+        for (let i = 0; i < dataSubtasks.length; i++) {
+            const singleSubtask = dataSubtasks[i].subtask;
+            list.innerHTML += /*HTML*/`
                 <div>
                     <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
                         <li id="" class="">
@@ -436,118 +433,119 @@ async function submitTaskForm(method = 'post', id = '') {
                     </div>
                 </div>
             `
-            }
-        } else {
-            toggleDisplayNone(listContainer, 'd-block', false);
         }
+    } else {
+        toggleDisplayNone(listContainer, 'd-block', false);
     }
+}
 
 
-    function toggleEditModeSubtask(id) {
-        const element = document.getElementById(`input-current-subtask${id}`);
+function toggleEditModeSubtask(id) {
+    const element = document.getElementById(`input-current-subtask${id}`);
 
-        toggleDisplayNone(document.getElementById(`list-item-box-current-subtask${id}`), 'd-flex');
-        toggleDisplayNone(document.getElementById(`input-box-current-subtask${id}`), 'd-flex');
-        element.value = dataSubtasks[id].subtask;
+    toggleDisplayNone(document.getElementById(`list-item-box-current-subtask${id}`), 'd-flex');
+    toggleDisplayNone(document.getElementById(`input-box-current-subtask${id}`), 'd-flex');
+    element.value = dataSubtasks[id].subtask;
 
-        element.addEventListener("keydown", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                editSubtask(id)
-            };
-        });
-    }
-
-
-    function editSubtask(id) {
-        dataSubtasks[id].subtask = document.getElementById(`input-current-subtask${id}`).value;
-        toggleEditModeSubtask(id);
-        renderNewSubtasks();
-    }
+    element.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            editSubtask(id)
+        };
+    });
+}
 
 
-    function removeSubtask(id) {
-        dataSubtasks.splice(id, 1);
-        renderNewSubtasks();
-    }
+function editSubtask(id) {
+    dataSubtasks[id].subtask = document.getElementById(`input-current-subtask${id}`).value;
+    toggleEditModeSubtask(id);
+    renderNewSubtasks();
+}
 
 
-    /**
-     * This function reset the form of addTask
-     */
-    function emptyAddTaskInputs() {
-        document.getElementById("inputTitle").value = '';
-        document.getElementById("textareaDescription").value = '';
-        document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
-        document.getElementById('dropAssignedTo').value = '';
-        document.getElementById('inputDate').value = '';
-        document.getElementById('inputCategory').value = '';
-        selectPriority('medium');
-        document.getElementById("input-subtask").value = [];
-        dataSubtasks = [];
-        renderNewSubtasks();
-    }
+function removeSubtask(id) {
+    dataSubtasks.splice(id, 1);
+    renderNewSubtasks();
+}
 
 
-    function loadFormFunctions() {
-        const subtaskInput = document.getElementById('input-subtask');
-        subtaskInput.addEventListener("keydown", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                addNewSubtask();
-            }
-        });
+/**
+ * This function reset the form of addTask
+ */
+function emptyAddTaskInputs() {
+    document.getElementById("inputTitle").value = '';
+    document.getElementById("textareaDescription").value = '';
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
+    document.getElementById('dropAssignedTo').value = '';
+    document.getElementById('inputDate').value = '';
+    document.getElementById('inputCategory').value = '';
+    selectPriority('medium');
+    document.getElementById("input-subtask").value = [];
+    dataSubtasks = [];
+    renderNewSubtasks();
+}
 
-        createAssignedToDropdown()
 
-        for (let i = 0; i < dropdownMenues.length; i++) {
-            const singleDropdown = dropdownMenues[i];
-            document.addEventListener('click', (event) => {
-                const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
-                const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
+function loadFormFunctions() {
+    const subtaskInput = document.getElementById('input-subtask');
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
+
+    createAssignedToDropdown()
+
+    for (let i = 0; i < dropdownMenues.length; i++) {
+        const singleDropdown = dropdownMenues[i];
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
+            const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
 
                 if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
                     toggleDropdown(`${singleDropdown}`, 'd-block', false);
                 }
-            });
-        }
+            }
+        });
     }
+}
 
 
-    function enableDisableSendButton() {
-        const title = document.getElementById("inputTitle").value.trim();
-        const dueDate = document.getElementById('inputDate').value;
-        const category = document.getElementById("inputCategory").value;
-        const sendButton = document.getElementById("sendButton")
+function enableDisableSendButton() {
+    const title = document.getElementById("inputTitle").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const category = document.getElementById("inputCategory").value;
+    const sendButton = document.getElementById("sendButton")
 
-        if (checkAllInputsHasContent(title, dueDate, category)) {
-            sendButton.disabled = false;
-        } else {
-            sendButton.disabled = true;
-        }
+    if (checkAllInputsHasContent(title, dueDate, category)) {
+        sendButton.disabled = false;
+    } else {
+        sendButton.disabled = true;
     }
+}
 
 
-    // Zu Testzwecken
+// Zu Testzwecken
 
-    async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
-        let tasksAsArray = await getTasksAsArray();
-        const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
+async function fillForm(id = '-OCPZc1JZydVpwJpUKbh') {
+    let tasksAsArray = await getTasksAsArray();
+    const singleTaskID = tasksAsArray.findIndex(x => x.id == id);
 
-        const title = document.getElementById("inputTitle");
-        const description = document.getElementById("textareaDescription");
-        const dueDate = document.getElementById('inputDate');
-        const category = document.getElementById("inputCategory");
+    const title = document.getElementById("inputTitle");
+    const description = document.getElementById("textareaDescription");
+    const dueDate = document.getElementById('inputDate');
+    const category = document.getElementById("inputCategory");
 
-        title.value = singleTask.title;
-        description.value = singleTask.description;
-        dueDate.value = singleTask.finishedUntil;
-        selectPriority(singleTask.priority)
-        priority = singleTask.priority;
-        category.value = singleTask.category;
-        dataSubtasks = singleTask.subtasks;
+    title.value = singleTask.title;
+    description.value = singleTask.description;
+    dueDate.value = singleTask.finishedUntil;
+    selectPriority(singleTask.priority)
+    priority = singleTask.priority;
+    category.value = singleTask.category;
+    dataSubtasks = singleTask.subtasks;
 
-        if (dataSubtasks) {
-            renderNewSubtasks();
-        }
+    if (dataSubtasks) {
+        renderNewSubtasks();
     }
+}
