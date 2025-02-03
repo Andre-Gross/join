@@ -1,5 +1,5 @@
 let currentTasks = [];
-let toastMessageNoResult ='<span>Keine Ergebnisse gefunden</span>';
+let toastMessageNoResult = '<span>Keine Ergebnisse gefunden</span>';
 
 
 async function filterAndShowTask() {
