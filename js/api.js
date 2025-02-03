@@ -51,6 +51,13 @@ async function getTasks() {
 }
 
 
+/**
+ * Ruft Aufgaben aus der Datenbank ab und konvertiert sie in ein Array von Objekten.
+ *
+ * @async
+ * @function getTasksAsArray
+ * @returns {Promise<Array<Object>>} - Ein Array mit Aufgabenobjekten, die jeweils eine ID und relevante Aufgabendetails enthalten.
+ */
 async function getTasksAsArray() {
     let tasksAsArray = [];
     let tasksData = await getTasks();
@@ -165,6 +172,16 @@ async function tryPostTaskToDatabase(data) {
 }
 
 
+/**
+ * Speichert eine Aufgabe in der Datenbank oder aktualisiert sie.
+ *
+ * @async
+ * @function putTaskToDatabase
+ * @param {string} taskId - Die ID der Aufgabe, die gespeichert oder aktualisiert werden soll.
+ * @param {Object} data - Die zu speichernden Aufgabendaten.
+ * @returns {Promise<void>} - Gibt keinen Wert zurück, verarbeitet aber Fehler.
+ * @throws {Error} - Zeigt eine Fehlermeldung in der Konsole und einen Alert bei einem Fehler.
+ */
 async function putTaskToDatabase(taskId, data) {
     try {
         await tryPutTaskToDatabase(taskId, data);
@@ -213,6 +230,16 @@ async function putNextStatus(status = 'To do') {
 }
 
 
+/**
+ * Aktualisiert den Status einer Teilaufgabe in der Datenbank.
+ *
+ * @async
+ * @function putNewCheckedToSubtask
+ * @param {string} taskId - Die ID der übergeordneten Aufgabe.
+ * @param {string} subtaskId - Die ID der Teilaufgabe.
+ * @param {boolean} isChecked - Der neue Status der Teilaufgabe (true = erledigt, false = nicht erledigt).
+ * @returns {Promise<void>} - Gibt keinen Wert zurück, sendet aber eine Anfrage zur Aktualisierung.
+ */
 async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
     await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
         method: 'PUT',
@@ -225,6 +252,16 @@ async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
 }
 
 
+/**
+ * Speichert eine Aufgabe in der Datenbank für einen bestimmten Kontakt.
+ *
+ * @async
+ * @function putContactToDatabase
+ * @param {string} contactId - Die ID des Kontakts, dem die Aufgabe zugeordnet wird.
+ * @param {Object} data - Die Daten der Aufgabe, die gespeichert werden sollen.
+ * @returns {Promise<void>} - Gibt keinen Wert zurück, aber verarbeitet Fehler.
+ * @throws {Error} - Zeigt eine Fehlermeldung in der Konsole und einen Alert bei einem Fehler.
+ */
 async function putContactToDatabase(contactId, data) {
     try {
         await tryPutTaskToDatabase(contactId, data);
@@ -256,6 +293,18 @@ async function tryPutContactToDatabase(contactId, data) {
 }
 
 
+/**
+ * Löscht eine Aufgabe aus der Datenbank und behandelt Fehler.
+ * 
+ * Diese Funktion ruft die `tryDeleteTaskInDatabase`-Funktion auf, um eine Aufgabe mit der
+ * gegebenen ID zu löschen. Tritt ein Fehler auf, wird dieser abgefangen und eine entsprechende
+ * Fehlermeldung im Browser angezeigt.
+ * 
+ * @async
+ * @function
+ * @param {string} id - Die ID der Aufgabe, die gelöscht werden soll.
+ * @throws {Error} Wenn beim Löschen der Aufgabe ein Fehler auftritt, wird dieser im Catch-Block behandelt.
+ */
 async function deleteTaskInDatabase(id){
     try {
         await tryDeleteTaskInDatabase(id);
@@ -266,6 +315,18 @@ async function deleteTaskInDatabase(id){
 }
 
 
+/**
+ * Löscht eine Aufgabe aus der Datenbank über eine HTTP DELETE-Anfrage.
+ * 
+ * Diese Funktion sendet eine DELETE-Anfrage an die Datenbank, um eine Aufgabe mit der gegebenen
+ * ID zu löschen. Wenn die Anfrage erfolgreich ist, wird eine Toast-Nachricht angezeigt. 
+ * Im Falle eines Fehlers wird eine Ausnahme geworfen.
+ * 
+ * @async
+ * @function
+ * @param {string} id - Die ID der Aufgabe, die gelöscht werden soll.
+ * @throws {Error} Wenn die Anfrage nicht erfolgreich ist, wird ein Fehler mit Statuscode und Nachricht geworfen.
+ */
 async function tryDeleteTaskInDatabase(id) {
     const response = await fetch(BASE_URL + `tasks/` + id + `.json`, {
         method: "DELETE",
@@ -281,12 +342,24 @@ async function tryDeleteTaskInDatabase(id) {
 }
 
 
+/**
+ * Löscht einen Kontakt aus der Datenbank.
+ * 
+ * Diese Funktion versucht, eine Löschoperation für einen Kontakt durchzuführen, indem sie die
+ * `tryPutTaskToDatabase`-Methode aufruft. Tritt ein Fehler auf, wird dieser abgefangen und eine
+ * Fehlermeldung im Browser angezeigt.
+ * 
+ * @async
+ * @function
+ * @param {string} contactId - Die ID des Kontakts, der gelöscht werden soll.
+ * @throws {Error} Wenn ein Fehler beim Löschen der Aufgabe auftritt, wird dieser im Catch-Block behandelt.
+ */
 async function deleteContactInDatabase(contactId) {
     try {
         await tryPutTaskToDatabase(contactId);
     } catch (error) {
         console.error("Fehler beim Löschen der Aufgabe:", error);
-        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
+        alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
     }
 }
 
