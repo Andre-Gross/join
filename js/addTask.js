@@ -491,6 +491,7 @@ function loadFormFunctions() {
             const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
             const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
 
+            if (dropdown) {
                 if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
                     toggleDropdown(`${singleDropdown}`, 'd-block', false);
                 }
