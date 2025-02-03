@@ -2,6 +2,12 @@ let isSubmitting = false;
 let toastMessageSignUp = '<span>You Signed Up successfully</span>';
 let failedAttempts = {};
 
+
+/**
+ * Handles the DOMContentLoaded event to manage the login and signup process.
+ * This function checks if the page has been loaded before to determine the display of elements.
+ * It also sets up event listeners for login, signup, guest login, and password input elements.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
 
@@ -34,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 /**
  * Clears all input fields in the signup form when switching views.
  */
@@ -55,6 +62,7 @@ function clearSignupInputs() {
         input.classList.remove("has-icon"); 
     });
 }
+
 
 /**
  * Switches between login and signup view.
@@ -84,6 +92,7 @@ function switchView() {
     }, 50);
 }
 
+
 /**
  * Handles the user login process.
  */
@@ -108,6 +117,7 @@ async function logIn() {
         displayError("An error occurred during login. Please try again.");
     }
 }
+
 
 /**
  * Handles the user registration process.
@@ -140,6 +150,13 @@ async function signUp() {
 }
 
 
+/**
+ * Initializes password field functionality after the page loads.
+ * - Clears any existing values in password input fields.
+ * - Adds event listeners to password fields to handle password visibility toggling.
+ * - Updates the password icon when the input changes.
+ * - Toggles the visibility of the password when the icon is clicked.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const passwordFields = document.querySelectorAll(".password-container input");
 
@@ -171,6 +188,7 @@ function updatePasswordIcon(input, icon) {
     }
 }
 
+
 /**
  * Toggles the password visibility and updates the icon.
  *
@@ -190,6 +208,14 @@ function togglePasswordVisibility(input, icon) {
 }
 
 
+/**
+ * Adds a new user to the contacts database.
+ * - Generates a random color for the new contact.
+ * - Attempts to post the contact data to the database.
+ * 
+ * @param {string} name - The name of the contact to add.
+ * @param {string} email - The email of the contact to add.
+ */
 async function addUserToContacts(name, email) {
     const assignedColor = getRandomColor();
 
@@ -201,6 +227,12 @@ async function addUserToContacts(name, email) {
 }
 
 
+/**
+ * Generates a unique identifier.
+ * - Uses a combination of a random number and base-36 encoding to generate a short unique string.
+ * 
+ * @returns {string} A unique identifier in the form of a random string.
+ */
 function generateUniqueId() {
     return '_' + Math.random().toString(36).substr(2, 9);
 }
@@ -218,12 +250,14 @@ function handleFailedAttempt(email) {
     }
 }
 
+
 /**
  * Resets the failed login attempts.
  */
 function resetFailedAttempts(email) {
     delete failedAttempts[email];
 }
+
 
 /**
  * Displays an error message.
@@ -232,12 +266,14 @@ function displayError(message) {
     showToast(`<span>${message}</span>`, 'middle', 2000);
 }
 
+
 /**
  * Displays an error message if the user is not registered.
  */
 function displayNotRegisteredError() {
     displayError("You are not registered. Please sign up to continue.");
 }
+
 
 /**
  * Logs in as a guest user.
@@ -261,12 +297,14 @@ async function fetchUsers() {
     return response.json();
 }
 
+
 /**
  * Finds a user in the database by email.
  */
 function findUserByEmail(users, email) {
     return Object.values(users || {}).find(user => user?.email === email) || null;
 }
+
 
 /**
  * Hashes a password using SHA-256.
@@ -282,6 +320,7 @@ async function hashPassword(password) {
         .join('');
 }
 
+
 /**
  * Saves the logged-in user's information in the session storage.
  */
@@ -289,6 +328,7 @@ async function saveLoggedInUser(user) {
     user.password = await hashPassword(user.password);
     sessionStorage.setItem("loggedInUser", JSON.stringify(user));
 }
+
 
 /**
  * Redirects the user to the summary page.
@@ -299,12 +339,14 @@ function redirectToSummary(isGuest = false) {
     window.location.href = url;
 }
 
+
 /**
  * Checks if the given email is already registered.
  */
 function isEmailAlreadyRegistered(users, email) {
     return Object.values(users || {}).some(user => user?.email === email);
 }
+
 
 /**
  * Registers a new user.
@@ -317,6 +359,7 @@ async function registerNewUser(name, email, password) {
     });
 }
 
+
 /**
  * Redirects the user to the login page.
  * @param {boolean} [isSuccess] - Whether the registration was successful.
@@ -325,6 +368,7 @@ function redirectToLogin(isSuccess = false) {
     const url = isSuccess ? "index.html?registered=true" : "index.html?error=emailExists";
     window.location.href = url;
 }
+
 
 /**
  * Retrieves and processes input values.
@@ -336,6 +380,7 @@ function getInputValues() {
             : document.getElementById(id).value.trim()
     );
 }
+
 
 /**
  * Validates the registration form inputs and updates the register button state.
@@ -351,6 +396,7 @@ function checkFormValidity() {
     const isFormValid = name && email && password && confirmPassword && agreeTerms;
     document.getElementById("registerButton").disabled = !isFormValid;
 }
+
 
 /**
  * Retrieves and processes the value of an input field by its ID.
