@@ -78,17 +78,6 @@ async function getTasksAsArray() {
     }
     return tasksAsArray;
 }
-
-
-/**
- * This function return the status of the next task.
- * 
- * @returns {string} - This string contains the staus of the next task
- */
-async function getNextStatus() {
-    let response = await fetch(BASE_URL + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['nextStatus'];
 }
 
 
@@ -210,23 +199,6 @@ async function tryPutTaskToDatabase(taskId, data) {
         throw new Error(`HTTP-Fehler! Status: ${response.status}`);
     }
     showToast(toastMessageEditTask, 'middle', 1000);
-}
-
-
-/**
- * This string put the staus of the next task to the database
- * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
- */
-async function putNextStatus(status = 'To do') {
-    await fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
 }
 
 

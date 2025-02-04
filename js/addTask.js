@@ -1,7 +1,9 @@
 let contactsInitialized = false;
 let dataSubtasks = [];
-let possibleStatuses = ['To do', 'In progress', 'Await feedback', 'Done'];
 let lastStringOfInput = '';
+let nextStatus = "To Do"
+
+const possibleStatuses = ['To do', 'In progress', 'Await feedback', 'Done'];
 const dropdownMenues = ['assignedTo', 'category']
 const toastMessage = '<span>Task added to board</span><img src="assets/img/general/board.svg" alt="board">'
 
@@ -136,7 +138,7 @@ async function submitTaskForm(method = 'post', id = '') {
         }
         showToast(toastMessage, 'middle', 0);
         setTimeout(async () => {
-            putNextStatus();
+            nextStatus = 'To do';
             const allTasks = await getTasksAsArray();
             for (let i = allTasks.length - 1; i > 0; i--) {
                 const singleTask = allTasks[i];
@@ -182,7 +184,7 @@ function checkAllInputsHasContent(title, dueDate, category) {
  * @param {Array} dataAssignedTo - contains the person(s) which the task is adressed 
  * @returns {object} - contains the all datas of the task
  */
-async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
     const data = {
         title: dataTitle,
         description: dataDescription,
@@ -191,7 +193,7 @@ async function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPr
         assignedTo: dataAssignedTo,
         category: dataCategory,
         subtasks: dataSubtasks,
-        status: await getNextStatus(),
+        status: nextStatus,
     };
     return data;
 }

@@ -578,7 +578,7 @@ async function openModal(id) {
 
   renderSubtasksInModal(singleTask.id, singleTask.subtasks);
   document.getElementById('modalCard-delete-button').onclick = function () { deleteTaskOfModalCard(id) };
-  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), putNextStatus(singleTask.status) };
+  document.getElementById('modal-card-edit-button').onclick = function () { changeToEditMode(id), nextStatus = singleTask.status };
 
   toggleDisplayModal(true);
 }

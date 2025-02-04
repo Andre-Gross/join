@@ -329,7 +329,7 @@ function closeModalCard() {
     toggleEditMode(false);
     toggleDisplayModal(false);
   }
-  putNextStatus()
+  nextStatus = 'To do';
 }
 
 
