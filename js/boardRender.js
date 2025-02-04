@@ -366,17 +366,7 @@ function endDrag(draggedTask, placeholder) {
 }
 
 
-/**
- * Resets the animation of a task by removing the animation and forcing a reflow
- * before re-enabling the animation.
- *
- * @param {HTMLElement} task - The task element whose animation needs to be reset.
- */
-function resetAnimation(task) {
-  task.style.animation = "none"
-  task.offsetHeight
-  task.style.animation = null
-}
+
 
 
 /**

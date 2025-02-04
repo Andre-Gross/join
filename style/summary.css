@@ -244,6 +244,7 @@
     background: var(--color-secondary);
     box-shadow: var(--box-shadow-hover);
     border-radius: var(--border-radius-large);
+    cursor: pointer;
   }
   
 
