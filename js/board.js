@@ -371,29 +371,3 @@ function scrollToTaskSection() {
     }
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const taskContainers = document.querySelectorAll(".tasks-container");
-
-  taskContainers.forEach(container => {
-      container.addEventListener("mouseover", (event) => {
-          if (event.target.classList.contains("task")) {
-              removeActiveTask();
-              event.target.classList.add("active-task");
-          }
-      });
-  });
-
-  document.addEventListener("click", (event) => {
-      if (!event.target.classList.contains("task")) {
-          removeActiveTask();
-      }
-  });
-
-  /**
-   * Removes the active class from all tasks.
-   */
-  function removeActiveTask() {
-      document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
-  }
-});
