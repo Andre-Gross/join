@@ -150,8 +150,9 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
       }
 
       if (!contact) {
-        return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
-      }
+        return `<div class="contact-circle" style="background-color: #00000000; border: none;"></div>`;
+    }
+    
 
       const shortName = contact.name
         .split(" ")
@@ -365,17 +366,7 @@ function endDrag(draggedTask, placeholder) {
 }
 
 
-/**
- * Resets the animation of a task by removing the animation and forcing a reflow
- * before re-enabling the animation.
- *
- * @param {HTMLElement} task - The task element whose animation needs to be reset.
- */
-function resetAnimation(task) {
-  task.style.animation = "none"
-  task.offsetHeight
-  task.style.animation = null
-}
+
 
 
 /**
