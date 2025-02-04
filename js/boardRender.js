@@ -150,8 +150,9 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
       }
 
       if (!contact) {
-        return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
-      }
+        return `<div class="contact-circle" style="background-color: #00000000; border: none;"></div>`;
+    }
+    
 
       const shortName = contact.name
         .split(" ")
