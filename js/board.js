@@ -264,11 +264,6 @@ async function renderBodySearch() {
 }
 
 
-
-function priorityLabelHTML(priority) {
-  return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
-}
-
 async function changeToEditMode(id) {
   let tasksAsArray = await getTasksAsArray();
   const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);

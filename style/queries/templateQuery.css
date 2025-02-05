@@ -4,6 +4,10 @@
     .header{
         z-index: 9990;
     }
+
+    .header img{
+        display: none;
+    }
     
     #headerTitle {
         position: absolute;
