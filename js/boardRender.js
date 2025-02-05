@@ -82,14 +82,14 @@ function getTaskHTML(taskId, task, contactsData) {
     <h4 class="task-title">${task.title}</h4>
     <p class="task-description">${task.description}</p>
     <div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}</div>
-    <footer class="task-footer d-flex justify-content-between align-items-center">
+    <div class="task-footer d-flex justify-content-between align-items-center">
       <div class="assigned-contacts d-flex">
         ${renderTaskContacts(task.assignedTo || [], contactsData)}
       </div>
       <div class="task-priority">
         ${priorityLabelHTML(task.priority)}
       </div>
-    </footer>
+    </div>
   `;
 }
 
