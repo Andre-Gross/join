@@ -17,6 +17,22 @@ const COLORS = [
 ];
 
 
+/**
+ * Adds a prefix and a suffix to a given string and formats it.
+ * 
+ * This function takes a string, removes any extra whitespace, replaces spaces
+ * with underscores, and then adds the specified prefix and suffix.
+ *
+ * @param {string} string - The string to which the prefix and suffix will be added.
+ * @param {string} [prefix=''] - The prefix to add (default is empty string).
+ * @param {string} [suffix=''] - The suffix to add (default is empty string).
+ * @returns {string} The modified string with the prefix and suffix added.
+ */
+function addPrefixAndSuffix(string, prefix = '', suffix = '') {
+    return prefix + string.trim().replace(/\s+/g, '_') + suffix;
+}
+
+
 function capitalizeFirstLetter(val) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
@@ -58,7 +74,8 @@ function clearValue(element) {
   element.value = "";
 }
 
-function createNameCirlce(initials, color) {
+
+function createNameCircle(initials, color) {
   let HTML = /*HTML*/ `
             <div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
                 <span>${initials.toUpperCase()}</span>
@@ -67,12 +84,23 @@ function createNameCirlce(initials, color) {
   return HTML;
 }
 
-async function createNameCirlceWithId(id) {
+
+async function createNameCircleWithId(id) {
   const contacts = await getContacts();
   const initials = returnInitialsOfName(contacts[id].name);
   const color = contacts[id].color.replace("#", "").toLowerCase();
 
-  return createNameCirlce(initials, color);
+  return createNameCircle(initials, color);
+}
+
+
+/**
+ * This function focuses on the given HTML element.
+ * 
+ * @param {HTMLElement} element - The element to be focused.
+ */
+function focusElement(element) {
+  element.focus();
 }
 
 
@@ -212,6 +240,22 @@ function callToast(toast, height, shallSlideIn = true, fromWhere) {
   } else {
     toastAppear();
   }
+}
+
+
+/**
+ * Removes specified prefixes and suffixes from a given string.
+ * 
+ * This function takes a string and removes the specified prefix and suffix
+ * if they exist in the string.
+ *
+ * @param {string} string - The string from which the prefix and suffix will be removed.
+ * @param {string} [prefix=''] - The prefix to remove (default is empty string).
+ * @param {string} [suffix=''] - The suffix to remove (default is empty string).
+ * @returns {string} The modified string with the prefix and suffix removed.
+ */
+function stripPrefixAndSuffix(string, prefix = '', suffix = '') {
+    return string.replace(prefix, '').replace(suffix, '');
 }
 
 
