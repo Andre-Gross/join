@@ -8,24 +8,24 @@
 <script src="./js/templates.js"></script>
 
 <header class="header">
-    <div class="logo-container">
-        <img class="logo" src="./assets/img/general/favicon.svg" alt="Join">
-    </div>
-    <div id="headerTitle"><span>Kanban Project Management Tool</span></div>
-
-    <a href="help.html">
-        <img class="help" src="./assets/img/general/help.svg" alt="help">
-    </a>
-
-
-    <div id="profile-icon-container" class="profile-dropdown">
-        <div class="profile-icon-circle"></div>
-        <div id="dropdownMenu" class="d-menu dm-hidden">
-            <a href="help.html" class="dropdown-item">Help</a>
-            <a href="legalNotice.html" class="dropdown-item">Legal Notice</a>
-            <a href="privacyPolicy.html" class="dropdown-item">Privacy Policy</a>
-            <button class="dropdown-item logout-button" onclick="logOut()">Log out</button>
-
+    <div class="header-content">
+        <div class="logo-container">
+            <img class="logo" src="./assets/img/general/favicon.svg" alt="Join">
+        </div>
+        <div id="headerTitle"><span>Kanban Project Management Tool</span></div>
+        <div class="header-right-content">
+            <a href="help.html">
+                <img class="help" src="./assets/img/general/help.svg" alt="help">
+            </a>
+            <div id="profile-icon-container" class="profile-dropdown">
+                <div class="profile-icon-circle"></div>
+                <div id="dropdownMenu" class="d-menu dm-hidden">
+                    <a href="help.html" class="dropdown-item">Help</a>
+                    <a href="legalNotice.html" class="dropdown-item">Legal Notice</a>
+                    <a href="privacyPolicy.html" class="dropdown-item">Privacy Policy</a>
+                    <button class="dropdown-item logout-button" onclick="logOut()">Log out</button>
+                </div>
+            </div>
         </div>
     </div>
 </header>
