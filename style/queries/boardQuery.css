@@ -50,6 +50,10 @@
 
 @media (max-width: 833.33px) {
 
+    .board-header {
+        width: 350px;
+    }
+
     .container-fluid {
         justify-content: center;
     }
@@ -80,6 +84,9 @@
 
     .board-header {
         max-width: 520px;
+        width: 90vw;
+        min-width: 250px;
+        margin: 0 auto;
     }
     .container-fluid {
         padding-bottom: 80px;
@@ -104,3 +111,4 @@
 
     }
 }
+
