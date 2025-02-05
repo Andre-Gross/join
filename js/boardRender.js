@@ -494,25 +494,3 @@ async function deleteTaskOfModalCard(id) {
     console.error(`Error deleting task with ID ${id}:`, error);
   }
 }
-
-
-/**
- * Deletes a task from the database by sending a DELETE request.
- * @param {string} taskId - The ID of the task to delete.
- * 
- * Sends a DELETE request to the Firebase Realtime Database to remove the specified task.
- * Opens the "Add Task" modal, renders the task form, and initializes form functionality.
- */
-async function deleteTaskInDatabase(taskId) {
-  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
-
-  try {
-    await fetch(firebaseUrl, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (error) {
-    console.error(`Error deleting task ${taskId}:`, error);
-  }
