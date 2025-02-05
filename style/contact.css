@@ -191,6 +191,7 @@ h3 {
     transition: background-color 0.2s ease;
 }
 
+
 #idWhiteBackround {
     background-color: white;
     padding: 40px 100px;
@@ -204,24 +205,11 @@ h3 {
     justify-content: center;
 }
 
-#idAddContactBtnBig{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    background-color: #2A3747;
-    cursor: pointer;
-    border-radius: 8px;
-    width: 350px;
-    height: 56px;
-    top: 100px;
-    left: 250px;
-
-}
 
 #idAddContactBtnBig:hover{
     background-color: #29ABE2;
 }
+
 
 #idAddContactBtn:hover {
     background-color: #29ABE2;

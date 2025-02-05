@@ -200,6 +200,19 @@
         display: none;
     }
 
+    #idAddContactBtnBig{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        background-color: #2A3747;
+        cursor: pointer;
+        border-radius: 8px;
+        width: 350px;
+        height: 56px;
+        top: 100px;
+        left: 250px;
+    }
 
     #idContactMain {
         padding: 100px 20px;
