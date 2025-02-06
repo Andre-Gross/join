@@ -66,6 +66,36 @@ function setupDropdownListeners() {
 
 
 /**
+ * Collects task form data, validates required fields, and submits the task to the database.
+ * Shows a success toast and redirects to the board upon completion.
+ *
+ * @param {string} [method='post'] - The HTTP method to use (`post` to create, `put` to update).
+ * @param {string} [id=''] - The task ID (required for `put` requests).
+ */
+async function submitTaskForm(method = 'post', id = '') {
+    const getValue = (id) => document.getElementById(id).value.trim();
+    const title = getValue("inputTitle");
+    const description = getValue("textareaDescription");
+    const dueDate = getValue("inputDate");
+    const category = getValue("inputCategory");
+    const priority = document.querySelector('.btn-selected')?.id;
+    const assignedTo = readAssignedTo();
+
+    if (!checkAllInputsHasContent(title, dueDate, category)) {
+        return alert('Please fill all required fields');
+    }
+
+    const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
+    method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);
+
+    setTimeout(async () => {
+        nextStatus = 'To do';
+        window.location.href = `./board.html`;
+    }, 3000);
+}
+
+
+/**
  * This function resets all input fields in the addTask form.
  */
 function emptyAddTaskInputs() {
