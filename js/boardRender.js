@@ -150,7 +150,7 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
       }
 
       if (!contact) {
-        return `<div class="contact-circle" style="background-color: #00000000; border: none;"></div>`;
+        return ``;
     }
     
 
