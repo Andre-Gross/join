@@ -46,6 +46,10 @@
                                 <input type="checkbox" class="form-check-input" id="rememberMe">
                                 <label class="form-check-label" for="rememberMe">Remember me</label>
                             </div>
+                            <p class="text-center">
+                                <a href="#" id="forgotPassword">i forgot my password</a>
+                            </p>
+
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Log in</button>
                                 <button type="button" class="btn btn-outline-secondary" onclick="guestLogIn();">
@@ -97,6 +101,39 @@
                     </div>
                 </div>
 
+                <div class="card" id="passwordResetCard" style="display: none;">
+                    <div class="card-body p-4">
+                        <h1 class="text-center mb-4">Password reset</h1>
+                        <form id="passwordResetForm">
+
+                            <div class="mb-3">
+                                <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail-Adresse"
+                                    required>
+                            </div>
+                            <div class="mb-3 password-container">
+                                <input type="password" id="resetPassword" class="form-control"
+                                    placeholder="Neues Passwort" required>
+                                <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
+                                    class="password-toggle" onclick="togglePasswordVisibility('resetPassword', this)">
+                            </div>
+                            <div class="mb-3 password-container">
+                                <input type="password" id="confirmResetPassword" class="form-control"
+                                    placeholder="Passwort wiederholen" required>
+                                <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
+                                    class="password-toggle"
+                                    onclick="togglePasswordVisibility('confirmResetPassword', this)">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Accept</button>
+                            </div>
+                        </form>
+                        <p class="text-center mt-3">
+                            <a id="backToLogin" href="#" onclick="switchToLogin()">back to Log in</a>
+                        </p>
+                    </div>
+                </div>
+
+
             </div>
         </main>
         <div class="col text-center mt-3" id="switchExtras">
@@ -119,6 +156,7 @@
     <script src="./js/index.js"></script>
     <script src="./js/indexLogIn.js"></script>
     <script src="./js/indexSignUp.js"></script>
+    <script src="./js/indexPasswordReset.js"></script>
 </body>
 
 </html>
