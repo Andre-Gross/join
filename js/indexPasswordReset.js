@@ -27,13 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
 function openPasswordReset() {
   document.getElementById("loginCard").style.display = "none";
   document.getElementById("passwordResetCard").style.display = "block";
-  document.getElementById("switchExtras").style.display = "none";
+  document.getElementById("switchExtras").style.display = "none", "important";
 }
 
 function switchToLogin() {
   document.getElementById("passwordResetCard").style.display = "none";
   document.getElementById("loginCard").style.display = "block";
-  document.getElementById("switchExtras").style.display = "block";
+  document.getElementById("switchExtras").style.display = "flex";
 }
 
 
