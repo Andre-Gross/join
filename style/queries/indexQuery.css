@@ -25,7 +25,7 @@
     }
 
     #switchExtras {
-        display: flex !important;
+        display: flex ;
         align-items: center;
         gap: 8px;       
         opacity: 0;
