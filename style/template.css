@@ -41,6 +41,7 @@
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--header-shadow);
     height: var(--header-height);
+    z-index: 9900;
 }
 
 .header-content {
@@ -166,7 +167,7 @@
     right: 0;
     background-color: var(--dropdown-bg);
     box-shadow: var(--dropdown-shadow);
-    z-index: 1000;
+    z-index: 1100;
     min-width: 200px;
     border-radius: var(--dropdown-radius);
     padding: var(--dropdown-padding);
