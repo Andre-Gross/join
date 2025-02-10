@@ -42,7 +42,7 @@ body.dragging {
     padding-top: 80px;
     position: relative;
     position: fixed;
-    z-index: 5000;
+    z-index: 1000;
     background-color: #F6F7F8;
     max-width: 1080px;
     width: 100%;
