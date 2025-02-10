@@ -65,11 +65,3 @@ async function updatePassword(userKey, newPassword) {
   showToast("Passwort erfolgreich geändert", "success");
   setTimeout(switchToLogin, 2000);
 }
-
-function showToast(message, type) {
-  let toast = document.createElement("div");
-  toast.className = `toast toast-${type}`;
-  toast.innerText = message;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
