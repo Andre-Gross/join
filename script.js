@@ -58,6 +58,7 @@ function clearValue(element) {
   element.value = "";
 }
 
+
 function createNameCirlce(initials, color) {
   let HTML = /*HTML*/ `
             <div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
