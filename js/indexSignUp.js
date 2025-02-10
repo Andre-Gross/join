@@ -1,3 +1,6 @@
+let toastMessageSignUp = "<span>You Signed Up successfully</span>";
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.querySelector("#signupCard form");
 
@@ -135,3 +138,12 @@ function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
   return "An unknown validation error occurred.";
 }
 
+
+/**
+ * Displays an error message as a toast notification.
+ *
+ * @param {string} message - The error message to display.
+ */
+function displayError(message) {
+  showToast(`<span>${message}</span>`, "middle", 2000);
+}
