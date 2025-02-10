@@ -1,4 +1,4 @@
-let toastMessageSignUp = "<span>You Signed Up successfully</span>";
+let toastMessageSignUp = '<span>You Signed Up successfully</span>';
 
 
 document.addEventListener("DOMContentLoaded", () => {
