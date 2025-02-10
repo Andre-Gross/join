@@ -1,5 +1,4 @@
 let isSubmitting = false;
-let toastMessageSignUp = "<span>You Signed Up successfully</span>";
 let failedAttempts = {};
 
 
@@ -156,15 +155,6 @@ function switchView() {
   }, 50);
 }
 
-
-/**
- * Displays an error message as a toast notification.
- *
- * @param {string} message - The error message to display.
- */
-function displayError(message) {
-  showToast(`<span>${message}</span>`, "middle", 2000);
-}
 
 
 /**
