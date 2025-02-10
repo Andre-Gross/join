@@ -1,4 +1,5 @@
 window.resetPassword = resetPassword;
+let toastMessageReset = '<span>Password reset succesfully</span>';
 
 document.addEventListener("DOMContentLoaded", () => {
   const forgotPasswordLink = document.getElementById("forgotPassword");
@@ -62,6 +63,6 @@ async function updatePassword(userKey, newPassword) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password: newPassword })
   });
-  showToast("Passwort erfolgreich geändert", "success");
+  showToast(toastMessageReset, "middle", 1000);
   setTimeout(switchToLogin, 2000);
 }
