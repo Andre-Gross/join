@@ -16,11 +16,11 @@ const toastMessageCreateTask = '<span>Task successfully created</span>';
 async function getContacts() {
     try {
         const response = await fetch(`${BASE_URL}users/contacts.json`);
-        
+
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Failed to fetch contacts:', error);
@@ -37,7 +37,7 @@ async function getContacts() {
  */
 async function getContactsAsArray() {
     const contactsData = await getContacts();
-    
+
     return Object.entries(contactsData).map(([id, contact]) => ({
         id,
         color: contact.color,
@@ -60,7 +60,7 @@ async function getContactsAsArray() {
 async function getTasks() {
     try {
         const response = await fetch(`${BASE_URL}tasks/.json`);
-        
+
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
@@ -145,6 +145,7 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    showToast(toastMessageEditTask);
 }
 
 
@@ -188,6 +189,52 @@ async function tryPostTaskToDatabase(data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    showToast(toastMessagePostTask);
+}
+
+
+/**
+ * Saves or updates a contact in the database.
+ * 
+ * @async
+ * @function putContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The data of the contact to be saved.
+ * @returns {Promise<void>} - Does not return a value but processes any errors.
+ * @throws {Error} - Throws an error if the request fails, and shows an alert.
+ */
+async function putContactToDatabase(contactId, data) {
+    try {
+        await tryPutContactToDatabase(contactId, data);
+    } catch (error) {
+        console.error('Error saving contact:', error);
+        alert('An error occurred while saving the contact.');
+    }
+}
+
+
+/**
+ * Tries to save or update a contact in the database.
+ * 
+ * @async
+ * @function tryPutContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The contact data to be posted.
+ * @returns {Promise<void>} - Resolves if the contact is saved, otherwise throws an error.
+ * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
+ */
+async function tryPutContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
 }
 
 
@@ -204,6 +251,7 @@ async function tryPostTaskToDatabase(data) {
 async function putTaskToDatabase(taskId, data) {
     try {
         await tryPutTaskToDatabase(taskId, data);
+        showToast(toastMessageEditTask, 'middle', 3000);
     } catch (error) {
         console.error("Error saving the task:", error);
         alert("An error occurred while saving the task.");
@@ -235,7 +283,6 @@ async function tryPutTaskToDatabase(taskId, data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessageEditTask, 'middle', 1000); // Display success toast message
 }
 
 
@@ -272,53 +319,6 @@ async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
 
 
 /**
- * Saves or updates a contact in the database.
- * 
- * @async
- * @function putContactToDatabase
- * @param {string} contactId - The ID of the contact to be saved or updated.
- * @param {Object} data - The data of the contact to be saved.
- * @returns {Promise<void>} - Does not return a value but processes any errors.
- * @throws {Error} - Throws an error if the request fails, and shows an alert.
- */
-async function putContactToDatabase(contactId, data) {
-    try {
-        await tryPutContactToDatabase(contactId, data);
-    } catch (error) {
-        console.error('Error saving contact:', error);
-        alert('An error occurred while saving the contact.');
-    }
-}
-
- 
-/**
- * Tries to save or update a contact in the database.
- * 
- * @async
- * @function tryPutContactToDatabase
- * @param {string} contactId - The ID of the contact to be saved or updated.
- * @param {Object} data - The contact data to be posted.
- * @returns {Promise<void>} - Resolves if the contact is saved, otherwise throws an error.
- * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
- */
-async function tryPutContactToDatabase(contactId, data) {
-    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP Error! Status: ${response.status}`);
-    }
-    showToast(toastMessageCreateTask, 'middle', 1000); // Display success toast message
-}
-
-
-
-/**
  * Deletes a task from the database and handles any errors.
  * 
  * This function calls `tryDeleteTaskInDatabase` to delete a task with the given ID. If an error occurs,
@@ -332,6 +332,7 @@ async function tryPutContactToDatabase(contactId, data) {
 async function deleteTaskInDatabase(id) {
     try {
         await tryDeleteTaskInDatabase(id);
+        showToast(toastMessageDeleteTask, 'middle', 3000);
     } catch (error) {
         console.error("Error deleting task:", error);
         alert("An error occurred while deleting the task.");
@@ -362,7 +363,7 @@ async function tryDeleteTaskInDatabase(id) {
     if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
-    showToast(toastMessageDeleteTask, 'middle', 1000);
+    showToast(toastMessageDeleteTask);
 }
 
 
