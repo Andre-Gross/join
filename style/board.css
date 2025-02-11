@@ -1,12 +1,3 @@
-#board {
-    flex-direction: row;
-    justify-content: center;
-    max-width: 100%;
-    height: calc(100vh);
-    padding-top: 80px;
-}
-
-
 h1 {
     position: relative;
     top: unset;
@@ -23,36 +14,67 @@ body.dragging {
     cursor: grabbing;
 }
 
+.m-2 {
+    margin: 0 !important;
+}
+
+#board {
+    display: flex;  
+    flex-direction: row;
+    justify-content: center;
+    max-width: 100%;
+    height: calc(100vh);
+    padding-top: 80px;
+}
 
 .title {
     display: flex;
     flex-direction: row;
     align-items: center;
     max-width: 1060px;
+    order: 1;
 }
-
 
 .grid-item {
     width: clamp(180px, 18vw, 300px);
 }
 
+.board-header-bg {
+    background-color: #F6F7F8;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding:  80px 0 20px 0;/* Optional: Schatten für besseren Kontrast */
+}
 
 .board-header {
     margin-top: 0;
-    padding-top: 80px;
     position: relative;
-    position: fixed;
+    left: 270px;
     z-index: 1000;
-    background-color: #F6F7F8;
-    max-width: 1080px;
+    max-width: 1060px;
     width: 100%;
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+    padding:  48px 0 20px 0;
 }
 
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+}
 
 .searchBar {
     display: flex;
     align-items: center;
     flex-direction: row;
+    order: 2;
 }
 
 
@@ -77,6 +99,37 @@ body.dragging {
     top: 50%;
     transform: translateY(-50%);
     color: #6c757d;
+}
+
+.AddTaskBtn {
+    order: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background-color: #2A3747;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    width: 268px;
+    height: 48px;
+    padding: 8px;
+    margin-top: unset !important;
+}
+
+
+.AddTaskBtnText {
+    font-size: 21px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    padding-right: 8px;
+}
+
+
+.AddTaskBtn:hover {
+    background-color: #29ABE2;
 }
 
 
@@ -364,9 +417,7 @@ body.dragging {
 }
 
 
-/* #modalCard-no-edit-mode form {
-    height: max-content !important;
-} */
+
 
 
 #modalCard-edit-mode form {
@@ -534,7 +585,6 @@ body.dragging {
         url('/assets/img/board/search-wall.svg');
     background-repeat: no-repeat;
     background-position: right center;
-    margin-right: 40px;
 }
 
 
@@ -543,33 +593,3 @@ body.dragging {
 
 }
 
-
-.AddTaskBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    background-color: #2A3747;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.1s ease;
-    width: 268px;
-    height: 48px;
-    padding: 8px;
-    margin-top: unset !important;
-}
-
-
-.AddTaskBtnText {
-    font-size: 21px;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    padding-right: 8px;
-}
-
-
-.AddTaskBtn:hover {
-    background-color: #29ABE2;
-}
