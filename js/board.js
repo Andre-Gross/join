@@ -68,6 +68,7 @@ async function filterAndShowTask() {
   }
 }
 
+
 function renderAssignedContacts(assignedTo, contacts) {
   const contactEntries = Object.values(contacts);
 
@@ -105,6 +106,7 @@ function renderAssignedContacts(assignedTo, contacts) {
     </div>
   `;
 }
+
 
 async function loadTasks() {
   const firebaseUrl =
@@ -201,6 +203,7 @@ async function loadTasks() {
   }
 }
 
+
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -209,6 +212,7 @@ function getPriorityClass(priority) {
   };
   return priorityClasses[priority] || "";
 }
+
 
 function getContainerIdByStatus(status) {
   const statusContainers = {
@@ -219,6 +223,7 @@ function getContainerIdByStatus(status) {
   };
   return statusContainers[status] || null;
 }
+
 
 async function fetchContactsData() {
   const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
@@ -231,10 +236,12 @@ async function fetchContactsData() {
   return await response.json();
 }
 
+
 function truncateDescription(description, maxLength = 50) {
   if (!description) return "";
   return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
 }
+
 
 async function renderBodySearch() {
   ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
@@ -291,74 +298,8 @@ async function renderBodySearch() {
 }
 
 
-async function changeToEditMode(id) {
-  let tasksAsArray = await getTasksAsArray();
-  const singleTaskID = tasksAsArray.findIndex((x) => x.id == id);
-  const singleTask = tasksAsArray[singleTaskID];
-
-  const modalCardEditMode = document.getElementById('modalCard-edit-mode-template-container');
-  renderTaskForm(modalCardEditMode);
-
-  const title = document.getElementById("inputTitle");
-  const description = document.getElementById("textareaDescription");
-  const dueDate = document.getElementById("inputDate");
-  const category = document.getElementById("inputCategory");
-
-
-  title.value = singleTask.title;
-  description.value = singleTask.description;
-  dueDate.value = singleTask.finishedUntil;
-  selectPriority(singleTask.priority);
-  priority = singleTask.priority;
-  category.value = singleTask.category;
-  dataSubtasks = singleTask.subtasks;
-
-  if (dataSubtasks) {
-    renderNewSubtasks();
-  }
-
-  toggleEditMode(true);
-
-  document
-    .getElementById("modalCard-first-line")
-    .classList.remove("justify-content-between");
-  document
-    .getElementById("modalCard-first-line")
-    .classList.add("justify-content-end");
-  loadFormFunctions();
-
-  modalCardEditMode.querySelector("form").onsubmit = function () {
-    submitTaskForm("put", id);
-    return false;
-  };
-}
-
-
-function closeModalCard() {
-  const modalBackground = document.getElementById("modalCard-background");
-  const modalCardEditModeContainer = document.getElementById('modalCard-edit-mode-template-container');
-  const modalAddTask = document.getElementById('modalAddTask');
-  const modalAddTaskContainer = document.getElementById('modalAddTask-template-container');
-
-  if (!(modalAddTaskContainer.innerHTML === '')) {
-    modalAddTask.classList.remove('xMiddle');
-    toggleDisplayNone(modalBackground, 'd-block', false);
-    setTimeout(() => {
-      modalAddTaskContainer.innerHTML = '';
-    },500)
-  } else {
-    modalCardEditModeContainer.innerHTML = '';
-    toggleEditMode(false);
-    toggleDisplayModal(false);
-  }
-  putNextStatus()
-}
-
-
-function toggleEditMode(shallVisible = '') {
-  toggleDisplayNone(document.getElementById("modalCard-no-edit-mode"), 'd-block', !shallVisible);
-  toggleDisplayNone(document.getElementById("modalCard-edit-mode"), 'd-block', shallVisible);
-  toggleDisplayNone(document.getElementById("modalCard-category-value"), 'd-block', !shallVisible);
+function priorityLabelHTML(priority) {
+  return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
 

@@ -1,161 +1,181 @@
 const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
-let toastMessageEditTask ='<span>Task successfully edited</span>';
-let toastMessageDeleteTask='<span>Task successfully deleted</span>';
-let toastMessageCreateTask ='<span>Task successfully created</span>';
+
+const toastMessagePostTask = '<span>Task added to board</span><img src="assets/img/general/board.svg" alt="board">'
+const toastMessageEditTask = '<span>Task successfully edited</span>';
+const toastMessageDeleteTask = '<span>Task successfully deleted</span>';
+const toastMessageCreateTask = '<span>Task successfully created</span>';
+
 
 /**
- * This function returns the contacts of the user as JSON
+ * Fetches the user's contacts and returns them as a JSON object.
  * 
- * @returns {JSON} - This object includes all datas of all contacts of the user.
+ * @returns {Promise<Object>} A promise resolving to the contacts data.
+ * @throws {Error} If the request fails or returns a non-OK response.
  */
 async function getContacts() {
-    let response = await fetch(BASE_URL + 'users/' + '/contacts' + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON;
+    try {
+        const response = await fetch(`${BASE_URL}users/contacts.json`);
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch contacts:', error);
+        throw error;
+    }
 }
 
 
 /**
- * This function returns the contacts of the loggedInUser as Array
+ * Fetches all contacts and returns them as an array.
  * 
- * @returns {Array} - This array contains the contacts of the loggedInUser
+ * @returns {Promise<Array<{id: string, color?: string, email?: string, name?: string, phone?: string}>>} 
+ * A promise resolving to an array of contact objects.
  */
 async function getContactsAsArray() {
-    let contactsAsArray = [];
-    const contactsData =  await getContacts();
-    for (const KEY in contactsData) {
-        const singleContact = contactsData[KEY];
-        const contact = {
-            id: KEY,
-            color: singleContact.color,
-            email: singleContact.email,
-            name: singleContact.name,
-            phone: singleContact.phone
-        };
-        contactsAsArray.push(contact);
-    }
-    return contactsAsArray;
+    const contactsData = await getContacts();
+
+    return Object.entries(contactsData).map(([id, contact]) => ({
+        id,
+        color: contact.color,
+        email: contact.email,
+        name: contact.name,
+        phone: contact.phone
+    }));
 }
 
 
 /**
- * This function returns the datas of all tasks. 
+ * Fetches all tasks from the database and returns them as an object.
  * 
- * @returns {object} - This object includes the datas of all tasks.
+ * @async
+ * @function getTasks
+ * @returns {Promise<Object<string, { title: string, category?: string, description?: string, finishedUntil?: string, priority?: string, assignedTo?: string[], subtasks?: any[], status?: string }>>}
+ * A promise resolving to an object where the keys are task IDs, and the values are task objects.
+ * @throws {Error} If the request fails or returns a non-OK response.
  */
 async function getTasks() {
-    let response = await fetch(BASE_URL + 'tasks/.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON;
+    try {
+        const response = await fetch(`${BASE_URL}tasks/.json`);
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch tasks:', error);
+        throw error;
+    }
 }
 
 
 /**
- * Ruft Aufgaben aus der Datenbank ab und konvertiert sie in ein Array von Objekten.
+ * Fetches tasks from the database and converts them into an array of objects.
  *
  * @async
  * @function getTasksAsArray
- * @returns {Promise<Array<Object>>} - Ein Array mit Aufgabenobjekten, die jeweils eine ID und relevante Aufgabendetails enthalten.
+ * @returns {Promise<Array<{ id: string, title: string, category?: string, description?: string, finishedUntil?: string, priority?: string, assignedTo?: string[], subtasks?: any[], status?: string }>>}
+ * A promise resolving to an array of task objects, each containing an ID and relevant task details.
  */
 async function getTasksAsArray() {
-    let tasksAsArray = [];
-    let tasksData = await getTasks();
-    for (const KEY in tasksData) {
-        const singleTask = tasksData[KEY];
-        const task = {
-            id: KEY,
-            category: singleTask.category,
-            title: singleTask.title,
-            description: singleTask.description,
-            finishedUntil: singleTask.finishedUntil,
-            priority: singleTask.priority,
-            assignedTo: singleTask.assignedTo,
-            subtasks: singleTask.subtasks,
-            status: singleTask.status
-        };
-        tasksAsArray.push(task);
-    }
-    return tasksAsArray;
-}
+    const tasksData = await getTasks();
 
-
-/**
- * This function return the status of the next task.
- * 
- * @returns {string} - This string contains the staus of the next task
- */
-async function getNextStatus() {
-    let response = await fetch(BASE_URL + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['nextStatus'];
+    return Object.entries(tasksData).map(([id, task]) => ({
+        id,
+        title: task.title,
+        category: task.category,
+        description: task.description,
+        finishedUntil: task.finishedUntil,
+        priority: task.priority,
+        assignedTo: task.assignedTo,
+        subtasks: task.subtasks,
+        status: task.status
+    }));
 }
 
 
 /**
  * Posts a new contact to the database.
+ * This function handles the error when the contact cannot be saved.
+ *
  * @param {string} name - Name of the contact.
  * @param {string} mail - Email of the contact.
  * @param {string} phone - Phone number of the contact.
  * @param {string} color - Color associated with the contact.
+ * @throws {Error} If the contact cannot be saved.
  */
 async function postContactToDatabase(name, mail, phone, color) {
     try {
-      tryPostContactToDatabase(name, mail, phone, color);
+        await tryPostContactToDatabase(name, mail, phone, color);
     } catch (error) {
-      console.error("Fehler beim Speichern des Kontaktes", error);
-      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
-    }
-  }
-  
-  
-  /**
-   * Tries to post a new contact to the database.
-   * @param {string} name - Name of the contact.
-   * @param {string} mail - Email of the contact.
-   * @param {string} phone - Phone number of the contact.
-   * @param {string} color - Color associated with the contact.
-   * @throws Will throw an error if the request fails.
-   */
-  async function tryPostContactToDatabase(name, mail, phone, color) {
-    let response = await fetch(BASE_URL + `users/contacts.json`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        color: color,
-        email: mail,
-        name: name,
-        phone: phone,
-      }),
-    });
-  
-    if (!response.ok) {
-      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-  }
-
-
-/**
- * This function post the datas of task to the database with another function. If the response is an erro, it catch it.
- * 
- * @param {object} data - Datas of the task.
- */
-async function postTaskToDatabase(data) {
-    try {
-        await tryPostTaskToDatabase(data);
-    } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Error saving the contact", error);
+        alert("An error occurred while saving the contact.");
     }
 }
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Tries to post a new contact to the database.
+ * Throws an error if the request fails.
+ *
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @throws {Error} If the HTTP request fails (e.g., non-OK response status).
+ */
+async function tryPostContactToDatabase(name, mail, phone, color) {
+    let response = await fetch(BASE_URL + `users/contacts.json`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            color: color,
+            email: mail,
+            name: name,
+            phone: phone,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    showToast(toastMessageEditTask);
+}
+
+
+/**
+ * Posts the task data to the database. If the request fails, it catches the error and displays an alert.
  * 
- * @param {object} data - datas of the task
+ * @async
+ * @function postTaskToDatabase
+ * @param {object} data - The data of the task to be posted.
+ * @throws {Error} If the task cannot be saved due to an HTTP error.
+ */
+async function postTaskToDatabase(data) {
+    try {
+        await tryPostTaskToDatabase(data);
+    } catch (error) {
+        console.error("Error saving the task:", error);
+        alert("An error occurred while saving the task.");
+    }
+}
+
+
+/**
+ * Attempts to post the data of a new task to the database.
+ * If the request is successful, a success alert is shown. 
+ * If an error occurs, an error message is thrown.
+ * 
+ * @async
+ * @function tryPostTaskToDatabase
+ * @param {object} data - The data of the task to be posted.
+ * @throws {Error} If the HTTP request fails (e.g., non-OK status response).
  */
 async function tryPostTaskToDatabase(data) {
     const response = await fetch(BASE_URL + `tasks.json`, {
@@ -167,35 +187,89 @@ async function tryPostTaskToDatabase(data) {
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    showToast(toastMessagePostTask);
+}
+
+
+/**
+ * Saves or updates a contact in the database.
+ * 
+ * @async
+ * @function putContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The data of the contact to be saved.
+ * @returns {Promise<void>} - Does not return a value but processes any errors.
+ * @throws {Error} - Throws an error if the request fails, and shows an alert.
+ */
+async function putContactToDatabase(contactId, data) {
+    try {
+        await tryPutContactToDatabase(contactId, data);
+    } catch (error) {
+        console.error('Error saving contact:', error);
+        alert('An error occurred while saving the contact.');
     }
 }
 
 
 /**
- * Speichert eine Aufgabe in der Datenbank oder aktualisiert sie.
- *
+ * Tries to save or update a contact in the database.
+ * 
+ * @async
+ * @function tryPutContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The contact data to be posted.
+ * @returns {Promise<void>} - Resolves if the contact is saved, otherwise throws an error.
+ * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
+ */
+async function tryPutContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+}
+
+
+/**
+ * Saves or updates a task in the database.
+ * 
  * @async
  * @function putTaskToDatabase
- * @param {string} taskId - Die ID der Aufgabe, die gespeichert oder aktualisiert werden soll.
- * @param {Object} data - Die zu speichernden Aufgabendaten.
- * @returns {Promise<void>} - Gibt keinen Wert zurück, verarbeitet aber Fehler.
- * @throws {Error} - Zeigt eine Fehlermeldung in der Konsole und einen Alert bei einem Fehler.
+ * @param {string} taskId - The ID of the task to be saved or updated.
+ * @param {Object} data - The data of the task to be saved.
+ * @returns {Promise<void>} - Does not return a value, but processes any errors.
+ * @throws {Error} - Throws an error if the request fails, and shows an alert.
  */
 async function putTaskToDatabase(taskId, data) {
     try {
         await tryPutTaskToDatabase(taskId, data);
+        showToast(toastMessageEditTask, 'middle', 3000);
     } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Error saving the task:", error);
+        alert("An error occurred while saving the task.");
     }
 }
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Tries to save or update a task in the database. 
+ * If the request fails, it throws an error.
+ * If successful, a success message is shown.
  * 
- * @param {object} data - datas of the task
+ * @async
+ * @function tryPutTaskToDatabase
+ * @param {string} taskId - The ID of the task to be saved or updated.
+ * @param {object} data - The task data to be posted.
+ * @returns {Promise<void>} - Resolves if the task is saved, otherwise throws an error.
+ * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
  */
 async function tryPutTaskToDatabase(taskId, data) {
     const response = await fetch(BASE_URL + `tasks/${taskId}.json`, {
@@ -207,180 +281,136 @@ async function tryPutTaskToDatabase(taskId, data) {
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessageEditTask, 'middle', 1000);
 }
 
 
 /**
- * This string put the staus of the next task to the database
+ * Updates the status of a subtask in the database.
  * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
- */
-async function putNextStatus(status = 'To do') {
-    await fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
-}
-
-
-/**
- * Aktualisiert den Status einer Teilaufgabe in der Datenbank.
- *
  * @async
  * @function putNewCheckedToSubtask
- * @param {string} taskId - Die ID der übergeordneten Aufgabe.
- * @param {string} subtaskId - Die ID der Teilaufgabe.
- * @param {boolean} isChecked - Der neue Status der Teilaufgabe (true = erledigt, false = nicht erledigt).
- * @returns {Promise<void>} - Gibt keinen Wert zurück, sendet aber eine Anfrage zur Aktualisierung.
+ * @param {string} taskId - The ID of the parent task.
+ * @param {string} subtaskId - The ID of the subtask.
+ * @param {boolean} isChecked - The new status of the subtask (true = completed, false = not completed).
+ * @returns {Promise<void>} - Does not return a value but sends an update request.
+ * @throws {Error} - Throws an error if the request fails.
  */
 async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
-    await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(isChecked)
-    })
-        .then(response => response.json())
-}
-
-
-/**
- * Speichert eine Aufgabe in der Datenbank für einen bestimmten Kontakt.
- *
- * @async
- * @function putContactToDatabase
- * @param {string} contactId - Die ID des Kontakts, dem die Aufgabe zugeordnet wird.
- * @param {Object} data - Die Daten der Aufgabe, die gespeichert werden sollen.
- * @returns {Promise<void>} - Gibt keinen Wert zurück, aber verarbeitet Fehler.
- * @throws {Error} - Zeigt eine Fehlermeldung in der Konsole und einen Alert bei einem Fehler.
- */
-async function putContactToDatabase(contactId, data) {
     try {
-        await tryPutTaskToDatabase(contactId, data);
+        const response = await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(isChecked)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
     } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error('Error updating subtask status:', error);
+        throw error; // Rethrow the error for further handling
     }
 }
 
 
-/**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
- * 
- * @param {object} data - datas of the task
- */
-async function tryPutContactToDatabase(contactId, data) {
-    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-    showToast(toastMessageCreateTask, 'middle', 1000);
-}
-
 
 /**
- * Löscht eine Aufgabe aus der Datenbank und behandelt Fehler.
+ * Deletes a task from the database and handles any errors.
  * 
- * Diese Funktion ruft die `tryDeleteTaskInDatabase`-Funktion auf, um eine Aufgabe mit der
- * gegebenen ID zu löschen. Tritt ein Fehler auf, wird dieser abgefangen und eine entsprechende
- * Fehlermeldung im Browser angezeigt.
+ * This function calls `tryDeleteTaskInDatabase` to delete a task with the given ID. If an error occurs,
+ * it will be caught and an appropriate error message will be displayed in the browser.
  * 
  * @async
  * @function
- * @param {string} id - Die ID der Aufgabe, die gelöscht werden soll.
- * @throws {Error} Wenn beim Löschen der Aufgabe ein Fehler auftritt, wird dieser im Catch-Block behandelt.
+ * @param {string} id - The ID of the task to be deleted.
+ * @throws {Error} If an error occurs during the deletion of the task, it will be caught and displayed in an alert.
  */
-async function deleteTaskInDatabase(id){
+async function deleteTaskInDatabase(id) {
     try {
         await tryDeleteTaskInDatabase(id);
+        showToast(toastMessageDeleteTask, 'middle', 3000);
     } catch (error) {
-        console.error("Fehler beim Löschen der Aufgabe:", error);
-        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Error deleting task:", error);
+        alert("An error occurred while deleting the task.");
     }
 }
 
 
+
 /**
- * Löscht eine Aufgabe aus der Datenbank über eine HTTP DELETE-Anfrage.
+ * Deletes a task from the database via an HTTP DELETE request.
  * 
- * Diese Funktion sendet eine DELETE-Anfrage an die Datenbank, um eine Aufgabe mit der gegebenen
- * ID zu löschen. Wenn die Anfrage erfolgreich ist, wird eine Toast-Nachricht angezeigt. 
- * Im Falle eines Fehlers wird eine Ausnahme geworfen.
+ * This function sends a DELETE request to the database to delete a task with the given ID. If the request 
+ * is successful, a toast message will be shown. If an error occurs, an exception will be thrown.
  * 
  * @async
  * @function
- * @param {string} id - Die ID der Aufgabe, die gelöscht werden soll.
- * @throws {Error} Wenn die Anfrage nicht erfolgreich ist, wird ein Fehler mit Statuscode und Nachricht geworfen.
+ * @param {string} id - The ID of the task to be deleted.
+ * @throws {Error} If the request fails, an error will be thrown with the status code and message.
  */
 async function tryDeleteTaskInDatabase(id) {
     const response = await fetch(BASE_URL + `tasks/` + id + `.json`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
-        },
+        }
     });
 
     if (!response.ok) {
-        throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
-    showToast(toastMessageDeleteTask, 'middle', 1000);
+    showToast(toastMessageDeleteTask);
 }
 
 
+
 /**
- * Löscht einen Kontakt aus der Datenbank.
+ * Deletes a contact from the database.
  * 
- * Diese Funktion versucht, eine Löschoperation für einen Kontakt durchzuführen, indem sie die
- * `tryPutTaskToDatabase`-Methode aufruft. Tritt ein Fehler auf, wird dieser abgefangen und eine
- * Fehlermeldung im Browser angezeigt.
+ * This function attempts to perform a delete operation on a contact by calling `tryDeleteContactInDatabase`.
+ * If an error occurs, it will be caught and an appropriate error message will be displayed in the browser.
  * 
  * @async
  * @function
- * @param {string} contactId - Die ID des Kontakts, der gelöscht werden soll.
- * @throws {Error} Wenn ein Fehler beim Löschen der Aufgabe auftritt, wird dieser im Catch-Block behandelt.
+ * @param {string} contactId - The ID of the contact to be deleted.
+ * @throws {Error} If an error occurs during the deletion of the contact, it will be caught and displayed in an alert.
  */
 async function deleteContactInDatabase(contactId) {
     try {
-        await tryPutTaskToDatabase(contactId);
+        await tryDeleteContactInDatabase(contactId);
     } catch (error) {
-        console.error("Fehler beim Löschen der Aufgabe:", error);
-        alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
+        console.error("Error deleting contact:", error);
+        alert("An error occurred while deleting the contact.");
     }
 }
 
 
+
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Deletes a contact from the database via an HTTP DELETE request.
  * 
- * @param {object} data - datas of the task
+ * This function sends a DELETE request to the database to delete a contact with the given ID. If the request 
+ * is successful, a confirmation message will be displayed. If an error occurs, an exception will be thrown.
+ * 
+ * @async
+ * @function
+ * @param {string} contactId - The ID of the contact to be deleted.
+ * @throws {Error} If the request fails, an error will be thrown with the status code and message.
  */
 async function tryDeleteContactInDatabase(contactId) {
     const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        }
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP Error! Status: ${response.status}`);
     }
-    alert("Kontakt erfolgreich gelöscht.");
+    alert("Contact successfully deleted.");
 }
-

@@ -1,144 +1,394 @@
-const taskFormHTML = /*HTML*/`
-    <form action="" class="w-100u1000p d-flex"
-        onsubmit="submitTaskForm(); return false;">
-
-        <div class="form-subcontainer">
-            <div class="d-flex flex-column">
-                <label for="inputTitle">Title<span class="color-invalid">*</span></label>
-                <div class="w-100 d-flex flex-column gap-1">
-                    <input type="text" placeholder="Enter a title" required class="w-100" id="inputTitle"
-                        onfocus="changeBorderColor(this, 'border-color-onfocus')" oninput="enableDisableSendButton()"
-                        onblur="changeToRightBorderColor(this), changeTextRequired('title')">
-                    <div class="h-0 d-flex flex-column">
-                        <span id="text-required-input-title" class="text-required-input d-none color-invalid fs-12">
-                            This field is required</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column gap-8">
-                <label for="textareaDescription">Description</label>
-                <textarea id="textareaDescription" placeholder="Enter a Description"></textarea>
-            </div>
-
-            <div class="d-flex flex-column gap-05">
-                <label for="dropdown-container-assignedTo">Assigned to</label>
-                <div id="dropdown-container-assignedTo" class="dropdown-container">
-                    <div id="input-group-dropdown-assignedTo" class="input-group d-flex">
-                        <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
-                            placeholder="Select contacts to assign"
-                            onfocus="changeBorderColor(document.getElementById('dropAssignedTo-img'), 'border-color-onfocus'), savePrefixInAssingedTo(), filterContacts()"
-                            oninput="savePrefixInAssingedTo(), filterContacts()"
-                            onblur="changeBorderColor(document.getElementById('dropAssignedTo-img')), emptyAssignedTo()">
-                        <div id="dropAssignedTo-img"
-                            class="input-single-img-container d-flex justify-content-center align-items-center"
-                            onclick="toggleDropdown('assignedTo', 'd-block')">
-                            <img id="input-assignedTo-arrow-down" src="assets/img/addTask/arrow-down.svg" class="">
-                            <img id="input-assignedTo-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none">
-                        </div>
-                    </div>
-                    <div id="input-dummy-assignedTo" class="input-dummy d-none"></div>
-                    <div id="dropdown-assignedTo" class="dropdown d-none"></div>
-                </div>
-                <div id="assignedTo-choosen-contacts" class="w-100 d-flex justify-content-start align-items-center">
-                </div>
-            </div>
-        </div>
-
-        <div class="form-subcontainer">
-            <div class="d-flex flex-column gap-05">
-                <label for="inputDate">Due date<span class="color-invalid">*</span></label>
-                <input required id="inputDate" type="date" onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                    oninput="enableDisableSendButton()" onblur="changeToRightBorderColor(this); changeTextRequired('date')">
-                <div class="h-0 d-flex flex-column">
-                    <span id="text-required-input-date" class="text-required-input d-none color-invalid fs-12">
-                        This field is required</span>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column gap-05">
-                <label for="priorityButtons">Prio</label>
-                <div id="priorityButtons" class="prio-btn">
-                    <button id="urgent" type="button" class="btn" onclick="selectPriority('urgent')">
-                        Urgent <img id="img-urgent" src="assets/img/addTask/prio-urgent.svg" alt="Urgent">
-                    </button>
-                    <button id="medium" type="button" class="btn btn-selected btn-selected-medium"
-                        onclick="selectPriority('medium')">
-                        Medium <img id="img-medium" src="assets/img/addTask/prio-medium-white.svg" alt="Medium">
-                    </button>
-                    <button id="low" type="button" class="btn" onclick="selectPriority('low')">
-                        Low <img id="img-low" src="assets/img/addTask/prio-low.svg" alt="Low">
-                    </button>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column gap-05">
-                <label for="input-group-dropdown-category">Categorie<span class="color-invalid">*</span></label>
-                <div id="dropdown-container-category" class="dropdown-container">
-                    <div id="input-group-dropdown-category" class="input-group d-flex">
-                        <input required readonly type="text" id="inputCategory"
-                            class="input-color-standart-important-always border-end-0 flex-fill"
-                            placeholder="Select task category" onclick="toggleDropdown('category', 'd-block', true)"
-                            oninput="enableDisableSendButton()" onblur="changeTextRequired('category')">
-                        <div id="input-group-dropdown-category-img"
-                            class="input-single-img-container d-flex justify-content-center align-items-center"
-                            onclick="toggleDropdown('category', 'd-block')">
-                            <img id="input-category-arrow-down" src="assets/img/addTask/arrow-down.svg" class="">
-                            <img id="input-category-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none">
-                        </div>
-                    </div>
-                    <div class="h-0 d-flex flex-column">
-                        <span id="text-required-input-category" class="text-required-input d-none color-invalid fs-12">
-                            This field is required</span>
-                    </div>
-                    <div id="dropdown-category" class="d-none dropdown" onclick="">
-                        <div
-                            onclick="selectCategory('Technical Task', document.getElementById('dropdown-category')); enableDisableSendButton(), changeTextRequired('category')">
-                            Technical Task</div>
-                        <div
-                            onclick="selectCategory('User Story', document.getElementById('dropdown-category')); enableDisableSendButton(), changeTextRequired('category')">
-                            User
-                            Story
-                        </div>
-                    </div>
-                    <div id="input-dummy-category" class="input-dummy d-none"></div>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column gap-05">
-                <label for="input-subtask">Subtasks</label>
-                <div class="w-100">
-                    <div class="input-group w-100" onclick="">
-                        <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
-                            oninput="" onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
-                        <div id="input-subtask-plus-box"
-                            class="input-single-img-container d-flex justify-content-center align-items-center"
-                            onclick="focusElement(document.getElementById('input-subtask'))">
-                            <img id="input-subtask-plus" src="assets/img/addTask/plus-dark.svg" class="">
-                        </div>
-                        <div id="input-subtask-two-img-box" class="input-single-img-container two-img-box d-none">
-                            <div class="single-img-box d-flex justify-content-center align-items-center">
-                                <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
-                                    onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
-                            </div>
-                            <div class="single-img-box d-flex justify-content-center align-items-center">
-                                <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
-                                    onclick="addNewSubtask()">
-                            </div>
-                        </div>
-                    </div>
-                    <div id="list-subtasks-container" class="d-none">
-                        <ul id="list-subtasks"></ul>
-                    </div>
-                </div>
-            </div>
-            <p id="required-text-mobile-mode" class="required-text"><span class="color-invalid">*</span>This
-                field is required</p>
-        </div>
-    </form>
-    `
+let dataSubtasks = [];
+let nextStatus = "To do"
 
 
-function renderTaskForm(element) {
-    element.innerHTML = taskFormHTML;
+/**
+ * This function initializes the form, including the subtask input listener and dropdown listeners.
+ */
+function loadFormFunctions() {
+    handleSubtaskInput();
+    createAssignedToDropdown();
+    setupDropdownListeners();
+}
+
+
+/**
+ * This function enables or disables the send button based on the content of the required inputs.
+ */
+function enableDisableSendButton() {
+    const title = document.getElementById("inputTitle").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const category = document.getElementById("inputCategory").value;
+    const sendButton = document.getElementById("sendButton")
+
+    if (checkAllInputsHasContent(title, dueDate, category)) {
+        sendButton.disabled = false;
+    } else {
+        sendButton.disabled = true;
+    }
+}
+
+
+/**
+ * This function adds a keydown event listener to the subtask input element to add new subtasks on Enter key press.
+ */
+function handleSubtaskInput() {
+    const subtaskInput = document.getElementById('input-subtask');
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
+}
+
+
+/**
+ * This function adds click event listeners to close the dropdown menus when clicking outside.
+ */
+function setupDropdownListeners() {
+    const dropdownMenues = ['assignedTo', 'category'];
+
+    for (let i = 0; i < dropdownMenues.length; i++) {
+        const singleDropdown = dropdownMenues[i];
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
+            const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
+
+            if (dropdown) {
+                if (!dropdown.contains(event.target) && !inputGroup.contains(event.target)) {
+                    toggleDropdown(`${singleDropdown}`, 'd-block', false);
+                }
+            }
+        });
+    }
+}
+
+
+/**
+ * Collects task form data, validates required fields, and submits the task to the database.
+ * Shows a success toast and redirects to the board upon completion.
+ *
+ * @param {string} [method='post'] - The HTTP method to use (`post` to create, `put` to update).
+ * @param {string} [id=''] - The task ID (required for `put` requests).
+ */
+async function submitTaskForm(method = 'post', id = '') {
+    const getValue = (id) => document.getElementById(id).value.trim();
+    const title = getValue("inputTitle");
+    const description = getValue("textareaDescription");
+    const dueDate = getValue("inputDate");
+    const category = getValue("inputCategory");
+    const priority = document.querySelector('.btn-selected')?.id;
+    const assignedTo = readAssignedTo();
+
+    if (!checkAllInputsHasContent(title, dueDate, category)) {
+        return alert('Please fill all required fields');
+    }
+
+    const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
+    method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);
+
+    setTimeout(async () => {
+        nextStatus = 'To do';
+        window.location.href = `./board.html`;
+    }, 3000);
+}
+
+
+/**
+ * This function resets all input fields in the addTask form.
+ */
+function emptyAddTaskInputs() {
+    document.getElementById("inputTitle").value = '';
+    document.getElementById("textareaDescription").value = '';
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
+    document.getElementById('dropAssignedTo').value = '';
+    document.getElementById('inputDate').value = '';
+    document.getElementById('inputCategory').value = '';
+    selectPriority('medium');
+    document.getElementById("input-subtask").value = [];
+    dataSubtasks = [];
+    renderNewSubtasks();
+}
+
+
+/**
+ * Checks if all required input fields contain values.
+ * 
+ * @param {string} title - The title of the task.
+ * @param {string} dueDate - The due date as a string.
+ * @param {string} category - The category of the task.
+ * @returns {boolean} - Returns `true` if all fields have values, otherwise `false`.
+ */
+function checkAllInputsHasContent(title, dueDate, category) {
+    return !(title === '' || dueDate === '' || category === '');
+}
+
+
+/**
+ * Toggles the visibility of a "required field" warning text.
+ * 
+ * @param {string} field - The name of the input field (e.g., "Title", "Date", "Category").
+ */
+function changeTextRequired(field) {
+    const input = document.getElementById(`input${upperCaseFirstLetter(field.toLowerCase())}`);
+    const text = document.getElementById(`text-required-input-${field.toLowerCase()}`);
+
+    toggleDisplayNone(text, "d-block", input.value === '');
+}
+
+
+/**
+ * Creates the "Assigned To" dropdown menu.
+ */
+async function createAssignedToDropdown() {
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const contacts = await getContactsAsArray();
+    dropdown.innerHTML = "";
+    contacts.forEach(contact => createAssignedToContactItem(dropdown, contact));
+}
+
+
+/**
+ * This function creates a contact item in the 'Assigned to' dropdown.
+ * 
+ * @param {HTMLElement} dropdown - The dropdown element to append the contact item to.
+ * @param {Object} contact - The contact data to display in the dropdown.
+ */
+function createAssignedToContactItem(dropdown, contact) {
+    const contactItem = document.createElement("div");
+
+    contactItem.id = addPrefixAndSuffix(contact.id, 'item_');
+    contactItem.className = "contact-item";
+    contactItem.innerHTML = `
+        ${contact.name}
+        <input type="checkbox" id="${addPrefixAndSuffix(contact.id, 'checkbox_')}">
+    `;
+
+    contactItem.onclick = async () => selectContact(contact.id);
+    addAssignedToCheckboxEvent(contactItem, contact);
+    dropdown.appendChild(contactItem);
+}
+
+
+/**
+ * This function allows selecting a contact's checkbox in the "assignedTo" dropdown by clicking on the contact (not necessary to click specifically on the checkbox).
+ * 
+ * @param {string} id - The unique ID of the contact.
+ */
+async function selectContact(id) {
+    const input = document.getElementById("dropAssignedTo");
+    const checkbox = document.getElementById(addPrefixAndSuffix(id, 'checkbox_'));
+
+    checkbox.checked = !checkbox.checked;
+
+    if (!(input.value === '' || input.value === 'An ')) {
+        input.value = '';
+        input.focus();
+    }
+
+    await refreshChoosenContactCircles();
+}
+
+
+/**
+ * This function adds the event for updating the selected contact's checkbox in the 'Assigned to' dropdown.
+ * 
+ * @param {HTMLElement} contactItem - The contact item element.
+ * @param {Object} contact - The contact data.
+ */
+function addAssignedToCheckboxEvent(contactItem, contact) {
+    const checkbox = contactItem.querySelector(`#${addPrefixAndSuffix(contact.id, 'checkbox_')}`);
+    checkbox.onclick = (event) => {
+        event.stopPropagation();
+        refreshChoosenContactCircles();
+    };
+}
+
+
+/**
+ * Retrieves the list of assigned contacts for a task from the assignedTo dropdown.
+ * 
+ * This function finds all checked checkboxes within the "assignedTo" dropdown,
+ * extracts their IDs, and returns them as an array of strings.
+ * 
+ * @returns {string[]} An array of contact IDs representing the individuals assigned to the task.
+ */
+function readAssignedTo() {
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const assignedToCheckboxes = dropdown.querySelectorAll('input[type="checkbox"]:checked');
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => stripPrefixAndSuffix(checkbox.id, 'checkbox_'));
+    return assignedTo;
+}
+
+
+/**
+ * Filters the contacts based on the user input in the "Assigned To" dropdown
+ * and updates the dropdown menu accordingly.
+ * 
+ * - Retrieves contacts from the database.
+ * - Matches contacts whose names contain the input text.
+ * - Shows only matching contacts in the dropdown.
+ * 
+ * @returns {Promise<void>} - The function modifies the DOM and does not return a value.
+ */
+async function filterContacts() {
+    let contacts = await getContactsAsArray();
+    let input = document.getElementById("dropAssignedTo").value.toLowerCase();
+
+    if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
+    }
+
+    const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
+    const filteredNames = new Set(filteredContacts.map(contact => contact.name));
+
+    toggleDropdown('assignedTo', 'd-block', filteredContacts.length > 0);
+
+    contacts.forEach(contact => {
+        const item = document.getElementById(addPrefixAndSuffix(contact.id, 'item_'));
+        item.classList.toggle("d-none", !filteredNames.has(contact.name));
+    });
+}
+
+
+/**
+ * Refreshes the list of selected contact circles by reading the assigned contacts and updating the UI.
+ * 
+ * This function retrieves the checked contacts from the "assignedTo" dropdown, 
+ * clears the current display of selected contacts, and then adds the circles 
+ * for each selected contact. After the update, it also calls a function to 
+ * store the last entered string in the input field.
+ * 
+ * @async
+ */
+async function refreshChoosenContactCircles() {
+    let checkedContacts = readAssignedTo();
+    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts')
+
+    choosenContactsContainer.innerHTML = '';
+    for (let i = 0; i < checkedContacts.length; i++) {
+        const singleContact = checkedContacts[i];
+        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(singleContact)
+    }
+}
+
+
+/**
+ * Creates a contact name circle with a remove option and returns the HTML as a string.
+ * 
+ * This function fetches contact details from the `getContacts` function, 
+ * generates a circle with the contact's initials and color, and adds a click 
+ * handler for selecting or removing the contact. The contact's ID is used to 
+ * dynamically set the ID and event handler for the HTML element.
+ * 
+ * @async
+ * @param {string} id - The unique identifier of the contact to be displayed in the circle.
+ * @returns {Promise<string>} A promise that resolves to a string containing the HTML for the name circle.
+ */
+async function createNameCircleWithRemove(id) {
+    const contacts = await getContacts();
+    const initials = returnInitialsOfName(contacts[id].name);
+    const color = contacts[id].color.replace('#', '').toLowerCase();
+
+    let HTML = createNameCircle(initials, color);
+
+    const divId = `addPrefixAndSuffix(${id}, 'nameCircle-')`;
+    const onclickFunction = `selectContact('${id}')`;
+
+    HTML = HTML.replace('<div', `<div id="${divId}" onclick="${onclickFunction}"`);
+
+    return HTML;
+}
+
+
+
+/**
+ * Toggles the visibility of a dropdown menu and updates related UI elements.
+ *
+ * @param {string} whichDropdown - The identifier of the dropdown to toggle.
+ * @param {string} [displayMode='d-block'] - The CSS class used to display the dropdown.
+ * @param {boolean|string} [shallVisible=''] - Determines the visibility: `true` (show), `false` (hide), `''` (toggle).
+ */
+function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
+    const input = document.getElementById(`input-group-dropdown-${whichDropdown}`)
+    const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
+    const inputDummy = document.getElementById(`input-dummy-${whichDropdown}`);
+    const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
+    const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
+    const toggle = shallVisible === '' ? null : shallVisible;
+
+    toggleDisplayNone(dropdown, displayMode, toggle);
+    toggleDisplayNone(inputDummy, 'd-block', toggle);
+    toggleDisplayNone(arrowDown, displayMode, toggle === null ? null : !toggle);
+    toggleDisplayNone(arrowUp, displayMode, toggle);
+
+    if (shallVisible === '') {
+        input.classList.toggle('active-dropdown-input');
+    } else {
+        input.classList.toggle('active-dropdown-input', shallVisible);
+    }
+}
+
+
+/**
+ * Prepares the task data for sending to the database.
+ * 
+ * @param {string} dataTitle - The title of the task.
+ * @param {string} dataDescription - The description of the task.
+ * @param {string} dataDueDate - The due date in string format (e.g., "YYYY-MM-DD").
+ * @param {string} dataPriority - The priority of the task (e.g., "high", "medium", "low").
+ * @param {string} dataCategory - The category of the task (e.g., "Technical Task" or "User Story").
+ * @param {Array} dataAssignedTo - An array of assigned persons.
+ * @returns {object} - An object containing all task data.
+ */
+function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+    const data = {
+        title: dataTitle,
+        description: dataDescription,
+        finishedUntil: dataDueDate,
+        priority: dataPriority,
+        assignedTo: dataAssignedTo,
+        category: dataCategory,
+        subtasks: dataSubtasks,
+        status: nextStatus,
+    };
+    return data;
+}
+
+
+/**
+ * This function allows selecting and changing the priority of the task by clicking the priority button.
+ * 
+ * @param {string} priority - The name of the selected priority (e.g., 'urgent', 'medium', 'low').
+ */
+function selectPriority(priority) {
+    let allPriorities = ['urgent', 'medium', 'low']
+
+    for (let i = 0; i < allPriorities.length; i++) {
+        const singlePriority = allPriorities[i];
+        const element = document.getElementById(singlePriority);
+
+        element.classList.remove(`btn-selected`);
+        element.classList.remove(`btn-selected-${singlePriority}`);
+        document.getElementById(`img-${singlePriority}`).src = `assets/img/addTask/prio-${singlePriority}.svg`
+    }
+
+    document.getElementById(priority).classList.add("btn-selected");
+    document.getElementById(priority).classList.add(`btn-selected-${priority}`);
+    document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
+}
+
+
+/**
+ * This function sets the chosen category in the category input field and closes the category dropdown menu.
+ * 
+ * @param {string} category - The category to be set in the input field.
+ * @param {HTMLElement} element - The dropdown element to be hidden.
+ */
+function selectCategory(category, element) {
+    document.getElementById('inputCategory').value = category;
+    const inputDummy = document.getElementById('input-dummy-category');
+    toggleDisplayNone(element);
+    toggleDisplayNone(inputDummy, 'd-block', false);
 }

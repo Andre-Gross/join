@@ -21,8 +21,10 @@
     <script src="js/templates.js"></script>
     <script src="js/api.js"></script>
     <script src="js/board.js"></script>
-    <script src="js/addTask.js"></script>
+    <script src="js/boardModalCard.js"></script>
     <script src="js/taskForm.js"></script>
+    <script src="js/taskForm-subtask.js"></script>
+    <script src="js/taskFormHTML.js"></script>
     <script src="script.js"></script>
 </head>
 
@@ -31,7 +33,7 @@
         <div class="board-header">
             <div class="title">
                 <h1 class="m-2 w-100">Board</h1>
-                <div class="AddTaskBtn" onclick="addTaskFromBoard()">
+                <div class="AddTaskBtn" onclick="openAddTaskInBoard()">
                     <p class="AddTaskBtnText">Add task</p>
                     <img src="./assets/img/board/plus-button-white.svg" alt="plus">
                 </div>
@@ -45,7 +47,7 @@
             <div class="board-section">
                 <div class="section-header">
                     <h2 class="h6 mb-0">To Do</h2>
-                    <div class="plus-button" onclick="addTaskFromBoard(status = 'To do')">
+                    <div class="plus-button" onclick="openAddTaskInBoard('To do')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
                             <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -59,7 +61,7 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">In progress</h2>
-                    <div class="plus-button" onclick="addTaskFromBoard(status = 'In progress')">
+                    <div class="plus-button" onclick="openAddTaskInBoard('In progress')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
                             <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -74,7 +76,7 @@
             <div class="board-section ">
                 <div class="section-header">
                     <h2 class="h6 mb-0">Await feedback</h2>
-                    <div class="plus-button" onclick="addTaskFromBoard(status = 'Await feedback')">
+                    <div class="plus-button" onclick="openAddTaskInBoard('Await feedback')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
                             <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
