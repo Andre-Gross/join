@@ -1,40 +1,36 @@
-@media (min-width: 1370px) {
-    .searchBar{
-        position: absolute;
-        top: 12px;
-        left: 495px;
-    }
-}
-
 @media (max-width: 1370px) {
-    .title {
-        max-width: 792px;
-    }
-}
-
-@media (min-width: 1100px) and (max-width: 1370px) {
-    .searchBar{
-        position: absolute;
-        top: 12px;
-        left: 240px;
+    .board-header{
+        max-width: 790px;
     }
 }
 
 @media (max-width: 1100px) {
-    .title{
+    .board-header {
         max-width: 520px;
-        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px
     }
 
-    .searchBar{
-        width: 520px;
+    .board-header .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .board-header .searchBar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .w-100 {
         width: unset !important;
     }
 
-    .AddTaskBtn{
+    .AddTaskBtn {
         width: 48px;
     }
 
@@ -48,43 +44,44 @@
     }
 }
 
+
 @media (max-width: 830px) {
-
     .board-header {
-        width: 100%;
-    }
-
-    .title {
-        width: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .searchBar {
+        max-width: 355px;
         display: flex;
         flex-direction: column;
-        width: 50%;
-        order: 2;
-    }
-    .AddTaskBtn {
-        order: 1;
-        position: unset;
+        align-items: center;
+        gap: 10px; 
     }
 
-    .search-container {
+    .board-header .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
+        max-width: 520px; /* Optional: Breite anpassen */
     }
 
+    .board-header .searchBar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
 }
 
-@media (max-width: 660px) {
+
+
+@media (max-width: 659px) {
+
+    .move-button {
+        display: block !important;
+    }
 
     .board-header {
-        max-width: 100%;
-        width: 90vw;
+        left: 0;
+        padding-left: 16px;
+        max-width:540px;
         min-width: 250px;
-        margin: 0 auto;
     }
 
     .title{
@@ -101,12 +98,6 @@
     }
 }
 
-@media (max-width: 658.75px) {
-    .container-fluid {
-        padding-bottom: 80px;
-    }
-}
-
 @media (max-width: 556px) {
 
     .title{
@@ -119,6 +110,10 @@
 
     .AddTaskBtn{
         right: 16px;
+    }
+
+    .board-header {
+        padding-right: 16px;
     }
 }
 
