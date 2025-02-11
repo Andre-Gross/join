@@ -111,6 +111,10 @@
         display: none;
     }
 
+    #idWhiteBackround{
+        display: none;
+    }
+
     #contentText {
         display: none;
     }
@@ -149,6 +153,10 @@
     }
 
     #idAddContactBtnBig {
+        display: none;
+    }
+
+    #idWhiteBackround{
         display: none;
     }
 
@@ -192,14 +200,16 @@
         display: none;
     }
 
-    #idAddContactBtnBig {
-        position: absolute;
-        width: 350px;
-        height: 56px;
+    #idAddContactBtnBig{
         display: flex;
         justify-content: center;
         align-items: center;
+        position: fixed;
+        background-color: #2A3747;
         cursor: pointer;
+        border-radius: 8px;
+        width: 350px;
+        height: 56px;
         top: 100px;
         left: 250px;
     }

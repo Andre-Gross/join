@@ -76,6 +76,7 @@ function clearValue(element) {
 
 
 function createNameCircle(initials, color) {
+
   let HTML = /*HTML*/ `
             <div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
                 <span>${initials.toUpperCase()}</span>

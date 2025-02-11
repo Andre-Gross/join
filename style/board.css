@@ -41,6 +41,11 @@ body.dragging {
     margin-top: 0;
     padding-top: 80px;
     position: relative;
+    position: fixed;
+    z-index: 1000;
+    background-color: #F6F7F8;
+    max-width: 1080px;
+    width: 100%;
 }
 
 
@@ -83,6 +88,8 @@ body.dragging {
     justify-content: flex-start;
     max-width: 1080px;
     margin-left: 0;
+    position: relative;
+    top: 200px;
 }
 
 .board-section {
@@ -91,7 +98,6 @@ body.dragging {
     flex-direction: column;
 
 }
-
 
 .section-header {
     display: flex;
@@ -158,12 +164,6 @@ body.dragging {
     transform: rotate(3deg) scale(1.05);
 }
 
-
-.task.active-task {
-    transform: rotate(3deg) scale(1.05);
-}
-
-
 .task h4 {
     margin-top: 1rem;
     font-size: 16px;
@@ -209,6 +209,8 @@ body.dragging {
     justify-content: flex-start;
     align-items: center;
     left: 8px;
+    flex-wrap: wrap;
+    width: 80%;
 }
 
 
@@ -266,7 +268,7 @@ body.dragging {
 
 .subtasks-progress-container {
     position: absolute;
-    bottom: 64px;
+    bottom: 100px;
     width: 100%;
     padding: 0 16px;
     left: 0;

@@ -192,6 +192,25 @@ h3 {
 }
 
 
+#idWhiteBackround {
+    background-color: white;
+    padding: 40px 100px;
+    max-width: 610px;
+    width: 100%;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#idAddContactBtnBig:hover{
+    background-color: #29ABE2;
+}
+
+
 #idAddContactBtn:hover {
     background-color: #29ABE2;
 }

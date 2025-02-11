@@ -1,87 +1,96 @@
 /**
- * Renders the task board by fetching tasks and contacts data from Firebase,
- * and displays them in the appropriate containers based on their status.
- * Clears the existing task containers and appends the tasks to their respective
- * status containers (To Do, In Progress, Feedback, Done). Initializes drag-and-drop functionality.
- *
- * @async
- * @function
- * @throws {Error} Throws an error if the fetch operation fails or if the fetched data is empty.
+ * Lädt und rendert das Board mit Aufgaben und Kontakten aus Firebase.
  */
 async function boardRender() {
-  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
-
   try {
-    const [tasksResponse, contactsResponse] = await Promise.all([
-      fetch(`${firebaseUrl}/tasks.json`),
-      fetch(`${firebaseUrl}/users/contacts.json`),
-    ]);
-
-    if (!tasksResponse.ok || !contactsResponse.ok) {
-      throw new Error("Error fetching data");
-    }
-
-    const tasksData = await tasksResponse.json();
-    const contactsData = await contactsResponse.json();
-
-    if (!tasksData || Object.keys(tasksData).length === 0) {
-      return;
-    }
-
-    ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
-      (containerId) => {
-        document.getElementById(containerId).innerHTML = "";
-      }
-    );
-
-    Object.entries(tasksData).forEach(([taskId, task]) => {
-      const containerId = getContainerIdByStatus(task.status);
-      if (!containerId) return;
-
-      const taskElement = document.createElement("div");
-      taskElement.classList.add("task");
-      taskElement.id = taskId;
-      taskElement.setAttribute("draggable", "true");
-      taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-
-      const categoryClass = task.category
-        ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-        : "bc-category-label-unknown";
-      const categoryHTML = `
-        <div class="category-label ${categoryClass}">
-          ${task.category || "No category"}
-        </div>`;
-
-      const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
-
-      const priorityImage = priorityLabelHTML(task.priority);
-
-      const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
-
-      taskElement.innerHTML = `
-        <div class="task-header">
-          ${categoryHTML}
-        </div>
-        <h4 class="task-title">${task.title}</h4>
-        <p class="task-description">${task.description}</p>
-        <div class="task-subtasks">${subtasksHTML}</div>
-        <footer class="task-footer d-flex justify-content-between align-items-center">
-          <div class="assigned-contacts d-flex">
-            ${contactsHTML}
-          </div>
-          <div class="task-priority">
-            ${priorityImage}
-          </div>
-        </footer>
-      `;
-
-      document.getElementById(containerId).appendChild(taskElement);
-    });
-
+    const [tasksData, contactsData] = await fetchBoardData();
+    if (!tasksData || Object.keys(tasksData).length === 0) return;
+    clearTaskContainers();
+    renderTasks(tasksData, contactsData);
     initializeDragAndDrop();
   } catch (error) {
     console.error("Error loading tasks:", error);
   }
+}
+
+/**
+ * Ruft Aufgaben und Kontakte aus Firebase ab.
+ * @returns {Promise<Array>} Array mit Aufgaben- und Kontaktdaten
+ */
+async function fetchBoardData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const [tasksResponse, contactsResponse] = await Promise.all([
+    fetch(`${firebaseUrl}/tasks.json`),
+    fetch(`${firebaseUrl}/users/contacts.json`),
+  ]);
+  if (!tasksResponse.ok || !contactsResponse.ok) throw new Error("Error fetching data");
+  return [await tasksResponse.json(), await contactsResponse.json()];
+}
+
+/**
+ * Löscht den Inhalt der Aufgaben-Container.
+ */
+function clearTaskContainers() {
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
+    (containerId) => (document.getElementById(containerId).innerHTML = "")
+  );
+}
+
+/**
+ * Rendert die Aufgaben im jeweiligen Container.
+ * @param {Object} tasksData - Die geladenen Aufgaben
+ * @param {Object} contactsData - Die geladenen Kontakte
+ */
+function renderTasks(tasksData, contactsData) {
+  Object.entries(tasksData).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
+    document.getElementById(containerId).appendChild(createTaskElement(taskId, task, contactsData));
+  });
+}
+
+/**
+ * Erstellt ein Task-Element.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {HTMLElement} Das erstellte Task-Element
+ */
+function createTaskElement(taskId, task, contactsData) {
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+  taskElement.innerHTML = getTaskHTML(taskId, task, contactsData);
+  return taskElement;
+}
+
+/**
+ * Generiert das HTML für eine Aufgabe.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {string} Das HTML der Aufgabe
+ */
+function getTaskHTML(taskId, task, contactsData) {
+  const categoryClass = task.category ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}` : "bc-category-label-unknown";
+  return `
+    <div class="task-header">
+      <div class="category-label ${categoryClass}">${task.category || "No category"}</div>
+    </div>
+    <h4 class="task-title">${task.title}</h4>
+    <p class="task-description">${task.description}</p>
+    <div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}</div>
+    <div class="task-footer d-flex justify-content-between align-items-center">
+      <div class="assigned-contacts d-flex">
+        ${renderTaskContacts(task.assignedTo || [], contactsData)}
+      </div>
+      <div class="task-priority">
+        ${priorityLabelHTML(task.priority)}
+      </div>
+    </div>
+  `;
 }
 
 
@@ -141,8 +150,9 @@ function renderTaskContacts(assignedTo = [], contactsData = {}) {
       }
 
       if (!contact) {
-        return `<div class="contact-circle" style="background-color: #ccc;"></div>`;
-      }
+        return ``;
+    }
+    
 
       const shortName = contact.name
         .split(" ")
@@ -195,238 +205,6 @@ function priorityLabelHTML(priority) {
 document.addEventListener("DOMContentLoaded", async () => {
   await boardRender();
 });
-
-
-/**
- * Initializes drag-and-drop functionality for tasks on the board.
- * Allows users to drag tasks between different task containers.
- * 
- * - Adds event listeners to each task for drag start, drag end, mouse events.
- * - Adds event listeners to containers to handle drag over and drop actions.
- * - Updates the task's status based on its new container after being dropped.
- * - Creates a placeholder element for the dragged task to maintain the layout.
- */
-function initializeDragAndDrop() {
-  const tasks = document.querySelectorAll(".task")
-  const containers = document.querySelectorAll(".tasks-container")
-  let placeholder = null
-  let draggedTask = null
-
-  tasks.forEach((task) => {
-    task.addEventListener("mousedown", () => {
-      task.classList.add("wiggle")
-    })
-
-    task.addEventListener("mouseup", () => {
-      task.classList.remove("wiggle")
-    })
-
-    task.addEventListener("dragstart", (e) => {
-      draggedTask = task
-
-      task.style.opacity = "1"
-      task.classList.add("dragging")
-      task.classList.remove("wiggle")
-
-      placeholder = createPlaceholder(task)
-
-      setTimeout(() => {
-        task.style.display = "none"
-      }, 0)
-
-      resetAnimation(task)
-    })
-
-    task.addEventListener("dragend", () => {
-      endDrag(draggedTask, placeholder)
-      draggedTask = null
-      placeholder = null
-    })
-  })
-
-  containers.forEach((container) => {
-    container.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      handleDragOver(container, e.clientY, placeholder);
-    });
-
-    container.addEventListener("drop", async (e) => {
-      if (!draggedTask || !placeholder) return;
-
-      const newStatus = getStatusFromContainerId(container.id);
-      const taskId = draggedTask.id;
-
-      container.replaceChild(draggedTask, placeholder);
-
-      placeholder.remove();
-      placeholder = null;
-
-      await updateTaskStatus(taskId, newStatus);
-      boardRender();
-    });
-  });
-}
-
-
-/**
- * Initializes touch-based drag-and-drop functionality for tasks on the board.
- * Allows users to drag tasks using touch events on mobile or touch-enabled devices.
- * 
- * - Adds event listeners for touchstart, touchmove, and touchend on tasks.
- * - Creates a placeholder element while dragging to maintain the layout.
- * - Handles the touch move event to update the position of the dragged task.
- * - Replaces the placeholder with the dragged task when the drag ends.
- */
-function initializeTouchDrag() {
-  const tasks = document.querySelectorAll(".task");
-  let draggedTask = null;
-  let placeholder = null;
-
-  tasks.forEach((task) => {
-    task.addEventListener("touchstart", (e) => {
-      draggedTask = e.target.closest(".task");
-      if (!draggedTask) return;
-
-      placeholder = createPlaceholder(draggedTask);
-      draggedTask.parentNode.insertBefore(placeholder, draggedTask.nextSibling);
-      draggedTask.classList.add("dragging");
-    });
-
-    task.addEventListener("touchmove", (e) => {
-      e.preventDefault();
-      if (!draggedTask || !placeholder) return;
-
-      const touch = e.touches[0];
-      handleDragOver(draggedTask.parentNode, touch.clientY, placeholder);
-    });
-
-    task.addEventListener("touchend", () => {
-      if (!draggedTask || !placeholder) return;
-
-      placeholder.replaceWith(draggedTask);
-      draggedTask.classList.remove("dragging");
-      draggedTask = null;
-      placeholder = null;
-    });
-  });
-}
-
-
-/**
- * Initializes both the desktop drag-and-drop and mobile touch drag functionality on the board.
- * This function enables users to drag tasks in the board interface, either with a mouse or a touch event.
- */
-initializeDragAndDrop();
-initializeTouchDrag();
-
-
-/**
- * Creates a placeholder element that mimics the size of the dragged task.
- * This placeholder is used to show the space where the task will be dropped.
- *
- * @param {HTMLElement} task - The task being dragged.
- * @returns {HTMLElement} - The created placeholder element.
- */
-function createPlaceholder(task) {
-  const placeholder = document.createElement("div");
-  placeholder.classList.add("placeholder");
-  placeholder.style.width = `${task.offsetWidth}px`;
-  placeholder.style.height = `${task.offsetHeight}px`;
-  task.parentNode.insertBefore(placeholder, task.nextSibling);
-  return placeholder;
-}
-
-
-/**
- * Ends the drag operation by removing the "dragging" class from the task 
- * and restoring its display, as well as removing the placeholder element.
- *
- * @param {HTMLElement} draggedTask - The task that was being dragged.
- * @param {HTMLElement} placeholder - The placeholder element that was used during the drag.
- */
-function endDrag(draggedTask, placeholder) {
-  if (draggedTask) {
-    draggedTask.classList.remove("dragging");
-    draggedTask.style.display = "block";
-  }
-
-  if (placeholder) {
-    placeholder.remove();
-  }
-}
-
-
-/**
- * Resets the animation of a task by removing the animation and forcing a reflow
- * before re-enabling the animation.
- *
- * @param {HTMLElement} task - The task element whose animation needs to be reset.
- */
-function resetAnimation(task) {
-  task.style.animation = "none"
-  task.offsetHeight
-  task.style.animation = null
-}
-
-
-/**
- * Handles the drag over event by positioning the placeholder element based on
- * the mouse or touch position within the container.
- *
- * @param {HTMLElement} container - The container element that holds the tasks.
- * @param {number} y - The vertical position of the mouse or touch event.
- * @param {HTMLElement} placeholder - The placeholder element to be inserted or moved.
- */
-function handleDragOver(container, y, placeholder) {
-  const afterElement = getDragAfterElement(container, y);
-  if (!placeholder) return;
-
-  if (afterElement == null) {
-    container.appendChild(placeholder);
-  } else {
-    container.insertBefore(placeholder, afterElement);
-  }
-}
-
-
-/**
- * Determines the element that the dragged task will be placed after, based on
- * the vertical position of the drag event.
- *
- * @param {HTMLElement} container - The container element that holds the tasks.
- * @param {number} y - The vertical position of the mouse or touch event.
- * @returns {HTMLElement|null} - The element that the dragged task will be placed after, or null if it's at the end.
- */
-function getDragAfterElement(container, y) {
-  const draggableElements = [
-    ...container.querySelectorAll(".task:not(.dragging)"),
-  ];
-
-  return draggableElements.reduce(
-    (closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    },
-    { offset: Number.NEGATIVE_INFINITY }
-  ).element;
-}
-
-
-function getStatusFromContainerId(containerId) {
-  const statusMapping = {
-    "todo-container": "To do",
-    "progress-container": "In progress",
-    "feedback-container": "Await feedback",
-    "done-container": "Done",
-  };
-  return statusMapping[containerId] || null;
-}
-
 
 /**
  * Updates the progress bar and subtask count for a task based on the completed subtasks.
@@ -484,6 +262,7 @@ async function updateTaskStatus(taskId, newStatus) {
     console.error(`Error updating task ${taskId}:`, error);
   }
 }
+
 
 async function deleteTaskOfModalCard(id) {
   try {

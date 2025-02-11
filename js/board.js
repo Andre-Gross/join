@@ -1,6 +1,33 @@
 let currentTasks = [];
 let toastMessageNoResult = '<span>Keine Ergebnisse gefunden</span>';
 
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get("status");
+
+  if (status) {
+    const containerMapping = {
+      todo: "todo-container",
+      inprogress: "progress-container",
+      feedback: "feedback-container",
+      done: "done-container",
+    };
+
+    const targetContainerId = containerMapping[status];
+    if (targetContainerId) {
+      const targetElement = document.getElementById(targetContainerId);
+      if (targetElement) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: targetElement.offsetTop - 200, // 200px nach unten versetzt
+            behavior: "smooth", 
+          });
+        }, 200);
+      }
+    }
+  }
+});
+
 
 async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
@@ -307,29 +334,3 @@ function scrollToTaskSection() {
     }
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const taskContainers = document.querySelectorAll(".tasks-container");
-
-  taskContainers.forEach(container => {
-      container.addEventListener("mouseover", (event) => {
-          if (event.target.classList.contains("task")) {
-              removeActiveTask();
-              event.target.classList.add("active-task");
-          }
-      });
-  });
-
-  document.addEventListener("click", (event) => {
-      if (!event.target.classList.contains("task")) {
-          removeActiveTask();
-      }
-  });
-
-  /**
-   * Removes the active class from all tasks.
-   */
-  function removeActiveTask() {
-      document.querySelectorAll(".task").forEach(task => task.classList.remove("active-task"));
-  }
-});

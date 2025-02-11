@@ -28,11 +28,11 @@
 }
 
 
-.header {
+.header{
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     background-color: var(--header-bg);
     display: flex;
     justify-content: space-between;
@@ -41,6 +41,34 @@
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--header-shadow);
     height: var(--header-height);
+    z-index: 9900;
+}
+
+.header-content {
+    width: 100%;
+    max-width: 1920px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+}
+
+/* Container für Help und Profil-Icon */
+.header-right-content {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Abstand zwischen Help-Icon und Profil-Icon */
+}
+
+/* Entferne margin-left: auto;, da es das Help-Icon nach rechts verschiebt */
+.help {
+    width: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+.help:hover {
+    transform: scale(1.3);
+    cursor: pointer;
 }
 
 
@@ -139,7 +167,7 @@
     right: 0;
     background-color: var(--dropdown-bg);
     box-shadow: var(--dropdown-shadow);
-    z-index: 1000;
+    z-index: 1100;
     min-width: 200px;
     border-radius: var(--dropdown-radius);
     padding: var(--dropdown-padding);
@@ -191,20 +219,6 @@
 .dm-hidden {
     display: none;
 }
-
-
-.help {
-    position: absolute;
-    top: 40%;
-    right: 108px;
-}
-
-
-.help:hover {
-    scale: 130%;
-    cursor: pointer;
-}
-
 
 body[data-page="privacyPolicy"] .help,
 body[data-page="legalNotice"] .help {
