@@ -27,9 +27,9 @@ const taskFormHTML = /*HTML*/`
                     <div id="input-group-dropdown-assignedTo" class="input-group d-flex">
                         <input id="dropAssignedTo" type="text" class="border-end-0 flex-fill"
                             placeholder="Select contacts to assign"
-                            onfocus="changeBorderColor(document.getElementById('dropAssignedTo-img'), 'border-color-onfocus'), savePrefixInAssingedTo(), filterContacts()"
-                            oninput="savePrefixInAssingedTo(), filterContacts()"
-                            onblur="changeBorderColor(document.getElementById('dropAssignedTo-img')), emptyAssignedTo()">
+                            onfocus="changeBorderColor(document.getElementById('dropAssignedTo-img'), 'border-color-onfocus'), filterContacts()"
+                            oninput="filterContacts()"
+                            onblur="changeBorderColor(document.getElementById('dropAssignedTo-img'))">
                         <div id="dropAssignedTo-img"
                             class="input-single-img-container d-flex justify-content-center align-items-center"
                             onclick="toggleDropdown('assignedTo', 'd-block')">
