@@ -1,8 +1,10 @@
 const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
-const toastMessageEditTask ='<span>Task successfully edited</span>';
-const toastMessageDeleteTask='<span>Task successfully deleted</span>';
-const toastMessageCreateTask ='<span>Task successfully created</span>';
+
+const toastMessagePostTask = '<span>Task added to board</span><img src="assets/img/general/board.svg" alt="board">'
+const toastMessageEditTask = '<span>Task successfully edited</span>';
+const toastMessageDeleteTask = '<span>Task successfully deleted</span>';
+const toastMessageCreateTask = '<span>Task successfully created</span>';
 
 
 /**
