@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/addTask.css">
     <link rel="stylesheet" href="./style/queries/addTaskQuery.css">
-    <link rel="stylesheet" href="./style/board.css">
-    <link rel="stylesheet" href="./style/queries/boardQuery.css">
     <link rel="stylesheet" href="./style/font.css">
     <link rel="stylesheet" href="./style/assets.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="./style/queries/styleQuery.css">
+    <link rel="stylesheet" href="./style/board.css">
+    <link rel="stylesheet" href="./style/queries/boardQuery.css">
     <script src="js/boardRender.js"></script>
     <script src="js/boardDragAndDrop.js"></script>
     <script src="js/templates.js"></script>
@@ -30,18 +30,8 @@
 
 <body class="">
     <section id="board">
-        <div class="board-header">
-            <div class="title">
-                <h1 class="m-2 w-100">Board</h1>
-                <div class="AddTaskBtn" onclick="openAddTaskInBoard()">
-                    <p class="AddTaskBtnText">Add task</p>
-                    <img src="./assets/img/board/plus-button-white.svg" alt="plus">
-                </div>
-            </div>
-            <div class="searchBar">
-                <input class="search-container mt-3" id="idSearch" type="text" class="form-control"
-                    placeholder="Find Task" oninput="filterAndShowTask()">
-            </div>
+        <div class="board-header-bg">
+            <div class="board-header"></div>
         </div>
         <div class="container-fluid">
             <div class="board-section">
@@ -49,9 +39,10 @@
                     <h2 class="h6 mb-0">To Do</h2>
                     <div class="plus-button" onclick="openAddTaskInBoard('To do')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
-                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2" />
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2"
+                                stroke-linecap="round" />
                         </svg>
                     </div>
                 </div>
@@ -63,9 +54,10 @@
                     <h2 class="h6 mb-0">In progress</h2>
                     <div class="plus-button" onclick="openAddTaskInBoard('In progress')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
-                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2" />
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2"
+                                stroke-linecap="round" />
                         </svg>
                     </div>
                 </div>
@@ -78,9 +70,10 @@
                     <h2 class="h6 mb-0">Await feedback</h2>
                     <div class="plus-button" onclick="openAddTaskInBoard('Await feedback')">
                         <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2"/>
-                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="1" y="1" width="28" height="28" rx="9" stroke="#2A3647" stroke-width="2" />
+                            <path d="M15 7.5V22.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round" />
+                            <path d="M22.5 15.1416L7.5 15.1416" stroke="#2A3647" stroke-width="2"
+                                stroke-linecap="round" />
                         </svg>
                     </div>
                 </div>

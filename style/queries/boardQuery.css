@@ -1,40 +1,36 @@
-@media (min-width: 1370px) {
-    .searchBar{
-        position: absolute;
-        top: 12px;
-        left: 495px;
-    }
-}
-
 @media (max-width: 1370px) {
-    .title {
-        max-width: 792px;
-    }
-}
-
-@media (min-width: 1100px) and (max-width: 1370px) {
-    .searchBar{
-        position: absolute;
-        top: 12px;
-        left: 240px;
+    .board-header{
+        max-width: 790px;
     }
 }
 
 @media (max-width: 1100px) {
-    .title{
+    .board-header {
         max-width: 520px;
-        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px
     }
 
-    .searchBar{
-        width: 520px;
+    .board-header .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .board-header .searchBar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .w-100 {
         width: unset !important;
     }
 
-    .AddTaskBtn{
+    .AddTaskBtn {
         width: 48px;
     }
 
@@ -48,43 +44,76 @@
     }
 }
 
+
 @media (max-width: 830px) {
 
-    .board-header {
-        width: 100%;
+    * {
+        scrollbar-width: none; /* Für Firefox */
     }
+    
+    *::-webkit-scrollbar {
+        display: none; /* Für Chrome, Safari, Edge */
+    }
+    
 
-    .title {
-        width: 50%;
+    .container-fluid {
         display: flex;
         align-items: center;
-        justify-content: space-between;
     }
-
-    .searchBar {
+    
+    .board-section {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        width: 50%;
-        order: 2;
-    }
-    .AddTaskBtn {
-        order: 1;
-        position: unset;
-    }
+        align-items: center;
+        margin-bottom: 20px;
 
-    .search-container {
+    }
+    
+    .tasks-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
         width: 100%;
+        max-width: 500px;
     }
-
-}
-
-@media (max-width: 660px) {
 
     .board-header {
-        max-width: 100%;
-        width: 90vw;
+        max-width: 355px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; 
+    }
+
+    .board-header .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 520px; /* Optional: Breite anpassen */
+    }
+
+    .board-header .searchBar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+
+@media (max-width: 659px) {
+
+    .move-button {
+        display: block !important;
+    }
+
+    .board-header {
+        left: 0;
+        padding-left: 16px;
+        max-width:540px;
         min-width: 250px;
-        margin: 0 auto;
     }
 
     .title{
@@ -98,12 +127,13 @@
     .container-fluid {
         padding-bottom: 80px;
         justify-content: flex-start;
-    }
-}
-
-@media (max-width: 658.75px) {
-    .container-fluid {
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
         padding-bottom: 80px;
+    }
+
+    .task{
+        width: 230px
     }
 }
 
@@ -119,6 +149,10 @@
 
     .AddTaskBtn{
         right: 16px;
+    }
+
+    .board-header {
+        padding-right: 16px;
     }
 }
 
