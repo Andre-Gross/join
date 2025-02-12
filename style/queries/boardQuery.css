@@ -46,6 +46,30 @@
 
 
 @media (max-width: 830px) {
+
+    .container-fluid {
+        display: flex;
+        align-items: center;
+        overflow-y: hidden;
+    }
+    
+    .board-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+    }
+    
+    .tasks-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        max-width: 500px;
+    }
+
     .board-header {
         max-width: 355px;
         display: flex;
@@ -95,6 +119,10 @@
     .container-fluid {
         padding-bottom: 80px;
         justify-content: flex-start;
+    }
+
+    .task{
+        width: 230px
     }
 }
 
