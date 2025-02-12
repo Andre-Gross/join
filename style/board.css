@@ -143,12 +143,14 @@ body.dragging {
     margin-left: 0;
     position: relative;
     top: 200px;
+    max-height: fit-content;
 }
 
 .board-section {
     flex: 0 0 250px;
     display: flex;
     flex-direction: column;
+    max-height: fit-content;
 
 }
 
@@ -230,6 +232,7 @@ body.dragging {
     color: #A8A8A8;
     line-height: 1.2;
     margin-bottom: 0.5rem;
+
 }
 
 
