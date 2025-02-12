@@ -2,7 +2,7 @@ let toastMessageSignUp = '<span>You Signed Up successfully</span>';
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const signupForm = document.querySelector("#signupCard form");
+  let signupForm = document.querySelector("#signupCard form");
 
   if (signupForm) {
     signupForm.addEventListener("submit", (e) => {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function signUp() {
   if (isSubmitting) return; 
   isSubmitting = true;
-  const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+  let [name, email, password, confirmPassword, agreeTerms] = getInputValues();
 
   if (!agreeTerms || password !== confirmPassword) {
     displayError(
@@ -28,7 +28,7 @@ async function signUp() {
   }
 
   try {
-    const users = await fetchUsers();
+    let users = await fetchUsers();
     if (isEmailAlreadyRegistered(users, email)) {
       redirectToLogin();
       isSubmitting = false;
@@ -55,7 +55,7 @@ async function signUp() {
  * @param {string} password - The user's password.
  */
 async function registerNewUser(name, email, password) {
-  const newUser = { name, email, password, contacts: [] };
+  let newUser = { name, email, password, contacts: [] };
   await fetch(
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json",
     {
@@ -81,7 +81,7 @@ function isEmailAlreadyRegistered(users, email) {
  * @param {boolean} [isSuccess] - Whether the registration was successful.
  */
 function redirectToLogin(isSuccess = false) {
-  const url = isSuccess
+  let url = isSuccess
     ? "index.html?registered=true"
     : "index.html?error=emailExists";
   window.location.href = url;
@@ -109,7 +109,7 @@ function getInputValues() {
  * Validates the registration form inputs and updates the register button state.
  */
 function checkFormValidity() {
-  const [name, email, password, confirmPassword, agreeTerms] = [
+  let [name, email, password, confirmPassword, agreeTerms] = [
     "name",
     "signUpEmail",
     "signUpPassword",
@@ -120,7 +120,7 @@ function checkFormValidity() {
       ? document.getElementById(id).checked
       : document.getElementById(id).value.trim()
   );
-  const isFormValid =
+  let isFormValid =
     name && email && password && confirmPassword && agreeTerms;
   document.getElementById("registerButton").disabled = !isFormValid;
 }
