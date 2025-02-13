@@ -48,11 +48,11 @@
 @media (max-width: 830px) {
 
     * {
-        scrollbar-width: none; /* Für Firefox */
+        scrollbar-width: none;
     }
     
     *::-webkit-scrollbar {
-        display: none; /* Für Chrome, Safari, Edge */
+        display: none;
     }
     
 
@@ -76,6 +76,8 @@
         gap: 10px;
         width: 100%;
         max-width: 500px;
+        overflow-x: auto;
+        scrollbar-width: none;
     }
 
     .board-header {

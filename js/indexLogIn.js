@@ -2,8 +2,8 @@
  * Handles the user login process.
  */
 async function logIn() {
-    const email = getInputValue("email");
-    const password = getInputValue("password");
+    let email = getInputValue("email");
+    let password = getInputValue("password");
   
     if (!email || !password) {
       displayError("Please enter both email and password.");
@@ -11,20 +11,20 @@ async function logIn() {
     }
   
     try {
-      const users = await fetchUsers();
-      const user = findUserByEmail(users, email);
+      let users = await fetchUsers();
+      let user = findUserByEmail(users, email);
   
       if (!user) {
-        displayNotRegisteredError(); // Benutzer nicht registriert
+        displayNotRegisteredError();
         return;
       }
   
       if (user.password !== password) {
-        handleFailedAttempt(email); // Verarbeite fehlgeschlagene Versuche
+        handleFailedAttempt(email);
         return;
       }
   
-      resetFailedAttempts(email); // Zurücksetzen der fehlgeschlagenen Versuche
+      resetFailedAttempts(email);
       saveLoggedInUser(user);
       redirectToSummary();
     } catch {
@@ -85,8 +85,8 @@ function displayNotRegisteredError() {
  * @param {Object} user - The user object to save.
  */
 async function saveLoggedInUser(user) {
-    const hashedPassword = await hashPassword(user.password);
-    const userToSave = { ...user, password: hashedPassword }; // Passwort ersetzen
+    let hashedPassword = await hashPassword(user.password);
+    let userToSave = { ...user, password: hashedPassword }; 
     sessionStorage.setItem("loggedInUser", JSON.stringify(userToSave));
   }
 
@@ -96,7 +96,7 @@ async function saveLoggedInUser(user) {
  * @param {boolean} [isGuest=false] - Whether the login is for a guest user.
  */
 function redirectToSummary(isGuest = false) {
-    const url = isGuest ? "summary.html?userId=guest" : "summary.html";
+    let url = isGuest ? "summary.html?userId=guest" : "summary.html";
     window.location.href = url;
   }
 

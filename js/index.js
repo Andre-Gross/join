@@ -1,12 +1,10 @@
 let isSubmitting = false;
 let failedAttempts = {};
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
+  let hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
   if (!hasLoadedBefore) {
-    // Erstes Laden: Animation wird ausgeführt
     setTimeout(() => {
       document.body.classList.add("loaded");
     }, 100);
@@ -15,66 +13,56 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("loginCard").style.display = "block";
     }, 1600);
 
-    localStorage.setItem("hasLoadedBefore", "true"); // Speichern, dass geladen wurde
+    localStorage.setItem("hasLoadedBefore", "true");
   } else {
-    // Kein erstes Laden: Sofortige Anzeige ohne Animation
-    document.body.classList.add("loaded"); // Hintergrund direkt anzeigen
+    document.body.classList.add("loaded");
     document.getElementById("loginCard").style.display = "block";
   }
 
-  // Event-Listener für Login-Formular
-  const loginForm = document.querySelector("#loginCard form");
+  let loginForm = document.querySelector("#loginCard form");
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     logIn();
   });
 
-  // Event-Listener für Signup-Formular
-  const signupForm = document.querySelector("#signupCard form");
+  let signupForm = document.querySelector("#signupCard form");
   signupForm.addEventListener("submit", (e) => {
     e.preventDefault();
     signUp();
   });
 
-  // Gast-Login direkt gekoppelt
   document
     .querySelector('button[onclick="guestLogIn();"]')
     .addEventListener("click", guestLogIn);
 
-  // Event-Listener für Formularvalidierung
-  const signupInputs = signupForm.querySelectorAll("input");
+  let signupInputs = signupForm.querySelectorAll("input");
   signupInputs.forEach((input) => {
     input.addEventListener("input", checkFormValidity);
   });
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
-  const passwordFields = document.querySelectorAll(".password-container input");
+  let passwordFields = document.querySelectorAll(".password-container input");
 
-  // Setzt alle Passwort-Felder auf leer beim Laden
   passwordFields.forEach((input) => (input.value = ""));
 
-  // Event-Listener für Icon-Update und Passwort-Anzeige-Umschaltung
   passwordFields.forEach((input) => {
-    const icon = input.nextElementSibling; // Das zugehörige Icon
+    let icon = input.nextElementSibling;
     input.addEventListener("input", () => updatePasswordIcon(input, icon));
     icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
   });
 });
-
 
 /**
  * Fetches all existing users from the database.
  * @returns {Promise<Object>} - A promise resolving to the users object.
  */
 async function fetchUsers() {
-  const response = await fetch(
+  let response = await fetch(
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json"
   );
   return response.json();
 }
-
 
 /**
  * Hashes a password using SHA-256.
@@ -82,14 +70,13 @@ async function fetchUsers() {
  * @returns {Promise<string>} - The hashed password as a hex string.
  */
 async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  let encoder = new TextEncoder();
+  let data = encoder.encode(password);
+  let hashBuffer = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(hashBuffer))
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
 }
-
 
 /**
  * Clears all input fields in the signup form when switching views.
@@ -97,36 +84,32 @@ async function hashPassword(password) {
 function clearSignupInputs() {
   document.querySelectorAll("#signupCard input").forEach((input) => {
     if (input.type === "checkbox") {
-      input.checked = false; // Checkboxen abwählen
+      input.checked = false;
     } else {
-      input.value = ""; // Alle anderen Felder leeren
+      input.value = "";
     }
   });
 
-  // Falls ein Icon sichtbar ist, verberge es
   document.querySelectorAll("#signupCard .password-toggle").forEach((icon) => {
     icon.style.display = "none";
   });
 
-  // Stelle sicher, dass das lock.svg als Hintergrundbild erscheint
   document
     .querySelectorAll("#signupCard input[type='password']")
     .forEach((input) => {
-      input.classList.remove("has-icon"); // Setzt das Hintergrundbild zurück
+      input.classList.remove("has-icon");
     });
 }
-
 
 /**
  * Switches between login and signup view.
  */
 function switchView() {
-  const loginCard = document.getElementById("loginCard");
-  const signupCard = document.getElementById("signupCard");
-  const switchButton = document.getElementById("switchButton");
-  const switchText = document.getElementById("switchText");
+  let loginCard = document.getElementById("loginCard");
+  let signupCard = document.getElementById("signupCard");
+  let switchButton = document.getElementById("switchButton");
+  let switchText = document.getElementById("switchText");
 
-  // Wechsel ohne Verzögerung
   loginCard.style.transition = "none";
   signupCard.style.transition = "none";
 
@@ -139,8 +122,6 @@ function switchView() {
       signupCard.style.display = "block";
       switchButton.textContent = "Log in";
       switchText.textContent = "Already a Join user?";
-
-      // Signup-Felder leeren
       clearSignupInputs();
     } else {
       signupCard.style.display = "none";
@@ -149,13 +130,10 @@ function switchView() {
       switchText.textContent = "Not a Join user?";
     }
 
-    // Sofortiges Anzeigen der entsprechenden Karte
     signupCard.style.opacity = "1";
     loginCard.style.opacity = "1";
   }, 50);
 }
-
-
 
 /**
  * Retrieves and processes the value of an input field by its ID.
@@ -166,43 +144,38 @@ function getInputValue(id) {
   return document.getElementById(id).value.trim();
 }
 
-
 /**
  * Updates the visibility icon when text is entered or removed.
- *
  * @param {HTMLInputElement} input - The password input field.
  * @param {HTMLImageElement} icon - The visibility icon.
  */
 function updatePasswordIcon(input, icon) {
   if (!input.value) {
-    input.classList.remove("has-icon"); // Zeigt das `background-image`
-    icon.style.display = "none"; // Versteckt das `<img>`-Icon
+    input.classList.remove("has-icon");
+    icon.style.display = "none";
   } else {
-    input.classList.add("has-icon"); // Entfernt das `background-image`
-    icon.style.display = "inline"; // Zeigt das `<img>`-Icon
-    icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Zeigt das Auge mit Strich
+    input.classList.add("has-icon");
+    icon.style.display = "inline";
+    icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
   }
 }
 
-
 /**
  * Toggles the password visibility and updates the icon.
- *
  * @param {HTMLInputElement} input - The password input field.
  * @param {HTMLImageElement} icon - The clicked eye icon.
  */
 function togglePasswordVisibility(input, icon) {
-  if (!input.value) return; // Falls das Feld leer ist, nichts tun
+  if (!input.value) return;
 
   if (input.type === "password") {
     input.type = "text";
-    icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; // Auge offen
+    icon.src = "../assets/img/logIn-signUp/visibility-on.svg";
   } else {
     input.type = "password";
-    icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Auge geschlossen
+    icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
   }
 }
-
 
 /**
  * Logs in as a guest user.
@@ -210,7 +183,7 @@ function togglePasswordVisibility(input, icon) {
 async function guestLogIn() {
   try {
     saveLoggedInUser({ id: "guest", name: "Guest" });
-    sessionStorage.setItem("loggedInUserId", "Guest"); // Speichert die Gast-ID für Auth-Check
+    sessionStorage.setItem("loggedInUserId", "Guest");
     redirectToSummary(true);
   } catch {
     displayError(
@@ -219,40 +192,25 @@ async function guestLogIn() {
   }
 }
 
-
+/**
+ * Adds a user to the contacts list.
+ * @param {string} name - The name of the user.
+ * @param {string} email - The email of the user.
+ */
 async function addUserToContacts(name, email) {
-  const assignedColor = getRandomColor();
+  let assignedColor = getRandomColor();
 
   try {
     await postContactToDatabase(name, email, "", assignedColor);
   } catch (error) {
-    console.error("Fehler beim Hinzufügen des Kontakts:", error);
+    console.error("Error adding contact:", error);
   }
 }
 
-
+/**
+ * Generates a unique ID.
+ * @returns {string} - A unique ID.
+ */
 function generateUniqueId() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
