@@ -251,7 +251,6 @@ async function tryPutContactToDatabase(contactId, data) {
 async function putTaskToDatabase(taskId, data) {
     try {
         await tryPutTaskToDatabase(taskId, data);
-        showToast(toastMessageEditTask, 'middle', 3000);
     } catch (error) {
         console.error("Error saving the task:", error);
         alert("An error occurred while saving the task.");
@@ -283,6 +282,7 @@ async function tryPutTaskToDatabase(taskId, data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    showToast(toastMessageEditTask, 'middle', 3000);
 }
 
 
