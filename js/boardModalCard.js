@@ -393,15 +393,17 @@ async function changeToEditMode(id) {
 
     const singleTask = tasksAsArray[singleTaskID];
 
-    const modalCardEditMode = document.getElementById('modalCard-edit-mode-template-container');
-    renderTaskForm(modalCardEditMode);
+    const templateContainer = document.getElementById('modalCard-edit-mode-template-container');
+    const sendButton = document.getElementById('sendButton');
+
+    renderTaskForm(templateContainer, 'put', id);
 
     assignTaskDataToForm(singleTask);
 
     toggleEditMode(true);
     adjustFirstLineLayoutForEditMode();
 
-    modalCardEditMode.querySelector("form").onsubmit = function () {
+    sendButton.onclick = function () {
         submitTaskForm("put", id);
         return false;
     };
