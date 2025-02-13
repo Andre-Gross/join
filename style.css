@@ -239,7 +239,7 @@ footer {
 
 
 #toast-container {
-    z-index: 10000;
+    z-index: 10002;
     position: fixed;
     transform: translate(50%);
     border-radius: 20px;
