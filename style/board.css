@@ -399,7 +399,7 @@ body.dragging {
     max-height: min(1000px, calc(100vh - 32px));
     max-width: 525px;
     background-color: white;
-    overflow: scroll;
+    overflow: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
     width: calc(100vw - 32px);
@@ -424,7 +424,7 @@ body.dragging {
 
 #modalCard-edit-mode form {
     margin: 0;
-    height: calc(100vh - 32px - 32px - 50px);
+    height: calc(min(1000px, 100vh) - 32px - 32px - 50px);
     width: 100%;
     overflow: scroll;
     scrollbar-width: none;
