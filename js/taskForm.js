@@ -34,10 +34,26 @@ function enableDisableSendButton() {
  */
 function handleSubtaskInput() {
     const subtaskInput = document.getElementById('input-subtask');
+    const twoImgBox = document.getElementById('input-subtask-two-img-box');
+
     subtaskInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             event.preventDefault();
             addNewSubtask();
+        }
+    });
+
+    if (!subtaskInput || !twoImgBox) {
+        console.error("Elemente nicht gefunden");
+        return;
+    }
+
+    document.addEventListener('click', (event) => {
+        if (!subtaskInput.contains(event.target) && !twoImgBox.contains(event.target)) {
+            changeVisibleImages(false);
+            changeBorderColor(twoImgBox);
+        } else {
+            subtaskInput.focus();
         }
     });
 }
