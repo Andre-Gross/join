@@ -396,13 +396,13 @@ body.dragging {
     border-radius: 30px;
     box-shadow: 0px 0px 4px 0px #00000029;
     padding: 16px 12px;
-    max-height: calc(100vh - 32px);
+    max-height: min(1000px, calc(100vh - 32px));
+    max-width: 525px;
+    background-color: white;
     overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
     width: calc(100vw - 32px);
-    max-width: 525px;
-    background-color: white;
     gap: 16px;
     z-index: 10001;
 }
