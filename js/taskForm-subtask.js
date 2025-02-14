@@ -121,12 +121,18 @@ function removeSubtask(id) {
 
 
 /**
- * This function changes the visibility of images related to subtasks.
- * It shows the "+" button and hides the two-image box.
+ * Toggles the visibility of the subtask-related images.
+ * Depending on the `changeToTwoImg` parameter, it switches between displaying the "+" button
+ * or the two-image box for subtasks.
+ *
+ * @param {boolean} changeToTwoImg - Determines the visibility state:
+ *                                    - `true` shows the two-image box and hides the "+" button.
+ *                                    - `false` shows the "+" button and hides the two-image box.
  */
-function changeVisibleImages() {
+function changeVisibleImages(changeToTwoImg) {
     const plusImg = document.getElementById('input-subtask-plus-box');
     const twoImgBox = document.getElementById('input-subtask-two-img-box')
-    toggleDisplayNone(plusImg, 'd-flex');
-    toggleDisplayNone(twoImgBox, 'd-flex');
+
+    toggleDisplayNone(plusImg, 'd-flex', !changeToTwoImg);
+    toggleDisplayNone(twoImgBox, 'd-flex', changeToTwoImg);
 }

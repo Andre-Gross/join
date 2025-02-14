@@ -109,7 +109,7 @@ const taskFormHTML = /*HTML*/`
                 <div class="w-100">
                     <div class="input-group w-100" onclick="">
                         <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
-                            oninput="" onfocus="changeVisibleImages()" onblur="addInvalidBorder(this)">
+                            oninput="" onfocus="changeVisibleImages(true), changeBorderColor(document.getElementById('input-subtask-two-img-box'), 'border-color-onfocus')" onblur="changeVisibleImages(false), changeBorderColor(document.getElementById('input-subtask-two-img-box'))">
                         <div id="input-subtask-plus-box"
                             class="input-single-img-container d-flex justify-content-center align-items-center"
                             onclick="focusElement(document.getElementById('input-subtask'))">
