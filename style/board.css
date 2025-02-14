@@ -594,3 +594,12 @@ body.dragging {
     border: #29ABE2 1px solid;
 
 }
+
+
+[id^="list-item-box-current-subtask"] img {
+    display: none;
+}
+
+[id^="list-item-box-current-subtask"]:hover img {
+    display: inline;
+}
