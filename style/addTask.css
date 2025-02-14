@@ -68,6 +68,7 @@ input {
 
 input[type="date"]::-webkit-calendar-picker-indicator {
     background-image: url(../assets/img/addTask/calendar.svg);
+    cursor: pointer;
 }
 
 

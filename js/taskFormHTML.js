@@ -32,8 +32,8 @@ const taskFormHTML = /*HTML*/`
                         <div id="dropAssignedTo-img"
                             class="input-single-img-container d-flex justify-content-center align-items-center"
                             onclick="toggleDropdown('assignedTo', 'd-block')">
-                            <img id="input-assignedTo-arrow-down" src="assets/img/addTask/arrow-down.svg" class="">
-                            <img id="input-assignedTo-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none">
+                            <img id="input-assignedTo-arrow-down" src="assets/img/addTask/arrow-down.svg" class="pointer">
+                            <img id="input-assignedTo-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none pointer">
                         </div>
                     </div>
                     <div id="input-dummy-assignedTo" class="input-dummy d-none"></div>
@@ -82,8 +82,8 @@ const taskFormHTML = /*HTML*/`
                         <div id="input-group-dropdown-category-img"
                             class="input-single-img-container d-flex justify-content-center align-items-center"
                             onclick="toggleDropdown('category', 'd-block')">
-                            <img id="input-category-arrow-down" src="assets/img/addTask/arrow-down.svg" class="">
-                            <img id="input-category-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none">
+                            <img id="input-category-arrow-down" src="assets/img/addTask/arrow-down.svg" class="pointer">
+                            <img id="input-category-arrow-up" src="assets/img/addTask/arrow-up.svg" class="d-none pointer">
                         </div>
                     </div>
                     <div class="h-0 d-flex flex-column">
@@ -111,16 +111,16 @@ const taskFormHTML = /*HTML*/`
                         <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
                             oninput="" onfocus="changeVisibleImages(true), changeBorderColor(document.getElementById('input-subtask-two-img-box'), 'border-color-onfocus')" onblur="changeVisibleImages(false), changeBorderColor(document.getElementById('input-subtask-two-img-box'))">
                         <div id="input-subtask-plus-box"
-                            class="input-single-img-container d-flex justify-content-center align-items-center"
+                            class="input-single-img-container pointer d-flex justify-content-center align-items-center"
                             onclick="focusElement(document.getElementById('input-subtask'))">
                             <img id="input-subtask-plus" src="assets/img/addTask/plus-dark.svg" class="">
                         </div>
                         <div id="input-subtask-two-img-box" class="input-single-img-container two-img-box d-none">
-                            <div class="single-img-box d-flex justify-content-center align-items-center">
+                            <div class="single-img-box pointer d-flex justify-content-center align-items-center">
                                 <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
                                     onclick="clearValue(document.getElementById('input-subtask')); changeVisibleImages()">
                             </div>
-                            <div class="single-img-box d-flex justify-content-center align-items-center">
+                            <div class="single-img-box pointer d-flex justify-content-center align-items-center">
                                 <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
                                     onclick="addNewSubtask()">
                             </div>

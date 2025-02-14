@@ -229,6 +229,11 @@ footer {
 }
 
 
+.pointer {
+    cursor: pointer;
+}
+
+
 #priority-label {
     padding: 4px 18px;
     gap: 10px;
