@@ -189,7 +189,7 @@ async function tryPostTaskToDatabase(data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessagePostTask);
+    showToast(toastMessagePostTask, "middle", 4000, true, "bottom", false);
 }
 
 
