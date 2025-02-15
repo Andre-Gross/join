@@ -156,22 +156,23 @@ function renderPriority(priority) {
  * For each contact, it creates a label with their name and a corresponding circle icon.
  * @param {Array<string>} assignedTo - Array of contact names assigned to the task.
  */
-async function renderAssignedToInModal(assignedTo) {
+async function renderAssignedToInModal(assignedToIds) {
     const container = document.getElementById('assignedTo-name-labels-container');
     container.innerHTML = '';
 
-    const contactsWithIds = await Promise.all(assignedTo.map(async (contact) => {
-        const id = await getIdOfContactWithName(contact);
-        const circle = await createNameCircleWithId(id);
-        return { contact, circle };
+    const assignedContacts = await Promise.all(assignedToIds.map(async (singleId) => {
+        const circle = await createNameCircleWithId(singleId);
+        const contact = await getContacts();
+        const name = contact[singleId].name;
+        return { name, circle };
     }));
 
     const fragment = document.createDocumentFragment();
 
-    contactsWithIds.forEach(({ contact, circle }) => {
+    assignedContacts.forEach(({ name, circle }) => {
         const div = document.createElement('div');
         div.classList.add("assignedTo-name-label", "d-flex", "align-items-center", "gap-16p");
-        div.innerHTML = `${circle}<p>${contact}</p>`;
+        div.innerHTML = `${circle}<p>${name}</p>`;
         fragment.appendChild(div);
     });
 
@@ -392,7 +393,6 @@ async function changeToEditMode(id) {
     }
 
     const singleTask = tasksAsArray[singleTaskID];
-
     const templateContainer = document.getElementById('modalCard-edit-mode-template-container');
     const sendButton = document.getElementById('sendButton');
 
@@ -403,6 +403,7 @@ async function changeToEditMode(id) {
     toggleEditMode(true);
     adjustFirstLineLayoutForEditMode();
 
+    loadFormFunctions();
     sendButton.onclick = function () {
         submitTaskForm("put", id);
         return false;
