@@ -1,5 +1,5 @@
 const taskFormHTML = /*HTML*/`
-    <form action="" class="w-100u1000p d-flex" onsubmit="">
+    <form action="" class="w-100u1000p d-flex">
 
         <div class="form-subcontainer">
             <div class="d-flex flex-column">
@@ -140,16 +140,21 @@ const taskFormHTML = /*HTML*/`
 
 function renderTaskForm(element, method = "post", id) {
     element.innerHTML = taskFormHTML;
+    const form = document.querySelector("form");
+    const inputsToSubmit = ['inputTitle', 'inputDate']
 
-    const form = element.querySelector("form");
     if (!form) {
         console.error("Form not found in template");
         return;
     }
 
-    form.addEventListener("submit", (event) => {
-        event.preventDefault(); 
-
-        submitTaskForm(method, id);
+    inputsToSubmit.forEach(inputId => {
+        document.getElementById(inputId).addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                submitTaskForm(method, id);
+                event.preventDefault();
+            }
+        });
     });
+
 }
