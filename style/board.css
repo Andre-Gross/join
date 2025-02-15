@@ -431,6 +431,11 @@ body.dragging {
 }
 
 
+#modalCard-edit-mode #taskForm-category {
+    display: none !important;
+}
+
+
 .category-label {
     border-radius: 8px;
     padding: 4px 16px;

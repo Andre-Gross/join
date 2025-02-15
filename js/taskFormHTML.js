@@ -71,7 +71,7 @@ const taskFormHTML = /*HTML*/`
                 </div>
             </div>
 
-            <div class="d-flex flex-column gap-05">
+            <div id="taskForm-category" class="d-flex flex-column gap-05">
                 <label for="input-group-dropdown-category">Categorie<span class="color-invalid">*</span></label>
                 <div id="dropdown-container-category" class="dropdown-container">
                     <div id="input-group-dropdown-category" class="input-group d-flex">
