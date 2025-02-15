@@ -404,6 +404,7 @@ async function changeToEditMode(id) {
     toggleEditMode(true);
     adjustFirstLineLayoutForEditMode();
 
+    loadFormFunctions();
     sendButton.onclick = function () {
         submitTaskForm("put", id);
         return false;
