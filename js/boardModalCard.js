@@ -393,7 +393,6 @@ async function changeToEditMode(id) {
     }
 
     const singleTask = tasksAsArray[singleTaskID];
-
     const templateContainer = document.getElementById('modalCard-edit-mode-template-container');
     const sendButton = document.getElementById('sendButton');
 
