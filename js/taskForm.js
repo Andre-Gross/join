@@ -96,10 +96,16 @@ async function submitTaskForm(method = 'post', id = '') {
     const category = getValue("inputCategory");
     const priority = document.querySelector('.btn-selected')?.id;
     const assignedTo = readAssignedTo();
+    const buttons = document.getElementById("form-footer").querySelectorAll("button")
+
 
     if (!checkAllInputsHasContent(title, dueDate, category)) {
         return alert('Please fill all required fields');
     }
+
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
 
     const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
     method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);

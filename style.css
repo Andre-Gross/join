@@ -125,8 +125,8 @@ footer {
 }
 
 
-.btn-primary:hover,
-.btn-dark:hover {
+.btn-primary:hover:not(:disabled),
+.btn-dark:hover:not(:disabled) {
     background-color: var(--button-hover-background-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -145,7 +145,7 @@ footer {
 }
 
 
-.btn-outline-secondary:hover {
+.btn-outline-secondary:hover:not(:disabled) {
     border-color: var(--button-hover-background-color);
     background-color: var(--white-color);
     color: var(--button-hover-background-color);
