@@ -28,155 +28,182 @@
         <article>
             <pre class="prettyprint source linenums"><code>const BASE_URL = 'https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/';
 
-let toastMessageEditTask ='&lt;span>Task successfully edited&lt;/span>';
-let toastMessageDeleteTask='&lt;span>Task successfully deleted&lt;/span>';
-let toastMessageCreateTask ='&lt;span>Task successfully created&lt;/span>';
+
+const toastMessagePostTask = '&lt;span>Task added to board&lt;/span>&lt;img src="assets/img/general/board.svg" alt="board">'
+const toastMessageEditTask = '&lt;span>Task successfully edited&lt;/span>';
+const toastMessageDeleteTask = '&lt;span>Task successfully deleted&lt;/span>';
+const toastMessageCreateTask = '&lt;span>Task successfully created&lt;/span>';
+
 
 /**
- * This function returns the contacts of the user as JSON
+ * Fetches the user's contacts and returns them as a JSON object.
  * 
- * @returns {JSON} - This object includes all datas of all contacts of the user.
+ * @returns {Promise&lt;Object>} A promise resolving to the contacts data.
+ * @throws {Error} If the request fails or returns a non-OK response.
  */
 async function getContacts() {
-    let response = await fetch(BASE_URL + 'users/' + '/contacts' + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON;
+    try {
+        const response = await fetch(`${BASE_URL}users/contacts.json`);
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch contacts:', error);
+        throw error;
+    }
 }
 
 
 /**
- * This function returns the contacts of the loggedInUser as Array
+ * Fetches all contacts and returns them as an array.
  * 
- * @returns {Array} - This array contains the contacts of the loggedInUser
+ * @returns {Promise&lt;Array&lt;{id: string, color: string, email: string, name: string, phone: string}>>} 
+ * A promise resolving to an array of contact objects.
  */
 async function getContactsAsArray() {
-    let contactsAsArray = [];
-    const contactsData =  await getContacts();
-    for (const KEY in contactsData) {
-        const singleContact = contactsData[KEY];
-        const contact = {
-            id: KEY,
-            color: singleContact.color,
-            email: singleContact.email,
-            name: singleContact.name,
-            phone: singleContact.phone
-        };
-        contactsAsArray.push(contact);
-    }
-    return contactsAsArray;
+    const contactsData = await getContacts();
+
+    return Object.entries(contactsData).map(([id, contact]) => ({
+        id,
+        color: contact.color,
+        email: contact.email,
+        name: contact.name,
+        phone: contact.phone
+    }));
 }
 
 
 /**
- * This function returns the datas of all tasks. 
+ * Fetches all tasks from the database and returns them as an object.
  * 
- * @returns {object} - This object includes the datas of all tasks.
+ * @async
+ * @function getTasks
+ * @returns {Promise&lt;Object&lt;string, { title: string, category: string, description: string, finishedUntil: string, priority: string, assignedTo: string[], subtasks: any[], status: string }>>}
+ * A promise resolving to an object where the keys are task IDs, and the values are task objects.
+ * @throws {Error} If the request fails or returns a non-OK response.
  */
 async function getTasks() {
-    let response = await fetch(BASE_URL + 'tasks/.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON;
-}
+    try {
+        const response = await fetch(`${BASE_URL}tasks/.json`);
 
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
 
-async function getTasksAsArray() {
-    let tasksAsArray = [];
-    let tasksData = await getTasks();
-    for (const KEY in tasksData) {
-        const singleTask = tasksData[KEY];
-        const task = {
-            id: KEY,
-            category: singleTask.category,
-            title: singleTask.title,
-            description: singleTask.description,
-            finishedUntil: singleTask.finishedUntil,
-            priority: singleTask.priority,
-            assignedTo: singleTask.assignedTo,
-            subtasks: singleTask.subtasks,
-            status: singleTask.status
-        };
-        tasksAsArray.push(task);
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to fetch tasks:', error);
+        throw error;
     }
-    return tasksAsArray;
 }
 
 
 /**
- * This function return the status of the next task.
- * 
- * @returns {string} - This string contains the staus of the next task
+ * Fetches tasks from the database and converts them into an array of objects.
+ *
+ * @async
+ * @function getTasksAsArray
+ * @returns {Promise&lt;Array&lt;{ id: string, title: string, category: string, description: string, finishedUntil: string, priority: string, assignedTo: string[], subtasks: any[], status: string }>>}
+ * A promise resolving to an array of task objects, each containing an ID and relevant task details.
  */
-async function getNextStatus() {
-    let response = await fetch(BASE_URL + '.json');
-    let responseAsJSON = await response.json();
-    return responseAsJSON['nextStatus'];
+async function getTasksAsArray() {
+    const tasksData = await getTasks();
+
+    return Object.entries(tasksData).map(([id, task]) => ({
+        id,
+        title: task.title,
+        category: task.category,
+        description: task.description,
+        finishedUntil: task.finishedUntil,
+        priority: task.priority,
+        assignedTo: task.assignedTo,
+        subtasks: task.subtasks,
+        status: task.status
+    }));
 }
 
 
 /**
  * Posts a new contact to the database.
+ * This function handles the error when the contact cannot be saved.
+ *
  * @param {string} name - Name of the contact.
  * @param {string} mail - Email of the contact.
  * @param {string} phone - Phone number of the contact.
  * @param {string} color - Color associated with the contact.
+ * @throws {Error} If the contact cannot be saved.
  */
 async function postContactToDatabase(name, mail, phone, color) {
     try {
-      tryPostContactToDatabase(name, mail, phone, color);
+        await tryPostContactToDatabase(name, mail, phone, color);
     } catch (error) {
-      console.error("Fehler beim Speichern des Kontaktes", error);
-      alert("Beim Speichern des Kontaktes ist ein Fehler aufgetreten.");
-    }
-  }
-  
-  
-  /**
-   * Tries to post a new contact to the database.
-   * @param {string} name - Name of the contact.
-   * @param {string} mail - Email of the contact.
-   * @param {string} phone - Phone number of the contact.
-   * @param {string} color - Color associated with the contact.
-   * @throws Will throw an error if the request fails.
-   */
-  async function tryPostContactToDatabase(name, mail, phone, color) {
-    let response = await fetch(BASE_URL + `users/contacts.json`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        color: color,
-        email: mail,
-        name: name,
-        phone: phone,
-      }),
-    });
-  
-    if (!response.ok) {
-      throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-  }
-
-
-/**
- * This function post the datas of task to the database with another function. If the response is an erro, it catch it.
- * 
- * @param {object} data - Datas of the task.
- */
-async function postTaskToDatabase(data) {
-    try {
-        await tryPostTaskToDatabase(data);
-    } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Error saving the contact", error);
+        alert("An error occurred while saving the contact.");
     }
 }
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Tries to post a new contact to the database.
+ * Throws an error if the request fails.
+ *
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @throws {Error} If the HTTP request fails (e.g., non-OK response status).
+ */
+async function tryPostContactToDatabase(name, mail, phone, color) {
+    let response = await fetch(BASE_URL + `users/contacts.json`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            color: color,
+            email: mail,
+            name: name,
+            phone: phone,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    showToast(toastMessageEditTask);
+}
+
+
+/**
+ * Posts the task data to the database. If the request fails, it catches the error and displays an alert.
  * 
- * @param {object} data - datas of the task
+ * @async
+ * @function postTaskToDatabase
+ * @param {object} data - The data of the task to be posted.
+ * @throws {Error} If the task cannot be saved due to an HTTP error.
+ */
+async function postTaskToDatabase(data) {
+    try {
+        await tryPostTaskToDatabase(data);
+    } catch (error) {
+        console.error("Error saving the task:", error);
+        alert("An error occurred while saving the task.");
+    }
+}
+
+
+/**
+ * Attempts to post the data of a new task to the database.
+ * If the request is successful, a success alert is shown. 
+ * If an error occurs, an error message is thrown.
+ * 
+ * @async
+ * @function tryPostTaskToDatabase
+ * @param {object} data - The data of the task to be posted.
+ * @throws {Error} If the HTTP request fails (e.g., non-OK status response).
  */
 async function tryPostTaskToDatabase(data) {
     const response = await fetch(BASE_URL + `tasks.json`, {
@@ -188,25 +215,88 @@ async function tryPostTaskToDatabase(data) {
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    showToast(toastMessagePostTask, "middle", 4000, true, "bottom", false);
 }
 
 
-async function putTaskToDatabase(taskId, data) {
+/**
+ * Saves or updates a contact in the database.
+ * 
+ * @async
+ * @function putContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The data of the contact to be saved.
+ * @returns {Promise&lt;void>} - Does not return a value but processes any errors.
+ * @throws {Error} - Throws an error if the request fails, and shows an alert.
+ */
+async function putContactToDatabase(contactId, data) {
     try {
-        await tryPutTaskToDatabase(taskId, data);
+        await tryPutContactToDatabase(contactId, data);
     } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error('Error saving contact:', error);
+        alert('An error occurred while saving the contact.');
     }
 }
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Tries to save or update a contact in the database.
  * 
- * @param {object} data - datas of the task
+ * @async
+ * @function tryPutContactToDatabase
+ * @param {string} contactId - The ID of the contact to be saved or updated.
+ * @param {Object} data - The contact data to be posted.
+ * @returns {Promise&lt;void>} - Resolves if the contact is saved, otherwise throws an error.
+ * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
+ */
+async function tryPutContactToDatabase(contactId, data) {
+    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+}
+
+
+/**
+ * Saves or updates a task in the database.
+ * 
+ * @async
+ * @function putTaskToDatabase
+ * @param {string} taskId - The ID of the task to be saved or updated.
+ * @param {Object} data - The data of the task to be saved.
+ * @returns {Promise&lt;void>} - Does not return a value, but processes any errors.
+ * @throws {Error} - Throws an error if the request fails, and shows an alert.
+ */
+async function putTaskToDatabase(taskId, data) {
+    try {
+        await tryPutTaskToDatabase(taskId, data);
+    } catch (error) {
+        console.error("Error saving the task:", error);
+        alert("An error occurred while saving the task.");
+    }
+}
+
+
+/**
+ * Tries to save or update a task in the database. 
+ * If the request fails, it throws an error.
+ * If successful, a success message is shown.
+ * 
+ * @async
+ * @function tryPutTaskToDatabase
+ * @param {string} taskId - The ID of the task to be saved or updated.
+ * @param {object} data - The task data to be posted.
+ * @returns {Promise&lt;void>} - Resolves if the task is saved, otherwise throws an error.
+ * @throws {Error} - Throws an error if the HTTP request fails (e.g., non-OK status response).
  */
 async function tryPutTaskToDatabase(taskId, data) {
     const response = await fetch(BASE_URL + `tasks/${taskId}.json`, {
@@ -218,128 +308,140 @@ async function tryPutTaskToDatabase(taskId, data) {
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessageEditTask, 'middle', 1000);
+    showToast(toastMessageEditTask, 'middle', 3000);
 }
 
 
 /**
- * This string put the staus of the next task to the database
+ * Updates the status of a subtask in the database.
  * 
- * @param {string} status - This string contains the status of the next task. Th standart value is "To do"
+ * @async
+ * @function putNewCheckedToSubtask
+ * @param {string} taskId - The ID of the parent task.
+ * @param {string} subtaskId - The ID of the subtask.
+ * @param {boolean} isChecked - The new status of the subtask (true = completed, false = not completed).
+ * @returns {Promise&lt;void>} - Does not return a value but sends an update request.
+ * @throws {Error} - Throws an error if the request fails.
  */
-async function putNextStatus(status = 'To do') {
-    await fetch(BASE_URL + '/nextStatus.json', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(status)
-    })
-        .then(response => response.json())
-}
-
-
 async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
-    await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(isChecked)
-    })
-        .then(response => response.json())
-}
-
-
-async function putContactToDatabase(contactId, data) {
     try {
-        await tryPutTaskToDatabase(contactId, data);
+        const response = await fetch(BASE_URL + `/tasks/${taskId}/subtasks/${subtaskId}/isChecked.json`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(isChecked)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
     } catch (error) {
-        console.error("Fehler beim Speichern der Aufgabe:", error);
-        alert("Beim Speichern der Aufgabe ist ein Fehler aufgetreten.");
+        console.error('Error updating subtask status:', error);
+        throw error; // Rethrow the error for further handling
     }
 }
+
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Deletes a task from the database and handles any errors.
  * 
- * @param {object} data - datas of the task
+ * This function calls `tryDeleteTaskInDatabase` to delete a task with the given ID. If an error occurs,
+ * it will be caught and an appropriate error message will be displayed in the browser.
+ * 
+ * @async
+ * @function
+ * @param {string} id - The ID of the task to be deleted.
+ * @throws {Error} If an error occurs during the deletion of the task, it will be caught and displayed in an alert.
  */
-async function tryPutContactToDatabase(contactId, data) {
-    const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
-    }
-    showToast(toastMessageCreateTask, 'middle', 1000);
-}
-
-
-async function deleteTaskInDatabase(id){
+async function deleteTaskInDatabase(id) {
     try {
         await tryDeleteTaskInDatabase(id);
+        showToast(toastMessageDeleteTask, 'middle', 3000);
     } catch (error) {
-        console.error("Fehler beim Löschen der Aufgabe:", error);
-        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
+        console.error("Error deleting task:", error);
+        alert("An error occurred while deleting the task.");
     }
 }
 
 
+
+/**
+ * Deletes a task from the database via an HTTP DELETE request.
+ * 
+ * This function sends a DELETE request to the database to delete a task with the given ID. If the request 
+ * is successful, a toast message will be shown. If an error occurs, an exception will be thrown.
+ * 
+ * @async
+ * @function
+ * @param {string} id - The ID of the task to be deleted.
+ * @throws {Error} If the request fails, an error will be thrown with the status code and message.
+ */
 async function tryDeleteTaskInDatabase(id) {
     const response = await fetch(BASE_URL + `tasks/` + id + `.json`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
-        },
+        }
     });
 
     if (!response.ok) {
-        throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
-    showToast(toastMessageDeleteTask, 'middle', 1000);
+    showToast(toastMessageDeleteTask);
 }
 
-
-async function deleteContactInDatabase(contactId) {
-    try {
-        await tryPutTaskToDatabase(contactId);
-    } catch (error) {
-        console.error("Fehler beim Löschen der Aufgabe:", error);
-        alert("Beim Löschen der Aufgabe ist ein Fehler aufgetreten.");
-    }
-}
 
 
 /**
- * This function post the datas of a new task. If there is an error, it give an response. Otherwise it give an positve alert.
+ * Deletes a contact from the database.
  * 
- * @param {object} data - datas of the task
+ * This function attempts to perform a delete operation on a contact by calling `tryDeleteContactInDatabase`.
+ * If an error occurs, it will be caught and an appropriate error message will be displayed in the browser.
+ * 
+ * @async
+ * @function
+ * @param {string} contactId - The ID of the contact to be deleted.
+ * @throws {Error} If an error occurs during the deletion of the contact, it will be caught and displayed in an alert.
+ */
+async function deleteContactInDatabase(contactId) {
+    try {
+        await tryDeleteContactInDatabase(contactId);
+    } catch (error) {
+        console.error("Error deleting contact:", error);
+        alert("An error occurred while deleting the contact.");
+    }
+}
+
+
+
+/**
+ * Deletes a contact from the database via an HTTP DELETE request.
+ * 
+ * This function sends a DELETE request to the database to delete a contact with the given ID. If the request 
+ * is successful, a confirmation message will be displayed. If an error occurs, an exception will be thrown.
+ * 
+ * @async
+ * @function
+ * @param {string} contactId - The ID of the contact to be deleted.
+ * @throws {Error} If the request fails, an error will be thrown with the status code and message.
  */
 async function tryDeleteContactInDatabase(contactId) {
     const response = await fetch(BASE_URL + `/users/contacts/${contactId}.json`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+        }
     });
 
     if (!response.ok) {
-        throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        throw new Error(`HTTP Error! Status: ${response.status}`);
     }
-    alert("Kontakt erfolgreich gelöscht.");
-}
-
-</code></pre>
+    alert("Contact successfully deleted.");
+}</code></pre>
         </article>
     </section>
 
@@ -349,13 +451,13 @@ async function tryDeleteContactInDatabase(contactId) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#callToast">callToast</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#goBack">goBack</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#patienceDiff">patienceDiff</a></li><li><a href="global.html#patienceDiffPlus">patienceDiffPlus</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#prepareToastStartPosition">prepareToastStartPosition</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toastAppear">toastAppear</a></li><li><a href="global.html#toastLeaveDisplay">toastLeaveDisplay</a></li><li><a href="global.html#toastSlideIn">toastSlideIn</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addPrefixAndSuffix">addPrefixAndSuffix</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#callToast">callToast</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li><li><a href="global.html#changeBorderColor">changeBorderColor</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeToRightBorderColor">changeToRightBorderColor</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkContentOfArray">checkContentOfArray</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#clearValue">clearValue</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircle">createNameCircle</a></li><li><a href="global.html#createNameCircleWithId">createNameCircleWithId</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#focusElement">focusElement</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getIdOfContactWithName">getIdOfContactWithName</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getRandomColor">getRandomColor</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#goBack">goBack</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#prepareToastStartPosition">prepareToastStartPosition</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#returnInitialsOfName">returnInitialsOfName</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#stripPrefixAndSuffix">stripPrefixAndSuffix</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toastAppear">toastAppear</a></li><li><a href="global.html#toastLeaveDisplay">toastLeaveDisplay</a></li><li><a href="global.html#toastSlideIn">toastSlideIn</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDisplayNone">toggleDisplayNone</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li><li><a href="global.html#upperCaseFirstLetter">upperCaseFirstLetter</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Feb 01 2025 22:36:15 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 19:45:40 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

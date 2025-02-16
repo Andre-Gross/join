@@ -27,314 +27,69 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>let isSubmitting = false;
-let toastMessageSignUp = '&lt;span>You Signed Up successfully&lt;/span>';
-
-document.addEventListener('DOMContentLoaded', () => {
-    const hasLoadedBefore = localStorage.getItem('hasLoadedBefore');
-
-    if (!hasLoadedBefore) {
-        // Erstes Laden: Animation wird ausgeführt
-        setTimeout(() => {
-            document.body.classList.add('loaded');
-        }, 100);
-
-        setTimeout(() => {
-            document.getElementById('loginCard').style.display = 'block';
-        }, 1600);
-
-        localStorage.setItem('hasLoadedBefore', 'true'); // Speichern, dass geladen wurde
-    } else {
-        // Kein erstes Laden: Sofortige Anzeige ohne Animation
-        document.body.classList.add('loaded'); // Hintergrund direkt anzeigen
-        document.getElementById('loginCard').style.display = 'block';
-    }
-
-    // Event-Listener für Login-Formular
-    const loginForm = document.querySelector('#loginCard form');
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        logIn();
-    });
-
-    // Event-Listener für Signup-Formular
-    const signupForm = document.querySelector('#signupCard form');
-    signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        signUp();
-    });
-
-    // Gast-Login direkt gekoppelt
-    document.querySelector('button[onclick="guestLogIn();"]').addEventListener('click', guestLogIn);
-
-    // Event-Listener für Formularvalidierung
-    const signupInputs = signupForm.querySelectorAll('input');
-    signupInputs.forEach(input => {
-        input.addEventListener('input', checkFormValidity);
-    });
-});
-
-
-
-let failedAttempts = {}; // Speichert fehlgeschlagene Login-Versuche
-
-/**
- * Clears all input fields in the signup form when switching views.
- */
-function clearSignupInputs() {
-    document.querySelectorAll("#signupCard input").forEach(input => {
-        if (input.type === "checkbox") {
-            input.checked = false; // Checkboxen abwählen
-        } else {
-            input.value = ""; // Alle anderen Felder leeren
-        }
-    });
-
-    // Falls ein Icon sichtbar ist, verberge es
-    document.querySelectorAll("#signupCard .password-toggle").forEach(icon => {
-        icon.style.display = "none";
-    });
-
-    // Stelle sicher, dass das lock.svg als Hintergrundbild erscheint
-    document.querySelectorAll("#signupCard input[type='password']").forEach(input => {
-        input.classList.remove("has-icon"); // Setzt das Hintergrundbild zurück
-    });
-}
-
-/**
- * Switches between login and signup view.
- */
-function switchView() {
-    const loginCard = document.getElementById("loginCard");
-    const signupCard = document.getElementById("signupCard");
-    const switchButton = document.getElementById("switchButton");
-    const switchText = document.getElementById("switchText");
-
-    // Wechsel ohne Verzögerung
-    loginCard.style.transition = 'none';
-    signupCard.style.transition = 'none';
-
-    loginCard.style.opacity = '0';
-    signupCard.style.opacity = '0';
-
-    setTimeout(() => {
-        if (loginCard.style.display !== 'none') {
-            loginCard.style.display = 'none';
-            signupCard.style.display = 'block';
-            switchButton.textContent = 'Log in';
-            switchText.textContent = 'Already a Join user?';
-
-            // Signup-Felder leeren
-            clearSignupInputs();
-
-        } else {
-            signupCard.style.display = 'none';
-            loginCard.style.display = 'block';
-            switchButton.textContent = 'Sign up';
-            switchText.textContent = 'Not a Join user?';
-        }
-
-        // Sofortiges Anzeigen der entsprechenden Karte
-        signupCard.style.opacity = '1';
-        loginCard.style.opacity = '1';
-    }, 50);
-}
-
-
-/**
- * Handles the user login process.
- */
-async function logIn() {
-    const email = getInputValue("email");
-    const password = getInputValue("password");
-
-    if (!email || !password) {
-        displayError("Please enter both email and password.");
-        return;
-    }
-
-    try {
-        const users = await fetchUsers();
-        const user = findUserByEmail(users, email);
-
-        if (!user) {
-            displayNotRegisteredError(); // Benutzer nicht registriert
-            return;
-        }
-
-        if (user.password !== password) {
-            handleFailedAttempt(email); // Verarbeite fehlgeschlagene Versuche
-            return;
-        }
-
-        resetFailedAttempts(email); // Zurücksetzen der fehlgeschlagenen Versuche
-        saveLoggedInUser(user);
-        redirectToSummary();
-    } catch {
-        displayError("An error occurred during login. Please try again.");
-    }
-}
-
-/**
- * Handles the user registration process.
- */
-async function signUp() {
-    if (isSubmitting) return; // Verhindert mehrfaches Ausführen
-    isSubmitting = true;
-    const [name, email, password, confirmPassword, agreeTerms] = getInputValues();
-
-    if (!agreeTerms || password !== confirmPassword) {
-        displayError(getValidationErrorMessage(agreeTerms, password, confirmPassword));
-        return;
-    }
-
-    try {
-        const users = await fetchUsers();
-        if (isEmailAlreadyRegistered(users, email)) {
-            redirectToLogin();
-            isSubmitting = false; 
-            return;
-        }
-        await registerNewUser(name, email, password);
-        await addUserToContacts(name, email);
-
-        isSubmitting = false;
-        showToast(toastMessageSignUp, 'middle', 1000); 
-        setTimeout(() => {
-            redirectToLogin(true);
-          }, 1000);
-    } catch {
-        isSubmitting = false; 
-        displayError("An error occurred during registration. Please try again.");
-    }
-}
-
+let failedAttempts = {};
 
 document.addEventListener("DOMContentLoaded", () => {
-    const passwordFields = document.querySelectorAll(".password-container input");
+  let hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
-    // Setzt alle Passwort-Felder auf leer beim Laden
-    passwordFields.forEach(input => input.value = "");
+  if (!hasLoadedBefore) {
+    setTimeout(() => {
+      document.body.classList.add("loaded");
+    }, 100);
 
-    // Event-Listener für Icon-Update und Passwort-Anzeige-Umschaltung
-    passwordFields.forEach(input => {
-        const icon = input.nextElementSibling; // Das zugehörige Icon
-        input.addEventListener("input", () => updatePasswordIcon(input, icon));
-        icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
-    });
+    setTimeout(() => {
+      document.getElementById("loginCard").style.display = "block";
+    }, 1600);
+
+    localStorage.setItem("hasLoadedBefore", "true");
+  } else {
+    document.body.classList.add("loaded");
+    document.getElementById("loginCard").style.display = "block";
+  }
+
+  let loginForm = document.querySelector("#loginCard form");
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    logIn();
+  });
+
+  let signupForm = document.querySelector("#signupCard form");
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    signUp();
+  });
+
+  document
+    .querySelector('button[onclick="guestLogIn();"]')
+    .addEventListener("click", guestLogIn);
+
+  let signupInputs = signupForm.querySelectorAll("input");
+  signupInputs.forEach((input) => {
+    input.addEventListener("input", checkFormValidity);
+  });
 });
 
-/**
- * Updates the visibility icon when text is entered or removed.
- *
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The visibility icon.
- */
-function updatePasswordIcon(input, icon) {
-    if (!input.value) {
-        input.classList.remove("has-icon"); // Zeigt das `background-image`
-        icon.style.display = "none"; // Versteckt das `&lt;img>`-Icon
-    } else {
-        input.classList.add("has-icon"); // Entfernt das `background-image`
-        icon.style.display = "inline"; // Zeigt das `&lt;img>`-Icon
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Zeigt das Auge mit Strich
-    }
-}
+document.addEventListener("DOMContentLoaded", () => {
+  let passwordFields = document.querySelectorAll(".password-container input");
 
-/**
- * Toggles the password visibility and updates the icon.
- *
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The clicked eye icon.
- */
-function togglePasswordVisibility(input, icon) {
-    if (!input.value) return; // Falls das Feld leer ist, nichts tun
+  passwordFields.forEach((input) => (input.value = ""));
 
-    if (input.type === "password") {
-        input.type = "text";
-        icon.src = "../assets/img/logIn-signUp/visibility-on.svg"; // Auge offen
-    } else {
-        input.type = "password";
-        icon.src = "../assets/img/logIn-signUp/visibility-off.svg"; // Auge geschlossen
-    }
-}
-
-
-async function addUserToContacts(name, email) {
-    const assignedColor = getRandomColor();
-
-    try {
-        await postContactToDatabase(name, email, "", assignedColor);
-    } catch (error) {
-        console.error("Fehler beim Hinzufügen des Kontakts:", error);
-    }
-}
-
-
-function generateUniqueId() {
-    return '_' + Math.random().toString(36).substr(2, 9);
-}
-
-/**
- * Handles failed login attempts and shows a reset password option after 3 tries.
- * @param {string} email - The user's email address.
- */
-function handleFailedAttempt(email) {
-    failedAttempts[email] = (failedAttempts[email] || 0) + 1;
-
-    if (failedAttempts[email] >= 3) {
-        displayError("Too many failed attempts. Please reset your password.");
-        showResetPasswordOption(email);
-    } else {
-        displayError("Incorrect password. Please try again.");
-    }
-}
-
-/**
- * Resets the failed login attempts for a user.
- * @param {string} email - The user's email address.
- */
-function resetFailedAttempts(email) {
-    delete failedAttempts[email];
-}
-
-/**
- * Displays an error message if the user is not registered.
- */
-function displayNotRegisteredError() {
-    displayError("You are not registered. Please sign up to continue.");
-}
-
-/**
- * Logs in as a guest user.
- */
-async function guestLogIn() {
-    try {
-        saveLoggedInUser({ id: "guest", name: "Guest" });
-        sessionStorage.setItem("loggedInUserId", "Guest"); // Speichert die Gast-ID für Auth-Check
-        redirectToSummary(true);
-    } catch {
-        displayError("An error occurred during guest login. Please try again later.");
-    }
-}
-
+  passwordFields.forEach((input) => {
+    let icon = input.nextElementSibling;
+    input.addEventListener("input", () => updatePasswordIcon(input, icon));
+    icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
+  });
+});
 
 /**
  * Fetches all existing users from the database.
  * @returns {Promise&lt;Object>} - A promise resolving to the users object.
  */
 async function fetchUsers() {
-    const response = await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json");
-    return response.json();
-}
-
-/**
- * Finds a user in the database by email.
- * @param {Object} users - The existing users object.
- * @param {string} email - The email to find.
- * @returns {Object|null} - The matched user or null if not found.
- */
-function findUserByEmail(users, email) {
-    return Object.values(users || {}).find(user => user?.email === email) || null;
+  let response = await fetch(
+    "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json"
+  );
+  return response.json();
 }
 
 /**
@@ -343,93 +98,69 @@ function findUserByEmail(users, email) {
  * @returns {Promise&lt;string>} - The hashed password as a hex string.
  */
 async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map(byte => byte.toString(16).padStart(2, '0'))
-        .join('');
+  let encoder = new TextEncoder();
+  let data = encoder.encode(password);
+  let hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 /**
- * Saves the logged-in user's information in the session storage.
- * The password is hashed before saving.
- * @param {Object} user - The user object to save.
+ * Clears all input fields in the signup form when switching views.
  */
-async function saveLoggedInUser(user) {
-    const hashedPassword = await hashPassword(user.password);
-    const userToSave = { ...user, password: hashedPassword }; // Passwort ersetzen
-    sessionStorage.setItem("loggedInUser", JSON.stringify(userToSave));
-}
+function clearSignupInputs() {
+  document.querySelectorAll("#signupCard input").forEach((input) => {
+    if (input.type === "checkbox") {
+      input.checked = false;
+    } else {
+      input.value = "";
+    }
+  });
 
-/**
- * Redirects the user to the summary page.
- * @param {boolean} [isGuest=false] - Whether the login is for a guest user.
- */
-function redirectToSummary(isGuest = false) {
-    const url = isGuest ? "summary.html?userId=guest" : "summary.html";
-    window.location.href = url;
-}
+  document.querySelectorAll("#signupCard .password-toggle").forEach((icon) => {
+    icon.style.display = "none";
+  });
 
-/**
- * Checks if the given email is already registered.
- * @param {Object} users - The existing users object.
- * @param {string} email - The email to check.
- * @returns {boolean} - True if the email is already registered, otherwise false.
- */
-function isEmailAlreadyRegistered(users, email) {
-    return Object.values(users || {}).some(user => user?.email === email);
-}
-
-/**
- * Registers a new user in the database.
- * @param {string} name - The user's name.
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- */
-async function registerNewUser(name, email, password) {
-    const newUser = { name, email, password, contacts: [] };
-    await fetch("https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser)
+  document
+    .querySelectorAll("#signupCard input[type='password']")
+    .forEach((input) => {
+      input.classList.remove("has-icon");
     });
 }
 
 /**
- * Redirects the user to the login page.
- * @param {boolean} [isSuccess] - Whether the registration was successful.
+ * Switches between login and signup view.
  */
-function redirectToLogin(isSuccess = false) {
-    const url = isSuccess ? "index.html?registered=true" : "index.html?error=emailExists";
-    window.location.href = url;
-}
+function switchView() {
+  let loginCard = document.getElementById("loginCard");
+  let signupCard = document.getElementById("signupCard");
+  let switchButton = document.getElementById("switchButton");
+  let switchText = document.getElementById("switchText");
 
-/**
- * Retrieves and processes form input values.
- * @returns {Array} - Array of processed input values.
- */
-function getInputValues() {
-    return ["name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"].map(id =>
-        document.getElementById(id).type === "checkbox"
-            ? document.getElementById(id).checked
-            : document.getElementById(id).value.trim()
-    );
-}
+  loginCard.style.transition = "none";
+  signupCard.style.transition = "none";
 
-/**
- * Validates the registration form inputs and updates the register button state.
- */
-function checkFormValidity() {
-    const [name, email, password, confirmPassword, agreeTerms] = [
-        "name", "signUpEmail", "signUpPassword", "confirmPassword", "agreeTerms"
-    ].map(id =>
-        document.getElementById(id).type === "checkbox"
-            ? document.getElementById(id).checked
-            : document.getElementById(id).value.trim()
-    );
-    const isFormValid = name &amp;&amp; email &amp;&amp; password &amp;&amp; confirmPassword &amp;&amp; agreeTerms;
-    document.getElementById("registerButton").disabled = !isFormValid;
+  loginCard.style.opacity = "0";
+  signupCard.style.opacity = "0";
+
+  setTimeout(() => {
+    if (loginCard.style.display !== "none") {
+      loginCard.style.display = "none";
+      signupCard.style.display = "block";
+      switchButton.textContent = "Log in";
+      switchText.textContent = "Already a Join user?";
+      clearSignupInputs();
+    } else {
+      signupCard.style.display = "none";
+      loginCard.style.display = "block";
+      switchButton.textContent = "Sign up";
+      switchText.textContent = "Not a Join user?";
+    }
+
+    signupCard.style.opacity = "1";
+    loginCard.style.opacity = "1";
+  }, 50);
 }
 
 /**
@@ -438,32 +169,79 @@ function checkFormValidity() {
  * @returns {string} - The trimmed value of the input field.
  */
 function getInputValue(id) {
-    return document.getElementById(id).value.trim();
+  return document.getElementById(id).value.trim();
 }
 
 /**
- * Displays an error message as a toast notification.
- * 
- * @param {string} message - The error message to display.
+ * Updates the visibility icon when text is entered or removed.
+ * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The visibility icon.
  */
-function displayError(message) {
-    showToast(`&lt;span>${message}&lt;/span>`, 'middle', 2000);
+function updatePasswordIcon(input, icon) {
+  if (!input.value) {
+    input.classList.remove("has-icon");
+    icon.style.display = "none";
+  } else {
+    input.classList.add("has-icon");
+    icon.style.display = "inline";
+    icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
+  }
 }
 
 /**
- * Determines the validation error message.
- * @param {boolean} agreeTerms - Whether the terms were agreed to.
- * @param {string} password - The entered password.
- * @param {string} confirmPassword - The confirmed password.
- * @returns {string} - The appropriate error message.
+ * Toggles the password visibility and updates the icon.
+ * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The clicked eye icon.
  */
-function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
-    if (!agreeTerms) return "Please agree to the terms and conditions.";
-    if (password !== confirmPassword) return "Password do not match.";
-    return "An unknown validation error occurred.";
+function togglePasswordVisibility(input, icon) {
+  if (!input.value) return;
+
+  if (input.type === "password") {
+    input.type = "text";
+    icon.src = "../assets/img/logIn-signUp/visibility-on.svg";
+  } else {
+    input.type = "password";
+    icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
+  }
 }
 
-</code></pre>
+/**
+ * Logs in as a guest user.
+ */
+async function guestLogIn() {
+  try {
+    saveLoggedInUser({ id: "guest", name: "Guest" });
+    sessionStorage.setItem("loggedInUserId", "Guest");
+    redirectToSummary(true);
+  } catch {
+    displayError(
+      "An error occurred during guest login. Please try again later."
+    );
+  }
+}
+
+/**
+ * Adds a user to the contacts list.
+ * @param {string} name - The name of the user.
+ * @param {string} email - The email of the user.
+ */
+async function addUserToContacts(name, email) {
+  let assignedColor = getRandomColor();
+
+  try {
+    await postContactToDatabase(name, email, "", assignedColor);
+  } catch (error) {
+    console.error("Error adding contact:", error);
+  }
+}
+
+/**
+ * Generates a unique ID.
+ * @returns {string} - A unique ID.
+ */
+function generateUniqueId() {
+  return "_" + Math.random().toString(36).substr(2, 9);
+}</code></pre>
         </article>
     </section>
 
@@ -473,13 +251,13 @@ function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addTaskFromBoard">addTaskFromBoard</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#callToast">callToast</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getNextStatus">getNextStatus</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#goBack">goBack</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#patienceDiff">patienceDiff</a></li><li><a href="global.html#patienceDiffPlus">patienceDiffPlus</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#prepareToastStartPosition">prepareToastStartPosition</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putNextStatus">putNextStatus</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toastAppear">toastAppear</a></li><li><a href="global.html#toastLeaveDisplay">toastLeaveDisplay</a></li><li><a href="global.html#toastSlideIn">toastSlideIn</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addPrefixAndSuffix">addPrefixAndSuffix</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#callToast">callToast</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li><li><a href="global.html#changeBorderColor">changeBorderColor</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeToRightBorderColor">changeToRightBorderColor</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkContentOfArray">checkContentOfArray</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#clearValue">clearValue</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircle">createNameCircle</a></li><li><a href="global.html#createNameCircleWithId">createNameCircleWithId</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#focusElement">focusElement</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getIdOfContactWithName">getIdOfContactWithName</a></li><li><a href="global.html#getInitialsFromName">getInitialsFromName</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getRandomColor">getRandomColor</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#goBack">goBack</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#prepareToastStartPosition">prepareToastStartPosition</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#returnInitialsOfName">returnInitialsOfName</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#stripPrefixAndSuffix">stripPrefixAndSuffix</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toastAppear">toastAppear</a></li><li><a href="global.html#toastLeaveDisplay">toastLeaveDisplay</a></li><li><a href="global.html#toastSlideIn">toastSlideIn</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDisplayNone">toggleDisplayNone</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li><li><a href="global.html#upperCaseFirstLetter">upperCaseFirstLetter</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Feb 01 2025 22:36:15 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 19:45:40 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>
