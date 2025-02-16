@@ -388,6 +388,13 @@ body.dragging {
 }
 
 
+#modalAddTask #form-footer {
+    background-color: var(--white-color);
+    padding-top: 160px;
+    padding-bottom: calc(64px - 32px);
+}
+
+
 #modalCard {
     position: fixed;
     top: 16px;
@@ -417,9 +424,6 @@ body.dragging {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 10000;
 }
-
-
-
 
 
 #modalCard-edit-mode form {

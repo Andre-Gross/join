@@ -137,9 +137,55 @@ const taskFormHTML = /*HTML*/`
     </form>
     `
 
+const formFooterPost = /*HTML*/`
+    <div id="form-footer" class="w-100 d-flex justify-content-end">
+        <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+            field is required</p>
+        <div class="main-btn-container d-flex justify-content-end">
+            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                onclick="emptyAddTaskInputs()">
+                Clear
+                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                    <img src="./assets/img/general/cross.svg" alt="Clear">
+                </div>
+            </button>
+            <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                onclick="submitTaskForm()" disabled>
+                Create Task
+                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                    <img src="./assets/img/general/tick.svg" alt="Create Task">
+                </div>
+            </button>
+        </div>
+    </div>
+    `
+
+const formFooterPut = /*HTML*/`
+    <div id="form-footer" class="w-100 bg-white d-flex justify-content-end">
+        <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+            field is required</p>
+        <div class="main-btn-container d-flex justify-content-end">
+            <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                onclick="" disabled>
+                Ok
+                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                    <img src="./assets/img/general/tick.svg" alt="Ok">
+                </div>
+            </button>
+        </div>
+    </div>
+    `
+
 
 function renderTaskForm(element, method = "post", id) {
     element.innerHTML = taskFormHTML;
+
+    if (method === "post") {
+        element.innerHTML += formFooterPost;
+    } else {
+        element.innerHTML += formFooterPut;
+    }
+
     const form = document.querySelector("form");
     const inputsToSubmit = ['inputTitle', 'inputDate']
 
@@ -151,10 +197,9 @@ function renderTaskForm(element, method = "post", id) {
     inputsToSubmit.forEach(inputId => {
         document.getElementById(inputId).addEventListener("keydown", (event) => {
             if (event.key === "Enter") {
-                submitTaskForm(method, id);
                 event.preventDefault();
+                submitTaskForm(method, id);
             }
         });
     });
-
 }
