@@ -29,7 +29,7 @@ const COLORS = [
  * @returns {string} The modified string with the prefix and suffix added.
  */
 function addPrefixAndSuffix(string, prefix = '', suffix = '') {
-    return prefix + string.trim().replace(/\s+/g, '_') + suffix;
+  return prefix + string.trim().replace(/\s+/g, '_') + suffix;
 }
 
 
@@ -256,7 +256,7 @@ function callToast(toast, height, shallSlideIn = true, fromWhere) {
  * @returns {string} The modified string with the prefix and suffix removed.
  */
 function stripPrefixAndSuffix(string, prefix = '', suffix = '') {
-    return string.replace(prefix, '').replace(suffix, '');
+  return string.replace(prefix, '').replace(suffix, '');
 }
 
 
