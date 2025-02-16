@@ -440,6 +440,27 @@ body.dragging {
 }
 
 
+#modalCard .input-dummy,
+#modalAddTask .input-dummy {
+    border-left: 1.5px solid var(--border-color);
+    border-right: 1.5px solid var(--border-color);
+}
+
+
+#modalCard .dropdown,
+#modalAddTask .dropdown {
+    border-right: 1.5px solid var(--border-color);
+    border-bottom: 1.5px solid var(--border-color);
+    border-left: 1.5px solid var(--border-color);
+}
+
+
+#modalCard .dropdown::-webkit-scrollbar-track,
+#modalAddTask .dropdown::-webkit-scrollbar-track {
+    border-right: 1.5px solid var(--border-color);
+}
+
+
 .category-label {
     border-radius: 8px;
     padding: 4px 16px;
