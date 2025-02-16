@@ -34,6 +34,7 @@ function enableDisableSendButton() {
  */
 function handleSubtaskInput() {
     const subtaskInput = document.getElementById('input-subtask');
+    const subtaskPlus = document.getElementById('input-subtask-plus')
     const twoImgBox = document.getElementById('input-subtask-two-img-box');
 
     subtaskInput.addEventListener("keydown", (event) => {
@@ -49,7 +50,7 @@ function handleSubtaskInput() {
     }
 
     document.addEventListener('click', (event) => {
-        if (!subtaskInput.contains(event.target) && !twoImgBox.contains(event.target)) {
+        if (!subtaskInput.contains(event.target) && !subtaskPlus.contains(event.target) && !twoImgBox.contains(event.target)) {
             changeVisibleImages(false);
             changeBorderColor(twoImgBox);
         } else {
