@@ -2,7 +2,7 @@
 
     form {
         padding-bottom: 0;
-        height: calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px);
+        height: min(max-content, calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px));
     }
 
 
@@ -29,12 +29,10 @@
 
     form {
         padding-right: unset;
-        height: max-content;
         max-width: auto;
         gap: 0;
         justify-content: start;
         flex-direction: row;
-        overflow: hidden;
     }
 
 
@@ -56,7 +54,7 @@
 
 
     .form-subcontainer {
-        width: calc(50% + 1px / 2);
+        width: calc(50% - 16px + 1px / 2);
     }
 
 
