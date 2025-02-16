@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: contact.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: contact.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let names = [];
+let emails = [];
+let phones = [];
+let colors = [];
+let shortNames = [];
+let ids = [];
+
+let toastMessageAddContact ='&lt;span>Contact successfully created&lt;/span>';
+let toastMessageEditContact ='&lt;span>Contact successfully edited&lt;/span>';
+let toastMessageDeleteContact ='&lt;span>Contact successfully deleted&lt;/span>';
+
+/**
+ * Main function to load and display contacts.
+ */
+async function contactMain() {
+  names = [];
+  emails = [];
+  phones = [];
+  colors = [];
+  ids = [];
+  await loadContacts();
+  await shortName();
+
+  let contactMain = document.getElementById("idContactMain");
+  contactMain.innerHTML = "";
+
+  let currentLetter = "";
+
+  for (let i = 0; i &lt; names.length; i++) {
+    let firstLetter = names[i][0].toUpperCase(); 
+
+    if (firstLetter !== currentLetter) {
+      contactMain.innerHTML += `
+        &lt;h2>${firstLetter}&lt;/h2>
+        &lt;div id="idGreyLine">&lt;/div>
+      `;
+      currentLetter = firstLetter;
+    }
+
+    contactMain.innerHTML += getContactMain(i);
+  }
+
+  contactMain.innerHTML += getAddContactBtn();
+}
+
+
+/**
+ * Loads contacts from the database and initializes arrays.
+ */
+async function loadContacts() {
+  let loadContacts = await getContacts();
+  let contactsArray = Object.values(loadContacts);
+  ids = Object.keys(loadContacts);
+
+  for (let index = 0; index &lt; contactsArray.length; index++) {
+    emails.push(contactsArray[index].email);
+    names.push(contactsArray[index].name);
+    phones.push(contactsArray[index].phone);
+    colors.push(contactsArray[index].color);
+  }
+
+  await sortContacts();
+}
+
+
+/**
+ * Displays the "Add Contact" form.
+ */
+function addContact() {
+  let addContact = document.getElementById("idContactMain");
+  addContact.innerHTML += getAddContact();
+
+  document.getElementById("overlay").classList.add("show");
+
+  setTimeout(() => {
+      document.getElementById("idAddContact").classList.add("show");
+  }, 10);
+}
+
+
+/**
+ * Closes the "Add Contact" form.
+ */
+function closeAddContact() {
+  let addContactElement = document.getElementById("idAddContact");
+  if (addContactElement) {
+      addContactElement.remove();
+  }
+  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
+}
+
+
+/**
+ * Sorts contacts alphabetically by name.
+ */
+async function sortContacts() {
+  let contacts = names.map((name, index) => ({
+    name,
+    email: emails[index],
+    phone: phones[index],
+    color: colors[index],
+    id: ids[index],
+  }));
+
+  contacts.sort((a, b) => a.name.localeCompare(b.name));
+
+  names = contacts.map((contact) => contact.name);
+  emails = contacts.map((contact) => contact.email);
+  phones = contacts.map((contact) => contact.phone);
+  colors = contacts.map((contact) => contact.color);
+  ids = contacts.map((contact) => contact.id);
+}
+
+
+/**
+ * Opens the contact view for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
+function openContact(i) {
+  let openContact = document.getElementById("idContactMain");
+
+  if (window.innerWidth &lt; 1100) {
+    openContact.innerHTML = "";
+    openContact.innerHTML += getContactView(i);
+  } else {
+    let existingView = document.getElementById("idViewContactCard");
+    if (existingView) {
+      existingView.remove(); 
+    }
+
+    let contactViewContainer = document.createElement("div");
+    contactViewContainer.id = "idViewContactCard";
+    contactViewContainer.innerHTML = getContactView(i);
+    document.body.appendChild(contactViewContainer);
+  }
+}
+
+/**
+ * Opens the edit contact form for a specific contact.
+ * @param {number} i - Index of the contact.
+ */
+function editContact(i) {
+  const existingEditModal = document.getElementById("idEditContact");
+  if (existingEditModal) {
+      existingEditModal.remove();
+  }
+
+  let editContactModal = document.createElement("div");
+  editContactModal.id = "idEditContact";
+  editContactModal.innerHTML = getEditContact(i);
+  document.body.appendChild(editContactModal);
+
+  document.getElementById("overlay").classList.add("show");
+
+  setTimeout(() => {
+      editContactModal.classList.add("show");
+  }, 10);
+}
+
+
+/**
+ * Closes the edit contact form.
+ */
+function closeEditContact() {
+  const editContactModal = document.getElementById("idEditContact");
+  if (editContactModal) {
+      editContactModal.remove();
+  }
+  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
+}
+
+
+/**
+ * Closes both the add and edit contact forms.
+ */
+function closeOverlay() {
+  closeAddContact();
+  closeEditContact();
+}
+
+
+/**
+ * Submits the new contact to the database.
+ */
+function submitAddContact() {
+  let name = document.getElementById("idNameAddContact").value;
+  let mail = document.getElementById("idMailAddContact").value;
+  let phone = document.getElementById("idPhoneAddContact").value;
+  let color = getRandomColor();
+
+  postContactToDatabase(name, mail, phone, color);
+
+  showToast(toastMessageAddContact, 'middle', 1000);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+}
+
+
+/**
+ * Deletes a contact from the database.
+ * @param {number} i - Index of the contact.
+ */
+async function deleteContact(i) {
+  let id = ids[i];
+  await deleteContactInDatabase(id);
+
+  showToast(toastMessageDeleteContact, 'middle', 1000);
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+}
+
+
+/**
+* Saves the edited contact to the database.
+* @param {number} i - Index of the contact.
+*/
+function saveEditContact(i) {
+  let name = document.getElementById("idNameEditContact").value;
+  let mail = document.getElementById("idMailEditContact").value;
+  let phone = document.getElementById("idPhoneEditContact").value;
+  let color = colors[i];
+  let id = ids[i];
+  putContactInDatabase(name, mail, phone, color, id);
+  showToast(toastMessageEditContact, 'middle', 1000);
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+}
+
+
+/**
+ * Generates short names (initials) for all contacts.
+ */
+async function shortName() {
+  shortNames = names.map((name) => getInitialsFromName(name));
+}
+
+
+
+/**
+ * Deletes a contact from the database.
+ * @param {string} id - ID of the contact.
+ */
+async function deleteContactInDatabase(id) {
+  try {
+    tryDeleteContactInDatabase(id);
+  } catch (error) {
+    console.error("Fehler beim Löschen des Kontaktes:", error);
+    alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
+  }
+}
+
+
+/**
+ * Tries to delete a contact from the database.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
+async function tryDeleteContactInDatabase(id) {
+  let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+  }
+
+}
+
+
+/**
+ * Updates a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ */
+async function putContactInDatabase(name, mail, phone, color, id) {
+  try {
+    tryPutContactInDatabase(name, mail, phone, color, id);
+  } catch (error) {
+    console.error("Fehler beim Bearbeiten des Kontaktes:", error);
+    alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
+  }
+}
+
+
+/**
+ * Tries to update a contact in the database.
+ * @param {string} name - Name of the contact.
+ * @param {string} mail - Email of the contact.
+ * @param {string} phone - Phone number of the contact.
+ * @param {string} color - Color associated with the contact.
+ * @param {string} id - ID of the contact.
+ * @throws Will throw an error if the request fails.
+ */
+async function tryPutContactInDatabase(name, mail, phone, color, id) {
+  let response = await fetch(BASE_URL + `users/contacts/` + id + `.json`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      color: color,
+      email: mail,
+      name: name,
+      phone: phone,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+  }
+}
+
+
+/**
+ * Toggles the visibility of contact buttons based on input values.
+ */
+function toggleContactButtons() {
+  const name = document.getElementById("idNameAddContact").value.trim();
+  const mail = document.getElementById("idMailAddContact").value.trim();
+  const phone = document.getElementById("idPhoneAddContact").value.trim();
+
+  const deleteBtn = document.getElementById("idDeleteAddContact");
+  const saveBtn = document.getElementById("idSaveAddContact");
+  const submitBtn = document.getElementById("idSubmitAddContact");
+  const cancelBtn = document.getElementById("idCancelAddContact");
+
+  if (name &amp;&amp; mail &amp;&amp; phone) {
+    deleteBtn.style.display = "block";
+    saveBtn.style.display = "block";
+
+    submitBtn.style.display = "none";
+    cancelBtn.style.display = "none";
+  } else {
+    deleteBtn.style.display = "none";
+    saveBtn.style.display = "none";
+
+    submitBtn.style.display = "block";
+    cancelBtn.style.display = "block";
+  }
+}
+
+
+/**
+ * Initiates a phone call to the given phone number.
+ * @param {string} phoneNumber - Phone number to call.
+ */
+function callPhoneNumber(phoneNumber) {
+  window.location.href = `tel:${phoneNumber}`;
+}
+
+
+/**
+ * Opens the default email client with the given email address.
+ * @param {string} email - Email address to send to.
+ */
+function openEmailClient(email) {
+  window.location.href = `mailto:${email}`;
+}
+
+
+/**
+ * Adds a 'selected' class to the clicked contact entry.
+ */
+document.addEventListener('click', (event) => {
+  if (event.target.closest('.NameMailShort')) {
+    document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
+      el.classList.remove('selected');
+    });
+    event.target.closest('.NameMailShort').classList.add('selected');
+  }
+});
+
+
+/**
+* Toggles the visibility of the dropdown menu for a specific contact.
+* @param {number} index - Index of the contact.
+*/
+function toggleDropdownMenu(index) {
+  const dropdown = document.getElementById(`dropdownMenu-${index}`);
+  if (dropdown.classList.contains('dm-hidden')) {
+      dropdown.classList.remove('dm-hidden');
+  } else {
+      dropdown.classList.add('dm-hidden');
+  }
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 15:01:05 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

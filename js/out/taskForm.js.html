@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: taskForm.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: taskForm.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let dataSubtasks = [];
+let nextStatus = "To do"
+
+
+/**
+ * This function initializes the form, including the subtask input listener and dropdown listeners.
+ */
+function loadFormFunctions() {
+    handleSubtaskInput();
+    createAssignedToDropdown();
+    setupDropdownListeners();
+}
+
+
+/**
+ * This function enables or disables the send button based on the content of the required inputs.
+ */
+function enableDisableSendButton() {
+    const title = document.getElementById("inputTitle").value.trim();
+    const dueDate = document.getElementById('inputDate').value;
+    const category = document.getElementById("inputCategory").value;
+    const sendButton = document.getElementById("sendButton")
+
+    if (checkAllInputsHasContent(title, dueDate, category)) {
+        sendButton.disabled = false;
+    } else {
+        sendButton.disabled = true;
+    }
+}
+
+
+/**
+ * This function adds a keydown event listener to the subtask input element to add new subtasks on Enter key press.
+ */
+function handleSubtaskInput() {
+    const subtaskInput = document.getElementById('input-subtask');
+    const subtaskPlus = document.getElementById('input-subtask-plus')
+    const twoImgBox = document.getElementById('input-subtask-two-img-box');
+
+    subtaskInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addNewSubtask();
+        }
+    });
+
+    if (!subtaskInput || !twoImgBox) {
+        console.error("Elemente nicht gefunden");
+        return;
+    }
+
+    document.addEventListener('click', (event) => {
+        if (!subtaskInput.contains(event.target) &amp;&amp; !subtaskPlus.contains(event.target) &amp;&amp; !twoImgBox.contains(event.target)) {
+            changeVisibleImages(false);
+            changeBorderColor(twoImgBox);
+        } else {
+            subtaskInput.focus();
+        }
+    });
+}
+
+
+/**
+ * This function adds click event listeners to close the dropdown menus when clicking outside.
+ */
+function setupDropdownListeners() {
+    const dropdownMenues = ['assignedTo', 'category'];
+
+    for (let i = 0; i &lt; dropdownMenues.length; i++) {
+        const singleDropdown = dropdownMenues[i];
+        document.addEventListener('click', (event) => {
+            const dropdown = document.getElementById(`dropdown-${singleDropdown}`);
+            const inputGroup = document.getElementById(`input-group-dropdown-${singleDropdown}`);
+
+            if (dropdown) {
+                if (!dropdown.contains(event.target) &amp;&amp; !inputGroup.contains(event.target)) {
+                    toggleDropdown(`${singleDropdown}`, 'd-block', false);
+                }
+            }
+        });
+    }
+}
+
+
+/**
+ * Collects task form data, validates required fields, and submits the task to the database.
+ * Shows a success toast and redirects to the board upon completion.
+ *
+ * @param {string} [method='post'] - The HTTP method to use (`post` to create, `put` to update).
+ * @param {string} [id=''] - The task ID (required for `put` requests).
+ */
+async function submitTaskForm(method = 'post', id = '') {
+    const getValue = (id) => document.getElementById(id).value.trim();
+    const title = getValue("inputTitle");
+    const description = getValue("textareaDescription");
+    const dueDate = getValue("inputDate");
+    const category = getValue("inputCategory");
+    const priority = document.querySelector('.btn-selected')?.id;
+    const assignedTo = readAssignedTo();
+    const buttons = document.getElementById("form-footer").querySelectorAll("button")
+
+
+    if (!checkAllInputsHasContent(title, dueDate, category)) {
+        return alert('Please fill all required fields');
+    }
+
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+
+    const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
+    method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);
+
+    setTimeout(async () => {
+        nextStatus = 'To do';
+        window.location.href = `./board.html`;
+    }, 3000);
+}
+
+
+/**
+ * This function resets all input fields in the addTask form.
+ */
+function emptyAddTaskInputs() {
+    document.getElementById("inputTitle").value = '';
+    document.getElementById("textareaDescription").value = '';
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(el => el.checked = false)
+    document.getElementById('dropAssignedTo').value = '';
+    document.getElementById('inputDate').value = '';
+    document.getElementById('inputCategory').value = '';
+    selectPriority('medium');
+    document.getElementById("input-subtask").value = [];
+    dataSubtasks = [];
+    renderNewSubtasks();
+}
+
+
+/**
+ * Checks if all required input fields contain values.
+ * 
+ * @param {string} title - The title of the task.
+ * @param {string} dueDate - The due date as a string.
+ * @param {string} category - The category of the task.
+ * @returns {boolean} - Returns `true` if all fields have values, otherwise `false`.
+ */
+function checkAllInputsHasContent(title, dueDate, category) {
+    return !(title === '' || dueDate === '' || category === '');
+}
+
+
+/**
+ * Toggles the visibility of a "required field" warning text.
+ * 
+ * @param {string} field - The name of the input field (e.g., "Title", "Date", "Category").
+ */
+function changeTextRequired(field) {
+    const input = document.getElementById(`input${upperCaseFirstLetter(field.toLowerCase())}`);
+    const text = document.getElementById(`text-required-input-${field.toLowerCase()}`);
+
+    toggleDisplayNone(text, "d-block", input.value === '');
+}
+
+
+/**
+ * Creates the "Assigned To" dropdown menu.
+ */
+async function createAssignedToDropdown() {
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const contacts = await getContactsAsArray();
+    dropdown.innerHTML = "";
+    contacts.forEach(contact => createAssignedToContactItem(dropdown, contact));
+}
+
+
+/**
+ * This function creates a contact item in the 'Assigned to' dropdown.
+ * 
+ * @param {HTMLElement} dropdown - The dropdown element to append the contact item to.
+ * @param {Object} contact - The contact data to display in the dropdown.
+ */
+function createAssignedToContactItem(dropdown, contact) {
+    const contactItem = document.createElement("div");
+
+    contactItem.id = addPrefixAndSuffix(contact.id, 'item_');
+    contactItem.className = "contact-item";
+    contactItem.innerHTML = `
+        ${contact.name}
+        &lt;input type="checkbox" id="${addPrefixAndSuffix(contact.id, 'checkbox_')}">
+    `;
+
+    contactItem.onclick = async () => selectContact(contact.id);
+    addAssignedToCheckboxEvent(contactItem, contact);
+    dropdown.appendChild(contactItem);
+}
+
+
+/**
+ * This function allows selecting a contact's checkbox in the "assignedTo" dropdown by clicking on the contact (not necessary to click specifically on the checkbox).
+ * 
+ * @param {string} id - The unique ID of the contact.
+ */
+async function selectContact(id) {
+    const input = document.getElementById("dropAssignedTo");
+    const checkbox = document.getElementById(addPrefixAndSuffix(id, 'checkbox_'));
+
+    checkbox.checked = !checkbox.checked;
+
+    if (!(input.value === '' || input.value === 'An ')) {
+        input.value = '';
+        input.focus();
+    }
+
+    await refreshChoosenContactCircles();
+}
+
+
+/**
+ * This function adds the event for updating the selected contact's checkbox in the 'Assigned to' dropdown.
+ * 
+ * @param {HTMLElement} contactItem - The contact item element.
+ * @param {Object} contact - The contact data.
+ */
+function addAssignedToCheckboxEvent(contactItem, contact) {
+    const checkbox = contactItem.querySelector(`#${addPrefixAndSuffix(contact.id, 'checkbox_')}`);
+    checkbox.onclick = (event) => {
+        event.stopPropagation();
+        refreshChoosenContactCircles();
+    };
+}
+
+
+/**
+ * Retrieves the list of assigned contacts for a task from the assignedTo dropdown.
+ * 
+ * This function finds all checked checkboxes within the "assignedTo" dropdown,
+ * extracts their IDs, and returns them as an array of strings.
+ * 
+ * @returns {string[]} An array of contact IDs representing the individuals assigned to the task.
+ */
+function readAssignedTo() {
+    const dropdown = document.getElementById("dropdown-assignedTo");
+    const assignedToCheckboxes = dropdown.querySelectorAll('input[type="checkbox"]:checked');
+    const assignedTo = Array.from(assignedToCheckboxes).map(checkbox => stripPrefixAndSuffix(checkbox.id, 'checkbox_'));
+    return assignedTo;
+}
+
+
+/**
+ * Filters the contacts based on the user input in the "Assigned To" dropdown
+ * and updates the dropdown menu accordingly.
+ * 
+ * - Retrieves contacts from the database.
+ * - Matches contacts whose names contain the input text.
+ * - Shows only matching contacts in the dropdown.
+ * 
+ * @returns {Promise&lt;void>} - The function modifies the DOM and does not return a value.
+ */
+async function filterContacts() {
+    let contacts = await getContactsAsArray();
+    let input = document.getElementById("dropAssignedTo").value.toLowerCase();
+
+    if (input.includes('an ')) {
+        input = input.substring(input.lastIndexOf("an ") + 3);
+    }
+
+    const filteredContacts = input ? contacts.filter(contact => contact.name.toLowerCase().includes(input)) : contacts;
+    const filteredNames = new Set(filteredContacts.map(contact => contact.name));
+
+    toggleDropdown('assignedTo', 'd-block', filteredContacts.length > 0);
+
+    contacts.forEach(contact => {
+        const item = document.getElementById(addPrefixAndSuffix(contact.id, 'item_'));
+        item.classList.toggle("d-none", !filteredNames.has(contact.name));
+    });
+}
+
+
+/**
+ * Refreshes the list of selected contact circles by reading the assigned contacts and updating the UI.
+ * 
+ * This function retrieves the checked contacts from the "assignedTo" dropdown, 
+ * clears the current display of selected contacts, and then adds the circles 
+ * for each selected contact. After the update, it also calls a function to 
+ * store the last entered string in the input field.
+ * 
+ * @async
+ */
+async function refreshChoosenContactCircles() {
+    let checkedContacts = readAssignedTo();
+    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts')
+
+    choosenContactsContainer.innerHTML = '';
+    for (let i = 0; i &lt; checkedContacts.length; i++) {
+        const singleContact = checkedContacts[i];
+        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(singleContact)
+    }
+}
+
+
+/**
+ * Creates a contact name circle with a remove option and returns the HTML as a string.
+ * 
+ * This function fetches contact details from the `getContacts` function, 
+ * generates a circle with the contact's initials and color, and adds a click 
+ * handler for selecting or removing the contact. The contact's ID is used to 
+ * dynamically set the ID and event handler for the HTML element.
+ * 
+ * @async
+ * @param {string} id - The unique identifier of the contact to be displayed in the circle.
+ * @returns {Promise&lt;string>} A promise that resolves to a string containing the HTML for the name circle.
+ */
+async function createNameCircleWithRemove(id) {
+    const contacts = await getContacts();
+    const initials = returnInitialsOfName(contacts[id].name);
+    const color = contacts[id].color.replace('#', '').toLowerCase();
+
+    let HTML = createNameCircle(initials, color);
+
+    const divId = `addPrefixAndSuffix(${id}, 'nameCircle-')`;
+    const onclickFunction = `selectContact('${id}')`;
+
+    HTML = HTML.replace('&lt;div', `&lt;div id="${divId}" onclick="${onclickFunction}"`);
+
+    return HTML;
+}
+
+
+
+/**
+ * Toggles the visibility of a dropdown menu and updates related UI elements.
+ *
+ * @param {string} whichDropdown - The identifier of the dropdown to toggle.
+ * @param {string} [displayMode='d-block'] - The CSS class used to display the dropdown.
+ * @param {boolean|string} [shallVisible=''] - Determines the visibility: `true` (show), `false` (hide), `''` (toggle).
+ */
+function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '') {
+    const input = document.getElementById(`input-group-dropdown-${whichDropdown}`)
+    const dropdown = document.getElementById(`dropdown-${whichDropdown}`);
+    const inputDummy = document.getElementById(`input-dummy-${whichDropdown}`);
+    const arrowDown = document.getElementById(`input-${whichDropdown}-arrow-down`);
+    const arrowUp = document.getElementById(`input-${whichDropdown}-arrow-up`);
+    const toggle = shallVisible === '' ? null : shallVisible;
+
+    toggleDisplayNone(dropdown, displayMode, toggle);
+    toggleDisplayNone(inputDummy, 'd-block', toggle);
+    toggleDisplayNone(arrowDown, displayMode, toggle === null ? null : !toggle);
+    toggleDisplayNone(arrowUp, displayMode, toggle);
+
+    if (shallVisible === '') {
+        input.classList.toggle('active-dropdown-input');
+    } else {
+        input.classList.toggle('active-dropdown-input', shallVisible);
+    }
+}
+
+
+/**
+ * Prepares the task data for sending to the database.
+ * 
+ * @param {string} dataTitle - The title of the task.
+ * @param {string} dataDescription - The description of the task.
+ * @param {string} dataDueDate - The due date in string format (e.g., "YYYY-MM-DD").
+ * @param {string} dataPriority - The priority of the task (e.g., "high", "medium", "low").
+ * @param {string} dataCategory - The category of the task (e.g., "Technical Task" or "User Story").
+ * @param {Array} dataAssignedTo - An array of assigned persons.
+ * @returns {object} - An object containing all task data.
+ */
+function prepareDataToSend(dataTitle, dataDescription, dataDueDate, dataPriority, dataCategory, dataAssignedTo) {
+    const data = {
+        title: dataTitle,
+        description: dataDescription,
+        finishedUntil: dataDueDate,
+        priority: dataPriority,
+        assignedTo: dataAssignedTo,
+        category: dataCategory,
+        subtasks: dataSubtasks,
+        status: nextStatus,
+    };
+    return data;
+}
+
+
+/**
+ * This function allows selecting and changing the priority of the task by clicking the priority button.
+ * 
+ * @param {string} priority - The name of the selected priority (e.g., 'urgent', 'medium', 'low').
+ */
+function selectPriority(priority) {
+    let allPriorities = ['urgent', 'medium', 'low']
+
+    for (let i = 0; i &lt; allPriorities.length; i++) {
+        const singlePriority = allPriorities[i];
+        const element = document.getElementById(singlePriority);
+
+        element.classList.remove(`btn-selected`);
+        element.classList.remove(`btn-selected-${singlePriority}`);
+        document.getElementById(`img-${singlePriority}`).src = `assets/img/addTask/prio-${singlePriority}.svg`
+    }
+
+    document.getElementById(priority).classList.add("btn-selected");
+    document.getElementById(priority).classList.add(`btn-selected-${priority}`);
+    document.getElementById(`img-${priority}`).src = `assets/img/addTask/prio-${priority}-white.svg`
+}
+
+
+/**
+ * This function sets the chosen category in the category input field and closes the category dropdown menu.
+ * 
+ * @param {string} category - The category to be set in the input field.
+ * @param {HTMLElement} element - The dropdown element to be hidden.
+ */
+function selectCategory(category, element) {
+    document.getElementById('inputCategory').value = category;
+    const inputDummy = document.getElementById('input-dummy-category');
+    toggleDisplayNone(element);
+    toggleDisplayNone(inputDummy, 'd-block', false);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 15:01:05 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

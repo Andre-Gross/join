@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: contactHTML.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: contactHTML.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Generates HTML for a contact entry.
+ * @param {number} i - Index of the contact.
+ * @returns {string} - HTML string for the contact entry.
+ */
+function getContactMain(i) {
+    return `
+      &lt;div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
+          &lt;div id="idShortName" style="background-color:${colors[i]}">
+              &lt;p id="idShortAlph">${shortNames[i]}&lt;/p>
+          &lt;/div>
+          &lt;div id="idNameMail">
+              &lt;p id="idName">${names[i]}&lt;/p>
+              &lt;p id="idMail">${emails[i]}&lt;/p>
+          &lt;/div>
+      &lt;/div>
+      `;
+  }
+  
+  
+  /**
+  * Generates HTML for the "Add Contact" button.
+  * @returns {string} - HTML string for the "Add Contact" button.
+  */
+  function getAddContactBtn() {
+    return `
+      &lt;div id="idAddContactBtn" onclick="addContact()">
+      &lt;img id="idImgAddContact" src="assets/img/contacts/person-add.svg" alt="">&lt;/div>
+      `;
+  }
+  
+  
+  /**
+  * Generates HTML for the "Add Contact" form.
+  * @returns {string} - HTML string for the "Add Contact" form.
+  */
+  function getAddContact() {
+    return `
+  &lt;div id="idAddContact">
+      &lt;img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
+      &lt;img id="idLogoCard" src="./assets/img/general/join-logo.svg" alt="logo">
+      &lt;div id="headTitle">
+      &lt;h1 id="idH1Title">Add contact&lt;/h1>
+      &lt;h3>Tasks are better with a team!&lt;/h3>
+      &lt;div id="blueLine">&lt;/div>
+      &lt;/div>
+          &lt;div id="idPersonBackground">
+              &lt;img id="idPerson" src="assets/img/contacts/person.svg">
+          &lt;/div>
+          &lt;div>
+              &lt;div id="idInput">
+                  &lt;input id="idNameAddContact" type="text" name="name" placeholder="Name">
+                  &lt;input id="idMailAddContact" type="email" name="email" placeholder="Email">
+                  &lt;input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
+              &lt;/div>
+              &lt;div id="idContactBtns">
+                  &lt;button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
+                      Create Contact
+                      &lt;img id="idCheck" src="assets/img/contacts/check.svg" alt="check">
+                  &lt;/button>
+                  &lt;button id="idCancelAddContact" class="btn btn-outline-secondary" onclick="closeAddContact()">
+                      Cancel
+                      &lt;img id="idXBtn" src="assets/img/contacts/close.svg" alt="x">
+                  &lt;/button>
+              &lt;/div>
+          &lt;/div>
+      &lt;/div>
+  &lt;/div>
+  `;
+  }
+  
+  
+  /**
+  * Generates HTML for the contact view.
+  * @param {number} i - Index of the contact.
+  * @returns {string} - HTML string for the contact view.
+  */
+  function getContactView(i) {
+    return `
+  &lt;div id="idViewContactCard">
+      &lt;div id="idHeadContactView">
+          &lt;h1 id="idh1Contacts">Contacts&lt;/h1>
+          &lt;img id="idVector" src="assets/img/general/Vector.svg" alt="return" onclick="contactMain()">
+      &lt;/div>
+      &lt;h3 id="idTitle">Better with a team&lt;/h3>
+      &lt;div id="idBlueLine">&lt;/div>
+      &lt;div id="idContactName">
+          &lt;div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
+              &lt;p id="idShortAlph" class="classShortAlph">${shortNames[i]}&lt;/p>
+          &lt;/div>
+          &lt;h1 id="idH1Name">${names[i]}&lt;/h1>
+      &lt;/div>
+      &lt;div id="idEditDeleteContainer">
+          &lt;div id="idSideBySide" onclick="editContact(${i})">
+              &lt;img src="assets/img/contacts/pen.svg" alt="pencil">
+              &lt;p>Edit&lt;/p>
+          &lt;/div>
+          &lt;div id="idSideBySide" onclick="deleteContact(${i})">
+              &lt;img src="assets/img/contacts/bin.svg" alt="bin">
+              &lt;p>Delete&lt;/p>
+          &lt;/div>
+      &lt;/div>
+      &lt;div id="idContactInfoContainer">
+          &lt;h3 id="idH3Title">Contact Information&lt;/h3>
+          &lt;table>
+              &lt;tr>
+                  &lt;th>Email&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                  &lt;td id="idMail">
+                  &lt;a href="mailto:${emails[i]}">${emails[i]}&lt;/a>
+              &lt;/td>
+              &lt;/tr>
+              &lt;tr>
+                  &lt;th>Phone&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                   &lt;td id="idPhone">
+                  &lt;a href="tel:${phones[i]}">${phones[i]}&lt;/a>
+              &lt;/td>
+              &lt;/tr>
+          &lt;/table>
+      &lt;/div>
+  
+  &lt;div id="idEditDeleteBtn" onclick="toggleDropdownMenu(${i})">
+      &lt;img id="idEditContactBtn" src="assets/img/contacts/3dots.svg" alt="editContact">
+  &lt;div id="dropdownMenu-${i}" class="d-menu-2 dm-hidden">
+      &lt;div onclick="editContact(${i})">
+          &lt;img src="assets/img/contacts/pen.svg" alt="Edit" class="icon"> Edit
+      &lt;/div>
+      &lt;div onclick="deleteContact(${i})">
+          &lt;img src="assets/img/contacts/bin.svg" alt="Delete" class="icon"> Delete
+      &lt;/div>
+  &lt;/div>
+  
+  &lt;/div>
+     
+  &lt;/div>
+    `;
+  }
+  
+  
+  /**
+  * Generates HTML for the edit contact form.
+  * @param {number} i - Index of the contact.
+  * @returns {string} - HTML string for the edit contact form.
+  */
+  function getEditContact(i) {
+    return `
+  &lt;img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
+  &lt;img id="idLogoCard" src="./assets/img/general/join-logo.svg" alt="logo">
+  &lt;div id="headTitle">
+      &lt;h1 id="idH1Title">Edit Contact&lt;/h1>
+      &lt;div id="blueLine">&lt;/div>
+  &lt;/div>
+  &lt;div id="idShortName-2" style="background-color: ${colors[i]}">
+      &lt;p id="idShortAlph" class="editShortAlph">${shortNames[i]}&lt;/p>
+  &lt;/div>
+  &lt;div>
+      &lt;div id="idInput">
+          &lt;input id="idNameEditContact" type="text" value="${names[i]}" name="name" placeholder="Name">
+          &lt;input id="idMailEditContact" type="email" value="${emails[i]}" name="email" placeholder="Email">
+          &lt;input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone">
+      &lt;/div>
+      &lt;div id="idContactBtns">
+          &lt;button id="idDeleteBtn" class="btn btn-outline-secondary" onclick="deleteContact(${i})">
+              Delete
+          &lt;/button>
+          &lt;button id="idSaveEditBtn" class="btn btn-primary" onclick="saveEditContact(${i})">
+              Save
+              &lt;img src="assets/img/contacts/check.svg" alt="save">
+          &lt;/button>
+      &lt;/div>
+  &lt;/div>
+    `;
+  }
+  
+  
+  /**
+  * Generates HTML for the edit and delete buttons.
+  * @param {number} i - Index of the contact.
+  * @returns {string} - HTML string for the edit and delete buttons.
+  */
+  function getEditContactBtn(i) {
+    return `
+      &lt;div>
+          &lt;div onclick="editContact(${i})">
+              &lt;img src="assets/img/contacts/pen.svg" alt="pencil">
+              &lt;p>Edit&lt;/p>
+          &lt;/div>
+          &lt;div onclick="deleteContact(${i})">
+              &lt;img src="assets/img/contacts/bin.svg" alt="bin">
+              &lt;p>Delete&lt;/p>
+          &lt;/div>
+      &lt;/div>
+      `;
+  }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 15:01:05 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

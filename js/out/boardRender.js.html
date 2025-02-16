@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: boardRender.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: boardRender.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>function updateBoardHeader() {
+  const boardHeaderContainer = document.querySelector(".board-header");
+  if (!boardHeaderContainer) return;
+  const isMobileView = window.innerWidth &lt;= 1100;
+  let newBoardHeaderHTML = "";
+
+  if (isMobileView) {
+      newBoardHeaderHTML = `
+          &lt;div class="top-row">
+              &lt;div class="title">
+                  &lt;h1 class="m-2 w-100">Board&lt;/h1>
+              &lt;/div>
+              &lt;div class="AddTaskBtn" onclick="openAddTaskInBoard()">
+                  &lt;p class="AddTaskBtnText">Add task&lt;/p>
+                  &lt;img src="./assets/img/board/plus-button-white.svg" alt="plus">
+              &lt;/div>
+          &lt;/div>
+          &lt;div class="searchBar">
+              &lt;input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                  placeholder="Find Task" oninput="filterAndShowTask()">
+          &lt;/div>
+      `;
+  } else {
+      newBoardHeaderHTML = `
+          &lt;div class="title">
+              &lt;h1 class="m-2 w-100">Board&lt;/h1>
+          &lt;/div>
+          &lt;div class="AddTaskBtn" onclick="openAddTaskInBoard()">
+              &lt;p class="AddTaskBtnText">Add task&lt;/p>
+              &lt;img src="./assets/img/board/plus-button-white.svg" alt="plus">
+          &lt;/div>
+          &lt;div class="searchBar">
+              &lt;input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                  placeholder="Find Task" oninput="filterAndShowTask()">
+          &lt;/div>
+      `;
+  }
+  boardHeaderContainer.innerHTML = newBoardHeaderHTML;
+}
+
+document.addEventListener("DOMContentLoaded", updateBoardHeader);
+window.addEventListener("resize", updateBoardHeader);
+
+
+
+/**
+ * Lädt und rendert das Board mit Aufgaben und Kontakten aus Firebase.
+ */
+async function boardRender() {
+  try {
+    const [tasksData, contactsData] = await fetchBoardData();
+    if (!tasksData || Object.keys(tasksData).length === 0) return;
+    clearTaskContainers();
+    renderTasks(tasksData, contactsData);
+    initializeDragAndDrop();
+  } catch (error) {
+    console.error("Error loading tasks:", error);
+  }
+}
+
+/**
+ * Ruft Aufgaben und Kontakte aus Firebase ab.
+ * @returns {Promise&lt;Array>} Array mit Aufgaben- und Kontaktdaten
+ */
+async function fetchBoardData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const [tasksResponse, contactsResponse] = await Promise.all([
+    fetch(`${firebaseUrl}/tasks.json`),
+    fetch(`${firebaseUrl}/users/contacts.json`),
+  ]);
+  if (!tasksResponse.ok || !contactsResponse.ok) throw new Error("Error fetching data");
+  return [await tasksResponse.json(), await contactsResponse.json()];
+}
+
+/**
+ * Löscht den Inhalt der Aufgaben-Container.
+ */
+function clearTaskContainers() {
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
+    (containerId) => (document.getElementById(containerId).innerHTML = "")
+  );
+}
+
+/**
+ * Rendert die Aufgaben im jeweiligen Container.
+ * @param {Object} tasksData - Die geladenen Aufgaben
+ * @param {Object} contactsData - Die geladenen Kontakte
+ */
+function renderTasks(tasksData, contactsData) {
+  Object.entries(tasksData).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
+    document.getElementById(containerId).appendChild(createTaskElement(taskId, task, contactsData));
+  });
+}
+
+/**
+ * Erstellt ein Task-Element.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {HTMLElement} Das erstellte Task-Element
+ */
+function createTaskElement(taskId, task, contactsData) {
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+  taskElement.innerHTML = getTaskHTML(taskId, task, contactsData);
+  return taskElement;
+}
+
+/**
+ * Generiert das HTML für eine Aufgabe.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {string} Das HTML der Aufgabe
+ */
+function getTaskHTML(taskId, task, contactsData) {
+  const categoryClass = task.category ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}` : "bc-category-label-unknown";
+  return `
+    &lt;div class="task-header">
+      &lt;div class="category-label ${categoryClass}">${task.category || "No category"}&lt;/div>
+    &lt;/div>
+    &lt;h4 class="task-title">${task.title}&lt;/h4>
+    &lt;p class="task-description">${task.description}&lt;/p>
+    &lt;div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}&lt;/div>
+    &lt;div class="task-footer d-flex justify-content-between align-items-center">
+      &lt;div class="assigned-contacts d-flex">
+        ${renderTaskContacts(task.assignedTo || [], contactsData)}
+      &lt;/div>
+      &lt;div class="task-priority">
+        ${priorityLabelHTML(task.priority)}
+      &lt;/div>
+    &lt;/div>
+  `;
+}
+
+
+/**
+ * Checks if the provided argument is a valid non-empty array.
+ *
+ * @param {any} arr - The value to check.
+ * @returns {boolean} Returns `true` if the argument is a non-empty array, otherwise `false`.
+ */
+function isValidArray(arr) {
+  return Array.isArray(arr) &amp;&amp; arr.length > 0;
+}
+
+
+/**
+ * Renders HTML for displaying subtasks progress.
+ *
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {Array} subtasks - An array of subtask objects to be rendered.
+ * @returns {string} Returns HTML string displaying the subtasks' progress.
+ */
+function renderSubtasksHTML(taskId, subtasks) {
+  if (!isValidArray(subtasks)) return "";
+
+  const completedSubtasks = subtasks.filter((subtask) => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+
+  return `
+    &lt;div class="subtasks-progress-container d-flex align-items-center">
+      &lt;div class="progress-bar-container">
+        &lt;div class="progress-bar" style="width: ${progressPercentage}%;">&lt;/div>
+      &lt;/div>
+      &lt;div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks&lt;/div>
+    &lt;/div>
+  `;
+}
+
+
+/**
+ * Renders HTML for displaying assigned contacts.
+ *
+ * @param {Array} assignedTo - An array of contact IDs or names assigned to the task.
+ * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
+ * @returns {string} Returns HTML string with circles representing assigned contacts.
+ */
+function renderTaskContacts(assignedTo = [], contactsData = {}) {
+  if (!isValidArray(assignedTo)) return "";
+
+
+  return assignedTo
+    .map((contactIdOrName) => {
+      let contact = contactsData[contactIdOrName];
+
+      if (!contact) {
+        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
+      }
+
+      if (!contact) {
+        return ``;
+    }
+    
+
+      const shortName = contact.name
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join("");
+      const backgroundColor = contact.color || "#ccc";
+
+      return `
+        &lt;div class="contact-circle" style="background-color: ${backgroundColor};">
+          &lt;span>${shortName}&lt;/span>
+        &lt;/div>
+      `;
+    })
+    .join("");
+}
+
+
+/**
+ * Retrieves the container ID based on the task status.
+ *
+ * @param {string} status - The status of the task (e.g., "To do", "In progress", etc.).
+ * @returns {string|null} The ID of the corresponding container element, or null if no matching container is found.
+ */
+function getContainerIdByStatus(status) {
+  const statusContainers = {
+    "To do": "todo-container",
+    "In progress": "progress-container",
+    "Await feedback": "feedback-container",
+    "Done": "done-container",
+  };
+  return statusContainers[status] || null;
+}
+
+
+/**
+ * Generates HTML for the priority label based on the provided priority.
+ *
+ * @param {string} priority - The priority level of the task (e.g., "urgent", "medium", "low").
+ * @returns {string} The HTML string for displaying the priority label image.
+ */
+function priorityLabelHTML(priority) {
+  return `&lt;img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
+}
+
+
+/**
+ * Event listener for when the DOM content is fully loaded.
+ * It calls the `boardRender` function to load and render the tasks on the board.
+ */
+document.addEventListener("DOMContentLoaded", async () => {
+  await boardRender();
+});
+
+/**
+ * Updates the progress bar and subtask count for a task based on the completed subtasks.
+ *
+ * @param {string} taskId - The ID of the task whose progress needs to be updated.
+ * @param {Array} subtasks - The list of subtasks associated with the task.
+ * @returns {void}
+ */
+function updateProgressBar(taskId, subtasks) {
+  const taskElement = document.getElementById(taskId);
+
+  if (!taskElement) {
+    console.error(`Task mit ID ${taskId} nicht gefunden.`);
+    return;
+  }
+
+  const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = totalSubtasks > 0
+    ? Math.round((completedSubtasks / totalSubtasks) * 100)
+    : 0;
+
+  const progressBarContainer = taskElement.querySelector(".progress-bar");
+  const subtasksCount = taskElement.querySelector(".subtasks-count");
+
+  if (progressBarContainer) {
+    progressBarContainer.style.width = `${progressPercentage}%`;
+  }
+
+  if (subtasksCount) {
+    subtasksCount.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
+  }
+}
+
+
+/**
+ * Updates the status of a specific task in the Firebase database.
+ *
+ * @param {string} taskId - The ID of the task whose status needs to be updated.
+ * @param {string} newStatus - The new status to set for the task.
+ * @returns {Promise&lt;void>} A promise that resolves when the update is complete.
+ */
+async function updateTaskStatus(taskId, newStatus) {
+  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+
+  try {
+    await fetch(firebaseUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+  } catch (error) {
+    console.error(`Error updating task ${taskId}:`, error);
+  }
+}
+
+
+async function deleteTaskOfModalCard(id) {
+  try {
+    await deleteTaskInDatabase(id);
+    toggleDisplayModal();
+    await boardRender();
+  } catch (error) {
+    console.error(`Error deleting task with ID ${id}:`, error);
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addAssignedToCheckboxEvent">addAssignedToCheckboxEvent</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addNewSubtask">addNewSubtask</a></li><li><a href="global.html#addUserToContacts">addUserToContacts</a></li><li><a href="global.html#adjustFirstLineLayoutForEditMode">adjustFirstLineLayoutForEditMode</a></li><li><a href="global.html#adjustFirstLineLayoutToDefault">adjustFirstLineLayoutToDefault</a></li><li><a href="global.html#areThereSubtasks">areThereSubtasks</a></li><li><a href="global.html#assignTaskDataToForm">assignTaskDataToForm</a></li><li><a href="global.html#boardRender">boardRender</a></li><li><a href="global.html#calculateTaskStatusCounts">calculateTaskStatusCounts</a></li><li><a href="global.html#callPhoneNumber">callPhoneNumber</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#changeTextRequired">changeTextRequired</a></li><li><a href="global.html#changeToEditMode">changeToEditMode</a></li><li><a href="global.html#changeVisibleImages">changeVisibleImages</a></li><li><a href="global.html#checkAllInputsHasContent">checkAllInputsHasContent</a></li><li><a href="global.html#checkAuth">checkAuth</a></li><li><a href="global.html#checkFormValidity">checkFormValidity</a></li><li><a href="global.html#clearSignupInputs">clearSignupInputs</a></li><li><a href="global.html#clearTaskContainers">clearTaskContainers</a></li><li><a href="global.html#closeAddContact">closeAddContact</a></li><li><a href="global.html#closeEditContact">closeEditContact</a></li><li><a href="global.html#closeModalCard">closeModalCard</a></li><li><a href="global.html#closeOverlay">closeOverlay</a></li><li><a href="global.html#contactMain">contactMain</a></li><li><a href="global.html#createAssignedToContactItem">createAssignedToContactItem</a></li><li><a href="global.html#createAssignedToDropdown">createAssignedToDropdown</a></li><li><a href="global.html#createNameCircleWithRemove">createNameCircleWithRemove</a></li><li><a href="global.html#createSubtaskCheckbox">createSubtaskCheckbox</a></li><li><a href="global.html#createSubtaskElement">createSubtaskElement</a></li><li><a href="global.html#createSubtaskLabel">createSubtaskLabel</a></li><li><a href="global.html#createSubtasksFragment">createSubtasksFragment</a></li><li><a href="global.html#createTaskElement">createTaskElement</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContactInDatabase">deleteContactInDatabase</a></li><li><a href="global.html#deleteTaskInDatabase">deleteTaskInDatabase</a></li><li><a href="global.html#displayError">displayError</a></li><li><a href="global.html#displayNotRegisteredError">displayNotRegisteredError</a></li><li><a href="global.html#displayUserName">displayUserName</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#emptyAddTaskInputs">emptyAddTaskInputs</a></li><li><a href="global.html#enableDisableSendButton">enableDisableSendButton</a></li><li><a href="global.html#fadeOutWelcomeMessage">fadeOutWelcomeMessage</a></li><li><a href="global.html#fetchBoardData">fetchBoardData</a></li><li><a href="global.html#fetchUserName">fetchUserName</a></li><li><a href="global.html#fetchUsers">fetchUsers</a></li><li><a href="global.html#filterContacts">filterContacts</a></li><li><a href="global.html#findUserByEmail">findUserByEmail</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDateToLongFormat">formatDateToLongFormat</a></li><li><a href="global.html#generateUniqueId">generateUniqueId</a></li><li><a href="global.html#getAddContact">getAddContact</a></li><li><a href="global.html#getAddContactBtn">getAddContactBtn</a></li><li><a href="global.html#getContactMain">getContactMain</a></li><li><a href="global.html#getContactView">getContactView</a></li><li><a href="global.html#getContacts">getContacts</a></li><li><a href="global.html#getContactsAsArray">getContactsAsArray</a></li><li><a href="global.html#getContainerIdByStatus">getContainerIdByStatus</a></li><li><a href="global.html#getCurrentPage">getCurrentPage</a></li><li><a href="global.html#getEditContact">getEditContact</a></li><li><a href="global.html#getEditContactBtn">getEditContactBtn</a></li><li><a href="global.html#getGreetingMessage">getGreetingMessage</a></li><li><a href="global.html#getInputValue">getInputValue</a></li><li><a href="global.html#getInputValues">getInputValues</a></li><li><a href="global.html#getTaskHTML">getTaskHTML</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksAsArray">getTasksAsArray</a></li><li><a href="global.html#getValidationErrorMessage">getValidationErrorMessage</a></li><li><a href="global.html#greetGuest">greetGuest</a></li><li><a href="global.html#guestLogIn">guestLogIn</a></li><li><a href="global.html#handleFailedAttempt">handleFailedAttempt</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#handleSubtaskInput">handleSubtaskInput</a></li><li><a href="global.html#hashPassword">hashPassword</a></li><li><a href="global.html#highlightActiveNavItem">highlightActiveNavItem</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initializeSummary">initializeSummary</a></li><li><a href="global.html#initializeUserData">initializeUserData</a></li><li><a href="global.html#isEmailAlreadyRegistered">isEmailAlreadyRegistered</a></li><li><a href="global.html#isValidArray">isValidArray</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadFormFunctions">loadFormFunctions</a></li><li><a href="global.html#logIn">logIn</a></li><li><a href="global.html#logOut">logOut</a></li><li><a href="global.html#openAddTaskInBoard">openAddTaskInBoard</a></li><li><a href="global.html#openContact">openContact</a></li><li><a href="global.html#openEmailClient">openEmailClient</a></li><li><a href="global.html#openModal">openModal</a></li><li><a href="global.html#openPasswordReset">openPasswordReset</a></li><li><a href="global.html#postContactToDatabase">postContactToDatabase</a></li><li><a href="global.html#postTaskToDatabase">postTaskToDatabase</a></li><li><a href="global.html#prepareDataToSend">prepareDataToSend</a></li><li><a href="global.html#priorityLabelHTML">priorityLabelHTML</a></li><li><a href="global.html#putContactInDatabase">putContactInDatabase</a></li><li><a href="global.html#putContactToDatabase">putContactToDatabase</a></li><li><a href="global.html#putNewCheckedToSubtask">putNewCheckedToSubtask</a></li><li><a href="global.html#putTaskToDatabase">putTaskToDatabase</a></li><li><a href="global.html#readAssignedTo">readAssignedTo</a></li><li><a href="global.html#redirectToLogin">redirectToLogin</a></li><li><a href="global.html#redirectToSummary">redirectToSummary</a></li><li><a href="global.html#refreshChoosenContactCircles">refreshChoosenContactCircles</a></li><li><a href="global.html#registerNewUser">registerNewUser</a></li><li><a href="global.html#removeAllEventListeners">removeAllEventListeners</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAssignedToInModal">renderAssignedToInModal</a></li><li><a href="global.html#renderCategoryLabel">renderCategoryLabel</a></li><li><a href="global.html#renderDate">renderDate</a></li><li><a href="global.html#renderModalParts">renderModalParts</a></li><li><a href="global.html#renderNewSubtasks">renderNewSubtasks</a></li><li><a href="global.html#renderNewSubtasksHTML">renderNewSubtasksHTML</a></li><li><a href="global.html#renderPriority">renderPriority</a></li><li><a href="global.html#renderSubtasksHTML">renderSubtasksHTML</a></li><li><a href="global.html#renderSubtasksInModal">renderSubtasksInModal</a></li><li><a href="global.html#renderTaskContacts">renderTaskContacts</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetFailedAttempts">resetFailedAttempts</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#saveEditContact">saveEditContact</a></li><li><a href="global.html#saveLoggedInUser">saveLoggedInUser</a></li><li><a href="global.html#saveSubtaskChange">saveSubtaskChange</a></li><li><a href="global.html#scrollToTaskSection">scrollToTaskSection</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectContact">selectContact</a></li><li><a href="global.html#selectPriority">selectPriority</a></li><li><a href="global.html#setElementText">setElementText</a></li><li><a href="global.html#setupDropdown">setupDropdown</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupModalEventListeners">setupModalEventListeners</a></li><li><a href="global.html#shortName">shortName</a></li><li><a href="global.html#signUp">signUp</a></li><li><a href="global.html#sortContacts">sortContacts</a></li><li><a href="global.html#submitAddContact">submitAddContact</a></li><li><a href="global.html#submitResetPassword">submitResetPassword</a></li><li><a href="global.html#submitTaskForm">submitTaskForm</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchView">switchView</a></li><li><a href="global.html#toggleContactButtons">toggleContactButtons</a></li><li><a href="global.html#toggleDisplayModal">toggleDisplayModal</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleDropdownMenu">toggleDropdownMenu</a></li><li><a href="global.html#toggleEditMode">toggleEditMode</a></li><li><a href="global.html#toggleEditModeSubtask">toggleEditModeSubtask</a></li><li><a href="global.html#togglePasswordVisibility">togglePasswordVisibility</a></li><li><a href="global.html#toggleScrolling">toggleScrolling</a></li><li><a href="global.html#tryDeleteContactInDatabase">tryDeleteContactInDatabase</a></li><li><a href="global.html#tryDeleteTaskInDatabase">tryDeleteTaskInDatabase</a></li><li><a href="global.html#tryPostContactToDatabase">tryPostContactToDatabase</a></li><li><a href="global.html#tryPostTaskToDatabase">tryPostTaskToDatabase</a></li><li><a href="global.html#tryPutContactInDatabase">tryPutContactInDatabase</a></li><li><a href="global.html#tryPutContactToDatabase">tryPutContactToDatabase</a></li><li><a href="global.html#tryPutTaskToDatabase">tryPutTaskToDatabase</a></li><li><a href="global.html#updateGreetingUI">updateGreetingUI</a></li><li><a href="global.html#updateNavForAuth">updateNavForAuth</a></li><li><a href="global.html#updatePassword">updatePassword</a></li><li><a href="global.html#updatePasswordIcon">updatePasswordIcon</a></li><li><a href="global.html#updateProgressBar">updateProgressBar</a></li><li><a href="global.html#updateSummaryElements">updateSummaryElements</a></li><li><a href="global.html#updateTaskStatus">updateTaskStatus</a></li><li><a href="global.html#updateUrgentDeadline">updateUrgentDeadline</a></li><li><a href="global.html#updateUserInitials">updateUserInitials</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Feb 16 2025 15:01:05 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
