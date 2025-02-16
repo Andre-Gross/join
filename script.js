@@ -33,14 +33,23 @@ function addPrefixAndSuffix(string, prefix = '', suffix = '') {
 }
 
 
+/**
+ * Capitalizes the first letter of a given string or value.
+ * @param {string} val - The input string or value to process.
+ * @returns {string} The string with the first letter capitalized.
+ */
 function capitalizeFirstLetter(val) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
 
+/**
+ * Changes the border color of an element by adding/removing CSS classes.
+ * @param {HTMLElement} element - The element whose border color should be changed.
+ * @param {string} [borderColorClass=""] - The CSS class for the new border color.
+ */
 function changeBorderColor(element, borderColorClass = "") {
-  element.classList.remove("border-color-onfocus");
-  element.classList.remove("border-color-invalid");
+  element.classList.remove("border-color-onfocus", "border-color-invalid");
 
   if (!(borderColorClass === "")) {
     element.classList.add(borderColorClass);
@@ -48,6 +57,10 @@ function changeBorderColor(element, borderColorClass = "") {
 }
 
 
+/**
+ * Sets the border color of an element to indicate validity.
+ * @param {HTMLInputElement} element - The input element to validate.
+ */
 function changeToRightBorderColor(element) {
   if (element.value == "") {
     changeBorderColor(element, "border-color-invalid");
@@ -57,6 +70,12 @@ function changeToRightBorderColor(element) {
 }
 
 
+/**
+ * Checks if a given key exists in an array.
+ * @param {*} key - The key to search for.
+ * @param {Array} arrayToCheck - The array to search in.
+ * @returns {boolean} True if the key exists, otherwise false.
+ */
 function checkContentOfArray(key, arrayToCheck) {
   for (i = 0; i < arrayToCheck.length; i++) {
     const checkValue = arrayToCheck[i];
@@ -70,13 +89,22 @@ function checkContentOfArray(key, arrayToCheck) {
 }
 
 
+/**
+ * Clears the value of an input element.
+ * @param {HTMLInputElement} element - The input element to clear.
+ */
 function clearValue(element) {
   element.value = "";
 }
 
 
+/**
+ * Creates an HTML string for a name circle with initials and background color.
+ * @param {string} initials - The initials to display inside the circle.
+ * @param {string} color - The background color (CSS class name).
+ * @returns {string} The generated HTML string.
+ */
 function createNameCircle(initials, color) {
-
   let HTML = /*HTML*/ `
             <div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
                 <span>${initials.toUpperCase()}</span>
@@ -86,6 +114,11 @@ function createNameCircle(initials, color) {
 }
 
 
+/**
+ * Creates an HTML string for a name circle based on a contact ID.
+ * @param {number} id - The ID of the contact.
+ * @returns {Promise<string>} A promise that resolves to the HTML string.
+ */
 async function createNameCircleWithId(id) {
   const contacts = await getContacts();
   const initials = returnInitialsOfName(contacts[id].name);
@@ -164,6 +197,12 @@ function getRandomColor() {
   return COLORS[randomIndex];
 }
 
+
+/**
+ * Extracts the initials from a given name.
+ * @param {string} name - The full name (e.g., "John Doe").
+ * @returns {string} The initials (e.g., "JD").
+ */
 function returnInitialsOfName(name) {
   const splitName = name.split(" ");
   let initials = "";
@@ -174,6 +213,7 @@ function returnInitialsOfName(name) {
   }
   return initials;
 }
+
 
 /**
  * Displays a toast message on the screen with customizable text, position, and animations.
@@ -323,6 +363,12 @@ function toastLeaveDisplay(
 }
 
 
+/**
+ * Toggles the display of an element based on the specified mode.
+ * @param {HTMLElement} element - The DOM element to toggle.
+ * @param {string} displayMode - The CSS class to apply when visible (default: "d-block").
+ * @param {boolean|string} shallVisible - Whether the element should be visible or hidden, or toggle state if undefined.
+ */
 function toggleDisplayNone(
   element,
   displayMode = "d-block",
@@ -347,6 +393,11 @@ function toggleDisplayNone(
 }
 
 
+/**
+ * Capitalizes the first letter of a string.
+ * @param {string} str - The input string.
+ * @returns {string} The string with the first letter capitalized.
+ */
 function upperCaseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
 }
