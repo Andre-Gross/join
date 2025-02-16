@@ -138,6 +138,12 @@ function focusElement(element) {
 }
 
 
+/**
+ * Creates an HTML string for displaying a contact.
+ * 
+ * @param {number} i - The index of the contact in the arrays.
+ * @returns {string} HTML markup for the contact element.
+ */
 function getContactMain(i) {
   return `
       <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
@@ -152,7 +158,13 @@ function getContactMain(i) {
       `;
 }
 
-
+/**
+ * Finds the ID of a contact by their name.
+ * 
+ * @async
+ * @param {string} name - The name of the contact to search for.
+ * @returns {Promise<number|undefined>} The contact ID if found, otherwise undefined.
+ */
 async function getIdOfContactWithName(name) {
   const contacts = await getContactsAsArray();
 
@@ -166,6 +178,7 @@ async function getIdOfContactWithName(name) {
     }
   }
 }
+
 
 
 /**
@@ -192,10 +205,17 @@ function goBack() {
   window.history.back();
 }
 
+
+/**
+ * Returns a random color from the COLORS array.
+ * 
+ * @returns {string} A random color from the COLORS array.
+ */
 function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
+
 
 
 /**
