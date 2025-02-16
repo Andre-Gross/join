@@ -32,7 +32,7 @@ async function getContacts() {
 /**
  * Fetches all contacts and returns them as an array.
  * 
- * @returns {Promise<Array<{id: string, color?: string, email?: string, name?: string, phone?: string}>>} 
+ * @returns {Promise<Array<{id: string, color: string, email: string, name: string, phone: string}>>} 
  * A promise resolving to an array of contact objects.
  */
 async function getContactsAsArray() {
@@ -53,7 +53,7 @@ async function getContactsAsArray() {
  * 
  * @async
  * @function getTasks
- * @returns {Promise<Object<string, { title: string, category?: string, description?: string, finishedUntil?: string, priority?: string, assignedTo?: string[], subtasks?: any[], status?: string }>>}
+ * @returns {Promise<Object<string, { title: string, category: string, description: string, finishedUntil: string, priority: string, assignedTo: string[], subtasks: any[], status: string }>>}
  * A promise resolving to an object where the keys are task IDs, and the values are task objects.
  * @throws {Error} If the request fails or returns a non-OK response.
  */
@@ -78,7 +78,7 @@ async function getTasks() {
  *
  * @async
  * @function getTasksAsArray
- * @returns {Promise<Array<{ id: string, title: string, category?: string, description?: string, finishedUntil?: string, priority?: string, assignedTo?: string[], subtasks?: any[], status?: string }>>}
+ * @returns {Promise<Array<{ id: string, title: string, category: string, description: string, finishedUntil: string, priority: string, assignedTo: string[], subtasks: any[], status: string }>>}
  * A promise resolving to an array of task objects, each containing an ID and relevant task details.
  */
 async function getTasksAsArray() {
