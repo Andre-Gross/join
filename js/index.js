@@ -41,17 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  let passwordFields = document.querySelectorAll(".password-container input");
-
-  passwordFields.forEach((input) => (input.value = ""));
-
-  passwordFields.forEach((input) => {
-    let icon = input.nextElementSibling;
-    input.addEventListener("input", () => updatePasswordIcon(input, icon));
-    icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
-  });
-});
 
 /**
  * Fetches all existing users from the database.
@@ -64,7 +53,8 @@ async function fetchUsers() {
   return response.json();
 }
 
-/**
+
+/** 
  * Hashes a password using SHA-256.
  * @param {string} password - The plain text password to hash.
  * @returns {Promise<string>} - The hashed password as a hex string.
@@ -214,3 +204,23 @@ async function addUserToContacts(name, email) {
 function generateUniqueId() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
+
+function clearFormInputs(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const inputs = container.querySelectorAll("input");
+  inputs.forEach(input => {
+    if (input.type === "checkbox" || input.type === "radio") {
+      input.checked = false;
+    } else {
+      input.value = "";
+    }
+  });
+}
+
+function clearAllForms() {
+  ["loginCard", "signupCard", "passwordResetCard"].forEach(clearFormInputs);
+}
+
+
+document.addEventListener("DOMContentLoaded", clearAllForms);
