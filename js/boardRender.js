@@ -175,44 +175,7 @@ function renderSubtasksHTML(taskId, subtasks) {
 }
 
 
-/**
- * Renders HTML for displaying assigned contacts.
- *
- * @param {Array} assignedTo - An array of contact IDs or names assigned to the task.
- * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
- * @returns {string} Returns HTML string with circles representing assigned contacts.
- */
-function renderTaskContacts(assignedTo = [], contactsData = {}) {
-  if (!isValidArray(assignedTo)) return "";
 
-
-  return assignedTo
-    .map((contactIdOrName) => {
-      let contact = contactsData[contactIdOrName];
-
-      if (!contact) {
-        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
-      }
-
-      if (!contact) {
-        return ``;
-    }
-    
-
-      const shortName = contact.name
-        .split(" ")
-        .map((n) => n[0].toUpperCase())
-        .join("");
-      const backgroundColor = contact.color || "#ccc";
-
-      return `
-        <div class="contact-circle" style="background-color: ${backgroundColor};">
-          <span>${shortName}</span>
-        </div>
-      `;
-    })
-    .join("");
-}
 
 
 /**
