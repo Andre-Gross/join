@@ -38,11 +38,12 @@
                         <div class="separator horizontal"></div>
                         <form onsubmit="event.preventDefault(); logIn();">
                             <div class="mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email" required
-                                    onblur="changeToRightBorderColor(this)" autocomplete="off"  onblur="validateEmailField(this)">
+                                <input type="email" class="form-control" id="email" placeholder="E-Mail" required
+                                    onblur="changeToRightBorderColor(this)" autocomplete="off"
+                                    onblur="validateEmailField(this)" autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
-                                <input type="password" class="form-control" id="password" placeholder="Passwort"
+                                <input type="password" class="form-control" id="password" placeholder="Password"
                                     required onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('password', this)">
@@ -74,19 +75,20 @@
                                     oninput="checkFormValidity()">
                             </div>
                             <div class="mb-3">
-                                <input type="email" id="signUpEmail" class="form-control" placeholder="Email" required
-                                    oninput="checkFormValidity()"  onblur="validateEmailField(this)">
+                                <input type="email" id="signUpEmail" class="form-control" placeholder="E-Mail" required
+                                    oninput="checkFormValidity()" onblur="validateEmailField(this)"
+                                    autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
-                                <input type="password" id="signUpPassword" class="form-control" placeholder="Passwort"
-                                    required oninput="checkFormValidity()">
+                                <input type="password" id="signUpPassword" class="form-control" placeholder="Password"
+                                    required oninput="checkFormValidity()" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('signUpPassword', this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()"
-                                    onblur="changeToRightBorderColor(this)">
+                                    placeholder="Repeat Password" required oninput="checkFormValidity()"
+                                    onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">
                             </div>
@@ -112,25 +114,26 @@
                         <form id="passwordResetForm">
 
                             <div class="mb-3">
-                                <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail-Adresse"
-                                       required oninput="checkFormValidity()"
-                                       onblur="validateEmailField(this)">
-                              </div>
+                                <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail" required
+                                    oninput="checkFormValidity()" onblur="validateEmailField(this)"
+                                    autocomplete="username">
+                            </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="resetPassword" class="form-control"
-                                    placeholder="Neues Passwort" required oninput="checkFormValidity()"
-                                    onblur="changeToRightBorderColor(this)">
+                                    placeholder="New Password" required oninput="checkFormValidity()"
+                                    onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('resetPassword', this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmResetPassword" class="form-control"
-                                    placeholder="Passwort wiederholen" required oninput="checkFormValidity()"
-                                    onblur="changeToRightBorderColor(this)">
+                                    placeholder="Repeat Password" required oninput="checkFormValidity()"
+                                    onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle"
                                     onclick="togglePasswordVisibility('confirmResetPassword', this)">
                             </div>
+
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Accept</button>
                             </div>
