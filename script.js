@@ -421,3 +421,16 @@ function toggleDisplayNone(
 function upperCaseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
 }
+
+
+function validateEmailField(input) {
+  const email = input.value.trim();
+  const domainRegex = /@.+\.[a-z]{2,}$/i;
+  if (!email.includes('@') || !domainRegex.test(email)) {
+    input.style.borderColor = '#FF8190';
+    return false;
+  }
+  input.style.borderColor = '';
+  return true;
+}
+
