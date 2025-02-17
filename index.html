@@ -39,7 +39,7 @@
                         <form onsubmit="event.preventDefault(); logIn();">
                             <div class="mb-3">
                                 <input type="email" class="form-control" id="email" placeholder="Email" required
-                                    onblur="changeToRightBorderColor(this)" autocomplete="off">
+                                    onblur="changeToRightBorderColor(this)" autocomplete="off"  onblur="validateEmailField(this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" class="form-control" id="password" placeholder="Passwort"
@@ -75,7 +75,7 @@
                             </div>
                             <div class="mb-3">
                                 <input type="email" id="signUpEmail" class="form-control" placeholder="Email" required
-                                    oninput="checkFormValidity()">
+                                    oninput="checkFormValidity()"  onblur="validateEmailField(this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="signUpPassword" class="form-control" placeholder="Passwort"
