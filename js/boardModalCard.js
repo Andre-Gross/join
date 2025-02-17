@@ -158,27 +158,26 @@ function renderPriority(priority) {
  */
 async function renderAssignedToInModal(assignedToIds) {
     const container = document.getElementById('assignedTo-name-labels-container');
-    container.innerHTML = '';
-
-    const assignedContacts = await Promise.all(assignedToIds.map(async (singleId) => {
-        const circle = await createNameCircleWithId(singleId);
-        const contact = await getContacts();
-        const name = contact[singleId].name;
-        return { name, circle };
-    }));
-
-    const fragment = document.createDocumentFragment();
-
-    assignedContacts.forEach(({ name, circle }) => {
-        const div = document.createElement('div');
-        div.classList.add("assignedTo-name-label", "d-flex", "align-items-center", "gap-16p");
-        div.innerHTML = `${circle}<p>${name}</p>`;
-        fragment.appendChild(div);
-    });
-
-    container.appendChild(fragment);
-}
-
+    const contactsData = await getContacts();
+  
+    const html = assignedToIds
+      .map((id) => {
+        let contact = contactsData[id];
+        if (!contact) {
+          contact = Object.values(contactsData).find((c) => c.name === id);
+        }
+        if (!contact) return "";
+        const circle = renderTaskContacts([id], contactsData);
+        return `<div class="assignedTo-name-label d-flex align-items-center gap-16p">
+                  ${circle}
+                  <p>${contact.name}</p>
+                </div>`;
+      })
+      .join("");
+  
+    container.innerHTML = html;
+  }
+  
 
 /**
  * Renders the list of subtasks in the modal.
