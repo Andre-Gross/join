@@ -31,8 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
 function openPasswordReset() {
   document.getElementById("loginCard").style.display = "none";
   document.getElementById("passwordResetCard").style.display = "block";
-  document.getElementById("switchExtras").style.display = "none", "important";
+  document.getElementById("switchExtras").style.display = "none";
+
+  document.getElementById("resetEmail").value = "";
+  document.getElementById("resetPassword").value = "";
+  document.getElementById("confirmResetPassword").value = "";
 }
+
 
 /**
  * Switches back to the login view by hiding the password reset card and displaying the login card.
@@ -57,31 +62,13 @@ async function submitResetPassword(e) {
   await resetPassword(email, newPassword);
 }
 
-/**
- * Resets the password for a user with the given email.
- * @param {string} email - The email of the user.
- * @param {string} newPassword - The new password to set.
- */
-async function resetPassword(email, newPassword) {
-  let response = await fetch(`${BASE_URL}/users/logins.json`);
-  if (!response.ok) return showToast("Error fetching data", "error");
-  let users = await response.json();
-  let userKey = Object.keys(users).find(key => users[key].email.toLowerCase() === email.toLowerCase());
-  if (!userKey) return showToast("Email not found", "error");
-  await updatePassword(userKey, newPassword);
-}
 
-/**
- * Updates the password for a user in the database.
- * @param {string} userKey - The key of the user in the database.
- * @param {string} newPassword - The new password to set.
- */
-async function updatePassword(userKey, newPassword) {
-  await fetch(`${BASE_URL}/users/logins/${userKey}.json`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password: newPassword })
-  });
-  showToast(toastMessageReset, "middle", 1000);
-  setTimeout(switchToLogin, 2000);
+async function resetPassword(email, newPassword) {
+  try {
+    await updateUserPassword(email, newPassword);
+    showToast(toastMessageReset, "middle", 2000);
+    switchToLogin();
+  } catch (error) {
+    showToast(error.message, "error");
+  }
 }
