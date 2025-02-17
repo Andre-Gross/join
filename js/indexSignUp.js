@@ -1,5 +1,4 @@
-let toastMessageSignUp = '<span>You Signed Up successfully</span>';
-
+let toastMessageSignUp = "<span>You Signed Up successfully</span>";
 
 document.addEventListener("DOMContentLoaded", () => {
   let signupForm = document.querySelector("#signupCard form");
@@ -16,21 +15,28 @@ document.addEventListener("DOMContentLoaded", () => {
  * Handles the user registration process.
  */
 async function signUp() {
-  if (isSubmitting) return; 
+  if (isSubmitting) return;
   isSubmitting = true;
   let [name, email, password, confirmPassword, agreeTerms] = getInputValues();
 
-  if (!agreeTerms || password !== confirmPassword) {
-    displayError(
-      getValidationErrorMessage(agreeTerms, password, confirmPassword)
-    );
+  hideSignUpPasswordError();
+
+  if (!agreeTerms) {
+    displayError("Please agree to the terms and conditions.");
+    isSubmitting = false;
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    displaySignUpPasswordError();
+    isSubmitting = false;
     return;
   }
 
   try {
     let users = await fetchUsers();
     if (isEmailAlreadyRegistered(users, email)) {
-      redirectToLogin();
+      displayError("Email already registered. Please try again.");
       isSubmitting = false;
       return;
     }
@@ -38,6 +44,7 @@ async function signUp() {
     await addUserToContacts(name, email);
 
     isSubmitting = false;
+
     showToast(toastMessageSignUp, "middle", 1000);
     setTimeout(() => {
       redirectToLogin(true);
@@ -120,8 +127,7 @@ function checkFormValidity() {
       ? document.getElementById(id).checked
       : document.getElementById(id).value.trim()
   );
-  let isFormValid =
-    name && email && password && confirmPassword && agreeTerms;
+  let isFormValid = name && email && password && confirmPassword && agreeTerms;
   document.getElementById("registerButton").disabled = !isFormValid;
 }
 
@@ -136,14 +142,4 @@ function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
   if (!agreeTerms) return "Please agree to the terms and conditions.";
   if (password !== confirmPassword) return "Password do not match.";
   return "An unknown validation error occurred.";
-}
-
-
-/**
- * Displays an error message as a toast notification.
- *
- * @param {string} message - The error message to display.
- */
-function displayError(message) {
-  showToast(`<span>${message}</span>`, "middle", 2000);
 }
