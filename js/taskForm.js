@@ -417,14 +417,3 @@ function selectCategory(category, element) {
 }
 
 
-/**
- * Updates the global nextStatus variable.
- *
- * This function sets the value of the global variable `nextStatus`, which determines
- * the default status for new tasks when they are created or updated.
- *
- * @param {string} status - The new status to assign to `nextStatus`.
- */
-function putNextStatus(status) {
-    nextStatus = status;
-}
