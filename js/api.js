@@ -414,3 +414,18 @@ async function tryDeleteContactInDatabase(contactId) {
     }
     alert("Contact successfully deleted.");
 }
+
+
+async function updateUserPassword(email, newPassword) {
+    const response = await fetch(BASE_URL + 'users/logins.json');
+    const users = await response.json();
+    const userId = Object.keys(users).find(key => users[key].email === email);
+    if (!userId) throw new Error("User not found");
+    const updateResponse = await fetch(`${BASE_URL}users/logins/${userId}.json`, {
+      method: "PATCH",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ password: newPassword })
+    });
+    if (!updateResponse.ok) throw new Error("Failed to update password");
+  }
+  
