@@ -97,12 +97,8 @@ async function submitTaskForm(method = 'post', id = '') {
     const category = getValue("inputCategory");
     const priority = document.querySelector('.btn-selected')?.id;
     const assignedTo = readAssignedTo();
-    const buttons = document.getElementById("form-footer").querySelectorAll("button")
 
-
-    buttons.forEach(button => {
-        button.disabled = true;
-    });
+    toggleAllFormFooterButtons(false);
 
     const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
     method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);
@@ -111,6 +107,21 @@ async function submitTaskForm(method = 'post', id = '') {
         nextStatus = 'To do';
         window.location.href = `./board.html`;
     }, 3000);
+}
+
+
+/**
+ * Toggles the enabled state of all buttons in the form footer.
+ * 
+ * @param {boolean} shallEnabled - If `true`, enables all buttons; if `false`, disables them.
+ *                                 Default is `true`.
+ */
+function toggleAllFormFooterButtons(shallEnabled = true) {
+    const buttons = document.getElementById("form-footer").querySelectorAll("button")
+
+    buttons.forEach(button => {
+        button.disabled = !shallEnabled;
+    });
 }
 
 
