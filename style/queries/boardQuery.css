@@ -129,7 +129,6 @@
     .container-fluid {
         padding-bottom: 80px;
         justify-content: flex-start;
-        max-height: calc(100vh - 80px);
         overflow-y: auto;
         padding-bottom: 80px;
     }

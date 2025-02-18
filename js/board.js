@@ -337,24 +337,32 @@ function scrollToTaskSection() {
 
 
 /**
- * Adjusts the height of each board section to be one task longer than the number of tasks.
+ * Adjusts the height of each board section to be one task longer than the number of tasks,
+ * except on screens below 1373px, where the original behavior is applied.
  */
 function adjustBoardSectionHeight() {
   const sections = document.querySelectorAll('.board-section');
+  const isLargeScreen = window.innerWidth >= 1373;
+
   sections.forEach(section => {
       const tasks = section.querySelectorAll('.task').length;
       const tasksContainer = section.querySelector('.tasks-container');
-      const taskHeight = 260;
-      const minHeight = (tasks + 1) * taskHeight;
-      tasksContainer.style.minHeight = `${minHeight}px`;
+      if (isLargeScreen) {
+          const taskHeight = 260;
+          const minHeight = (tasks + 1) * taskHeight;
+          tasksContainer.style.minHeight = `${minHeight}px`;
+      } else {
+          tasksContainer.style.minHeight = '';
+      }
   });
 }
 
 /**
-* Initializes the height adjustment for board sections and observes changes in the DOM.
+* Initializes the height adjustment and observes changes in the DOM and window resizing.
 */
 document.addEventListener("DOMContentLoaded", () => {
   adjustBoardSectionHeight();
+  window.addEventListener("resize", adjustBoardSectionHeight);
   const observer = new MutationObserver(adjustBoardSectionHeight);
   observer.observe(document.querySelector('.container-fluid'), {
       childList: true,
