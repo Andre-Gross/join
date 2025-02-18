@@ -228,7 +228,7 @@ function returnInitialsOfName(name) {
 function showToast(
   message,
   height = "middle",
-  visibleTime = 3000,
+  visibleTime = 1500,
   shallSlideIn = true,
   fromWhere = "bottom",
   shallSlideOut = true

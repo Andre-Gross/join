@@ -189,7 +189,7 @@ async function tryPostTaskToDatabase(data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessagePostTask, "middle", 4000, true, "bottom", false);
+    showToast(toastMessagePostTask);
 }
 
 
@@ -282,7 +282,7 @@ async function tryPutTaskToDatabase(taskId, data) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessageEditTask, 'middle', 3000);
+    showToast(toastMessageEditTask);
 }
 
 
@@ -332,7 +332,6 @@ async function putNewCheckedToSubtask(taskId, subtaskId, isChecked) {
 async function deleteTaskInDatabase(id) {
     try {
         await tryDeleteTaskInDatabase(id);
-        showToast(toastMessageDeleteTask, 'middle', 3000);
     } catch (error) {
         console.error("Error deleting task:", error);
         alert("An error occurred while deleting the task.");
