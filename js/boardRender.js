@@ -272,12 +272,28 @@ async function updateTaskStatus(taskId, newStatus) {
 }
 
 
+/**
+ * Deletes a task from the database and updates the board or search results accordingly.
+ * 
+ * This function is called when a user deletes a task via the task modal. 
+ * It ensures that the search results or the entire board are updated after the deletion.
+ * 
+ * @async
+ * @function deleteTaskOfModalCard
+ * @param {string} id - The unique identifier of the task to be deleted.
+ */
 async function deleteTaskOfModalCard(id) {
   try {
     await deleteTaskInDatabase(id);
     toggleDisplayModal();
-    await boardRender();
-  } catch (error) {
-    console.error(`Error deleting task with ID ${id}:`, error);
-  }
+  
+    currentTasks = {}; 
+    
+    if (document.getElementById("idSearch").value.length >= 3) {
+      await filterAndShowTask();
+    } else {
+      await boardRender();
+    }
+  } catch {}
 }
+
