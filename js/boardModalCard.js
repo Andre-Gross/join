@@ -384,27 +384,20 @@ function toggleScrolling(element, allowScrolling = null) {
  */
 async function changeToEditMode(id) {
     const tasksAsArray = await getTasksAsArray();
-    const singleTaskID = tasksAsArray.findIndex((task) => task.id == id);
-
-    if (singleTaskID === -1) {
-        console.error("Task not found");
-        return;
-    }
-
-    const singleTask = tasksAsArray[singleTaskID];
+    const singleTask = tasksAsArray.find(task => task.id === id);
+    
     const templateContainer = document.getElementById('modalCard-edit-mode-template-container');
-
     renderTaskForm(templateContainer, 'put', id);
-
+    
     assignTaskDataToForm(singleTask);
-
     toggleEditMode(true);
     adjustFirstLineLayoutForEditMode();
-
+    
     loadFormFunctions();
-
+    createAssignedToDropdown(singleTask.assignedTo); // Hier übergeben wir die bestehenden Kontakte
+    
     const sendButton = document.getElementById('sendButton');
-    sendButton.onclick = function () {
+    sendButton.onclick = () => {
         submitTaskForm("put", id);
         return false;
     };
