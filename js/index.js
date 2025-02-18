@@ -132,11 +132,17 @@ function getInputValue(id) {
   return document.getElementById(id).value.trim();
 }
 
-/**
- * Updates the visibility icon when text is entered or removed.
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The visibility icon.
- */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const passwordFields = document.querySelectorAll(".password-container input");
+  passwordFields.forEach((input) => {
+    const icon = input.nextElementSibling;
+    input.value = ""; // Passwortfelder leeren
+    input.addEventListener("input", () => updatePasswordIcon(input, icon));
+    icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
+  });
+});
+
 function updatePasswordIcon(input, icon) {
   if (!input.value) {
     input.classList.remove("has-icon");
@@ -148,21 +154,12 @@ function updatePasswordIcon(input, icon) {
   }
 }
 
-/**
- * Toggles the password visibility and updates the icon.
- * @param {HTMLInputElement} input - The password input field.
- * @param {HTMLImageElement} icon - The clicked eye icon.
- */
 function togglePasswordVisibility(input, icon) {
   if (!input.value) return;
-
-  if (input.type === "password") {
-    input.type = "text";
-    icon.src = "../assets/img/logIn-signUp/visibility-on.svg";
-  } else {
-    input.type = "password";
-    icon.src = "../assets/img/logIn-signUp/visibility-off.svg";
-  }
+  input.type = input.type === "password" ? "text" : "password";
+  icon.src = input.type === "password"
+    ? "../assets/img/logIn-signUp/visibility-off.svg"
+    : "../assets/img/logIn-signUp/visibility-on.svg";
 }
 
 /**
