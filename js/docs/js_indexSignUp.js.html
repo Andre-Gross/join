@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: script.js</title>
+    <title>JSDoc: Source: js/indexSignUp.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: script.js</h1>
+    <h1 class="page-title">Source: js/indexSignUp.js</h1>
 
     
 
@@ -26,428 +26,154 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const COLORS = [
-  "#FF7A00",
-  "#9327FF",
-  "#FF745E",
-  "#FFC700",
-  "#FFE62B",
-  "#FF5EB3",
-  "#00BEE8",
-  "#FFA45E",
-  "#0038FF",
-  "#FF4546",
-  "#6E52FF",
-  "#1FD7C1",
-  "#FC71FF",
-  "#C3FE2B",
-  "#FFBB2B",
-];
+            <pre class="prettyprint source linenums"><code>let toastMessageSignUp = '&lt;span>You Signed Up successfully&lt;/span>';
 
 
-/**
- * Adds a prefix and a suffix to a given string and formats it.
- * 
- * This function takes a string, removes any extra whitespace, replaces spaces
- * with underscores, and then adds the specified prefix and suffix.
- *
- * @param {string} string - The string to which the prefix and suffix will be added.
- * @param {string} [prefix=''] - The prefix to add (default is empty string).
- * @param {string} [suffix=''] - The suffix to add (default is empty string).
- * @returns {string} The modified string with the prefix and suffix added.
- */
-function addPrefixAndSuffix(string, prefix = '', suffix = '') {
-  return prefix + string.trim().replace(/\s+/g, '_') + suffix;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  let signupForm = document.querySelector("#signupCard form");
 
-
-/**
- * Capitalizes the first letter of a given string or value.
- * @param {string} val - The input string or value to process.
- * @returns {string} The string with the first letter capitalized.
- */
-function capitalizeFirstLetter(val) {
-  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-}
-
-
-/**
- * Changes the border color of an element by adding/removing CSS classes.
- * @param {HTMLElement} element - The element whose border color should be changed.
- * @param {string} [borderColorClass=""] - The CSS class for the new border color.
- */
-function changeBorderColor(element, borderColorClass = "") {
-  element.classList.remove("border-color-onfocus", "border-color-invalid");
-
-  if (!(borderColorClass === "")) {
-    element.classList.add(borderColorClass);
+  if (signupForm) {
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      signUp();
+    });
   }
-}
-
+});
 
 /**
- * Sets the border color of an element to indicate validity.
- * @param {HTMLInputElement} element - The input element to validate.
+ * Handles the user registration process.
  */
-function changeToRightBorderColor(element) {
-  if (element.value == "") {
-    changeBorderColor(element, "border-color-invalid");
-  } else {
-    changeBorderColor(element);
+async function signUp() {
+  if (isSubmitting) return; 
+  isSubmitting = true;
+  let [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+
+  if (!agreeTerms || password !== confirmPassword) {
+    displayError(
+      getValidationErrorMessage(agreeTerms, password, confirmPassword)
+    );
+    return;
   }
-}
 
-
-/**
- * Checks if a given key exists in an array.
- * @param {*} key - The key to search for.
- * @param {Array} arrayToCheck - The array to search in.
- * @returns {boolean} True if the key exists, otherwise false.
- */
-function checkContentOfArray(key, arrayToCheck) {
-  for (i = 0; i &lt; arrayToCheck.length; i++) {
-    const checkValue = arrayToCheck[i];
-    if (key == checkValue) {
-      return true;
+  try {
+    let users = await fetchUsers();
+    if (isEmailAlreadyRegistered(users, email)) {
+      redirectToLogin();
+      isSubmitting = false;
+      return;
     }
-    if (i == arrayToCheck.length - 1) {
-      return false;
+    await registerNewUser(name, email, password);
+    await addUserToContacts(name, email);
+
+    isSubmitting = false;
+    showToast(toastMessageSignUp, "middle", 1000);
+    setTimeout(() => {
+      redirectToLogin(true);
+    }, 1000);
+  } catch {
+    isSubmitting = false;
+    displayError("An error occurred during registration. Please try again.");
+  }
+}
+
+/**
+ * Registers a new user in the database.
+ * @param {string} name - The user's name.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ */
+async function registerNewUser(name, email, password) {
+  let newUser = { name, email, password, contacts: [] };
+  await fetch(
+    "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/users/logins.json",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
     }
-  }
+  );
 }
 
-
 /**
- * Clears the value of an input element.
- * @param {HTMLInputElement} element - The input element to clear.
+ * Checks if the given email is already registered.
+ * @param {Object} users - The existing users object.
+ * @param {string} email - The email to check.
+ * @returns {boolean} - True if the email is already registered, otherwise false.
  */
-function clearValue(element) {
-  element.value = "";
+function isEmailAlreadyRegistered(users, email) {
+  return Object.values(users || {}).some((user) => user?.email === email);
 }
 
-
 /**
- * Creates an HTML string for a name circle with initials and background color.
- * @param {string} initials - The initials to display inside the circle.
- * @param {string} color - The background color (CSS class name).
- * @returns {string} The generated HTML string.
+ * Redirects the user to the login page.
+ * @param {boolean} [isSuccess] - Whether the registration was successful.
  */
-function createNameCircle(initials, color) {
-  let HTML = /*HTML*/ `
-            &lt;div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
-                &lt;span>${initials.toUpperCase()}&lt;/span>
-            &lt;/div>
-        `;
-  return HTML;
+function redirectToLogin(isSuccess = false) {
+  let url = isSuccess
+    ? "index.html?registered=true"
+    : "index.html?error=emailExists";
+  window.location.href = url;
 }
 
-
 /**
- * Creates an HTML string for a name circle based on a contact ID.
- * @param {number} id - The ID of the contact.
- * @returns {Promise&lt;string>} A promise that resolves to the HTML string.
+ * Retrieves and processes form input values.
+ * @returns {Array} - Array of processed input values.
  */
-async function createNameCircleWithId(id) {
-  const contacts = await getContacts();
-  const initials = returnInitialsOfName(contacts[id].name);
-  const color = contacts[id].color.replace("#", "").toLowerCase();
-
-  return createNameCircle(initials, color);
+function getInputValues() {
+  return [
+    "name",
+    "signUpEmail",
+    "signUpPassword",
+    "confirmPassword",
+    "agreeTerms",
+  ].map((id) =>
+    document.getElementById(id).type === "checkbox"
+      ? document.getElementById(id).checked
+      : document.getElementById(id).value.trim()
+  );
 }
 
-
 /**
- * This function focuses on the given HTML element.
- * 
- * @param {HTMLElement} element - The element to be focused.
+ * Validates the registration form inputs and updates the register button state.
  */
-function focusElement(element) {
-  element.focus();
+function checkFormValidity() {
+  let [name, email, password, confirmPassword, agreeTerms] = [
+    "name",
+    "signUpEmail",
+    "signUpPassword",
+    "confirmPassword",
+    "agreeTerms",
+  ].map((id) =>
+    document.getElementById(id).type === "checkbox"
+      ? document.getElementById(id).checked
+      : document.getElementById(id).value.trim()
+  );
+  let isFormValid =
+    name &amp;&amp; email &amp;&amp; password &amp;&amp; confirmPassword &amp;&amp; agreeTerms;
+  document.getElementById("registerButton").disabled = !isFormValid;
 }
 
-
 /**
- * Creates an HTML string for displaying a contact.
- * 
- * @param {number} i - The index of the contact in the arrays.
- * @returns {string} HTML markup for the contact element.
+ * Determines the validation error message.
+ * @param {boolean} agreeTerms - Whether the terms were agreed to.
+ * @param {string} password - The entered password.
+ * @param {string} confirmPassword - The confirmed password.
+ * @returns {string} - The appropriate error message.
  */
-function getContactMain(i) {
-  return `
-      &lt;div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
-          &lt;div id="idShortName" style="background-color:${colors[i]}">
-              &lt;p id="idShortAlph">${shortNames[i]}&lt;/p>
-          &lt;/div>
-          &lt;div id="idNameMail">
-              &lt;p id="idName">${names[i]}&lt;/p>
-              &lt;p id="idMail">${emails[i]}&lt;/p>
-          &lt;/div>
-      &lt;/div>
-      `;
-}
-
-/**
- * Finds the ID of a contact by their name.
- * 
- * @async
- * @param {string} name - The name of the contact to search for.
- * @returns {Promise&lt;number|undefined>} The contact ID if found, otherwise undefined.
- */
-async function getIdOfContactWithName(name) {
-  const contacts = await getContactsAsArray();
-
-  for (let i = 0; i &lt; contacts.length; i++) {
-    const singleContact = contacts[i];
-    const checkedName = singleContact.name;
-
-    if (checkedName === name) {
-      const id = singleContact.id;
-      return id;
-    }
-  }
+function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
+  if (!agreeTerms) return "Please agree to the terms and conditions.";
+  if (password !== confirmPassword) return "Password do not match.";
+  return "An unknown validation error occurred.";
 }
 
 
-
 /**
- * Extracts initials from a user's name.
+ * Displays an error message as a toast notification.
  *
- * @param {string} name - The full name of the user.
- * @returns {string} The initials (e.g., "JD" for "John Doe").
+ * @param {string} message - The error message to display.
  */
-function getInitialsFromName(name) {
-  if (!name) return "G"; // Default for "Guest"
-  const words = name.split(" ");
-  const initials = words
-    .filter((word) => word.trim().length > 0)
-    .map((word) => word.charAt(0).toUpperCase())
-    .join("");
-  return initials.length > 2 ? initials.substring(0, 2) : initials;
-}
-
-
-/**
- * Navigates the user to the previous page in the browser history.
- */
-function goBack() {
-  window.history.back();
-}
-
-
-/**
- * Returns a random color from the COLORS array.
- * 
- * @returns {string} A random color from the COLORS array.
- */
-function getRandomColor() {
-  let randomIndex = Math.floor(Math.random() * COLORS.length);
-  return COLORS[randomIndex];
-}
-
-
-
-/**
- * Extracts the initials from a given name.
- * @param {string} name - The full name (e.g., "John Doe").
- * @returns {string} The initials (e.g., "JD").
- */
-function returnInitialsOfName(name) {
-  const splitName = name.split(" ");
-  let initials = "";
-
-  for (let i = 0; i &lt; splitName.length; i++) {
-    const letter = splitName[i].charAt(0).toUpperCase();
-    initials += letter;
-  }
-  return initials;
-}
-
-
-/**
- * Displays a toast message on the screen with customizable text, position, and animations.
- *
- * @param {string} message - The content of the toast message to display.
- * @param {string} [height='middle'] - Vertical position of the toast on the screen. Possible values: "yMiddle" (center) or "yLow" (lower area of the display).
- * @param {number} [visibleTime=3000] - Duration (in milliseconds) the toast message remains visible. If set to 0, the toast will stay on the screen indefinitely.
- * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen. If false, the toast will appear instantly.
- * @param {string} [fromWhere='bottom'] - Direction from which the toast should slide in. Only relevant if `shallSlideIn` is true. Possible values: "bottom" or "right".
- * @param {boolean} [shallSlideOut=true] - Whether the toast should slide out of the screen. If false, the toast will disappear instantly. Only relevant if `visibleTime` > 0.
- */
-function showToast(
-  message,
-  height = "middle",
-  visibleTime = 3000,
-  shallSlideIn = true,
-  fromWhere = "bottom",
-  shallSlideOut = true
-) {
-  const toast = document.getElementById("toast-container");
-
-  prepareToastStartPosition(toast, shallSlideIn, height, fromWhere);
-  toast.innerHTML = message;
-
-  setTimeout(() => {
-    callToast(toast, height, (shallSlideIn = true), fromWhere);
-    toastLeaveDisplay(toast, visibleTime, height, fromWhere, shallSlideOut);
-  }, 0);
-}
-
-
-/**
- * Configures the initial position of the toast element before it appears on the screen.
- *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {boolean} shallSlideIn - Whether the toast should slide into the screen.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast should slide in. Possible values: "bottom", "right".
- */
-function prepareToastStartPosition(toast, shallSlideIn, height, fromWhere) {
-  toast.classList = "";
-  if (shallSlideIn) {
-    toast.classList.add(fromWhere);
-    if (fromWhere === "bottom") {
-      toast.classList.add("xMiddle");
-    } else if (fromWhere === "right") {
-      toast.classList.add("y" + upperCaseFirstLetter(height));
-    }
-  }
-}
-
-
-/**
- * Handles the appearance of the toast element by either sliding it in or making it appear instantly.
- *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen.
- * @param {string} fromWhere - The direction from which the toast should slide in. Only relevant if `shallSlideIn` is true.
- */
-function callToast(toast, height, shallSlideIn = true, fromWhere) {
-  toast.classList.remove("d-none")
-  if (shallSlideIn) {
-    toastSlideIn(toast, height, fromWhere);
-  } else {
-    toastAppear();
-  }
-}
-
-
-/**
- * Removes specified prefixes and suffixes from a given string.
- * 
- * This function takes a string and removes the specified prefix and suffix
- * if they exist in the string.
- *
- * @param {string} string - The string from which the prefix and suffix will be removed.
- * @param {string} [prefix=''] - The prefix to remove (default is empty string).
- * @param {string} [suffix=''] - The suffix to remove (default is empty string).
- * @returns {string} The modified string with the prefix and suffix removed.
- */
-function stripPrefixAndSuffix(string, prefix = '', suffix = '') {
-  return string.replace(prefix, '').replace(suffix, '');
-}
-
-
-/**
- * Animates the toast element to slide into the screen from the specified direction.
- *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast slides in. Possible values: "bottom", "right".
- */
-function toastSlideIn(toast, height, fromWhere) {
-  toast.classList.add(fromWhere);
-  if (fromWhere === "bottom") {
-    toast.classList.add("xMiddle");
-    toast.classList.add("y" + upperCaseFirstLetter(height));
-  } else if (fromWhere === "right") {
-    toast.classList.add("y" + upperCaseFirstLetter(height));
-    toast.classList.add("xMiddle");
-  }
-}
-
-
-/**
- * Makes the toast element appear instantly at the specified position.
- *
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- */
-function toastAppear(height) {
-  toast.classList.add("y" + upperCaseFirstLetter(height));
-  toast.classList.add("xMiddle");
-}
-
-/**
- * Handles the disappearance of the toast element after a specified duration.
- *
- * @param {HTMLElement} toast - The toast element to be removed from the screen.
- * @param {number} visibleTime - The duration (in milliseconds) for which the toast remains visible. If 0, the toast will stay on the screen indefinitely.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast was displayed. Possible values: "bottom", "right".
- * @param {boolean} shallSlideOut - Whether the toast should slide out of the screen. If false, the toast will disappear instantly.
- */
-function toastLeaveDisplay(
-  toast,
-  visibleTime,
-  height,
-  fromWhere,
-  shallSlideOut
-) {
-  if (visibleTime > 0) {
-    if (shallSlideOut) {
-      setTimeout(() => {
-        if (fromWhere === "bottom") {
-          toast.classList.remove("y" + upperCaseFirstLetter(height));
-        } else if (fromWhere === "right") {
-          toast.classList.remove("xMiddle");
-        }
-      }, visibleTime);
-    } else {
-      setTimeout(() => {
-        toast.classList.add("d-none");
-      }, visibleTime);
-    }
-  }
-}
-
-
-/**
- * Toggles the display of an element based on the specified mode.
- * @param {HTMLElement} element - The DOM element to toggle.
- * @param {string} displayMode - The CSS class to apply when visible (default: "d-block").
- * @param {boolean|string} shallVisible - Whether the element should be visible or hidden, or toggle state if undefined.
- */
-function toggleDisplayNone(
-  element,
-  displayMode = "d-block",
-  shallVisible = ""
-) {
-  let eleClass = element.classList;
-  if (shallVisible === true) {
-    eleClass.remove("d-none");
-    eleClass.add(displayMode);
-  } else if (shallVisible === false) {
-    eleClass.remove(displayMode);
-    eleClass.add("d-none");
-  } else {
-    if (eleClass.contains("d-none")) {
-      eleClass.remove("d-none");
-      eleClass.add(displayMode);
-    } else {
-      eleClass.remove(displayMode);
-      eleClass.add("d-none");
-    }
-  }
-}
-
-
-/**
- * Capitalizes the first letter of a string.
- * @param {string} str - The input string.
- * @returns {string} The string with the first letter capitalized.
- */
-function upperCaseFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1);
+function displayError(message) {
+  showToast(`&lt;span>${message}&lt;/span>`, "middle", 2000);
 }</code></pre>
         </article>
     </section>

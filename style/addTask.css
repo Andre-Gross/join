@@ -157,7 +157,7 @@ textarea {
     border-bottom: 1.5px solid var(--input-border-standart);
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
-
+    cursor: pointer;
     --sb-track-color: #ffffff;
 }
 

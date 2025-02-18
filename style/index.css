@@ -120,6 +120,7 @@
     background-position: var(--input-bg-position);
     background-repeat: no-repeat;
     background-size: var(--input-bg-size);
+    height: 40px;
   }
   
 
@@ -142,6 +143,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    flex-direction: column;
   }
   
   .password-container input {

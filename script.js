@@ -115,16 +115,35 @@ function createNameCircle(initials, color) {
 
 
 /**
- * Creates an HTML string for a name circle based on a contact ID.
- * @param {number} id - The ID of the contact.
- * @returns {Promise<string>} A promise that resolves to the HTML string.
+ * Renders HTML for displaying assigned contacts.
+ *
+ * @param {Array} assignedTo - An array of contact IDs or names assigned to the task.
+ * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
+ * @returns {string} Returns HTML string with circles representing assigned contacts.
  */
-async function createNameCircleWithId(id) {
-  const contacts = await getContacts();
-  const initials = returnInitialsOfName(contacts[id].name);
-  const color = contacts[id].color.replace("#", "").toLowerCase();
-
-  return createNameCircle(initials, color);
+function renderTaskContacts(assignedTo = [], contactsData = {}) {
+  if (!isValidArray(assignedTo)) return "";
+  return assignedTo
+    .map((contactIdOrName) => {
+      let contact = contactsData[contactIdOrName];
+      if (!contact) {
+        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
+      }
+      if (!contact) {
+        return ``;
+    }
+          const shortName = contact.name
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join("");
+      const backgroundColor = contact.color || "#ccc";
+      return `
+        <div class="contact-circle" style="background-color: ${backgroundColor};">
+          <span>${shortName}</span>
+        </div>
+      `;
+    })
+    .join("");
 }
 
 
@@ -138,6 +157,12 @@ function focusElement(element) {
 }
 
 
+/**
+ * Creates an HTML string for displaying a contact.
+ * 
+ * @param {number} i - The index of the contact in the arrays.
+ * @returns {string} HTML markup for the contact element.
+ */
 function getContactMain(i) {
   return `
       <div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
@@ -152,7 +177,13 @@ function getContactMain(i) {
       `;
 }
 
-
+/**
+ * Finds the ID of a contact by their name.
+ * 
+ * @async
+ * @param {string} name - The name of the contact to search for.
+ * @returns {Promise<number|undefined>} The contact ID if found, otherwise undefined.
+ */
 async function getIdOfContactWithName(name) {
   const contacts = await getContactsAsArray();
 
@@ -166,6 +197,7 @@ async function getIdOfContactWithName(name) {
     }
   }
 }
+
 
 
 /**
@@ -192,10 +224,17 @@ function goBack() {
   window.history.back();
 }
 
+
+/**
+ * Returns a random color from the COLORS array.
+ * 
+ * @returns {string} A random color from the COLORS array.
+ */
 function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * COLORS.length);
   return COLORS[randomIndex];
 }
+
 
 
 /**
@@ -401,3 +440,16 @@ function toggleDisplayNone(
 function upperCaseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
 }
+
+
+function validateEmailField(input) {
+  const email = input.value.trim();
+  const domainRegex = /@.+\.[a-z]{2,}$/i;
+  if (!email.includes('@') || !domainRegex.test(email)) {
+    input.style.borderColor = '#FF8190';
+    return false;
+  }
+  input.style.borderColor = '';
+  return true;
+}
+

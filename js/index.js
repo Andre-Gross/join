@@ -41,18 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  let passwordFields = document.querySelectorAll(".password-container input");
-
-  passwordFields.forEach((input) => (input.value = ""));
-
-  passwordFields.forEach((input) => {
-    let icon = input.nextElementSibling;
-    input.addEventListener("input", () => updatePasswordIcon(input, icon));
-    icon.addEventListener("click", () => togglePasswordVisibility(input, icon));
-  });
-});
-
 /**
  * Fetches all existing users from the database.
  * @returns {Promise<Object>} - A promise resolving to the users object.
@@ -213,4 +201,71 @@ async function addUserToContacts(name, email) {
  */
 function generateUniqueId() {
   return "_" + Math.random().toString(36).substr(2, 9);
+}
+
+function clearFormInputs(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const inputs = container.querySelectorAll("input");
+  inputs.forEach((input) => {
+    if (input.type === "checkbox" || input.type === "radio") {
+      input.checked = false;
+    } else {
+      input.value = "";
+    }
+  });
+}
+
+function clearAllForms() {
+  ["loginCard", "signupCard", "passwordResetCard"].forEach(clearFormInputs);
+}
+
+document.addEventListener("DOMContentLoaded", clearAllForms);
+
+/**
+ * Displays the login error message by removing the 'd-none' class.
+ */
+function displayPasswordErrorDiv() {
+  document.getElementById("text-error-password").classList.remove("d-none");
+}
+
+/**
+ * Hides the login error message by adding the 'd-none' class.
+ */
+function hidePasswordError() {
+  document.getElementById("text-error-password").classList.add("d-none");
+}
+
+/**
+ * Displays the sign-up error message by removing the 'd-none' class.
+ */
+function displaySignUpPasswordError() {
+  document
+    .getElementById("text-error-password-signUp")
+    .classList.remove("d-none");
+}
+
+/**
+ * Hides the sign-up error message by adding the 'd-none' class.
+ */
+function hideSignUpPasswordError() {
+  document.getElementById("text-error-password-signUp").classList.add("d-none");
+}
+
+/**
+ * Displays the reset password error message by removing the 'd-none' class.
+ */
+function displayResetPasswordError() {
+  document
+    .getElementById("text-error-password-resetPassword")
+    .classList.remove("d-none");
+}
+
+/**
+ * Hides the reset password error message by adding the 'd-none' class.
+ */
+function hideResetPasswordError() {
+  document
+    .getElementById("text-error-password-resetPassword")
+    .classList.add("d-none");
 }

@@ -190,14 +190,31 @@ body.dragging {
 #progress-container:empty,
 #feedback-container:empty,
 #done-container:empty {
-    background-color: #E7E7E7;
-    border-radius: var(--border-radius);
-    height: 50px;
-    min-height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  height: 260px; 
+  background: transparent;
 }
+
+#todo-container:empty::before,
+#progress-container:empty::before,
+#feedback-container:empty::before,
+#done-container:empty::before {
+  content: attr(data-empty-message);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: #E7E7E7;
+  border-radius: 24px;
+  color: #A8A8A8;
+  color: #A8A8A8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 50px;
+}
+
 
 
 .task {

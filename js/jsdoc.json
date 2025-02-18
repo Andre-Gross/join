@@ -1,7 +1,26 @@
 {
   "_comment_instruction": "Um die Dokumentation zu generieren, führe den folgenden Befehl im Terminal aus: jsdoc -c jsdoc.json",
   "source": {
-    "include": ["../script.js", "auth.js", "contact.js", "index.js", "patienceDiff.js", "index.js", "summary.js", "addTask.js", "api.js","board.js", "boardRender.js", "templates.js"]
+    "include": [
+      "../script.js",
+      "auth.js",
+      "contact.js",
+      "index.js",
+      "indexLogin.js",
+      "summary.js",
+      "api.js",
+      "board.js",
+      "boardRender.js",
+      "templates.js",
+      "boardDragAndDrop.js",
+      "boardModalCard.js",
+      "contactHTML.js",
+      "indexSignUp.js",
+      "indexPasswordReset.js",
+      "taskForm-subtask.js",
+      "taskForm.js",
+      "taskFormHTML.js"
+    ]
   },
   "opts": {
     "destination": "./docs"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: script.js</title>
+    <title>JSDoc: Source: js/boardRender.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: script.js</h1>
+    <h1 class="page-title">Source: js/boardRender.js</h1>
 
     
 
@@ -26,429 +26,327 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const COLORS = [
-  "#FF7A00",
-  "#9327FF",
-  "#FF745E",
-  "#FFC700",
-  "#FFE62B",
-  "#FF5EB3",
-  "#00BEE8",
-  "#FFA45E",
-  "#0038FF",
-  "#FF4546",
-  "#6E52FF",
-  "#1FD7C1",
-  "#FC71FF",
-  "#C3FE2B",
-  "#FFBB2B",
-];
+            <pre class="prettyprint source linenums"><code>function updateBoardHeader() {
+  const boardHeaderContainer = document.querySelector(".board-header");
+  if (!boardHeaderContainer) return;
+  const isMobileView = window.innerWidth &lt;= 1100;
+  let newBoardHeaderHTML = "";
 
-
-/**
- * Adds a prefix and a suffix to a given string and formats it.
- * 
- * This function takes a string, removes any extra whitespace, replaces spaces
- * with underscores, and then adds the specified prefix and suffix.
- *
- * @param {string} string - The string to which the prefix and suffix will be added.
- * @param {string} [prefix=''] - The prefix to add (default is empty string).
- * @param {string} [suffix=''] - The suffix to add (default is empty string).
- * @returns {string} The modified string with the prefix and suffix added.
- */
-function addPrefixAndSuffix(string, prefix = '', suffix = '') {
-  return prefix + string.trim().replace(/\s+/g, '_') + suffix;
-}
-
-
-/**
- * Capitalizes the first letter of a given string or value.
- * @param {string} val - The input string or value to process.
- * @returns {string} The string with the first letter capitalized.
- */
-function capitalizeFirstLetter(val) {
-  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-}
-
-
-/**
- * Changes the border color of an element by adding/removing CSS classes.
- * @param {HTMLElement} element - The element whose border color should be changed.
- * @param {string} [borderColorClass=""] - The CSS class for the new border color.
- */
-function changeBorderColor(element, borderColorClass = "") {
-  element.classList.remove("border-color-onfocus", "border-color-invalid");
-
-  if (!(borderColorClass === "")) {
-    element.classList.add(borderColorClass);
-  }
-}
-
-
-/**
- * Sets the border color of an element to indicate validity.
- * @param {HTMLInputElement} element - The input element to validate.
- */
-function changeToRightBorderColor(element) {
-  if (element.value == "") {
-    changeBorderColor(element, "border-color-invalid");
-  } else {
-    changeBorderColor(element);
-  }
-}
-
-
-/**
- * Checks if a given key exists in an array.
- * @param {*} key - The key to search for.
- * @param {Array} arrayToCheck - The array to search in.
- * @returns {boolean} True if the key exists, otherwise false.
- */
-function checkContentOfArray(key, arrayToCheck) {
-  for (i = 0; i &lt; arrayToCheck.length; i++) {
-    const checkValue = arrayToCheck[i];
-    if (key == checkValue) {
-      return true;
-    }
-    if (i == arrayToCheck.length - 1) {
-      return false;
-    }
-  }
-}
-
-
-/**
- * Clears the value of an input element.
- * @param {HTMLInputElement} element - The input element to clear.
- */
-function clearValue(element) {
-  element.value = "";
-}
-
-
-/**
- * Creates an HTML string for a name circle with initials and background color.
- * @param {string} initials - The initials to display inside the circle.
- * @param {string} color - The background color (CSS class name).
- * @returns {string} The generated HTML string.
- */
-function createNameCircle(initials, color) {
-  let HTML = /*HTML*/ `
-            &lt;div class="name-circle border border-2 border-white rounded-circle d-flex bg-${color} text-light">
-                &lt;span>${initials.toUpperCase()}&lt;/span>
-            &lt;/div>
-        `;
-  return HTML;
-}
-
-
-/**
- * Creates an HTML string for a name circle based on a contact ID.
- * @param {number} id - The ID of the contact.
- * @returns {Promise&lt;string>} A promise that resolves to the HTML string.
- */
-async function createNameCircleWithId(id) {
-  const contacts = await getContacts();
-  const initials = returnInitialsOfName(contacts[id].name);
-  const color = contacts[id].color.replace("#", "").toLowerCase();
-
-  return createNameCircle(initials, color);
-}
-
-
-/**
- * This function focuses on the given HTML element.
- * 
- * @param {HTMLElement} element - The element to be focused.
- */
-function focusElement(element) {
-  element.focus();
-}
-
-
-/**
- * Creates an HTML string for displaying a contact.
- * 
- * @param {number} i - The index of the contact in the arrays.
- * @returns {string} HTML markup for the contact element.
- */
-function getContactMain(i) {
-  return `
-      &lt;div id="idNameMailshort" class="NameMailShort" onclick="openContact(${i})">
-          &lt;div id="idShortName" style="background-color:${colors[i]}">
-              &lt;p id="idShortAlph">${shortNames[i]}&lt;/p>
+  if (isMobileView) {
+      newBoardHeaderHTML = `
+          &lt;div class="top-row">
+              &lt;div class="title">
+                  &lt;h1 class="m-2 w-100">Board&lt;/h1>
+              &lt;/div>
+              &lt;div class="AddTaskBtn" onclick="openAddTaskInBoard()">
+                  &lt;p class="AddTaskBtnText">Add task&lt;/p>
+                  &lt;img src="./assets/img/board/plus-button-white.svg" alt="plus">
+              &lt;/div>
           &lt;/div>
-          &lt;div id="idNameMail">
-              &lt;p id="idName">${names[i]}&lt;/p>
-              &lt;p id="idMail">${emails[i]}&lt;/p>
+          &lt;div class="searchBar">
+              &lt;input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                  placeholder="Find Task" oninput="filterAndShowTask()">
           &lt;/div>
-      &lt;/div>
       `;
+  } else {
+      newBoardHeaderHTML = `
+          &lt;div class="title">
+              &lt;h1 class="m-2 w-100">Board&lt;/h1>
+          &lt;/div>
+          &lt;div class="AddTaskBtn" onclick="openAddTaskInBoard()">
+              &lt;p class="AddTaskBtnText">Add task&lt;/p>
+              &lt;img src="./assets/img/board/plus-button-white.svg" alt="plus">
+          &lt;/div>
+          &lt;div class="searchBar">
+              &lt;input class="search-container mt-3" id="idSearch" type="text" class="form-control"
+                  placeholder="Find Task" oninput="filterAndShowTask()">
+          &lt;/div>
+      `;
+  }
+  boardHeaderContainer.innerHTML = newBoardHeaderHTML;
 }
 
+document.addEventListener("DOMContentLoaded", updateBoardHeader);
+window.addEventListener("resize", updateBoardHeader);
+
+
+
 /**
- * Finds the ID of a contact by their name.
- * 
- * @async
- * @param {string} name - The name of the contact to search for.
- * @returns {Promise&lt;number|undefined>} The contact ID if found, otherwise undefined.
+ * Lädt und rendert das Board mit Aufgaben und Kontakten aus Firebase.
  */
-async function getIdOfContactWithName(name) {
-  const contacts = await getContactsAsArray();
-
-  for (let i = 0; i &lt; contacts.length; i++) {
-    const singleContact = contacts[i];
-    const checkedName = singleContact.name;
-
-    if (checkedName === name) {
-      const id = singleContact.id;
-      return id;
-    }
+async function boardRender() {
+  try {
+    const [tasksData, contactsData] = await fetchBoardData();
+    if (!tasksData || Object.keys(tasksData).length === 0) return;
+    clearTaskContainers();
+    renderTasks(tasksData, contactsData);
+    initializeDragAndDrop();
+  } catch (error) {
+    console.error("Error loading tasks:", error);
   }
 }
 
+/**
+ * Ruft Aufgaben und Kontakte aus Firebase ab.
+ * @returns {Promise&lt;Array>} Array mit Aufgaben- und Kontaktdaten
+ */
+async function fetchBoardData() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  const [tasksResponse, contactsResponse] = await Promise.all([
+    fetch(`${firebaseUrl}/tasks.json`),
+    fetch(`${firebaseUrl}/users/contacts.json`),
+  ]);
+  if (!tasksResponse.ok || !contactsResponse.ok) throw new Error("Error fetching data");
+  return [await tasksResponse.json(), await contactsResponse.json()];
+}
+
+/**
+ * Löscht den Inhalt der Aufgaben-Container.
+ */
+function clearTaskContainers() {
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach(
+    (containerId) => (document.getElementById(containerId).innerHTML = "")
+  );
+}
+
+/**
+ * Rendert die Aufgaben im jeweiligen Container.
+ * @param {Object} tasksData - Die geladenen Aufgaben
+ * @param {Object} contactsData - Die geladenen Kontakte
+ */
+function renderTasks(tasksData, contactsData) {
+  Object.entries(tasksData).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
+    document.getElementById(containerId).appendChild(createTaskElement(taskId, task, contactsData));
+  });
+}
+
+/**
+ * Erstellt ein Task-Element.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {HTMLElement} Das erstellte Task-Element
+ */
+function createTaskElement(taskId, task, contactsData) {
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+  taskElement.innerHTML = getTaskHTML(taskId, task, contactsData);
+  return taskElement;
+}
+
+/**
+ * Generiert das HTML für eine Aufgabe.
+ * @param {string} taskId - Die ID der Aufgabe
+ * @param {Object} task - Die Aufgabendaten
+ * @param {Object} contactsData - Die geladenen Kontakte
+ * @returns {string} Das HTML der Aufgabe
+ */
+function getTaskHTML(taskId, task, contactsData) {
+  const categoryClass = task.category ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}` : "bc-category-label-unknown";
+  return `
+    &lt;div class="task-header">
+      &lt;div class="category-label ${categoryClass}">${task.category || "No category"}&lt;/div>
+    &lt;/div>
+    &lt;h4 class="task-title">${task.title}&lt;/h4>
+    &lt;p class="task-description">${task.description}&lt;/p>
+    &lt;div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}&lt;/div>
+    &lt;div class="task-footer d-flex justify-content-between align-items-center">
+      &lt;div class="assigned-contacts d-flex">
+        ${renderTaskContacts(task.assignedTo || [], contactsData)}
+      &lt;/div>
+      &lt;div class="task-priority">
+        ${priorityLabelHTML(task.priority)}
+      &lt;/div>
+    &lt;/div>
+  `;
+}
 
 
 /**
- * Extracts initials from a user's name.
+ * Checks if the provided argument is a valid non-empty array.
  *
- * @param {string} name - The full name of the user.
- * @returns {string} The initials (e.g., "JD" for "John Doe").
+ * @param {any} arr - The value to check.
+ * @returns {boolean} Returns `true` if the argument is a non-empty array, otherwise `false`.
  */
-function getInitialsFromName(name) {
-  if (!name) return "G"; // Default for "Guest"
-  const words = name.split(" ");
-  const initials = words
-    .filter((word) => word.trim().length > 0)
-    .map((word) => word.charAt(0).toUpperCase())
+function isValidArray(arr) {
+  return Array.isArray(arr) &amp;&amp; arr.length > 0;
+}
+
+
+/**
+ * Renders HTML for displaying subtasks progress.
+ *
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {Array} subtasks - An array of subtask objects to be rendered.
+ * @returns {string} Returns HTML string displaying the subtasks' progress.
+ */
+function renderSubtasksHTML(taskId, subtasks) {
+  if (!isValidArray(subtasks)) return "";
+
+  const completedSubtasks = subtasks.filter((subtask) => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+
+  return `
+    &lt;div class="subtasks-progress-container d-flex align-items-center">
+      &lt;div class="progress-bar-container">
+        &lt;div class="progress-bar" style="width: ${progressPercentage}%;">&lt;/div>
+      &lt;/div>
+      &lt;div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks&lt;/div>
+    &lt;/div>
+  `;
+}
+
+
+/**
+ * Renders HTML for displaying assigned contacts.
+ *
+ * @param {Array} assignedTo - An array of contact IDs or names assigned to the task.
+ * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
+ * @returns {string} Returns HTML string with circles representing assigned contacts.
+ */
+function renderTaskContacts(assignedTo = [], contactsData = {}) {
+  if (!isValidArray(assignedTo)) return "";
+
+
+  return assignedTo
+    .map((contactIdOrName) => {
+      let contact = contactsData[contactIdOrName];
+
+      if (!contact) {
+        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
+      }
+
+      if (!contact) {
+        return ``;
+    }
+    
+
+      const shortName = contact.name
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join("");
+      const backgroundColor = contact.color || "#ccc";
+
+      return `
+        &lt;div class="contact-circle" style="background-color: ${backgroundColor};">
+          &lt;span>${shortName}&lt;/span>
+        &lt;/div>
+      `;
+    })
     .join("");
-  return initials.length > 2 ? initials.substring(0, 2) : initials;
 }
 
 
 /**
- * Navigates the user to the previous page in the browser history.
+ * Retrieves the container ID based on the task status.
+ *
+ * @param {string} status - The status of the task (e.g., "To do", "In progress", etc.).
+ * @returns {string|null} The ID of the corresponding container element, or null if no matching container is found.
  */
-function goBack() {
-  window.history.back();
+function getContainerIdByStatus(status) {
+  const statusContainers = {
+    "To do": "todo-container",
+    "In progress": "progress-container",
+    "Await feedback": "feedback-container",
+    "Done": "done-container",
+  };
+  return statusContainers[status] || null;
 }
 
 
 /**
- * Returns a random color from the COLORS array.
- * 
- * @returns {string} A random color from the COLORS array.
+ * Generates HTML for the priority label based on the provided priority.
+ *
+ * @param {string} priority - The priority level of the task (e.g., "urgent", "medium", "low").
+ * @returns {string} The HTML string for displaying the priority label image.
  */
-function getRandomColor() {
-  let randomIndex = Math.floor(Math.random() * COLORS.length);
-  return COLORS[randomIndex];
+function priorityLabelHTML(priority) {
+  return `&lt;img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
 
+/**
+ * Event listener for when the DOM content is fully loaded.
+ * It calls the `boardRender` function to load and render the tasks on the board.
+ */
+document.addEventListener("DOMContentLoaded", async () => {
+  await boardRender();
+});
 
 /**
- * Extracts the initials from a given name.
- * @param {string} name - The full name (e.g., "John Doe").
- * @returns {string} The initials (e.g., "JD").
+ * Updates the progress bar and subtask count for a task based on the completed subtasks.
+ *
+ * @param {string} taskId - The ID of the task whose progress needs to be updated.
+ * @param {Array} subtasks - The list of subtasks associated with the task.
+ * @returns {void}
  */
-function returnInitialsOfName(name) {
-  const splitName = name.split(" ");
-  let initials = "";
+function updateProgressBar(taskId, subtasks) {
+  const taskElement = document.getElementById(taskId);
 
-  for (let i = 0; i &lt; splitName.length; i++) {
-    const letter = splitName[i].charAt(0).toUpperCase();
-    initials += letter;
+  if (!taskElement) {
+    console.error(`Task mit ID ${taskId} nicht gefunden.`);
+    return;
   }
-  return initials;
-}
 
+  const completedSubtasks = subtasks.filter(subtask => subtask.isChecked).length;
+  const totalSubtasks = subtasks.length;
+  const progressPercentage = totalSubtasks > 0
+    ? Math.round((completedSubtasks / totalSubtasks) * 100)
+    : 0;
 
-/**
- * Displays a toast message on the screen with customizable text, position, and animations.
- *
- * @param {string} message - The content of the toast message to display.
- * @param {string} [height='middle'] - Vertical position of the toast on the screen. Possible values: "yMiddle" (center) or "yLow" (lower area of the display).
- * @param {number} [visibleTime=3000] - Duration (in milliseconds) the toast message remains visible. If set to 0, the toast will stay on the screen indefinitely.
- * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen. If false, the toast will appear instantly.
- * @param {string} [fromWhere='bottom'] - Direction from which the toast should slide in. Only relevant if `shallSlideIn` is true. Possible values: "bottom" or "right".
- * @param {boolean} [shallSlideOut=true] - Whether the toast should slide out of the screen. If false, the toast will disappear instantly. Only relevant if `visibleTime` > 0.
- */
-function showToast(
-  message,
-  height = "middle",
-  visibleTime = 3000,
-  shallSlideIn = true,
-  fromWhere = "bottom",
-  shallSlideOut = true
-) {
-  const toast = document.getElementById("toast-container");
+  const progressBarContainer = taskElement.querySelector(".progress-bar");
+  const subtasksCount = taskElement.querySelector(".subtasks-count");
 
-  prepareToastStartPosition(toast, shallSlideIn, height, fromWhere);
-  toast.innerHTML = message;
+  if (progressBarContainer) {
+    progressBarContainer.style.width = `${progressPercentage}%`;
+  }
 
-  setTimeout(() => {
-    callToast(toast, height, (shallSlideIn = true), fromWhere);
-    toastLeaveDisplay(toast, visibleTime, height, fromWhere, shallSlideOut);
-  }, 0);
-}
-
-
-/**
- * Configures the initial position of the toast element before it appears on the screen.
- *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {boolean} shallSlideIn - Whether the toast should slide into the screen.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast should slide in. Possible values: "bottom", "right".
- */
-function prepareToastStartPosition(toast, shallSlideIn, height, fromWhere) {
-  toast.classList = "";
-  if (shallSlideIn) {
-    toast.classList.add(fromWhere);
-    if (fromWhere === "bottom") {
-      toast.classList.add("xMiddle");
-    } else if (fromWhere === "right") {
-      toast.classList.add("y" + upperCaseFirstLetter(height));
-    }
+  if (subtasksCount) {
+    subtasksCount.textContent = `${completedSubtasks}/${totalSubtasks} Subtasks`;
   }
 }
 
 
 /**
- * Handles the appearance of the toast element by either sliding it in or making it appear instantly.
+ * Updates the status of a specific task in the Firebase database.
  *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {boolean} [shallSlideIn=true] - Whether the toast should slide into the screen.
- * @param {string} fromWhere - The direction from which the toast should slide in. Only relevant if `shallSlideIn` is true.
+ * @param {string} taskId - The ID of the task whose status needs to be updated.
+ * @param {string} newStatus - The new status to set for the task.
+ * @returns {Promise&lt;void>} A promise that resolves when the update is complete.
  */
-function callToast(toast, height, shallSlideIn = true, fromWhere) {
-  toast.classList.remove("d-none")
-  if (shallSlideIn) {
-    toastSlideIn(toast, height, fromWhere);
-  } else {
-    toastAppear();
+async function updateTaskStatus(taskId, newStatus) {
+  const firebaseUrl = `https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app/tasks/${taskId}.json`;
+
+  try {
+    await fetch(firebaseUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+  } catch (error) {
+    console.error(`Error updating task ${taskId}:`, error);
   }
 }
 
 
-/**
- * Removes specified prefixes and suffixes from a given string.
- * 
- * This function takes a string and removes the specified prefix and suffix
- * if they exist in the string.
- *
- * @param {string} string - The string from which the prefix and suffix will be removed.
- * @param {string} [prefix=''] - The prefix to remove (default is empty string).
- * @param {string} [suffix=''] - The suffix to remove (default is empty string).
- * @returns {string} The modified string with the prefix and suffix removed.
- */
-function stripPrefixAndSuffix(string, prefix = '', suffix = '') {
-  return string.replace(prefix, '').replace(suffix, '');
-}
-
-
-/**
- * Animates the toast element to slide into the screen from the specified direction.
- *
- * @param {HTMLElement} toast - The toast element to be displayed.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast slides in. Possible values: "bottom", "right".
- */
-function toastSlideIn(toast, height, fromWhere) {
-  toast.classList.add(fromWhere);
-  if (fromWhere === "bottom") {
-    toast.classList.add("xMiddle");
-    toast.classList.add("y" + upperCaseFirstLetter(height));
-  } else if (fromWhere === "right") {
-    toast.classList.add("y" + upperCaseFirstLetter(height));
-    toast.classList.add("xMiddle");
+async function deleteTaskOfModalCard(id) {
+  try {
+    await deleteTaskInDatabase(id);
+    toggleDisplayModal();
+    await boardRender();
+  } catch (error) {
+    console.error(`Error deleting task with ID ${id}:`, error);
   }
 }
-
-
-/**
- * Makes the toast element appear instantly at the specified position.
- *
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- */
-function toastAppear(height) {
-  toast.classList.add("y" + upperCaseFirstLetter(height));
-  toast.classList.add("xMiddle");
-}
-
-/**
- * Handles the disappearance of the toast element after a specified duration.
- *
- * @param {HTMLElement} toast - The toast element to be removed from the screen.
- * @param {number} visibleTime - The duration (in milliseconds) for which the toast remains visible. If 0, the toast will stay on the screen indefinitely.
- * @param {string} height - The vertical position of the toast. Possible values: "yMiddle", "yLow".
- * @param {string} fromWhere - The direction from which the toast was displayed. Possible values: "bottom", "right".
- * @param {boolean} shallSlideOut - Whether the toast should slide out of the screen. If false, the toast will disappear instantly.
- */
-function toastLeaveDisplay(
-  toast,
-  visibleTime,
-  height,
-  fromWhere,
-  shallSlideOut
-) {
-  if (visibleTime > 0) {
-    if (shallSlideOut) {
-      setTimeout(() => {
-        if (fromWhere === "bottom") {
-          toast.classList.remove("y" + upperCaseFirstLetter(height));
-        } else if (fromWhere === "right") {
-          toast.classList.remove("xMiddle");
-        }
-      }, visibleTime);
-    } else {
-      setTimeout(() => {
-        toast.classList.add("d-none");
-      }, visibleTime);
-    }
-  }
-}
-
-
-/**
- * Toggles the display of an element based on the specified mode.
- * @param {HTMLElement} element - The DOM element to toggle.
- * @param {string} displayMode - The CSS class to apply when visible (default: "d-block").
- * @param {boolean|string} shallVisible - Whether the element should be visible or hidden, or toggle state if undefined.
- */
-function toggleDisplayNone(
-  element,
-  displayMode = "d-block",
-  shallVisible = ""
-) {
-  let eleClass = element.classList;
-  if (shallVisible === true) {
-    eleClass.remove("d-none");
-    eleClass.add(displayMode);
-  } else if (shallVisible === false) {
-    eleClass.remove(displayMode);
-    eleClass.add("d-none");
-  } else {
-    if (eleClass.contains("d-none")) {
-      eleClass.remove("d-none");
-      eleClass.add(displayMode);
-    } else {
-      eleClass.remove(displayMode);
-      eleClass.add("d-none");
-    }
-  }
-}
-
-
-/**
- * Capitalizes the first letter of a string.
- * @param {string} str - The input string.
- * @returns {string} The string with the first letter capitalized.
- */
-function upperCaseFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1);
-}</code></pre>
+</code></pre>
         </article>
     </section>
 
