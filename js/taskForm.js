@@ -100,10 +100,6 @@ async function submitTaskForm(method = 'post', id = '') {
     const buttons = document.getElementById("form-footer").querySelectorAll("button")
 
 
-    if (!checkAllInputsHasContent(title, dueDate, category)) {
-        return alert('Please fill all required fields');
-    }
-
     buttons.forEach(button => {
         button.disabled = true;
     });
