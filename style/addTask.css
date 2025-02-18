@@ -344,6 +344,11 @@ textarea {
 }
 
 
+#sendButton:disabled:hover {
+    text-decoration: line-through
+}
+
+
 .single-img-box {
     border-right: 1px solid var(--border-color);
     box-sizing: content-box;
