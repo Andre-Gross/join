@@ -29,7 +29,6 @@
 
     form {
         padding-right: unset;
-        max-width: auto;
         gap: 0;
         justify-content: start;
         flex-direction: row;
