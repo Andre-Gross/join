@@ -103,10 +103,8 @@ async function submitTaskForm(method = 'post', id = '') {
     const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
     method === 'put' ? await putTaskToDatabase(id, data) : await postTaskToDatabase(data);
 
-    setTimeout(async () => {
-        nextStatus = 'To do';
-        window.location.href = `./board.html`;
-    }, 3000);
+    nextStatus = 'To do';
+    handleEndingOfTaskForm();
 }
 
 
@@ -152,6 +150,22 @@ function emptyAddTaskInputs() {
  */
 function checkAllInputsHasContent(title, dueDate, category) {
     return !(title === '' || dueDate === '' || category === '');
+}
+
+
+/**
+ * Handles the ending process of the task form.
+ * - After a delay of 2 seconds, it redirects to `board.html` if the current page is not the board.
+ * - If the user is already on `board.html`, it closes the modal instead.
+ */
+function handleEndingOfTaskForm() {
+    setTimeout(async () => {
+        if (!window.location.href.includes("/board.html")) {
+            window.location.href = `./board.html`;
+        } else {
+            closeModalCard();
+        }
+    }, 2000);
 }
 
 
