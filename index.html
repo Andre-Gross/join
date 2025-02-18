@@ -36,7 +36,7 @@
                     <div class="card-body p-4">
                         <h1 class="text-center mb-4">Log in</h1>
                         <div class="separator horizontal"></div>
-                        <form onsubmit="event.preventDefault(); logIn();">
+                        <form onsubmit="event.preventDefault(); logIn();" novalidate>
                             <div class="mb-3">
                                 <input type="email" class="form-control" id="email" placeholder="E-Mail" required
                                     onblur="changeToRightBorderColor(this); validateEmailField(this);"
@@ -76,7 +76,7 @@
                 <div class="card" id="signupCard" style="display: none;">
                     <div class="card-body p-4">
                         <h1 class="text-center mb-4">Sign Up</h1>
-                        <form onsubmit="event.preventDefault(); signUp();">
+                        <form onsubmit="event.preventDefault(); signUp();" novalidate>
                             <div class="mb-3">
                                 <input type="text" id="name" class="form-control" placeholder="Name" required
                                     oninput="checkFormValidity()">
@@ -125,7 +125,7 @@
                 <div class="card" id="passwordResetCard" style="display: none;">
                     <div class="card-body p-4">
                         <h1 class="text-center mb-4">Password reset</h1>
-                        <form id="passwordResetForm">
+                        <form id="passwordResetForm" novalidate>
 
                             <div class="mb-3">
                                 <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail" required
