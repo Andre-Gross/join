@@ -1,335 +1,351 @@
 :root {
-    --background-color: #f6f7f8;
-    --body-padding: 0 20px;
-    --landing-bg-color: #253345;
-    --logo-container-size: 120px;
-    --logo-width: 100px;
-    --logo-height: 120px;
-    --logo-final-width: 70px;
-    --input-bg-position: right 10px center;
-    --input-bg-size: 20px;
-    --card-width: 90%;
-    --card-max-width: 396px;
-    --card-max-height: 515px;
-    --card-border-radius: 30px;
-    --card-padding: 32px 0;
-    --card-gap: 32px;
-    --form-control-border-radius: 8px;
-    --form-control-padding: 0.75rem;
-    --form-control-border-color: #d1d1d1;
-    --separator-color: #29abe2;
-    --separator-width: 150px;
-    --popup-bg-color: #f8d7da;
-    --popup-text-color: #721c24;
-    --popup-border-color: #f5c6cb;
-    --popup-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --toggle-color: #29ABE2
-  }
-  
-
-  input:-webkit-autofill {
-    background-color: transparent !important;
-    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
-    transition: background-color 5000s ease-in-out 0s;
-  }
-  
-
-  body {
-    padding: var(--body-padding);
-  }
-  
-
-  body.landing-page {
-    background-color: var(--landing-bg-color);
-    transition: background-color 0.5s ease-in-out 0.5s;
-  }
-  
-
-  body.landing-page.loaded {
-    background-color: var(--background-color);
-  }
-  
-
-  .landing-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-
-  .logo-container {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: var(--logo-container-size);
-    height: var(--logo-container-size);
-    transition: all 0.8s ease-in-out 0.2s;
-  }
-  
-
-  body.landing-page.loaded .logo-container {
-    top: 10px;
-    left: 10px;
-    transform: translate(0, 0);
-  }
-  
-  
-  .login-logo {
-    width: var(--logo-width);
-    height: var(--logo-height);
-    transition: all 1.5s ease-in-out 1s;
-    position: absolute;
-  }
-  
-
-  body.landing-page.loaded .login-logo {
-    width: var(--logo-final-width);
-  }
-  
-
-  .initial-logo,
-  .final-logo {
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out 0.5s;
-  }
-
-  
-  .final-logo {
-    opacity: 0;
-  }
-  
-
-  body.landing-page.loaded .initial-logo {
-    opacity: 0;
-  }
-  
-
-  body.landing-page.loaded .final-logo {
-    opacity: 1;
-  }
-  
-
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
-    background-position: var(--input-bg-position);
-    background-repeat: no-repeat;
-    background-size: var(--input-bg-size);
-    height: 40px;
-  }
-  
-
-  input[type="text"] {
-    background-image: url(../assets/img/logIn-signUp/person.svg);
-  }
-  
-
-  input[type="email"] {
-    background-image: url(../assets/img/logIn-signUp/mail.svg);
-  }
-  
-
-  input[type="password"] {
-    background-image: url(../assets/img/logIn-signUp/lock.svg);
-  }
-  
-
-  .password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .password-container input {
-    width: 100%;
-    background-image: url("../assets/img/logIn-signUp/lock.svg");
-  }
-  
-
-  .password-container input.has-icon {
-    background-image: none;
-  }
-  
-
-  .password-toggle {
-    top: 50%;
-    transform: translateY(-50%);
-    width: var(--input-bg-size);
-    height: var(--input-bg-size);
-    position: absolute;
-    right: 12px;
-    cursor: pointer;
-    opacity: 1;
-    transition: opacity 0.2s;
-    display: none;
-    object-fit: contain;
-  }
-
-  #forgotPassword{
-    color: var(--toggle-color);
-    cursor: pointer;
-  }
+  --background-color: #f6f7f8;
+  --body-padding: 0 20px;
+  --landing-bg-color: #253345;
+  --logo-container-size: 120px;
+  --logo-width: 100px;
+  --logo-height: 120px;
+  --logo-final-width: 70px;
+  --input-bg-position: right 10px center;
+  --input-bg-size: 20px;
+  --card-width: 90%;
+  --card-max-width: 396px;
+  --card-max-height: 515px;
+  --card-border-radius: 30px;
+  --card-padding: 32px 0;
+  --card-gap: 32px;
+  --form-control-border-radius: 8px;
+  --form-control-padding: 0.75rem;
+  --form-control-border-color: #d1d1d1;
+  --separator-color: #29abe2;
+  --separator-width: 150px;
+  --popup-bg-color: #f8d7da;
+  --popup-text-color: #721c24;
+  --popup-border-color: #f5c6cb;
+  --popup-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --toggle-color: #29ABE2
+}
 
 
-  #backToLogin{
-    color: var(--toggle-color) !important;
-    cursor: pointer;
-  }
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
-  #forgotPassword:hover,
-  #backToLogin:hover{
-    text-decoration: underline;
-  }
-  
 
-  .password-toggle:hover {
-    opacity: 1;
-  }
-  
+body {
+  padding: var(--body-padding);
+}
 
-  .card {
-    width: var(--card-width);
-    max-width: var(--card-max-width);
-    max-height: var(--card-max-height);
-    border: none;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: var(--card-border-radius);
-    padding: var(--card-padding);
-    background-color: white;
-    margin: 1rem auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--card-gap);
-    opacity: 1;
-    overflow: hidden;
-  }
-  
 
-  #loginCard,
-  #signupCard {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out 0.5s;
-    max-width: 650px;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
+body.landing-page {
+  background-color: var(--landing-bg-color);
+  transition: background-color 0.5s ease-in-out 0.5s;
+}
 
-  #passwordResetCard {
-    max-width: 650px;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-  
 
-  body.landing-page.loaded #loginCard,
-  body.landing-page.loaded #signupCard {
-    opacity: 1;
-  }
-  
+body.landing-page.loaded {
+  background-color: var(--background-color);
+}
 
-  body.no-animation .logo-container,
-  body.no-animation .login-logo,
-  body.no-animation #loginCard {
-    transition: none;
-    opacity: 1;
-    transform: none;
-    background-color: #f0f0f0;
-  }
-  
 
-  .form-control {
-    width: 100%;
-    border-radius: var(--form-control-border-radius);
-    padding: var(--form-control-padding);
-    border: 1px solid var(--form-control-border-color);
-  }
-  
+.landing-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .d-grid button {
-    margin: 0 auto;
-  }
-  
 
-  .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-  }
-  
+.logo-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--logo-container-size);
+  height: var(--logo-container-size);
+  transition: all 0.8s ease-in-out 0.2s;
+}
 
-  #switchExtras {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;       
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out 0.3s, visibility 0s linear 0.3s;
-  }
-  
 
-  body.landing-page.loaded #switchExtras {
-    opacity: 1;
-    visibility: visible;
-  }
-  
+body.landing-page.loaded .logo-container {
+  top: 10px;
+  left: 10px;
+  transform: translate(0, 0);
+}
 
-  .popup-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--popup-bg-color);
-    color: var(--popup-text-color);
-    padding: 10px 20px;
-    border: 1px solid var(--popup-border-color);
-    border-radius: 5px;
-    box-shadow: var(--popup-box-shadow);
-    font-size: 14px;
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
-  }
-  
 
-  .popup-message.show {
-    opacity: 1;
-    bottom: 40px;
-  }
-  
+.login-logo {
+  width: var(--logo-width);
+  height: var(--logo-height);
+  transition: all 1.5s ease-in-out 1s;
+  position: absolute;
+}
 
-  .separator {
-    border: 2px solid var(--separator-color);
-    border-radius: 25px;
-  }
-  
 
-  .horizontal {
-    display: block;
-    height: 2px;
-    width: var(--separator-width);
-    margin: 30px auto;
-  }
-  
+body.landing-page.loaded .login-logo {
+  width: var(--logo-final-width);
+}
 
-  .form-check {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  
-  .form-check-label {
-    margin-left: 8px;
-  }
-  
-  
+
+.initial-logo,
+.final-logo {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out 0.5s;
+}
+
+
+.final-logo {
+  opacity: 0;
+}
+
+
+body.landing-page.loaded .initial-logo {
+  opacity: 0;
+}
+
+
+body.landing-page.loaded .final-logo {
+  opacity: 1;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  background-position: var(--input-bg-position);
+  background-repeat: no-repeat;
+  background-size: var(--input-bg-size);
+  height: 40px;
+}
+
+
+input[type="text"] {
+  background-image: url(../assets/img/logIn-signUp/person.svg);
+}
+
+
+input[type="email"] {
+  background-image: url(../assets/img/logIn-signUp/mail.svg);
+}
+
+
+input[type="password"] {
+  background-image: url(../assets/img/logIn-signUp/lock.svg);
+}
+
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.password-container input {
+  width: 100%;
+  background-image: url("../assets/img/logIn-signUp/lock.svg");
+}
+
+
+.password-container input.has-icon {
+  background-image: none;
+}
+
+
+.password-toggle {
+  top: 26%;
+  transform: translateY(-50%);
+  width: var(--input-bg-size);
+  height: var(--input-bg-size);
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+  display: none;
+  object-fit: contain;
+}
+
+.new-password-toggle {
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--input-bg-size);
+  height: var(--input-bg-size);
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+  display: none;
+  object-fit: contain;
+}
+
+
+#forgotPassword {
+  color: var(--toggle-color);
+  cursor: pointer;
+}
+
+
+#backToLogin {
+  color: var(--toggle-color) !important;
+  cursor: pointer;
+}
+
+#forgotPassword:hover,
+#backToLogin:hover {
+  text-decoration: underline;
+}
+
+
+.password-toggle:hover {
+  opacity: 1;
+}
+
+.text-error-password-container {
+  height: 40px;
+}
+
+.card {
+  width: var(--card-width);
+  max-width: var(--card-max-width);
+  max-height: var(--card-max-height);
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  background-color: white;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+  opacity: 1;
+  overflow: hidden;
+}
+
+
+#loginCard,
+#signupCard {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out 0.5s;
+  max-width: 650px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#passwordResetCard {
+  max-width: 650px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+
+body.landing-page.loaded #loginCard,
+body.landing-page.loaded #signupCard {
+  opacity: 1;
+}
+
+
+body.no-animation .logo-container,
+body.no-animation .login-logo,
+body.no-animation #loginCard {
+  transition: none;
+  opacity: 1;
+  transform: none;
+  background-color: #f0f0f0;
+}
+
+
+.form-control {
+  width: 100%;
+  border-radius: var(--form-control-border-radius);
+  padding: var(--form-control-padding);
+  border: 1px solid var(--form-control-border-color);
+}
+
+
+.d-grid button {
+  margin: 0 auto;
+}
+
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+
+#switchExtras {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out 0.3s, visibility 0s linear 0.3s;
+}
+
+
+body.landing-page.loaded #switchExtras {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.popup-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--popup-bg-color);
+  color: var(--popup-text-color);
+  padding: 10px 20px;
+  border: 1px solid var(--popup-border-color);
+  border-radius: 5px;
+  box-shadow: var(--popup-box-shadow);
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, bottom 0.3s ease-in-out;
+}
+
+
+.popup-message.show {
+  opacity: 1;
+  bottom: 40px;
+}
+
+
+.separator {
+  border: 2px solid var(--separator-color);
+  border-radius: 25px;
+}
+
+
+.horizontal {
+  display: block;
+  height: 2px;
+  width: var(--separator-width);
+  margin: 30px auto;
+}
+
+
+.form-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.form-check-label {
+  margin-left: 8px;
+}
