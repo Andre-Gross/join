@@ -338,10 +338,10 @@ async function createNameCircleWithRemove(id) {
 
     let HTML = createNameCircle(initials, color);
 
-    const divId = `addPrefixAndSuffix(${id}, 'nameCircle-')`;
+    const divId = addPrefixAndSuffix(id, 'nameCircle-');
     const onclickFunction = `selectContact('${id}')`;
 
-    HTML = HTML.replace('<div', `<div id="${divId}" onclick="${onclickFunction}"`);
+    HTML = HTML.replace('<div class="', `<div id="${divId}" onclick="${onclickFunction}" class="pointer `);
 
     return HTML;
 }
