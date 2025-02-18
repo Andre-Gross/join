@@ -53,14 +53,16 @@ async function loadContacts() {
   ids = Object.keys(loadContacts);
 
   for (let index = 0; index < contactsArray.length; index++) {
-    emails.push(contactsArray[index].email);
+    if (!contactsArray[index].name) continue; // Überspringt fehlerhafte Einträge
+    emails.push(contactsArray[index].email || "No email");
     names.push(contactsArray[index].name);
-    phones.push(contactsArray[index].phone);
-    colors.push(contactsArray[index].color);
+    phones.push(contactsArray[index].phone || "No phone");
+    colors.push(contactsArray[index].color || "#ccc");
   }
 
   await sortContacts();
 }
+
 
 
 /**
