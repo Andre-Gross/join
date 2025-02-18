@@ -269,3 +269,13 @@ function hideResetPasswordError() {
     .getElementById("text-error-password-resetPassword")
     .classList.add("d-none");
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("email").addEventListener("input", hidePasswordError);
+  document.getElementById("password").addEventListener("input", hidePasswordError);
+  document.getElementById("signUpEmail").addEventListener("input", hideSignUpPasswordError);
+  document.getElementById("confirmPassword").addEventListener("input", hideSignUpPasswordError);
+  document.getElementById("resetEmail").addEventListener("input", hideResetPasswordError);
+  document.getElementById("confirmResetPassword").addEventListener("input", hideResetPasswordError);
+});
