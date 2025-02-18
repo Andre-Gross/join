@@ -186,12 +186,26 @@ function changeTextRequired(field) {
 /**
  * Creates the "Assigned To" dropdown menu.
  */
-async function createAssignedToDropdown() {
+async function createAssignedToDropdown(preSelectedContacts = []) {
     const dropdown = document.getElementById("dropdown-assignedTo");
     const contacts = await getContactsAsArray();
     dropdown.innerHTML = "";
-    contacts.forEach(contact => createAssignedToContactItem(dropdown, contact));
+
+    contacts.forEach(contact => {
+        const isChecked = preSelectedContacts.includes(contact.id) ? "checked" : "";
+        const contactItem = document.createElement("div");
+        contactItem.id = addPrefixAndSuffix(contact.id, 'item_');
+        contactItem.className = "contact-item";
+        contactItem.innerHTML = `
+            ${contact.name}
+            <input type="checkbox" id="${addPrefixAndSuffix(contact.id, 'checkbox_')}" ${isChecked}>
+        `;
+        contactItem.onclick = () => selectContact(contact.id);
+        addAssignedToCheckboxEvent(contactItem, contact);
+        dropdown.appendChild(contactItem);
+    });
 }
+
 
 
 /**
@@ -307,14 +321,13 @@ async function filterContacts() {
  * 
  * @async
  */
-async function refreshChoosenContactCircles() {
-    let checkedContacts = readAssignedTo();
-    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts')
+async function refreshChoosenContactCircles(preSelectedContacts = []) {
+    let checkedContacts = preSelectedContacts.length > 0 ? preSelectedContacts : readAssignedTo();
+    const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts');
 
     choosenContactsContainer.innerHTML = '';
-    for (let i = 0; i < checkedContacts.length; i++) {
-        const singleContact = checkedContacts[i];
-        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(singleContact)
+    for (let contactId of checkedContacts) {
+        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(contactId);
     }
 }
 
