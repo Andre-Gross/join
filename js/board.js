@@ -334,3 +334,30 @@ function scrollToTaskSection() {
     }
   }
 }
+
+
+/**
+ * Adjusts the height of each board section to be one task longer than the number of tasks.
+ */
+function adjustBoardSectionHeight() {
+  const sections = document.querySelectorAll('.board-section');
+  sections.forEach(section => {
+      const tasks = section.querySelectorAll('.task').length;
+      const tasksContainer = section.querySelector('.tasks-container');
+      const taskHeight = 260;
+      const minHeight = (tasks + 1) * taskHeight;
+      tasksContainer.style.minHeight = `${minHeight}px`;
+  });
+}
+
+/**
+* Initializes the height adjustment for board sections and observes changes in the DOM.
+*/
+document.addEventListener("DOMContentLoaded", () => {
+  adjustBoardSectionHeight();
+  const observer = new MutationObserver(adjustBoardSectionHeight);
+  observer.observe(document.querySelector('.container-fluid'), {
+      childList: true,
+      subtree: true,
+  });
+});

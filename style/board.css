@@ -152,6 +152,7 @@ body.dragging {
     display: flex;
     flex-direction: column;
     max-height: fit-content;
+    min-height: calc(260px * 2);
 
 }
 
