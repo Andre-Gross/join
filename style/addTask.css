@@ -192,6 +192,12 @@ textarea {
 }
 
 
+#content-container #form-footer {
+    padding-top: 146px;
+    padding-bottom: 12px;
+}
+
+
 .one-column #form-footer {
     padding-bottom: 12px;
 }
