@@ -133,6 +133,8 @@ function changeVisibleImages(changeToTwoImg) {
     const plusImg = document.getElementById('input-subtask-plus-box');
     const twoImgBox = document.getElementById('input-subtask-two-img-box')
 
-    toggleDisplayNone(plusImg, 'd-flex', !changeToTwoImg);
-    toggleDisplayNone(twoImgBox, 'd-flex', changeToTwoImg);
+    if (plusImg && twoImgBox) {
+        toggleDisplayNone(plusImg, 'd-flex', !changeToTwoImg);
+        toggleDisplayNone(twoImgBox, 'd-flex', changeToTwoImg);
+    }
 }
