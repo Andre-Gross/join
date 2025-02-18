@@ -136,6 +136,7 @@ function emptyAddTaskInputs() {
     selectPriority('medium');
     document.getElementById("input-subtask").value = [];
     dataSubtasks = [];
+    refreshChoosenContactCircles()
     renderNewSubtasks();
 }
 
