@@ -51,7 +51,7 @@ function getContactMain(i) {
               <div id="idInput">
                   <input id="idNameAddContact" type="text" name="name" placeholder="Name">
                   <input id="idMailAddContact" type="email" name="email" placeholder="Email" onblur="validateEmailField(this)">
-                  <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone" onblur="validatePhoneField(this)>
+                  <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone" onblur="validatePhoneField(this)">
               </div>
               <div id="idContactBtns">
                   <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
@@ -160,7 +160,7 @@ function getContactMain(i) {
       <div id="idInput">
           <input id="idNameEditContact" type="text" value="${names[i]}" name="name" placeholder="Name">
           <input id="idMailEditContact" type="email" value="${emails[i]}" name="email" placeholder="Email" onblur="validateEmailField(this)">
-          <input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone">
+          <input id="idPhoneEditContact" type="tel" value="${phones[i]}" name="phone" placeholder="Phone" onblur="validatePhoneField(this)">
       </div>
       <div id="idContactBtns">
           <button id="idDeleteBtn" class="btn btn-outline-secondary" onclick="deleteContact(${i})">
