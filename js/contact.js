@@ -212,7 +212,11 @@ async function deleteContact(i) {
   showToast(toastMessageDeleteContact, 'middle', 1000);
 
   setTimeout(() => {
-    window.location.reload();
+    contactMain();
+    let existingView = document.getElementById("idViewContactCard");
+    if (existingView) {
+      existingView.remove(); 
+    }
   }, 1000);
 }
 
