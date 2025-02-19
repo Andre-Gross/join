@@ -189,7 +189,9 @@ function submitAddContact() {
   let mail = document.getElementById("idMailAddContact").value;
   let phone = document.getElementById("idPhoneAddContact").value;
   let color = getRandomColor();
-
+  if (!validateContactForm("idNameAddContact", "idMailAddContact", "idPhoneAddContact")) {
+    return; 
+  }
   postContactToDatabase(name, mail, phone, color);
 
   showToast(toastMessageAddContact, 'middle', 1000);
@@ -231,6 +233,9 @@ function saveEditContact(i) {
   let phone = document.getElementById("idPhoneEditContact").value;
   let color = colors[i];
   let id = ids[i];
+  if (!validateContactForm("idNameEditContact", "idMailEditContact", "idPhoneEditContact")) {
+    return;
+  }
   putContactInDatabase(name, mail, phone, color, id);
   showToast(toastMessageEditContact, 'middle', 1000);
   setTimeout(() => {
@@ -406,3 +411,18 @@ function toggleDropdownMenu(index) {
   }
 }
 
+
+function validateContactForm(nameInputId, emailInputId, phoneInputId) {
+  let nameInput = document.getElementById(nameInputId);
+  let emailInput = document.getElementById(emailInputId);
+  let phoneInput = document.getElementById(phoneInputId);
+
+  let isEmailValid = validateEmailField(emailInput);
+  let isPhoneValid = validatePhoneField(phoneInput);
+
+  if (!nameInput.value.trim() || !isEmailValid || !isPhoneValid) {
+    return false;
+  }
+
+  return true;
+}
