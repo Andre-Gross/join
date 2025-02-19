@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (targetElement) {
         setTimeout(() => {
           window.scrollTo({
-            top: targetElement.offsetTop - 200, // 200px nach unten versetzt
+            top: targetElement.offsetTop - 200,
             behavior: "smooth", 
           });
         }, 200);
@@ -29,46 +29,79 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/**
+ * Filters and displays tasks based on the user's search input.
+ * 
+ * If the input length is at least 3 characters, it filters tasks by title and description.
+ * If no matches are found, a toast message is displayed and the board is cleared.
+ * If the input is empty, the board is re-rendered.
+ * 
+ * @async
+ * @function filterAndShowTask
+ */
 async function filterAndShowTask() {
   let filterWord = document.getElementById("idSearch").value;
 
   if (filterWord.length >= 3) {
     let tasksAsArray = await getTasksAsArray();
     let filterWordLow = filterWord.toLowerCase();
-    let currentTitles = tasksAsArray.filter((title) =>
-      title.title.toLowerCase().includes(filterWordLow)
+
+    let currentTitles = tasksAsArray.filter((task) =>
+      task.title.toLowerCase().includes(filterWordLow)
     );
-    let currentDescriptions = tasksAsArray.filter((description) =>
-      description.description.toLowerCase().includes(filterWordLow)
+    let currentDescriptions = tasksAsArray.filter((task) =>
+      task.description.toLowerCase().includes(filterWordLow)
     );
+
     let descriptionIds = new Set(currentDescriptions.map((task) => task.id));
-    currentTitles = currentTitles.filter(
-      (task) => !descriptionIds.has(task.id)
-    );
+    currentTitles = currentTitles.filter((task) => !descriptionIds.has(task.id));
 
+    currentTasks = {};
     for (let task of currentTitles) {
-      if (!currentTasks[task.id]) {
-        currentTasks[task.id] = task;
-      }
+      currentTasks[task.id] = task;
     }
-
     for (let task of currentDescriptions) {
-      if (!currentTasks[task.id]) {
-        currentTasks[task.id] = task;
-      }
-    }
-    if (currentTitles.length === 0 && currentDescriptions.length === 0) {
-      showToast(toastMessageNoResult, 'middle', 1000);
-      setTimeout(1000);
+      currentTasks[task.id] = task;
     }
 
-    await renderBodySearch();
+    if (Object.keys(currentTasks).length === 0) {
+      showToast(toastMessageNoResult, "middle", 1000);
+      clearTasksFromBoard();
+    } else {
+      await renderBodySearch();
+    }
   } else if (filterWord.length === 0) {
     boardRender();
   }
 }
 
 
+
+/**
+ * Clears all tasks from the board by emptying the content of each task container.
+ * 
+ * The function targets the containers for "To Do", "In Progress", "Feedback", and "Done" tasks.
+ * 
+ * @function clearTasksFromBoard
+ */
+function clearTasksFromBoard() {
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+    document.getElementById(containerId).innerHTML = "";
+  });
+}
+
+
+/**
+ * Renders assigned contact initials inside colored circles.
+ * 
+ * Displays up to three assigned contacts. If no contacts are assigned, empty placeholders are shown.
+ * Contacts are represented by the first initials of their names in colored circles.
+ * 
+ * @function renderAssignedContacts
+ * @param {string[]} assignedTo - Array of assigned contact names.
+ * @param {Object} contacts - Object containing contact details including names and colors.
+ * @returns {string} - HTML string representing the assigned contacts section.
+ */
 function renderAssignedContacts(assignedTo, contacts) {
   const contactEntries = Object.values(contacts);
 
@@ -87,7 +120,6 @@ function renderAssignedContacts(assignedTo, contacts) {
         }
 
         const contact = contactEntries.find((c) => c.name === name);
-
         const color = contact ? contact.color : "#ccc";
 
         const nameParts = (contact ? contact.name : name).split(" ");
@@ -108,6 +140,17 @@ function renderAssignedContacts(assignedTo, contacts) {
 }
 
 
+/**
+ * Loads tasks and contacts from the Firebase database and renders them into the appropriate board sections.
+ * 
+ * Fetches tasks and contacts asynchronously, clears existing task containers, 
+ * and dynamically creates and appends task elements with category labels, progress bars, 
+ * assigned contacts, and priority indicators.
+ * 
+ * @async
+ * @function loadTasks
+ * @throws {Error} Throws an error if fetching tasks or contacts fails.
+ */
 async function loadTasks() {
   const firebaseUrl =
     "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
@@ -175,11 +218,7 @@ async function loadTasks() {
       }
 
       const priorityImage = priorityLabelHTML(task.priority);
-
-      const contactsHTML = renderAssignedContacts(
-        task.assignedTo,
-        contactsData
-      );
+      const contactsHTML = renderAssignedContacts(task.assignedTo, contactsData);
 
       taskElement.innerHTML = `
         <div class="task-header">
@@ -204,6 +243,15 @@ async function loadTasks() {
 }
 
 
+/**
+ * Returns the corresponding CSS class for a given priority level.
+ * 
+ * If the priority level is not found, an empty string is returned.
+ * 
+ * @function getPriorityClass
+ * @param {string} priority - The priority level ("urgent", "medium", "low").
+ * @returns {string} - The corresponding CSS class name or an empty string if the priority is not recognized.
+ */
 function getPriorityClass(priority) {
   const priorityClasses = {
     urgent: "priority-high",
@@ -214,6 +262,15 @@ function getPriorityClass(priority) {
 }
 
 
+/**
+ * Returns the corresponding container ID for a given task status.
+ * 
+ * If the status is not recognized, `null` is returned.
+ * 
+ * @function getContainerIdByStatus
+ * @param {string} status - The status of the task ("To do", "In progress", "Await feedback", "Done").
+ * @returns {string|null} - The corresponding container ID or `null` if the status is not found.
+ */
 function getContainerIdByStatus(status) {
   const statusContainers = {
     "To do": "todo-container",
@@ -225,6 +282,17 @@ function getContainerIdByStatus(status) {
 }
 
 
+/**
+ * Fetches contact data from the Firebase database.
+ * 
+ * Retrieves the list of contacts stored in the Firebase database.
+ * Throws an error if the request fails.
+ * 
+ * @async
+ * @function fetchContactsData
+ * @returns {Promise<Object>} - A promise that resolves to the contacts data.
+ * @throws {Error} - Throws an error if fetching contacts data fails.
+ */
 async function fetchContactsData() {
   const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
   const response = await fetch(`${firebaseUrl}/users/contacts.json`);
@@ -236,13 +304,33 @@ async function fetchContactsData() {
   return await response.json();
 }
 
-
+/**
+ * Truncates a description to a specified maximum length and appends an ellipsis if it exceeds the limit.
+ * 
+ * If the description is null or undefined, an empty string is returned.
+ * 
+ * @function truncateDescription
+ * @param {string} description - The text to be truncated.
+ * @param {number} [maxLength=50] - The maximum allowed length before truncation.
+ * @returns {string} - The truncated description with an ellipsis if it exceeds the limit.
+ */
 function truncateDescription(description, maxLength = 50) {
   if (!description) return "";
   return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
 }
 
 
+/**
+ * Renders the search results on the board by displaying only the tasks that match the search query.
+ * 
+ * Clears all task containers before rendering the filtered tasks.
+ * Fetches contact data to display assigned contacts for each task.
+ * Each task is created dynamically with its title, description, subtasks, priority, and assigned contacts.
+ * 
+ * @async
+ * @function renderBodySearch
+ * @returns {Promise<void>} - A promise that resolves once the filtered tasks are rendered.
+ */
 async function renderBodySearch() {
   ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
     document.getElementById(containerId).innerHTML = "";
@@ -260,7 +348,6 @@ async function renderBodySearch() {
     taskElement.setAttribute("draggable", "true");
     taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-    // Kategorie-Label
     const categoryClass = task.category
       ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
       : "bc-category-label-unknown";
@@ -269,14 +356,11 @@ async function renderBodySearch() {
       ${task.category || "No category"}
     </div>`;
 
+    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+    const priorityImage = priorityLabelHTML(task.priority);
+    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
-
-  const priorityImage = priorityLabelHTML(task.priority);
-  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
-
-   taskElement.innerHTML = `
-
+    taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
     </div>
@@ -298,15 +382,36 @@ async function renderBodySearch() {
 }
 
 
+/**
+ * Generates an HTML string for a priority label icon.
+ * 
+ * The function returns an image element with a corresponding priority-based source.
+ * The `priority` parameter is directly inserted into the image file path and the alt attribute.
+ * 
+ * @function priorityLabelHTML
+ * @param {string} priority - The priority level (e.g., "urgent", "medium", "low").
+ * @returns {string} - An HTML string representing the priority icon.
+ */
 function priorityLabelHTML(priority) {
   return `<img src="assets/img/general/prio-${priority}.svg" alt="${priority}">`;
 }
 
 
+/**
+ * Initializes the board once the DOM content is fully loaded.
+ * 
+ * Calls `loadTasks` to fetch and render tasks from the database.
+ * Calls `scrollToTaskSection` to automatically scroll to a specific task section if applicable.
+ * 
+ * @event DOMContentLoaded
+ * @async
+ * @listens document#DOMContentLoaded
+ */
 document.addEventListener("DOMContentLoaded", async () => {
   await loadTasks();
   scrollToTaskSection();
 });
+
 
 /**
  * Scrolls to the task section based on the "status" parameter in the URL.
@@ -356,6 +461,7 @@ function adjustBoardSectionHeight() {
       }
   });
 }
+
 
 /**
 * Initializes the height adjustment and observes changes in the DOM and window resizing.
