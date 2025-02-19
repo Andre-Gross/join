@@ -453,3 +453,14 @@ function validateEmailField(input) {
   return true;
 }
 
+
+function validatePhoneField(input) {
+  const phone = input.value.trim();
+  const phoneRegex = /^[0-9]+$/;
+  if (!phoneRegex.test(phone)) {
+    input.style.borderColor = '#FF8190';
+    return false;
+  }
+  input.style.borderColor = '';
+  return true;
+}

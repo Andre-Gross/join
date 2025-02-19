@@ -88,7 +88,7 @@ function closeAddContact() {
   if (addContactElement) {
       addContactElement.remove();
   }
-  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
+  document.getElementById("overlay").classList.remove("show"); 
 }
 
 
@@ -196,6 +196,7 @@ function submitAddContact() {
 
   setTimeout(() => {
     contactMain();
+    document.getElementById("overlay").classList.remove("show"); 
   }, 1000);
 }
 
@@ -211,7 +212,11 @@ async function deleteContact(i) {
   showToast(toastMessageDeleteContact, 'middle', 1000);
 
   setTimeout(() => {
-    window.location.reload();
+    contactMain();
+    let existingView = document.getElementById("idViewContactCard");
+    if (existingView) {
+      existingView.remove(); 
+    }
   }, 1000);
 }
 
@@ -229,7 +234,11 @@ function saveEditContact(i) {
   putContactInDatabase(name, mail, phone, color, id);
   showToast(toastMessageEditContact, 'middle', 1000);
   setTimeout(() => {
-    window.location.reload();
+    document.getElementById("idEditContact").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
+    let existingView = document.getElementById("idViewContactCard");
+      existingView.remove(); 
+    contactMain();
   }, 1000);
 }
 

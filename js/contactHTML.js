@@ -51,7 +51,7 @@ function getContactMain(i) {
               <div id="idInput">
                   <input id="idNameAddContact" type="text" name="name" placeholder="Name">
                   <input id="idMailAddContact" type="email" name="email" placeholder="Email" onblur="validateEmailField(this)">
-                  <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone">
+                  <input id="idPhoneAddContact" type="tel" pattern="[0-9]*" name="phone" placeholder="Phone" onblur="validatePhoneField(this)>
               </div>
               <div id="idContactBtns">
                   <button id="idSubmitAddContact" class="btn btn-primary" onclick="submitAddContact()">
