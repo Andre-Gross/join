@@ -196,6 +196,7 @@ function submitAddContact() {
 
   setTimeout(() => {
     contactMain();
+    document.getElementById("overlay").classList.remove("show"); 
   }, 1000);
 }
 
