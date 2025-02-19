@@ -1,5 +1,5 @@
 let currentTasks = [];
-let toastMessageNoResult = '<span>Keine Ergebnisse gefunden</span>';
+let toastMessageNoResult = '<span>no result</span>';
 
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
