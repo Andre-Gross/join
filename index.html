@@ -83,14 +83,15 @@
                             </div>
                             <div class="mb-3">
                                 <input type="email" id="signUpEmail" class="form-control" placeholder="E-Mail" required
-                                    oninput="checkFormValidity()" onblur="validateEmailField(this)"
+                                    oninput="checkFormValidity()" onblur="validateEmailOnBlur()"
                                     autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="signUpPassword" class="form-control" placeholder="Password"
                                     required oninput="checkFormValidity()" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
-                                    class="new-password-toggle" onclick="togglePasswordVisibility('signUpPassword', this)">
+                                    class="new-password-toggle"
+                                    onclick="togglePasswordVisibility('signUpPassword', this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmPassword" class="form-control"
@@ -102,6 +103,10 @@
                                     <span id="text-error-password-signUp"
                                         class="text-required-input d-none color-invalid fs-12">
                                         Your passwords don't match. Please try again.
+                                    </span>
+                                    <span id="text-error-password-signUp-email"
+                                        class="text-required-input d-none color-invalid fs-12">
+                                        Please check your E-Mail and try again.
                                     </span>
                                 </div>
                             </div>
@@ -137,7 +142,8 @@
                                     placeholder="New Password" required oninput="checkFormValidity()"
                                     onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
-                                    class="new-password-toggle" onclick="togglePasswordVisibility('resetPassword', this)">
+                                    class="new-password-toggle"
+                                    onclick="togglePasswordVisibility('resetPassword', this)">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmResetPassword" class="form-control"
@@ -146,12 +152,12 @@
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle"
                                     onclick="togglePasswordVisibility('confirmResetPassword', this)">
-                                    <div class="text-error-password-container">
-                                        <span id="text-error-password-resetPassword"
-                                            class="text-required-input d-none color-invalid fs-12">
-                                            Your passwords don't match. Please try again.
-                                        </span>
-                                    </div>
+                                <div class="text-error-password-container">
+                                    <span id="text-error-password-resetPassword"
+                                        class="text-required-input d-none color-invalid fs-12">
+                                        Your passwords don't match. Please try again.
+                                    </span>
+                                </div>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">Accept</button>
