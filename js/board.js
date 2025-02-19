@@ -64,7 +64,7 @@ async function filterAndShowTask() {
 
     await renderBodySearch();
   } else if (filterWord.length === 0) {
-    location.reload();
+    boardRender();
   }
 }
 
