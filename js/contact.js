@@ -195,7 +195,7 @@ function submitAddContact() {
   showToast(toastMessageAddContact, 'middle', 1000);
 
   setTimeout(() => {
-    window.location.reload();
+    contactMain();
   }, 1000);
 }
 
