@@ -222,13 +222,11 @@ textarea {
 
 
 .headline-container {
-    /* top: var(--h1-position-top);
-    left: 0;
-    right: 0; */
+   
     padding: 48px 0 8px 0;
     max-width: var(--form-subcontainer-max-width);
     background-color: unset;
-    /* z-index: 6000; */
+   
 }
 
 
@@ -268,16 +266,18 @@ textarea {
 
 #input-subtask {
     width: 100%;
-    /* Nutze den verfügbaren Platz */
     max-width: 100%;
-    /* Keine Überbreite */
 }
 
 
 .two-img-box {
     min-width: max-content;
+    cursor: pointer;
 }
 
+[id^="list-item-box-current-subtask"] p{
+    cursor: pointer;
+}
 
 .input-two-img-container {
     border-left: none;
