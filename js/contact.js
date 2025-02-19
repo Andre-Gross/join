@@ -54,9 +54,9 @@ async function loadContacts() {
 
   for (let index = 0; index < contactsArray.length; index++) {
     if (!contactsArray[index].name) continue; // Überspringt fehlerhafte Einträge
-    emails.push(contactsArray[index].email || "No email");
+    emails.push(contactsArray[index].email || "");
     names.push(contactsArray[index].name);
-    phones.push(contactsArray[index].phone || "No phone");
+    phones.push(contactsArray[index].phone || "");
     colors.push(contactsArray[index].color || "#ccc");
   }
 
