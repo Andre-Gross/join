@@ -34,7 +34,6 @@ function enableDisableSendButton() {
  */
 function handleSubtaskInput() {
     const subtaskInput = document.getElementById('input-subtask');
-    const subtaskPlus = document.getElementById('input-subtask-plus')
     const twoImgBox = document.getElementById('input-subtask-two-img-box');
 
     subtaskInput.addEventListener("keydown", (event) => {
@@ -49,13 +48,33 @@ function handleSubtaskInput() {
         return;
     }
 
+    createEventListerersSubtaskInput(subtaskInput, twoImgBox);
+}
+
+
+/**
+ * Adds event listeners for handling interactions with the subtask input field.
+ * 
+ * - A `click` listener ensures the subtask input loses focus and resets the visibility of the images 
+ *   when the user clicks outside the input group.
+ * - A `blur` listener changes the border color of the provided `twoImgBox` when the input field loses focus.
+ * 
+ * @param {HTMLElement} subtaskInput - The input element for subtasks.
+ * @param {HTMLElement} twoImgBox - The element whose border color will be changed on input blur.
+ */
+function createEventListerersSubtaskInput(subtaskInput, twoImgBox) {
+    const inputGroupSubtask = document.getElementById('input-group-subtask');
+
     document.addEventListener('click', (event) => {
-        if (!subtaskInput.contains(event.target) && !subtaskPlus.contains(event.target) && !twoImgBox.contains(event.target)) {
+        if (!inputGroupSubtask.contains(event.target)) {
             changeVisibleImages(false);
-            changeBorderColor(twoImgBox);
         } else {
             subtaskInput.focus();
         }
+    });
+
+    subtaskInput.addEventListener("blur", () => {
+        changeBorderColor(twoImgBox);
     });
 }
 

@@ -107,20 +107,19 @@ const taskFormHTML = /*HTML*/`
             <div class="d-flex flex-column gap-05">
                 <label for="input-subtask">Subtasks</label>
                 <div class="w-100">
-                    <div class="input-group w-100" onclick="">
+                    <div id="input-group-subtask" class="input-group w-100" onclick="">
                         <input id="input-subtask" type="text" class="border-end-0 flex-grow-1" placeholder="Add new subtask"
                             oninput=""
                             onfocus="changeVisibleImages(true), changeBorderColor(document.getElementById('input-subtask-two-img-box'), 'border-color-onfocus')"
-                            onblur="changeVisibleImages(false)">
+                            onblur="">
                         <div id="input-subtask-plus-box"
-                            class="input-single-img-container pointer d-flex justify-content-center align-items-center"
-                            onclick="focusElement(document.getElementById('input-subtask')), changeVisibleImages(true), changeBorderColor(document.getElementById('input-subtask-two-img-box'), 'border-color-onfocus')">
+                            class="input-single-img-container pointer d-flex justify-content-center align-items-center">
                             <img id="input-subtask-plus" src="assets/img/addTask/plus-dark.svg" class="">
                         </div>
                         <div id="input-subtask-two-img-box" class="input-single-img-container two-img-box d-none">
                             <div class="single-img-box pointer d-flex justify-content-center align-items-center">
                                 <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class=""
-                                    onclick="clearValue(document.getElementById('input-subtask')); focusElement(document.getElementById('input-subtask')">
+                                    onclick="clearValue(document.getElementById('input-subtask'))">
                             </div>
                             <div class="single-img-box pointer d-flex justify-content-center align-items-center">
                                 <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class=""
