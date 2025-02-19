@@ -88,7 +88,7 @@ function closeAddContact() {
   if (addContactElement) {
       addContactElement.remove();
   }
-  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
+  document.getElementById("overlay").classList.remove("show"); 
 }
 
 
