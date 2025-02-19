@@ -115,6 +115,7 @@ function getInputValues() {
 /**
  * Validates the registration form inputs and updates the register button state.
  */
+
 function checkFormValidity() {
   let [name, email, password, confirmPassword, agreeTerms] = [
     "name",
@@ -127,9 +128,27 @@ function checkFormValidity() {
       ? document.getElementById(id).checked
       : document.getElementById(id).value.trim()
   );
-  let isFormValid = name && email && password && confirmPassword && agreeTerms;
+
+  let isEmailValid = validateEmailField(document.getElementById("signUpEmail"));
+  let isFormValid = name && isEmailValid && password && confirmPassword && agreeTerms;
+
   document.getElementById("registerButton").disabled = !isFormValid;
 }
+
+
+function validateEmailOnBlur() {
+  let emailInput = document.getElementById("signUpEmail");
+  let emailErrorSpan = document.getElementById("text-error-password-signUp-email");
+
+  if (emailInput.value.trim() !== "" && !validateEmailField(emailInput)) {
+    emailErrorSpan.classList.remove("d-none");
+  } else {
+    emailErrorSpan.classList.add("d-none");
+  }
+
+  checkFormValidity();
+}
+
 
 /**
  * Determines the validation error message.
@@ -143,3 +162,5 @@ function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
   if (password !== confirmPassword) return "Password do not match.";
   return "An unknown validation error occurred.";
 }
+
+
