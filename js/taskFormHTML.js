@@ -128,7 +128,6 @@ const taskFormHTML = /*HTML*/`
                         </div>
                     </div>
                     <div id="list-subtasks-container" class="d-none">
-                        <ul id="list-subtasks"></ul>
                     </div>
                 </div>
             </div>
