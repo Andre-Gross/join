@@ -29,13 +29,12 @@ function addNewSubtask() {
  */
 function renderNewSubtasks() {
     const listContainer = document.getElementById('list-subtasks-container')
-    const list = document.getElementById('list-subtasks')
     if (dataSubtasks.length > 0) {
         toggleDisplayNone(listContainer, 'd-block', true);
-        list.innerHTML = '';
+        listContainer.innerHTML = '';
         for (let i = 0; i < dataSubtasks.length; i++) {
             const singleSubtask = dataSubtasks[i].subtask;
-            list.innerHTML += renderNewSubtasksHTML(i, singleSubtask);
+            listContainer.innerHTML += renderNewSubtasksHTML(i, singleSubtask);
         }
     } else {
         toggleDisplayNone(listContainer, 'd-block', false);
@@ -51,12 +50,10 @@ function renderNewSubtasks() {
  * @returns {Element} - The DOM element representing the subtask.
  */
 function renderNewSubtasksHTML(i, singleSubtask) {
-    let HTML = `
+    let HTML = /*HTML*/`
         <div>
-            <div id="list-item-box-current-subtask${i}" class="d-flex justify-content-between">
-                <li id="" class="">
-                    <p>${singleSubtask}</p>
-                </li>
+            <div id="list-item-box-current-subtask${i}" class="list-item-box d-flex justify-content-between">
+                <p> &#x2022 ${singleSubtask}</p>
                 <div class="two-img-box">
                     <img id="input-subtask-pen" src="assets/img/addTask/pen.svg" class="" onclick="toggleEditModeSubtask(${i})">
                     <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">

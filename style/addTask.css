@@ -293,6 +293,26 @@ textarea {
 }
 
 
+.list-item-box {
+    padding: 4px 16px;
+    margin-top: 4px;
+}
+
+
+.list-item-box:hover {
+    background-color: #ccc;
+    border-radius: 99999px;
+    cursor: pointer;
+}
+
+
+.list-item-box p {
+    margin-bottom: 0;
+    height: 19px;
+    text-align: center;
+}
+
+
 .main-btn-container {
     gap: 32px;
 }
