@@ -269,12 +269,6 @@ textarea {
     max-width: 100%;
 }
 
-
-.two-img-box {
-    min-width: max-content;
-    cursor: pointer;
-}
-
 [id^="list-item-box-current-subtask"] p{
     cursor: pointer;
 }
@@ -389,6 +383,12 @@ textarea {
 .single-img-box img {
     max-height: 14px;
     aspect-ratio: 1/1;
+}
+
+
+.two-img-box {
+    min-width: max-content;
+    cursor: pointer;
 }
 
 
