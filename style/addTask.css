@@ -295,7 +295,7 @@ textarea {
 
 
 .list-item-box:hover {
-    background-color: #ccc;
+    background-color: #f0f0f0;
     border-radius: 99999px;
     cursor: pointer;
 }
