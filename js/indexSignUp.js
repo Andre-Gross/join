@@ -150,17 +150,5 @@ function validateEmailOnBlur() {
 }
 
 
-/**
- * Determines the validation error message.
- * @param {boolean} agreeTerms - Whether the terms were agreed to.
- * @param {string} password - The entered password.
- * @param {string} confirmPassword - The confirmed password.
- * @returns {string} - The appropriate error message.
- */
-function getValidationErrorMessage(agreeTerms, password, confirmPassword) {
-  if (!agreeTerms) return "Please agree to the terms and conditions.";
-  if (password !== confirmPassword) return "Password do not match.";
-  return "An unknown validation error occurred.";
-}
 
 
