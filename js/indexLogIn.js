@@ -1,37 +1,68 @@
 /**
- * Handles the user login process.
+ * Orchestrates the login process by retrieving inputs, authenticating the user,
+ * and processing a successful login.
  */
 async function logIn() {
   hidePasswordError();
-
-  let email = getInputValue("email");
-  let password = getInputValue("password");
-
+  const { email, password } = getLoginInputs();
   if (!email || !password) {
     displayPasswordErrorDiv();
     return;
   }
-
   try {
-    let users = await fetchUsers();
-    let user = findUserByEmail(users, email);
-    if (!user) {
-      displayPasswordErrorDiv();
-      return;
-    }
-    if (user.password !== password) {
-      handleFailedAttempt(email);
-      return;
-    }
-
-    resetFailedAttempts(email);
-    hidePasswordError();
-    saveLoggedInUser(user);
-    redirectToSummary();
-  } catch {
+    const user = await authenticateUser(email, password);
+    processSuccessfulLogin(user);
+  } catch (error) {
     displayPasswordErrorDiv();
   }
 }
+
+/**
+ * Retrieves the login input values.
+ * @returns {{email: string, password: string}} The email and password from the input fields.
+ */
+function getLoginInputs() {
+  const email = getInputValue("email");
+  const password = getInputValue("password");
+  return { email, password };
+}
+
+/**
+ * Authenticates the user credentials.
+ * Fetches the users, finds the matching user by email,
+ * and verifies that the password is correct.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<Object>} The authenticated user object.
+ * @throws Will throw an error if the user is not found or the password is invalid.
+ */
+async function authenticateUser(email, password) {
+  const users = await fetchUsers();
+  const user = findUserByEmail(users, email);
+  if (!user) {
+    displayPasswordErrorDiv();
+    throw new Error("User not found");
+  }
+  if (user.password !== password) {
+    handleFailedAttempt(email);
+    throw new Error("Invalid password");
+  }
+  return user;
+}
+
+/**
+ * Processes a successful login.
+ * Resets the failed login attempts, hides error messages,
+ * saves the logged-in user, and redirects to the summary page.
+ * @param {Object} user - The authenticated user object.
+ */
+function processSuccessfulLogin(user) {
+  resetFailedAttempts(user.email);
+  hidePasswordError();
+  saveLoggedInUser(user);
+  redirectToSummary();
+}
+
 
 /**
  * Finds a user in the database by email.
