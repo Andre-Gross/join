@@ -11,49 +11,110 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 /**
- * Handles the user registration process.
+ * Initiates the user registration process by validating form data,
+ * ensuring the email is not already registered, registering the new user,
+ * adding the user to contacts, and displaying a success message with redirection.
  */
 async function signUp() {
   if (isSubmitting) return;
   isSubmitting = true;
-  let [name, email, password, confirmPassword, agreeTerms] = getInputValues();
+
+  let { name, email, password, confirmPassword, agreeTerms } = getSignUpInputs();
 
   hideSignUpPasswordError();
 
-  if (!agreeTerms) {
-    displayError("Please agree to the terms and conditions.");
-    isSubmitting = false;
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    displaySignUpPasswordError();
+  if (!validateSignUpForm(agreeTerms, password, confirmPassword)) {
     isSubmitting = false;
     return;
   }
 
   try {
-    let users = await fetchUsers();
-    if (isEmailAlreadyRegistered(users, email)) {
-      displayError("Email already registered. Please try again.");
-      isSubmitting = false;
-      return;
-    }
-    await registerNewUser(name, email, password);
+    await ensureEmailNotRegistered(email);
+    await registerUser(name, email, password);
     await addUserToContacts(name, email);
-
+    showSuccessAndRedirect();
+  } catch (error) {
+    displayError(error.message || "An error occurred during registration. Please try again.");
+  } finally {
     isSubmitting = false;
-
-    showToast(toastMessageSignUp, "middle", 1000);
-    setTimeout(() => {
-      redirectToLogin(true);
-    }, 1000);
-  } catch {
-    isSubmitting = false;
-    displayError("An error occurred during registration. Please try again.");
   }
 }
+
+/**
+ * Retrieves the sign-up form input values.
+ * @returns {{name: string, email: string, password: string, confirmPassword: string, agreeTerms: boolean}}
+ */
+function getSignUpInputs() {
+  let [name, email, password, confirmPassword, agreeTerms] = [
+    "name",
+    "signUpEmail",
+    "signUpPassword",
+    "confirmPassword",
+    "agreeTerms",
+  ].map((id) => {
+    let element = document.getElementById(id);
+    return element.type === "checkbox" ? element.checked : element.value.trim();
+  });
+  return { name, email, password, confirmPassword, agreeTerms };
+}
+
+/**
+ * Validates the sign-up form data.
+ * Checks if the user agreed to the terms and if the password matches the confirmation.
+ * @param {boolean} agreeTerms - Whether the user agreed to the terms.
+ * @param {string} password - The entered password.
+ * @param {string} confirmPassword - The confirmation of the password.
+ * @returns {boolean} True if validation passes, false otherwise.
+ */
+function validateSignUpForm(agreeTerms, password, confirmPassword) {
+  if (!agreeTerms) {
+    displayError("Please agree to the terms and conditions.");
+    return false;
+  }
+  if (password !== confirmPassword) {
+    displaySignUpPasswordError();
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Ensures that the provided email is not already registered.
+ * Fetches the list of users and checks for an existing registration.
+ * @param {string} email - The email to check.
+ * @returns {Promise<void>}
+ * @throws Will throw an error if the email is already registered.
+ */
+async function ensureEmailNotRegistered(email) {
+  let users = await fetchUsers();
+  if (isEmailAlreadyRegistered(users, email)) {
+    throw new Error("Email already registered. Please try again.");
+  }
+}
+
+/**
+ * Registers a new user in the database.
+ * @param {string} name - The user's name.
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ * @returns {Promise<void>}
+ */
+async function registerUser(name, email, password) {
+  await registerNewUser(name, email, password);
+}
+
+/**
+ * Displays a success message and redirects to the login page after a short delay.
+ */
+function showSuccessAndRedirect() {
+  showToast(toastMessageSignUp, "middle", 1000);
+  setTimeout(() => {
+    redirectToLogin(true);
+  }, 1000);
+}
+
 
 /**
  * Registers a new user in the database.
@@ -117,23 +178,17 @@ function getInputValues() {
  */
 
 function checkFormValidity() {
-  let [name, email, password, confirmPassword, agreeTerms] = [
-    "name",
-    "signUpEmail",
-    "signUpPassword",
-    "confirmPassword",
-    "agreeTerms",
-  ].map((id) =>
-    document.getElementById(id).type === "checkbox"
-      ? document.getElementById(id).checked
-      : document.getElementById(id).value.trim()
-  );
-
-  let isEmailValid = validateEmailField(document.getElementById("signUpEmail"));
+  let name = document.getElementById("name").value.trim();
+  let emailInput = document.getElementById("signUpEmail");
+  let email = emailInput.value.trim();
+  let password = document.getElementById("signUpPassword").value.trim();
+  let confirmPassword = document.getElementById("confirmPassword").value.trim();
+  let agreeTerms = document.getElementById("agreeTerms").checked;
+  let isEmailValid = email === "" ? true : validateEmailField(emailInput);
   let isFormValid = name && isEmailValid && password && confirmPassword && agreeTerms;
-
   document.getElementById("registerButton").disabled = !isFormValid;
 }
+
 
 
 function validateEmailOnBlur() {
