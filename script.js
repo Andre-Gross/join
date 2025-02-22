@@ -446,7 +446,7 @@ function validateEmailField(input) {
   const email = input.value.trim();
   const domainRegex = /@.+\.[a-z]{2,}$/i;
   if (!email.includes('@') || !domainRegex.test(email)) {
-    input.style.borderColor = '#FF8190';
+    changeBorderColor(input, 'border-color-invalid');
     return false;
   }
   input.style.borderColor = '';
@@ -459,7 +459,7 @@ function validatePhoneField(input) {
   const phoneRegex = /^(\+?[0-9]{1,3})?[-. ]?(\(?\d{1,4}\)?)?[-. ]?\d{1,4}[-. ]?\d{1,4}[-. ]?\d{1,9}$/;
   
   if (!phoneRegex.test(phone)) {
-    input.style.borderColor = '#FF8190';
+    changeBorderColor(input, 'border-color-invalid');
     return false;
   }
   

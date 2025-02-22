@@ -49,6 +49,12 @@ body.landing-page.loaded {
   background-color: var(--background-color);
 }
 
+.form-control:focus {
+  border-color: inherit;
+  box-shadow: none;
+}
+
+
 
 .landing-page {
   display: flex;
