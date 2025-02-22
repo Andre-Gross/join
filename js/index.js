@@ -90,38 +90,94 @@ function clearSignupInputs() {
 }
 
 /**
- * Switches between login and signup view.
+ * Orchestrates the view switching between the login and sign-up forms.
+ * Disables transitions, fades out the current view, toggles the display of cards,
+ * updates the switch UI, and then fades in the new view.
  */
 function switchView() {
-  let loginCard = document.getElementById("loginCard");
-  let signupCard = document.getElementById("signupCard");
-  let switchButton = document.getElementById("switchButton");
-  let switchText = document.getElementById("switchText");
+  const loginCard = document.getElementById("loginCard");
+  const signupCard = document.getElementById("signupCard");
 
-  loginCard.style.transition = "none";
-  signupCard.style.transition = "none";
-
-  loginCard.style.opacity = "0";
-  signupCard.style.opacity = "0";
+  disableTransitions(loginCard, signupCard);
+  setElementsOpacity([loginCard, signupCard], "0");
 
   setTimeout(() => {
-    if (loginCard.style.display !== "none") {
-      loginCard.style.display = "none";
-      signupCard.style.display = "block";
-      switchButton.textContent = "Log in";
-      switchText.textContent = "Already a Join user?";
-      clearSignupInputs();
+    if (isElementVisible(loginCard)) {
+      toggleToSignup(loginCard, signupCard);
     } else {
-      signupCard.style.display = "none";
-      loginCard.style.display = "block";
-      switchButton.textContent = "Sign up";
-      switchText.textContent = "Not a Join user?";
+      toggleToLogin(loginCard, signupCard);
     }
-
-    signupCard.style.opacity = "1";
-    loginCard.style.opacity = "1";
+    setElementsOpacity([loginCard, signupCard], "1");
   }, 50);
 }
+
+/**
+ * Disables CSS transitions for the given elements.
+ * @param {...HTMLElement} elements - Elements for which transitions will be disabled.
+ */
+function disableTransitions(...elements) {
+  elements.forEach(el => {
+    el.style.transition = "none";
+  });
+}
+
+/**
+ * Sets the opacity for an array of elements.
+ * @param {HTMLElement[]} elements - The elements to update.
+ * @param {string} opacity - The opacity value to set (e.g., "0" or "1").
+ */
+function setElementsOpacity(elements, opacity) {
+  elements.forEach(el => {
+    el.style.opacity = opacity;
+  });
+}
+
+/**
+ * Checks if the given element is currently visible based on its display property.
+ * @param {HTMLElement} element - The element to check.
+ * @returns {boolean} - True if the element is visible, false otherwise.
+ */
+function isElementVisible(element) {
+  return element.style.display !== "none";
+}
+
+/**
+ * Switches from the login view to the sign-up view.
+ * Hides the login card, shows the sign-up card, updates the switch UI, and clears sign-up inputs.
+ * @param {HTMLElement} loginCard - The login card element.
+ * @param {HTMLElement} signupCard - The sign-up card element.
+ */
+function toggleToSignup(loginCard, signupCard) {
+  loginCard.style.display = "none";
+  signupCard.style.display = "block";
+  updateSwitchUI("Log in", "Already a Join user?");
+  clearSignupInputs();
+}
+
+/**
+ * Switches from the sign-up view to the login view.
+ * Hides the sign-up card, shows the login card, and updates the switch UI.
+ * @param {HTMLElement} loginCard - The login card element.
+ * @param {HTMLElement} signupCard - The sign-up card element.
+ */
+function toggleToLogin(loginCard, signupCard) {
+  signupCard.style.display = "none";
+  loginCard.style.display = "block";
+  updateSwitchUI("Sign up", "Not a Join user?");
+}
+
+/**
+ * Updates the text content of the switch button and the accompanying switch text element.
+ * @param {string} buttonText - The text to set for the switch button.
+ * @param {string} switchTextContent - The text to set for the switch text element.
+ */
+function updateSwitchUI(buttonText, switchTextContent) {
+  const switchButton = document.getElementById("switchButton");
+  const switchText = document.getElementById("switchText");
+  switchButton.textContent = buttonText;
+  switchText.textContent = switchTextContent;
+}
+
 
 /**
  * Retrieves and processes the value of an input field by its ID.
