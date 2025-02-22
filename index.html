@@ -38,19 +38,18 @@
                         <div class="separator horizontal"></div>
                         <form onsubmit="event.preventDefault(); logIn();" novalidate>
                             <div class="mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="E-Mail" required
+                                <input type="email" class="form-control" id="email" placeholder="E-Mail"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this); 
                                 validateEmailField(this);" autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" class="form-control" id="password" placeholder="Password"
-                                    required onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
                                     onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('password', this)">
                                 <div class="text-error-password-container">
-                                    <span id="text-error-password"
-                                        class="text-required-input d-none color-invalid fs-12">
+                                    <span id="text-error-password" class="text--input d-none color-invalid fs-12">
                                         Check your email and password. Please try again.
                                     </span>
                                 </div>
@@ -79,18 +78,19 @@
                         <h1 class="text-center mb-4">Sign Up</h1>
                         <form onsubmit="event.preventDefault(); signUp();" novalidate>
                             <div class="mb-3">
-                                <input type="text" id="name" class="form-control" placeholder="Name" required
-                                    oninput="checkFormValidity()" onfocus="changeBorderColor(this, 'border-color-onfocus')">
+                                <input type="text" id="name" class="form-control" placeholder="Name"
+                                    oninput="checkFormValidity()"
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')">
                             </div>
                             <div class="mb-3">
-                                <input type="email" id="signUpEmail" class="form-control" placeholder="E-Mail" required
+                                <input type="email" id="signUpEmail" class="form-control" placeholder="E-Mail"
                                     oninput="checkFormValidity()"
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                                    onblur="validateEmailOnBlur()" autocomplete="username">
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this); 
+                                validateEmailField(this);" autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="signUpPassword" class="form-control" placeholder="Password"
-                                    required oninput="checkFormValidity()"
+                                    oninput="checkFormValidity()"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')"
                                     autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
@@ -99,25 +99,25 @@
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmPassword" class="form-control"
-                                    placeholder="Repeat Password" required oninput="checkFormValidity()"
+                                    placeholder="Repeat Password" oninput="checkFormValidity()"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')"
                                     onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">
                                 <div class="text-error-password-container">
                                     <span id="text-error-password-signUp"
-                                        class="text-required-input d-none color-invalid fs-12">
+                                        class="text--input d-none color-invalid fs-12">
                                         Your passwords don't match. Please try again.
                                     </span>
                                     <span id="text-error-password-signUp-email"
-                                        class="text-required-input d-none color-invalid fs-12">
+                                        class="text--input d-none color-invalid fs-12">
                                         Please check your E-Mail and try again.
                                     </span>
                                 </div>
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="agreeTerms" required
+                                <input type="checkbox" class="form-check-input" id="agreeTerms"
                                     onclick="checkFormValidity()">
                                 <label class="form-check-label" for="agreeTerms">
                                     I accept the <span class="textblue">privacy policy</span>
@@ -138,14 +138,14 @@
                         <form id="passwordResetForm" novalidate>
 
                             <div class="mb-3">
-                                <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail" required
+                                <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail"
                                     oninput="checkFormValidity()"
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                                    onblur="validateEmailField(this)" autocomplete="username">
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this); 
+                                validateEmailField(this);" autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="resetPassword" class="form-control"
-                                    placeholder="New Password" required oninput="checkFormValidity()"
+                                    placeholder="New Password" oninput="checkFormValidity()"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')"
                                     onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
@@ -154,7 +154,7 @@
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="confirmResetPassword" class="form-control"
-                                    placeholder="Repeat Password" required oninput="checkFormValidity()"
+                                    placeholder="Repeat Password" oninput="checkFormValidity()"
                                     onfocus="changeBorderColor(this, 'border-color-onfocus')"
                                     onblur="changeToRightBorderColor(this)" autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
@@ -162,7 +162,7 @@
                                     onclick="togglePasswordVisibility('confirmResetPassword', this)">
                                 <div class="text-error-password-container">
                                     <span id="text-error-password-resetPassword"
-                                        class="text-required-input d-none color-invalid fs-12">
+                                        class="text--input d-none color-invalid fs-12">
                                         Your passwords don't match. Please try again.
                                     </span>
                                 </div>
