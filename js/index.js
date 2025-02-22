@@ -196,9 +196,9 @@ async function addUserToContacts(name, email) {
  * Generates a unique ID.
  * @returns {string} - A unique ID.
  */
-function generateUniqueId() {
-  return "_" + Math.random().toString(36).substr(2, 9);
-}
+// function generateUniqueId() {
+//   return "_" + Math.random().toString(36).substr(2, 9);
+// }
 
 function clearFormInputs(containerId) {
   const container = document.getElementById(containerId);
