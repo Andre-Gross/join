@@ -145,7 +145,6 @@ async function tryPostContactToDatabase(name, mail, phone, color) {
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    showToast(toastMessageEditTask);
 }
 
 
