@@ -401,6 +401,7 @@ async function changeToEditMode(id) {
         submitTaskForm("put", id);
         return false;
     };
+    enableDisableSendButton();
 }
 
 
