@@ -397,3 +397,11 @@ textarea {
 .w-100u1000p {
     width: 100%;
 }
+
+[id^="list-item-box-current-subtask"] img {
+    display: none;
+}
+
+[id^="list-item-box-current-subtask"]:hover img {
+    display: inline;
+}
