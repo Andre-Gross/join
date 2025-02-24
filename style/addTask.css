@@ -7,6 +7,7 @@
     --form-subcontainer-max-width: 440px;
     --form-gap: 32px
     
+    
 }
 
 
@@ -194,8 +195,8 @@ textarea {
 
 
 #content-container #form-footer {
-    padding-top: 146px;
-    padding-bottom: 12px;
+    padding-top: 32px;
+    padding-bottom: 112px;
 }
 
 

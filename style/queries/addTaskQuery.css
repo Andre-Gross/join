@@ -2,7 +2,6 @@
 
     form {
         padding-bottom: 0;
-        height: min(max-content, calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px));
     }
 
 
@@ -28,6 +27,7 @@
 
     form {
         padding-right: unset;
+        height: min(max-content, calc(100vh - var(--template-height-with-padding) - var(--headline-container-height-with-padding) - 74px));
         gap: 0;
         justify-content: start;
         flex-direction: row;
@@ -48,6 +48,13 @@
         position: sticky;
         bottom: 0;
         padding-bottom: calc(79px - 12px);
+        max-width: calc(878px - 16px);
+    }
+
+
+    #content-container #form-footer {
+        padding-top: 146px;
+        padding-bottom: 12px;
     }
 
 
@@ -66,7 +73,6 @@
 
     .form-subcontainer:first-child {
         padding-right: 48px;
-        width: calc(50% - 1px / 2);
     }
 
 
@@ -118,6 +124,11 @@
 
     .one-column #required-text-mobile-mode {
         display: block;
+    }
+
+
+    #task-form-container {
+        width: 100%;
     }
 
 
