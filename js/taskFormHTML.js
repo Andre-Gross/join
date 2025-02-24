@@ -1,5 +1,5 @@
 const taskFormHTML = /*HTML*/`
-    <form action="" class="w-100u1000p d-flex">
+    <form action="" class="w-100 d-flex">
 
         <div class="form-subcontainer">
             <div class="d-flex flex-column">
@@ -134,46 +134,47 @@ const taskFormHTML = /*HTML*/`
             <p id="required-text-mobile-mode" class="required-text"><span class="color-invalid">*</span>This
                 field is required</p>
         </div>
-    </form>
     `
 
 const formFooterPost = /*HTML*/`
-    <div id="form-footer" class="w-100 d-flex justify-content-end">
-        <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
-            field is required</p>
-        <div class="main-btn-container d-flex justify-content-end">
-            <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
-                onclick="emptyAddTaskInputs()">
-                Clear
-                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
-                    <img src="./assets/img/general/cross.svg" alt="Clear">
-                </div>
-            </button>
-            <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
-                onclick="submitTaskForm()" disabled>
-                Create Task
-                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
-                    <img src="./assets/img/general/tick.svg" alt="Create Task">
-                </div>
-            </button>
+        <div id="form-footer" class="w-100 d-flex justify-content-end">
+            <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+                field is required</p>
+            <div class="main-btn-container d-flex justify-content-end">
+                <button type="button" class="d-flex align-items-center btn-outline-secondary btn-form"
+                    onclick="emptyAddTaskInputs()">
+                    Clear
+                    <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                        <img src="./assets/img/general/cross.svg" alt="Clear">
+                    </div>
+                </button>
+                <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                    onclick="" disabled>
+                    Create Task
+                    <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                        <img src="./assets/img/general/tick.svg" alt="Create Task">
+                    </div>
+                </button>
+            </div>
         </div>
-    </div>
+    </form>
     `
 
 const formFooterPut = /*HTML*/`
-    <div id="form-footer" class="w-100 bg-white d-flex justify-content-end">
-        <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
-            field is required</p>
-        <div class="main-btn-container d-flex justify-content-end">
-            <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
-                onclick="" disabled>
-                Ok
-                <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
-                    <img src="./assets/img/general/tick.svg" alt="Ok">
-                </div>
-            </button>
+        <div id="form-footer" class="w-100 bg-white d-flex justify-content-end">
+            <p id="required-text-desktop-mode" class="required-text"><span class="color-invalid">*</span>This
+                field is required</p>
+            <div class="main-btn-container d-flex justify-content-end">
+                <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
+                    onclick="" disabled>
+                    Ok
+                    <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
+                        <img src="./assets/img/general/tick.svg" alt="Ok">
+                    </div>
+                </button>
+            </div>
         </div>
-    </div>
+    </form>
     `
 
 

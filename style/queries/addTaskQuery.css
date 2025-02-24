@@ -14,8 +14,7 @@
     #content-container {
         margin-top: var(--template-height-with-padding);
         margin-left: calc(var(--navbar-width-desktop-mode));
-        width: calc(100vw - var(--navbar-width-desktop-mode));
-        max-width: min(calc(100vw - var(--navbar-width-desktop-mode)), calc(1980px - var(--navbar-width-desktop-mode)));
+        width: min(calc(100vw - var(--navbar-width-desktop-mode)), calc(1980px - var(--navbar-width-desktop-mode)));
     }
 
 
@@ -53,7 +52,9 @@
 
 
     .form-subcontainer {
-        width: calc(50% - 16px + 1px / 2);
+        box-sizing: border-box;
+        max-width: calc(296.5px + 48px);
+        width: calc(100% / 2);
     }
 
 
