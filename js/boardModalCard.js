@@ -401,6 +401,11 @@ async function changeToEditMode(id) {
         submitTaskForm("put", id);
         return false;
     };
+
+    document.querySelectorAll(".required-star").forEach(element => {
+        element.classList.add("d-none");
+    });
+    
     enableDisableSendButton();
 }
 

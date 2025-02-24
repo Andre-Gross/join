@@ -3,7 +3,7 @@ const taskFormHTML = /*HTML*/`
 
         <div class="form-subcontainer">
             <div class="d-flex flex-column">
-                <label for="inputTitle">Title<span class="color-invalid">*</span></label>
+                <label for="inputTitle">Title<span class="required-star color-invalid">*</span></label>
                 <div class="w-100 d-flex flex-column gap-1">
                     <input type="text" placeholder="Enter a title" required class="w-100" id="inputTitle"
                         onfocus="changeBorderColor(this, 'border-color-onfocus')" oninput="enableDisableSendButton()"
