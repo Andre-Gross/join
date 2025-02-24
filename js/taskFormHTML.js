@@ -46,7 +46,7 @@ const taskFormHTML = /*HTML*/`
 
         <div class="form-subcontainer">
             <div class="d-flex flex-column gap-05">
-                <label for="inputDate">Due date<span class="color-invalid">*</span></label>
+                <label for="inputDate">Due date<span class="required-star color-invalid">*</span></label>
                 <input required id="inputDate" type="date" onfocus="changeBorderColor(this, 'border-color-onfocus')"
                     oninput="enableDisableSendButton()" onblur="changeToRightBorderColor(this); changeTextRequired('date')">
                 <div class="h-0 d-flex flex-column">
@@ -131,7 +131,7 @@ const taskFormHTML = /*HTML*/`
                     </div>
                 </div>
             </div>
-            <p id="required-text-mobile-mode" class="required-text"><span class="color-invalid">*</span>This
+            <p id="required-text-mobile-mode" class="required-star required-text"><span class="color-invalid">*</span>This
                 field is required</p>
         </div>
     `
