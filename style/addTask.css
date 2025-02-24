@@ -232,6 +232,17 @@ textarea {
 }
 
 
+.input-current-subtask {
+    box-sizing: content-box;
+    margin-top: 4px;
+    border: unset;
+    border-radius: 0;
+    border-bottom: 1px solid var(--input-edit-subtask-border-bottom-color);
+    padding: 4px 16px;
+    height: 24px;
+}
+
+
 .input-dummy {
     position: absolute;
     left: 0;
@@ -289,6 +300,17 @@ textarea {
 }
 
 
+.input-box-current-subtask .two-img-box {
+    border: unset;
+    border-radius: 0;
+    border-bottom: 1px solid var(--input-edit-subtask-border-bottom-color);
+    padding: 4px 16px;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+
 .list-item-box {
     padding: 4px 16px;
     margin-top: 4px;
@@ -304,7 +326,7 @@ textarea {
 
 .list-item-box p {
     margin-bottom: 0;
-    height: 19px;
+    height: 24px;
     text-align: center;
 }
 

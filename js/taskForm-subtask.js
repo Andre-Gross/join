@@ -51,7 +51,7 @@ function renderNewSubtasks() {
  */
 function renderNewSubtasksHTML(i, singleSubtask) {
     let HTML = /*HTML*/`
-        <div>
+        <div class="">
             <div id="list-item-box-current-subtask${i}" class="list-item-box d-flex justify-content-between">
                 <p> &#x2022 ${singleSubtask}</p>
                 <div class="two-img-box">
@@ -59,8 +59,8 @@ function renderNewSubtasksHTML(i, singleSubtask) {
                     <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
                 </div>
             </div>
-            <div id="input-box-current-subtask${i}" class="d-none justify-content-between">
-                <input id="input-current-subtask${i}" type="text" class="">
+            <div id="input-box-current-subtask${i}" class="input-box-current-subtask input-group d-none justify-content-between">
+                <input id="input-current-subtask${i}" type="text" class="input-current-subtask">
                 <div class="two-img-box">
                     <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
                     <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
