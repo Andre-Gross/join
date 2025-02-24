@@ -45,7 +45,7 @@
 }
 
 
-@media (max-width: 830px) {
+@media (max-width: 833px) {
 
     * {
         scrollbar-width: none;
@@ -76,7 +76,6 @@
         gap: 10px;
         width: 100%;
         max-width: 500px;
-        overflow-x: auto;
         scrollbar-width: none;
     }
 
