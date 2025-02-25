@@ -114,17 +114,6 @@ function getCurrentPage() {
 }
 
 /**
- * Immediately invokes a function to add a favicon to the document by creating a link element and appending it to the head.
- */
-(function addFavicon() {
-  let link = document.createElement("link");
-  link.rel = "icon";
-  link.href = "./assets/favicon/fav.ico";
-  link.type = "image/x-icon";
-  document.head.appendChild(link);
-})();
-
-/**
  * Adds event listener to run after the DOM has fully loaded.
  * - Calls `includeHTML` to load additional HTML content.
  * - Calls `updateNavForAuth` to update the navigation based on authentication status.
