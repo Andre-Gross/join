@@ -67,7 +67,7 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 20px;
-
+        min-height: unset;
     }
     
     .tasks-container {
