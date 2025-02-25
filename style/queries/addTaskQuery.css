@@ -152,4 +152,15 @@
         text-align: start;
         height: unset;
     }
+
+    [id^="input-box-current-subtask"] {
+        word-break: break-word;
+        max-width: 100%;
     }
+
+    .input-current-subtask {
+        padding: 0;
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}
