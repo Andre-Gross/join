@@ -124,6 +124,7 @@ async function submitTaskForm(method = 'post', id = '') {
 
     nextStatus = 'To do';
     handleEndingOfTaskForm();
+    boardRender();
 }
 
 
