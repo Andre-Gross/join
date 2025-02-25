@@ -59,18 +59,24 @@ function renderNewSubtasksHTML(i, singleSubtask) {
                     <img id="input-subtask-bin" src="assets/img/addTask/bin.svg" class="" onclick="removeSubtask(${i})">
                 </div>
             </div>
-            <div id="input-box-current-subtask${i}" class="input-box-current-subtask input-group d-none justify-content-between">
-                <input id="input-current-subtask${i}" type="text" class="input-current-subtask">
-                <div class="two-img-box">
-                    <img id="input-subtask-pen" src="assets/img/addTask/cross.svg" class="" onclick="toggleEditModeSubtask(${i})">
-                    <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
-                </div>
-            </div>
+            <div id="input-box-current-subtask${i}" class="input-box-current-subtask input-group w-100 d-none">
+    <input id="input-current-subtask${i}" type="text" class="input-current-subtask border-none flex-grow-1">
+    <div id="input-subtask-two-img-box" class="two-img-box d-flex">
+        <div class="single-img-box pointer d-flex justify-content-center align-items-center">
+            <img id="input-subtask-pen" src="assets/img/addTask/bin.svg" class="" onclick="toggleEditModeSubtask(${i})">
         </div>
-    `
+        <div class="single-img-box pointer d-flex justify-content-center align-items-center">
+            <img id="input-subtask-bin" src="assets/img/addTask/tick-dark.svg" class="" onclick="editSubtask(${i})">
+        </div>
+    </div>
+</div>
+
+        </div>
+    `;
 
     return HTML;
 }
+
 
 
 /**
