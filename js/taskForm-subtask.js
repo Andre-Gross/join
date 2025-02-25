@@ -3,14 +3,10 @@
  * It also alerts the user if the subtask is too short or too long.
  */
 function addNewSubtask() {
-    const minLength = 3;
-    const maxLength = 20;
     const input = document.getElementById('input-subtask');
 
-    if (input.value.length < minLength) {
-        alert(`Der Subtask ist zu kurz. Bitte verwende mindestens ${minLength} Zeichen`)
-    } else if (input.value.length > maxLength) {
-        alert(`Der Subtask ist zu lang. Bitte begrenze dich auf ${maxLength}`)
+    if (input.value.length === 0) {
+        return;
     } else {
         const subtask = {
             'subtask': input.value,
