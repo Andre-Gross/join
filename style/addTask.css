@@ -6,8 +6,6 @@
     --navbar-width-desktop-mode: 230px;
     --form-subcontainer-max-width: 440px;
     --form-gap: 32px
-    
-    
 }
 
 
@@ -224,11 +222,11 @@ textarea {
 
 
 .headline-container {
-   
+
     padding: 48px 0 8px 0;
     max-width: var(--form-subcontainer-max-width);
     background-color: unset;
-   
+
 }
 
 
@@ -282,7 +280,7 @@ textarea {
     max-width: 100%;
 }
 
-[id^="list-item-box-current-subtask"] p{
+[id^="list-item-box-current-subtask"] p {
     cursor: pointer;
 }
 
@@ -427,3 +425,4 @@ textarea {
 [id^="list-item-box-current-subtask"]:hover img {
     display: inline;
 }
+
