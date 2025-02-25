@@ -149,7 +149,7 @@ const formFooterPost = /*HTML*/`
                     </div>
                 </button>
                 <button id="sendButton" class="d-flex align-items-center btn-primary btn-form fw-bold"
-                    onclick="" disabled>
+                    onclick="submitTaskForm()" disabled>
                     Create Task
                     <div class="d-flex justify-content-center align-items-center bounding-box-button-icon">
                         <img src="./assets/img/general/tick.svg" alt="Create Task">
