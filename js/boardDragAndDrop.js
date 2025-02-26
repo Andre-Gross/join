@@ -186,3 +186,24 @@ function getStatusFromContainerId(containerId) {
  * @event DOMContentLoaded
  */
 document.addEventListener("DOMContentLoaded", initializeDragAndDrop);
+
+
+/**
+ * Moves a task to a new category and updates its status.
+ * 
+ * @param {Event} event - The triggered event.
+ * @param {string} taskId - The ID of the task.
+ * @param {string} newStatus - The new category/status.
+ */
+function moveTaskToCategory(event, taskId, newStatus) {
+  event.stopPropagation();
+  const taskCard = document.getElementById(taskId);
+  if (!taskCard) return;
+  
+  const newContainer = document.getElementById(getContainerIdByStatus(newStatus));
+  if (!newContainer) return;
+  
+  newContainer.appendChild(taskCard);
+  updateTaskStatus(taskId, newStatus);
+  sortTasksByPriority(newContainer);
+}
