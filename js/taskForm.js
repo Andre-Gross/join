@@ -29,6 +29,23 @@ function enableDisableSendButton() {
 }
 
 
+function limitDateInput(inputElement) {
+    let value = inputElement.value;
+
+    if (value.length > 10) {
+    value = value.replace(/\D/g, '');
+
+        let year = value.slice(0, 4);
+        let month = value.slice(5, 7);
+        let day = value.slice(7, 9);
+
+        inputElement.value = `${year}-${month || ''}-${day || ''}`;
+    } else {
+        return;
+    }
+}
+
+
 /**
  * This function adds a keydown event listener to the subtask input element to add new subtasks on Enter key press.
  */

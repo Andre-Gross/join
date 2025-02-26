@@ -48,7 +48,7 @@ const taskFormHTML = /*HTML*/`
             <div class="d-flex flex-column gap-05">
                 <label for="inputDate">Due date<span class="required-star color-invalid">*</span></label>
                 <input required id="inputDate" type="date" onfocus="changeBorderColor(this, 'border-color-onfocus')"
-                    oninput="enableDisableSendButton()" onblur="changeToRightBorderColor(this); changeTextRequired('date')">
+                    oninput="limitDateInput(this), enableDisableSendButton()" onblur="changeToRightBorderColor(this); changeTextRequired('date')">
                 <div class="h-0 d-flex flex-column">
                     <span id="text-required-input-date" class="text-required-input d-none color-invalid fs-12">
                         This field is required</span>
