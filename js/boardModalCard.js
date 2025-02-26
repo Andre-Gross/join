@@ -153,25 +153,19 @@ async function renderAssignedToInModal(assignedToIds) {
 
   container.innerHTML = '';
 
-  let maxVisibleContacts = 4;
-  let hiddenContactsCount = assignedToIds.length - maxVisibleContacts;
+  assignedToIds.forEach((contactId) => {
+      let contact = contactsData[contactId];
+      if (!contact) return;
 
-  for (let i = 0; i < Math.min(assignedToIds.length, maxVisibleContacts); i++) {
-      let contact = contactsData[assignedToIds[i]];
-      if (!contact) continue;
-
-      container.innerHTML += `
-          <div class="assignedTo-name-label d-flex align-items-center gap-16p">
-              ${renderTaskContacts([assignedToIds[i]], contactsData)}
-              <p>${contact.name}</p>
-          </div>`;
-  }
-
-  if (hiddenContactsCount > 0) {
-      container.innerHTML += `
-          <div class="contact-circle extra-contacts-modalcard">+${hiddenContactsCount}</div>
+      let contactElement = document.createElement("div");
+      contactElement.classList.add("assignedTo-name-label", "d-flex", "align-items-center", "gap-16px");
+      contactElement.innerHTML = `
+          ${renderTaskContacts([contactId], contactsData)}
+          <p>${contact.name}</p>
       `;
-  }
+
+      container.appendChild(contactElement);
+  });
 }
 
 
