@@ -462,4 +462,3 @@ function validatePhoneField(input) {
   input.style.borderColor = '';
   return true;
 }
-

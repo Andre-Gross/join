@@ -152,6 +152,7 @@ body.dragging {
     display: flex;
     flex-direction: column;
     max-height: fit-content;
+    -webkit-overflow-scrolling: touch;
 }
 
 .section-header {
@@ -214,6 +215,9 @@ body.dragging {
   line-height: 50px;
 }
 
+.task-container{
+    -webkit-overflow-scrolling: touch;
+}
 
 
 .task {

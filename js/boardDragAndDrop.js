@@ -62,6 +62,7 @@ function handleDragEnd() {
 
 function handleDragOver(e) {
   e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
   const container = e.target.closest(".tasks-container");
   if (!container) return;
   positionTaskInContainer(container, e.clientY);
