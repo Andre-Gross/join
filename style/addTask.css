@@ -335,7 +335,7 @@ textarea {
 
 
 #list-subtasks-container {
-    max-height: 260px;
+    max-height: calc(3* 36px + 10px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
