@@ -53,9 +53,7 @@ async function boardRender() {
     clearTaskContainers();
     renderTasks(tasksData, contactsData);
     initializeDragAndDrop();
-  } catch (error) {
-    console.error("Error loading tasks:", error);
-  }
+  } catch {}
 }
 
 /**
@@ -92,55 +90,6 @@ function renderTasks(tasksData, contactsData) {
     if (!containerId) return;
     document.getElementById(containerId).appendChild(createTaskElement(taskId, task, contactsData));
   });
-}
-
-/**
- * Erstellt ein Task-Element.
- * @param {string} taskId - Die ID der Aufgabe
- * @param {Object} task - Die Aufgabendaten
- * @param {Object} contactsData - Die geladenen Kontakte
- * @returns {HTMLElement} Das erstellte Task-Element
- */
-function createTaskElement(taskId, task, contactsData) {
-  const taskElement = document.createElement("div");
-  taskElement.classList.add("task");
-  taskElement.id = taskId;
-  taskElement.setAttribute("draggable", "true");
-  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-  taskElement.innerHTML = getTaskHTML(taskId, task, contactsData);
-  return taskElement;
-}
-
-/**
- * Generiert das HTML für eine Aufgabe.
- * @param {string} taskId - Die ID der Aufgabe
- * @param {Object} task - Die Aufgabendaten
- * @param {Object} contactsData - Die geladenen Kontakte
- * @returns {string} Das HTML der Aufgabe
- */
-function getTaskHTML(taskId, task, contactsData) {
-  const categoryClass = task.category 
-      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}` 
-      : "bc-category-label-unknown";
-
-  const assignedContactsHTML = renderLimitedAssignedContacts(task.assignedTo || [], contactsData);
-
-  return `
-      <div class="task-header">
-          <div class="category-label ${categoryClass}">${task.category || "No category"}</div>
-      </div>
-      <h4 class="task-title">${task.title}</h4>
-      <p class="task-description">${task.description}</p>
-      <div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}</div>
-      <div class="task-footer d-flex justify-content-between align-items-center">
-          <div class="assigned-contacts d-flex">
-              ${assignedContactsHTML}
-          </div>
-          <div class="task-priority">
-              ${priorityLabelHTML(task.priority)}
-          </div>
-      </div>
-  `;
 }
 
 
