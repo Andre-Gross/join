@@ -403,12 +403,13 @@ body.dragging {
     padding: 32px;
     background-color: white;
     transition: all 0.5s ease;
+    height: 100vh;
 }
 
 
 #modalAddTask #form-footer {
     background-color: var(--white-color);
-    padding-top: 160px;
+    padding-top: 90px;
     padding-bottom: calc(64px - 32px);
 }
 
