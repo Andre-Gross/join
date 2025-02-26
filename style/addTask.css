@@ -238,6 +238,7 @@ textarea {
     border-bottom: 1px solid var(--input-edit-subtask-border-bottom-color);
     padding: 4px 16px;
     height: 24px;
+    width: 100%;
 }
 
 
@@ -302,10 +303,11 @@ textarea {
     border: unset;
     border-radius: 0;
     border-bottom: 1px solid var(--input-edit-subtask-border-bottom-color);
-    padding: 4px 16px;
+    padding: 4px 8px;
     background-color: white;
     justify-content: center;
     align-items: center;
+    margin-top: 4px;
 }
 
 
