@@ -5,9 +5,9 @@ let colors = [];
 let shortNames = [];
 let ids = [];
 
-let toastMessageAddContact ='<span>Contact successfully created</span>';
-let toastMessageEditContact ='<span>Contact successfully edited</span>';
-let toastMessageDeleteContact ='<span>Contact successfully deleted</span>';
+let toastMessageAddContact = "<span>Contact successfully created</span>";
+let toastMessageEditContact = "<span>Contact successfully edited</span>";
+let toastMessageDeleteContact = "<span>Contact successfully deleted</span>";
 
 /**
  * Main function to load and display contacts.
@@ -27,7 +27,7 @@ async function contactMain() {
   let currentLetter = "";
 
   for (let i = 0; i < names.length; i++) {
-    let firstLetter = names[i][0].toUpperCase(); 
+    let firstLetter = names[i][0].toUpperCase();
 
     if (firstLetter !== currentLetter) {
       contactMain.innerHTML += `
@@ -72,7 +72,7 @@ function addContact() {
   document.getElementById("overlay").classList.add("show");
 
   setTimeout(() => {
-      document.getElementById("idAddContact").classList.add("show");
+    document.getElementById("idAddContact").classList.add("show");
   }, 10);
 }
 
@@ -82,9 +82,9 @@ function addContact() {
 function closeAddContact() {
   let addContactElement = document.getElementById("idAddContact");
   if (addContactElement) {
-      addContactElement.remove();
+    addContactElement.remove();
   }
-  document.getElementById("overlay").classList.remove("show"); 
+  document.getElementById("overlay").classList.remove("show");
 }
 
 /**
@@ -121,7 +121,7 @@ function openContact(i) {
   } else {
     let existingView = document.getElementById("idViewContactCard");
     if (existingView) {
-      existingView.remove(); 
+      existingView.remove();
     }
 
     let contactViewContainer = document.createElement("div");
@@ -138,7 +138,7 @@ function openContact(i) {
 function editContact(i) {
   const existingEditModal = document.getElementById("idEditContact");
   if (existingEditModal) {
-      existingEditModal.remove();
+    existingEditModal.remove();
   }
 
   let editContactModal = document.createElement("div");
@@ -149,7 +149,7 @@ function editContact(i) {
   document.getElementById("overlay").classList.add("show");
 
   setTimeout(() => {
-      editContactModal.classList.add("show");
+    editContactModal.classList.add("show");
   }, 10);
 }
 
@@ -159,9 +159,9 @@ function editContact(i) {
 function closeEditContact() {
   const editContactModal = document.getElementById("idEditContact");
   if (editContactModal) {
-      editContactModal.remove();
+    editContactModal.remove();
   }
-  document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
+  document.getElementById("overlay").classList.remove("show");
 }
 
 /**
@@ -180,16 +180,22 @@ function submitAddContact() {
   let mail = document.getElementById("idMailAddContact").value;
   let phone = document.getElementById("idPhoneAddContact").value;
   let color = getRandomColor();
-  if (!validateContactForm("idNameAddContact", "idMailAddContact", "idPhoneAddContact")) {
-    return; 
+  if (
+    !validateContactForm(
+      "idNameAddContact",
+      "idMailAddContact",
+      "idPhoneAddContact"
+    )
+  ) {
+    return;
   }
   postContactToDatabase(name, mail, phone, color);
 
-  showToast(toastMessageAddContact, 'middle', 1000);
+  showToast(toastMessageAddContact, "middle", 1000);
 
   setTimeout(() => {
     contactMain();
-    document.getElementById("overlay").classList.remove("show"); 
+    document.getElementById("overlay").classList.remove("show");
   }, 1000);
 }
 
@@ -201,37 +207,45 @@ async function deleteContact(i) {
   let id = ids[i];
   await deleteContactInDatabase(id);
 
-  showToast(toastMessageDeleteContact, 'middle', 1000);
+  showToast(toastMessageDeleteContact, "middle", 1000);
 
   setTimeout(() => {
     contactMain();
     let existingView = document.getElementById("idViewContactCard");
     if (existingView) {
-      existingView.remove(); 
+      existingView.remove();
     }
   }, 1000);
 }
 
 /**
-* Saves the edited contact to the database.
-* @param {number} i - Index of the contact.
-*/
+ * Saves the edited contact to the database.
+ * @param {number} i - Index of the contact.
+ */
 function saveEditContact(i) {
   let name = document.getElementById("idNameEditContact").value;
   let mail = document.getElementById("idMailEditContact").value;
   let phone = document.getElementById("idPhoneEditContact").value;
   let color = colors[i];
   let id = ids[i];
-  if (!validateContactForm("idNameEditContact", "idMailEditContact", "idPhoneEditContact")) {
+  if (
+    !validateContactForm(
+      "idNameEditContact",
+      "idMailEditContact",
+      "idPhoneEditContact"
+    )
+  ) {
     return;
   }
   putContactInDatabase(name, mail, phone, color, id);
-  showToast(toastMessageEditContact, 'middle', 1000);
+  showToast(toastMessageEditContact, "middle", 1000);
   setTimeout(() => {
     document.getElementById("idEditContact").classList.remove("show");
     document.getElementById("overlay").classList.remove("show");
     let existingView = document.getElementById("idViewContactCard");
-      existingView.remove(); 
+    if (existingView) {
+      existingView.remove();
+    }
     contactMain();
   }, 1000);
 }
@@ -242,7 +256,6 @@ function saveEditContact(i) {
 async function shortName() {
   shortNames = names.map((name) => getInitialsFromName(name));
 }
-
 
 /**
  * Deletes a contact from the database.
@@ -273,7 +286,6 @@ async function tryDeleteContactInDatabase(id) {
   if (!response.ok) {
     throw new Error(`Fehler: ${response.status} ${response.statusText}`);
   }
-
 }
 
 /**
@@ -365,29 +377,28 @@ function openEmailClient(email) {
   window.location.href = `mailto:${email}`;
 }
 
-
 /**
  * Adds a 'selected' class to the clicked contact entry.
  */
-document.addEventListener('click', (event) => {
-  if (event.target.closest('.NameMailShort')) {
-    document.querySelectorAll('.NameMailShort.selected').forEach((el) => {
-      el.classList.remove('selected');
+document.addEventListener("click", (event) => {
+  if (event.target.closest(".NameMailShort")) {
+    document.querySelectorAll(".NameMailShort.selected").forEach((el) => {
+      el.classList.remove("selected");
     });
-    event.target.closest('.NameMailShort').classList.add('selected');
+    event.target.closest(".NameMailShort").classList.add("selected");
   }
 });
 
 /**
-* Toggles the visibility of the dropdown menu for a specific contact.
-* @param {number} index - Index of the contact.
-*/
+ * Toggles the visibility of the dropdown menu for a specific contact.
+ * @param {number} index - Index of the contact.
+ */
 function toggleDropdownMenu(index) {
   const dropdown = document.getElementById(`dropdownMenu-${index}`);
-  if (dropdown.classList.contains('dm-hidden')) {
-      dropdown.classList.remove('dm-hidden');
+  if (dropdown.classList.contains("dm-hidden")) {
+    dropdown.classList.remove("dm-hidden");
   } else {
-      dropdown.classList.add('dm-hidden');
+    dropdown.classList.add("dm-hidden");
   }
 }
 
