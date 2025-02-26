@@ -31,8 +31,12 @@
         gap: 0;
         justify-content: start;
         flex-direction: row;
+
     }
 
+    #task-form-container {
+        overflow-x: scroll;
+    }
 
     .one-column form {
         flex-direction: column !important;
@@ -45,7 +49,7 @@
 
 
     #form-footer {
-        position: sticky;
+        position: relative;
         bottom: 0;
         padding-bottom: calc(79px - 12px);
         max-width: calc(878px - 16px);

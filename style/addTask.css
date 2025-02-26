@@ -88,6 +88,11 @@ textarea {
     flex-wrap: wrap;
 }
 
+#assignedTo-name-labels-container {
+    max-height: 180px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
 
 .bounding-box-button-icon {
     width: 24px;
@@ -181,20 +186,13 @@ textarea {
 
 
 #form-footer {
-    position: sticky;
+    position: relative;
     bottom: 0;
     padding-top: 12px;
     padding-left: 16px;
-    padding-bottom: calc(var(--template-height-with-padding) + 12px);
-    z-index: 7000;
+     z-index: 7000;
     right: 0;
     background-color: #F6F7F8;
-}
-
-
-#content-container #form-footer {
-    padding-top: 32px;
-    padding-bottom: 112px;
 }
 
 
@@ -435,4 +433,9 @@ textarea {
     display: inline;
 }
 
+#task-form-container {
+    max-height: 80vh; /* Begrenzung auf 80% der Bildschirmhöhe */
+    overflow-y: auto; /* Vertikales Scrollen aktivieren */
+    overflow-x: hidden; /* Horizontales Scrollen vermeiden */
 
+}
