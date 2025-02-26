@@ -186,11 +186,12 @@ textarea {
 
 
 #form-footer {
-    position: relative;
+    position: sticky;
     bottom: 0;
     padding-top: 12px;
     padding-left: 16px;
-     z-index: 7000;
+    padding-right: 16px;
+    z-index: 7000;
     right: 0;
     background-color: #F6F7F8;
 }
