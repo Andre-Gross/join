@@ -298,6 +298,13 @@ footer {
     font-size: 12px;
 }
 
+.extra-contacts {
+    background-color: gray; 
+    color: white;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
 
 .bg-ff7a00 {
     background-color: #FF7A00;

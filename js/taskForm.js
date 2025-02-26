@@ -346,10 +346,21 @@ async function refreshChoosenContactCircles(preSelectedContacts = []) {
     const choosenContactsContainer = document.getElementById('assignedTo-choosen-contacts');
 
     choosenContactsContainer.innerHTML = '';
-    for (let contactId of checkedContacts) {
-        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(contactId);
+
+    let maxVisibleContacts = 4; 
+    let hiddenContactsCount = checkedContacts.length - maxVisibleContacts;
+
+    for (let i = 0; i < Math.min(checkedContacts.length, maxVisibleContacts); i++) {
+        choosenContactsContainer.innerHTML += await createNameCircleWithRemove(checkedContacts[i]);
+    }
+
+    if (hiddenContactsCount > 0) {
+        choosenContactsContainer.innerHTML += `
+            <div class="name-circle extra-contacts">+${hiddenContactsCount}</div>
+        `;
     }
 }
+
 
 
 /**
