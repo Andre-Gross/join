@@ -233,6 +233,18 @@ body.dragging {
     cursor: pointer;
 }
 
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-button-task {
+    position: relative;
+    cursor: pointer;
+    z-index: 1001;
+}
+
 
 .task:hover {
     transform: rotate(3deg) scale(1.03);
