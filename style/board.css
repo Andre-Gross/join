@@ -242,9 +242,16 @@ body.dragging {
 .dropdown-button-task {
     position: relative;
     cursor: pointer;
-    z-index: 1001;
+    width:20px;
+    height:20px;
 }
 
+.dropdown-button-task img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: auto;
+}
 
 .task:hover {
     transform: rotate(3deg) scale(1.03);
