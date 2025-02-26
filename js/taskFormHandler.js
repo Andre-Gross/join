@@ -1,3 +1,4 @@
+const toastMessage = "The entered date is invalid or in the past.";
 /**
  * This function initializes the form, including the subtask input listener and dropdown listeners.
  */
@@ -122,6 +123,23 @@ function limitDateInput(inputElement) {
 
 
 /**
+ * Validates if the due date is in the correct format and not in the past.
+ * 
+ * @param {string} dueDate - The due date in string format (YYYY-MM-DD).
+ * @returns {boolean} - Returns `true` if the date is valid, otherwise `false`.
+ */
+function isValidDueDate(dueDate) {
+    if (!dueDate) return false; // Kein Datum eingegeben
+
+    const dueDateObj = new Date(dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Setzt die Zeit auf 00:00:00 für einen fairen Vergleich
+
+    return dueDateObj >= today; // Datum darf nicht in der Vergangenheit liegen
+}
+
+
+/**
  * Collects task form data, validates required fields, and submits the task to the database.
  * Shows a success toast and redirects to the board upon completion.
  *
@@ -137,6 +155,13 @@ async function submitTaskForm(method = 'post', id = '') {
     const priority = document.querySelector('.btn-selected')?.id;
     const assignedTo = readAssignedTo();
 
+    const toastMessage = "The entered date is invalid or in the past."; 
+
+    if (!isValidDueDate(dueDate)) {
+        showToast(toastMessage); 
+        return;
+    }
+
     toggleAllFormFooterButtons(false);
 
     const data = await prepareDataToSend(title, description, dueDate, priority, category, assignedTo);
@@ -146,7 +171,6 @@ async function submitTaskForm(method = 'post', id = '') {
     handleEndingOfTaskForm();
     boardRender();
 }
-
 
 /**
  * Prepares the task data for sending to the database.
