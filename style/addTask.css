@@ -434,8 +434,8 @@ textarea {
 }
 
 #task-form-container {
-    max-height: 80vh; /* Begrenzung auf 80% der Bildschirmhöhe */
-    overflow-y: auto; /* Vertikales Scrollen aktivieren */
-    overflow-x: hidden; /* Horizontales Scrollen vermeiden */
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 
 }
