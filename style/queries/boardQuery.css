@@ -109,6 +109,10 @@
 
 @media (max-width: 659px) {
 
+    .dropdown-button-task{
+        display: unset !important;
+    }
+
     .move-button {
         display: block !important;
     }

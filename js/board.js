@@ -381,8 +381,14 @@ function createTaskElement(taskId, task, contactsData) {
   taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
-      <div class="dropdown-button-task">
+      <div class="dropdown-button-task d-none" onclick="toggleTaskDropdown(event)">
             <img src="./assets/img/board/dropdown_close.svg" alt="dropdown">
+            <div id="dropdownMenuTask" class="d-menu dm-hidden">
+            <p onclick="moveTaskToCategory(event, '${taskId}', 'To do')">To Do</p>
+            <p onclick="moveTaskToCategory(event, '${taskId}', 'In progress')">In Progress</p>
+            <p onclick="moveTaskToCategory(event, '${taskId}', 'Await feedback')">Await Feedback</p>
+            <p onclick="moveTaskToCategory(event, '${taskId}', 'Done')">Done</p>
+                </div>
           </div>
     </div>
     <h4 class="task-title">${task.title}</h4>
@@ -512,3 +518,70 @@ document.addEventListener("DOMContentLoaded", () => {
       subtree: true,
   });
 });
+
+
+/**
+ * Displays the "Move To" dropdown menu for a task and closes other open menus.
+ *
+ * @param {Event} event - The event object triggered by the user interaction.
+ */
+function toggleTaskDropdown(event) {
+  event.stopPropagation();
+
+  const taskCard = event.target.closest(".task");
+  const dropdownMenu = taskCard.querySelector(".d-menu");
+
+  if (!dropdownMenu) return;
+
+  document.querySelectorAll(".d-menu").forEach(menu => {
+      if (menu !== dropdownMenu) {
+          menu.classList.add("dm-hidden");
+      }
+  });
+
+  dropdownMenu.classList.toggle("dm-hidden");
+  dropdownMenu.addEventListener("click", (e) => e.stopPropagation());
+}
+
+/**
+* Closes all dropdown menus when clicking outside.
+*/
+document.addEventListener("click", () => {
+  document.querySelectorAll(".d-menu").forEach(menu => {
+      menu.classList.add("dm-hidden");
+  });
+});
+
+/**
+* Ensures that `openModal()` is not called when the dropdown button is clicked.
+*/
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".task").forEach(taskElement => {
+      taskElement.addEventListener("click", (event) => {
+          if (!event.target.closest('.dropdown-button-task')) {
+              openModal(taskElement.id);
+          }
+      });
+  });
+});
+
+
+/**
+ * Moves a task to a new category and updates its status.
+ * 
+ * @param {Event} event - The triggered event.
+ * @param {string} taskId - The ID of the task.
+ * @param {string} newStatus - The new category/status.
+ */
+function moveTaskToCategory(event, taskId, newStatus) {
+  event.stopPropagation();
+  const taskCard = document.getElementById(taskId);
+  if (!taskCard) return;
+  
+  const newContainer = document.getElementById(getContainerIdByStatus(newStatus));
+  if (!newContainer) return;
+  
+  newContainer.appendChild(taskCard);
+  updateTaskStatus(taskId, newStatus);
+  sortTasksByPriority(newContainer);
+}
