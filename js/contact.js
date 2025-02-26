@@ -412,6 +412,14 @@ function toggleDropdownMenu(index) {
 }
 
 
+/**
+ * Validates the contact form by checking if all required fields are filled and properly formatted.
+ * @function validateContactForm
+ * @param {string} nameInputId - The ID of the name input field.
+ * @param {string} emailInputId - The ID of the email input field.
+ * @param {string} phoneInputId - The ID of the phone input field.
+ * @returns {boolean} True if the form is valid, otherwise false.
+ */
 function validateContactForm(nameInputId, emailInputId, phoneInputId) {
   let nameInput = document.getElementById(nameInputId);
   let emailInput = document.getElementById(emailInputId);

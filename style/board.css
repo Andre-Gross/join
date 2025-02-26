@@ -152,8 +152,6 @@ body.dragging {
     display: flex;
     flex-direction: column;
     max-height: fit-content;
-    min-height: calc(260px * 2);
-
 }
 
 .section-header {
@@ -303,6 +301,13 @@ body.dragging {
     margin-left: -8px;
 }
 
+.extra-contacts-modalcard {
+    background-color: gray; 
+    color: white;
+    border-radius: 50%;
+    border: 2px solid white;
+    left: 16px;
+}
 
 .add-button {
     position: absolute;

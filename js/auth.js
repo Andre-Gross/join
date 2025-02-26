@@ -1,5 +1,5 @@
 /**
- * Wartet, bis das DOM vollständig geladen ist, und überprüft dann die Authentifizierung des Benutzers.
+ * Waits until the DOM is fully loaded and then checks the user's authentication.
  *
  * @event DOMContentLoaded
  * @function checkAuth
@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /**
- * Prüft, ob der Benutzer eingeloggt ist. Falls nicht, wird er zur Login-Seite weitergeleitet.
- * Ausnahme: Wenn der Benutzer als "guest" eingeloggt ist, bleibt er auf der Seite.
+ * Checks if the user is logged in. If not, redirects to the login page.
+ * Exception: If the user is logged in as "guest", they remain on the page.
  */
 function checkAuth() {
     let loggedInUser = sessionStorage.getItem("loggedInUser");

@@ -148,26 +148,32 @@ function renderPriority(priority) {
  * @param {Array<string>} assignedTo - Array of contact names assigned to the task.
  */
 async function renderAssignedToInModal(assignedToIds) {
-  const container = document.getElementById("assignedTo-name-labels-container");
+  const container = document.getElementById('assignedTo-name-labels-container');
   const contactsData = await getContacts();
 
-  const html = assignedToIds
-    .map((id) => {
-      let contact = contactsData[id];
-      if (!contact) {
-        contact = Object.values(contactsData).find((c) => c.name === id);
-      }
-      if (!contact) return "";
-      const circle = renderTaskContacts([id], contactsData);
-      return `<div class="assignedTo-name-label d-flex align-items-center gap-16p">
-                  ${circle}
-                  <p>${contact.name}</p>
-                </div>`;
-    })
-    .join("");
+  container.innerHTML = '';
 
-  container.innerHTML = html;
+  let maxVisibleContacts = 4;
+  let hiddenContactsCount = assignedToIds.length - maxVisibleContacts;
+
+  for (let i = 0; i < Math.min(assignedToIds.length, maxVisibleContacts); i++) {
+      let contact = contactsData[assignedToIds[i]];
+      if (!contact) continue;
+
+      container.innerHTML += `
+          <div class="assignedTo-name-label d-flex align-items-center gap-16p">
+              ${renderTaskContacts([assignedToIds[i]], contactsData)}
+              <p>${contact.name}</p>
+          </div>`;
+  }
+
+  if (hiddenContactsCount > 0) {
+      container.innerHTML += `
+          <div class="contact-circle extra-contacts-modalcard">+${hiddenContactsCount}</div>
+      `;
+  }
 }
+
 
 /**
  * Renders the list of subtasks in the modal.

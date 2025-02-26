@@ -324,6 +324,11 @@ function hideResetPasswordError() {
 }
 
 
+/**
+ * Attaches input event listeners to email and password fields to hide error messages on user input.
+ * @function addInputEventListeners
+ * @event DOMContentLoaded
+ */
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("email").addEventListener("input", hidePasswordError);
   document.getElementById("password").addEventListener("input", hidePasswordError);

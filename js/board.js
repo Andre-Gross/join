@@ -320,47 +320,65 @@ function truncateDescription(description, maxLength = 50) {
 }
 
 
+
 /**
- * Renders the search results on the board by displaying only the tasks that match the search query.
- * 
- * Clears all task containers before rendering the filtered tasks.
- * Fetches contact data to display assigned contacts for each task.
- * Each task is created dynamically with its title, description, subtasks, priority, and assigned contacts.
- * 
+ * Renders the body search by clearing task containers, fetching contact data, and rendering filtered tasks.
  * @async
  * @function renderBodySearch
- * @returns {Promise<void>} - A promise that resolves once the filtered tasks are rendered.
+ * @returns {Promise<void>} 
  */
 async function renderBodySearch() {
+  clearTaskContainers();
+  const contactsData = await fetchContactsData();
+  renderFilteredTasks(contactsData);
+}
+
+/**
+ * Clears all task containers to prepare for rendering new tasks.
+ * @function clearTaskContainers
+ */
+function clearTaskContainers() {
   ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
     document.getElementById(containerId).innerHTML = "";
   });
+}
 
-  const contactsData = await fetchContactsData();
-
+/**
+ * Renders tasks filtered by their status and assigns them to the appropriate container.
+ * @function renderFilteredTasks
+ * @param {Object} contactsData - The contact data to be used for rendering assigned users.
+ */
+function renderFilteredTasks(contactsData) {
   Object.entries(currentTasks).forEach(([taskId, task]) => {
     const containerId = getContainerIdByStatus(task.status);
     if (!containerId) return;
 
-    const taskElement = document.createElement("div");
-    taskElement.classList.add("task");
-    taskElement.id = taskId;
-    taskElement.setAttribute("draggable", "true");
-    taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+    const taskElement = createTaskElement(taskId, task, contactsData);
+    document.getElementById(containerId).appendChild(taskElement);
+  });
+}
 
-    const categoryClass = task.category
-      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-      : "bc-category-label-unknown";
-    const categoryHTML = `
-    <div class="category-label ${categoryClass}">
-      ${task.category || "No category"}
-    </div>`;
+/**
+ * Creates a task element with all its properties, including category, description, subtasks, contacts, and priority.
+ * @function createTaskElement
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {Object} task - The task data including title, description, category, etc.
+ * @param {Object} contactsData - The contact data used for assigned contacts.
+ * @returns {HTMLElement} The created task element.
+ */
+function createTaskElement(taskId, task, contactsData) {
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
 
-    const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
-    const priorityImage = priorityLabelHTML(task.priority);
-    const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
+  const categoryHTML = createCategoryHTML(task.category);
+  const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
+  const priorityImage = priorityLabelHTML(task.priority);
+  const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
 
-    taskElement.innerHTML = `
+  taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
     </div>
@@ -377,9 +395,25 @@ async function renderBodySearch() {
     </footer>
   `;
 
-    document.getElementById(containerId).appendChild(taskElement);
-  });
+  return taskElement;
 }
+
+/**
+ * Creates an HTML string for the category label of a task.
+ * @function createCategoryHTML
+ * @param {string} category - The category of the task.
+ * @returns {string} The generated category HTML string.
+ */
+function createCategoryHTML(category) {
+  const categoryClass = category
+    ? `bc-category-label-${category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
+  return `
+    <div class="category-label ${categoryClass}">
+      ${category || "No category"}
+    </div>`;
+}
+
 
 
 /**

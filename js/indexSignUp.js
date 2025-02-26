@@ -191,6 +191,12 @@ function checkFormValidity() {
   document.getElementById("registerButton").disabled = !isFormValid;
 }
 
+
+/**
+ * Validates the email field when it loses focus.
+ * Checks if the email is correctly formatted and displays an error message if not.
+ * Also updates the form validity state.
+ */
 function validateEmailOnBlur() {
   let emailInput = document.getElementById("signUpEmail");
   let emailErrorSpan = document.getElementById(
