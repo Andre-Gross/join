@@ -124,7 +124,9 @@ async function submitTaskForm(method = 'post', id = '') {
 
     nextStatus = 'To do';
     handleEndingOfTaskForm();
-    boardRender();
+    if (window.location.pathname.endsWith('board.html')) {
+        boardRender();
+    }
 }
 
 
@@ -347,7 +349,7 @@ async function refreshChoosenContactCircles(preSelectedContacts = []) {
 
     choosenContactsContainer.innerHTML = '';
 
-    let maxVisibleContacts = 4; 
+    let maxVisibleContacts = 4;
     let hiddenContactsCount = checkedContacts.length - maxVisibleContacts;
 
     for (let i = 0; i < Math.min(checkedContacts.length, maxVisibleContacts); i++) {
