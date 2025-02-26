@@ -43,7 +43,6 @@ async function contactMain() {
   contactMain.innerHTML += getAddContactBtn();
 }
 
-
 /**
  * Loads contacts from the database and initializes arrays.
  */
@@ -63,8 +62,6 @@ async function loadContacts() {
   await sortContacts();
 }
 
-
-
 /**
  * Displays the "Add Contact" form.
  */
@@ -79,7 +76,6 @@ function addContact() {
   }, 10);
 }
 
-
 /**
  * Closes the "Add Contact" form.
  */
@@ -90,7 +86,6 @@ function closeAddContact() {
   }
   document.getElementById("overlay").classList.remove("show"); 
 }
-
 
 /**
  * Sorts contacts alphabetically by name.
@@ -112,7 +107,6 @@ async function sortContacts() {
   colors = contacts.map((contact) => contact.color);
   ids = contacts.map((contact) => contact.id);
 }
-
 
 /**
  * Opens the contact view for a specific contact.
@@ -159,7 +153,6 @@ function editContact(i) {
   }, 10);
 }
 
-
 /**
  * Closes the edit contact form.
  */
@@ -171,7 +164,6 @@ function closeEditContact() {
   document.getElementById("overlay").classList.remove("show"); // Overlay ausblenden
 }
 
-
 /**
  * Closes both the add and edit contact forms.
  */
@@ -179,7 +171,6 @@ function closeOverlay() {
   closeAddContact();
   closeEditContact();
 }
-
 
 /**
  * Submits the new contact to the database.
@@ -202,7 +193,6 @@ function submitAddContact() {
   }, 1000);
 }
 
-
 /**
  * Deletes a contact from the database.
  * @param {number} i - Index of the contact.
@@ -221,7 +211,6 @@ async function deleteContact(i) {
     }
   }, 1000);
 }
-
 
 /**
 * Saves the edited contact to the database.
@@ -247,14 +236,12 @@ function saveEditContact(i) {
   }, 1000);
 }
 
-
 /**
  * Generates short names (initials) for all contacts.
  */
 async function shortName() {
   shortNames = names.map((name) => getInitialsFromName(name));
 }
-
 
 
 /**
@@ -269,7 +256,6 @@ async function deleteContactInDatabase(id) {
     alert("Beim Löschen des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
-
 
 /**
  * Tries to delete a contact from the database.
@@ -290,7 +276,6 @@ async function tryDeleteContactInDatabase(id) {
 
 }
 
-
 /**
  * Updates a contact in the database.
  * @param {string} name - Name of the contact.
@@ -307,7 +292,6 @@ async function putContactInDatabase(name, mail, phone, color, id) {
     alert("Beim Bearbeiten des Kontaktes ist ein Fehler aufgetreten.");
   }
 }
-
 
 /**
  * Tries to update a contact in the database.
@@ -337,7 +321,6 @@ async function tryPutContactInDatabase(name, mail, phone, color, id) {
   }
 }
 
-
 /**
  * Toggles the visibility of contact buttons based on input values.
  */
@@ -366,7 +349,6 @@ function toggleContactButtons() {
   }
 }
 
-
 /**
  * Initiates a phone call to the given phone number.
  * @param {string} phoneNumber - Phone number to call.
@@ -374,7 +356,6 @@ function toggleContactButtons() {
 function callPhoneNumber(phoneNumber) {
   window.location.href = `tel:${phoneNumber}`;
 }
-
 
 /**
  * Opens the default email client with the given email address.
@@ -397,7 +378,6 @@ document.addEventListener('click', (event) => {
   }
 });
 
-
 /**
 * Toggles the visibility of the dropdown menu for a specific contact.
 * @param {number} index - Index of the contact.
@@ -410,7 +390,6 @@ function toggleDropdownMenu(index) {
       dropdown.classList.add('dm-hidden');
   }
 }
-
 
 /**
  * Validates the contact form by checking if all required fields are filled and properly formatted.
