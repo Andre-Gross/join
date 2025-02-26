@@ -304,9 +304,3 @@ async function deleteTaskOfModalCard(id) {
 }
 
 
-function updateTaskStatus(status) {
-  console.log("Status geändert zu:", status);
-  document.getElementById("dropdownMenu").classList.add("dm-hidden"); // Dropdown schließen nach Auswahl
-}
-
-document.addEventListener("DOMContentLoaded", setupDropdown);
