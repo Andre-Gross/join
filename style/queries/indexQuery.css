@@ -1,3 +1,14 @@
+@media (max-width: 500px) {
+    .final-logo {
+        width: var(--logo-container-size-mobile);
+        height: var(--logo-container-size-mobile);
+    }
+
+    .logo-container {
+        width: var(--logo-container-size-mobile);
+        height: var(--logo-container-size-mobile);  
+    }
+}
 @media (min-width: 500px) {
     .col.text-center {
         top: 5%;
@@ -25,17 +36,23 @@
     }
 
     #switchExtras {
-        display: flex ;
+        display: flex;
         align-items: center;
-        gap: 8px;       
+        gap: 8px;
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease-in-out 0.3s, visibility 0s linear 0.3s;
-      }
+    }
+
+    .logo-container {
+        width: var(--logo-container-size-mobile);
+        height: var(--logo-container-size-mobile);
+    }
 
 }
 
 @media (min-width: 768px) {
+
     #loginCard,
     #signupCard {
         opacity: 0;
