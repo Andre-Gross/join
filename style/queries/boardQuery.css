@@ -1,3 +1,8 @@
+@media (min-width: 1000px) {
+    #modalAddTask {
+        height: unset;
+    }
+}
 @media (max-width: 1370px) {
     .board-header{
         max-width: 790px;
@@ -43,7 +48,6 @@
         width: 100%;
     }
 }
-
 
 @media (max-width: 833px) {
 
@@ -102,8 +106,6 @@
         justify-content: center;
     }
 }
-
-
 
 @media (max-width: 659px) {
 
