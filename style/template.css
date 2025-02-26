@@ -41,7 +41,7 @@
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--header-shadow);
     height: var(--header-height);
-    z-index: 9900;
+    z-index: 10000;
 }
 
 .header-content {
@@ -105,9 +105,8 @@
     box-sizing: border-box;
     padding: 5px 16px;
     height: var(--navbar-height);
-    z-index: 9995;
+    z-index: 10010;
 }
-
 
 .nav-item {
     display: flex;
