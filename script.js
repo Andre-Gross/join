@@ -121,30 +121,26 @@ function createNameCircle(initials, color) {
  * @param {Object} contactsData - An object mapping contact IDs to their details (name, color, etc.).
  * @returns {string} Returns HTML string with circles representing assigned contacts.
  */
-function renderTaskContacts(assignedTo = [], contactsData = {}) {
-  if (!isValidArray(assignedTo)) return "";
-  return assignedTo
-    .map((contactIdOrName) => {
-      let contact = contactsData[contactIdOrName];
-      if (!contact) {
-        contact = Object.values(contactsData).find((c) => c.name === contactIdOrName);
-      }
-      if (!contact) {
-        return ``;
-    }
-          const shortName = contact.name
-        .split(" ")
-        .map((n) => n[0].toUpperCase())
-        .join("");
-      const backgroundColor = contact.color || "#ccc";
-      return `
-        <div class="contact-circle" style="background-color: ${backgroundColor};">
-          <span>${shortName}</span>
-        </div>
-      `;
-    })
-    .join("");
+function renderTaskContacts(assignedTo, contacts) {
+  let maxVisibleContacts = 4;
+  let hiddenContactsCount = assignedTo.length - maxVisibleContacts;
+
+  let visibleContacts = assignedTo.slice(0, maxVisibleContacts).map((id) => {
+      let contact = contacts[id];
+      if (!contact) return "";
+      let initials = returnInitialsOfName(contact.name);
+      return `<div class="contact-circle" style="background-color: ${contact.color};">
+                  <span>${initials}</span>
+              </div>`;
+  }).join("");
+
+  let extraContacts = hiddenContactsCount > 0 
+      ? `<div class="contact-circle extra-contacts">+${hiddenContactsCount}</div>` 
+      : "";
+
+  return visibleContacts + extraContacts;
 }
+
 
 
 /**

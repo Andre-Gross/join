@@ -301,13 +301,24 @@ body.dragging {
     margin-left: -8px;
 }
 
-.extra-contacts-modalcard {
+.extra-contacts-task {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: nowrap;
+}
+
+.contact-circle.extra-contacts {
     background-color: gray; 
     color: white;
     border-radius: 50%;
     border: 2px solid white;
-    left: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
 }
+
 
 .add-button {
     position: absolute;
@@ -421,9 +432,9 @@ body.dragging {
 
 #modalCard {
     position: fixed;
-    top: 16px;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, -50%);
     border-radius: 30px;
     box-shadow: 0px 0px 4px 0px #00000029;
     padding: 16px 12px;
@@ -512,12 +523,6 @@ body.dragging {
     cursor: pointer;
 }
 
-
-#modalCard {
-    gap: 16px;
-}
-
-
 #modulCard-close img {
     width: 13.5px;
     height: 13.5px;
@@ -572,6 +577,9 @@ body.dragging {
 
 #modalCard-subtasks-value {
     margin-top: 8px;
+    max-height: 100px; 
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
 
