@@ -79,21 +79,22 @@
                         <form onsubmit="event.preventDefault(); signUp();" novalidate>
                             <div class="mb-3">
                                 <input type="text" id="name" class="form-control" placeholder="Name"
-                                    oninput="checkFormValidity()" onblur="changeToRightBorderColor(this)";
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" >
-                                    
+                                    oninput="checkFormValidity()" onblur="changeToRightBorderColor(this)" ;
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')">
+
                             </div>
                             <div class="mb-3">
                                 <input type="email" id="signUpEmail" class="form-control" placeholder="E-Mail"
                                     oninput="checkFormValidity()"
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this)"; 
-                                validateEmailField(this);" autocomplete="username">
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    onblur="changeToRightBorderColor(this)" ; validateEmailField(this);"
+                                    autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="signUpPassword" class="form-control" placeholder="Password"
                                     oninput="checkFormValidity()"
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this)";
-                                    autocomplete="new-password">
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    onblur="changeToRightBorderColor(this)" ; autocomplete="new-password">
                                 <img src="../assets/img/logIn-signUp/visibility-off.svg" alt="Toggle Password"
                                     class="new-password-toggle"
                                     onclick="togglePasswordVisibility('signUpPassword', this)">
@@ -141,8 +142,9 @@
                             <div class="mb-3">
                                 <input type="email" id="resetEmail" class="form-control" placeholder="E-Mail"
                                     oninput="checkFormValidity()"
-                                    onfocus="changeBorderColor(this, 'border-color-onfocus')" onblur="changeToRightBorderColor(this)"; 
-                                validateEmailField(this);" autocomplete="username">
+                                    onfocus="changeBorderColor(this, 'border-color-onfocus')"
+                                    onblur="changeToRightBorderColor(this)" ; validateEmailField(this);"
+                                    autocomplete="username">
                             </div>
                             <div class="mb-3 password-container">
                                 <input type="password" id="resetPassword" class="form-control"
@@ -200,3 +202,5 @@
 </body>
 
 </html>
+
+
