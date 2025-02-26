@@ -1,4 +1,6 @@
 let toastMessageSignUp = "<span>You Signed Up successfully</span>";
+let toastMessageEmailAlreadyRegistered =
+  "<span>Email already registered. Please try again.</span>";
 
 document.addEventListener("DOMContentLoaded", () => {
   let signupForm = document.querySelector("#signupCard form");
@@ -11,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 /**
  * Initiates the user registration process by validating form data,
  * ensuring the email is not already registered, registering the new user,
@@ -21,7 +22,8 @@ async function signUp() {
   if (isSubmitting) return;
   isSubmitting = true;
 
-  let { name, email, password, confirmPassword, agreeTerms } = getSignUpInputs();
+  let { name, email, password, confirmPassword, agreeTerms } =
+    getSignUpInputs();
 
   hideSignUpPasswordError();
 
@@ -35,8 +37,7 @@ async function signUp() {
     await registerUser(name, email, password);
     await addUserToContacts(name, email);
     showSuccessAndRedirect();
-  } catch (error) {
-    displayError(error.message || "An error occurred during registration. Please try again.");
+  } catch {
   } finally {
     isSubmitting = false;
   }
@@ -90,6 +91,7 @@ function validateSignUpForm(agreeTerms, password, confirmPassword) {
 async function ensureEmailNotRegistered(email) {
   let users = await fetchUsers();
   if (isEmailAlreadyRegistered(users, email)) {
+    showToast(toastMessageEmailAlreadyRegistered, "middle", 2000);
     throw new Error("Email already registered. Please try again.");
   }
 }
@@ -114,7 +116,6 @@ function showSuccessAndRedirect() {
     redirectToLogin(true);
   }, 1000);
 }
-
 
 /**
  * Registers a new user in the database.
@@ -185,15 +186,16 @@ function checkFormValidity() {
   let confirmPassword = document.getElementById("confirmPassword").value.trim();
   let agreeTerms = document.getElementById("agreeTerms").checked;
   let isEmailValid = email === "" ? true : validateEmailField(emailInput);
-  let isFormValid = name && isEmailValid && password && confirmPassword && agreeTerms;
+  let isFormValid =
+    name && isEmailValid && password && confirmPassword && agreeTerms;
   document.getElementById("registerButton").disabled = !isFormValid;
 }
 
-
-
 function validateEmailOnBlur() {
   let emailInput = document.getElementById("signUpEmail");
-  let emailErrorSpan = document.getElementById("text-error-password-signUp-email");
+  let emailErrorSpan = document.getElementById(
+    "text-error-password-signUp-email"
+  );
 
   if (emailInput.value.trim() !== "" && !validateEmailField(emailInput)) {
     emailErrorSpan.classList.remove("d-none");
@@ -203,7 +205,3 @@ function validateEmailOnBlur() {
 
   checkFormValidity();
 }
-
-
-
-
