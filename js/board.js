@@ -381,6 +381,9 @@ function createTaskElement(taskId, task, contactsData) {
   taskElement.innerHTML = `
     <div class="task-header">
       ${categoryHTML}
+      <div class="dropdown-button-task">
+            <img src="./assets/img/board/dropdown_close.svg" alt="dropdown">
+          </div>
     </div>
     <h4 class="task-title">${task.title}</h4>
     <p class="task-description">${truncateDescription(task.description)}</p>
