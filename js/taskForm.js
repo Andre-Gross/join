@@ -242,17 +242,16 @@ async function refreshChoosenContactCircles(preSelectedContacts = []) {
  */
 async function createNameCircleWithRemove(id) {
     const contacts = await getContacts();
+    if (!contacts || !contacts[id]) return "";
+
     const initials = returnInitialsOfName(contacts[id].name);
     const color = contacts[id].color.replace('#', '').toLowerCase();
-
+    
     let HTML = createNameCircle(initials, color);
-
     const divId = addPrefixAndSuffix(id, 'nameCircle-');
     const onclickFunction = `selectContact('${id}')`;
 
-    HTML = HTML.replace('<div class="', `<div id="${divId}" onclick="${onclickFunction}" class="pointer `);
-
-    return HTML;
+    return HTML.replace('<div class="', `<div id="${divId}" onclick="${onclickFunction}" class="pointer `);
 }
 
 
