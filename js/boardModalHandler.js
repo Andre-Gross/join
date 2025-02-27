@@ -186,9 +186,9 @@ function assignTaskDataToForm(task) {
     dueDate.value = task.finishedUntil || "";
     selectPriority(task.priority);
     category.value = task.category;
-    dataSubtasks = task.subtasks;
   
-    if (dataSubtasks) {
+    if (task.subtasks) {
+    dataSubtasks = task.subtasks;
       renderNewSubtasks();
     }
   }
