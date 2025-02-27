@@ -222,8 +222,13 @@ input[type="password"] {
 }
 
 .text-error-password-container {
-  height: 40px;
+  height: 10px;
 }
+
+#text-error-password{
+  font-size: 12px;
+}
+
 
 .card {
   width: var(--card-width);

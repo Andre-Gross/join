@@ -1,4 +1,11 @@
 @media (max-width: 500px) {
+    body{
+        overflow-y: scroll !important;
+    }
+
+    .card{
+        margin-top: 44px !important;
+    }
     .final-logo {
         width: var(--logo-container-size-mobile);
         height: var(--logo-container-size-mobile);
