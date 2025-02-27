@@ -430,7 +430,7 @@ textarea {
 }
 
 #task-form-container {
-    max-height: 100vh;
+    max-height: calc(100vh - var(--h1-position-top) - var(--headline-container-height-with-padding));
     overflow-y: auto;
     overflow-x: hidden;
 

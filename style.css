@@ -286,7 +286,12 @@ footer {
 
   .yLow {
     bottom: 25% !important;
-  }
+}
+
+
+.y-scroll {
+    overflow-y: scroll;
+}
 
 
 .name-circle {
