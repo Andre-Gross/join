@@ -192,6 +192,7 @@ h3 {
     bottom: 100px;
     right: 24px;
     transition: background-color 0.2s ease;
+    z-index: 1002;
 }
 
 
