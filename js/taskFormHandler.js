@@ -104,7 +104,13 @@ function changeTextRequired(field) {
     toggleDisplayNone(text, "d-block", input.value === '');
 }
 
-
+/**
+ * Limits and formats the date input to ensure it's in the "YYYY-MM-DD" format.
+ *
+ * @function
+ * @param {HTMLInputElement} inputElement - The input field for the date.
+ * @description Restricts the input to a date format of "YYYY-MM-DD" by removing non-digit characters and adjusting the value accordingly.
+ */
 function limitDateInput(inputElement) {
     let value = inputElement.value;
 

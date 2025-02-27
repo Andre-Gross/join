@@ -74,7 +74,6 @@ function renderNewSubtasksHTML(i, singleSubtask) {
 }
 
 
-
 /**
  * This function toggles the edit mode for a specific subtask by changing the visibility of input fields.
  * 

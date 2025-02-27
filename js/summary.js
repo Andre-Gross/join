@@ -357,4 +357,11 @@ function displayError(message) {
   }
 }
 
+/**
+ * Initializes the summary functionality once the document content is fully loaded.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Calls the `initializeSummary` function to set up the summary after the page's content is loaded.
+ */
 document.addEventListener("DOMContentLoaded", initializeSummary);

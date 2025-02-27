@@ -2,6 +2,13 @@ let toastMessageSignUp = "<span>You Signed Up successfully</span>";
 let toastMessageEmailAlreadyRegistered =
   "<span>Email already registered. Please try again.</span>";
 
+/**
+ * Initializes event listener for the signup form submission on page load.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Sets up the submit event listener for the signup form, preventing the default submission and calling the `signUp` function.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   let signupForm = document.querySelector("#signupCard form");
 
@@ -177,7 +184,6 @@ function getInputValues() {
 /**
  * Validates the registration form inputs and updates the register button state.
  */
-
 function checkFormValidity() {
   let name = document.getElementById("name").value.trim();
   let emailInput = document.getElementById("signUpEmail");

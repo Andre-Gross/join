@@ -1,6 +1,14 @@
 let isSubmitting = false;
 let failedAttempts = {};
 
+/**
+ * Initializes event listeners and handles the login/signup UI behavior on page load.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Manages the login and signup form behaviors, applies initial animations, and ensures the login card is displayed properly.
+ * @throws {Error} Does not throw errors but may fail silently if expected elements are not found in the DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   let hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
@@ -188,7 +196,14 @@ function getInputValue(id) {
   return document.getElementById(id).value.trim();
 }
 
-
+/**
+ * Initializes password field behavior on page load.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Clears password fields, updates the visibility toggle icon based on input, and adds event listeners for toggling password visibility.
+ * @throws {Error} Does not throw errors but may fail silently if expected elements are not found in the DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const passwordFields = document.querySelectorAll(".password-container input");
   passwordFields.forEach((input) => {
@@ -199,6 +214,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+/**
+ * Updates the visibility toggle icon for a password input field.
+ *
+ * @function
+ * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The icon element used to toggle password visibility.
+ * @description Shows or hides the icon based on whether the input field has a value and sets a default "visibility-off" icon.
+ */
 function updatePasswordIcon(input, icon) {
   if (!input.value) {
     input.classList.remove("has-icon");
@@ -210,6 +233,14 @@ function updatePasswordIcon(input, icon) {
   }
 }
 
+/**
+ * Toggles the visibility of a password input field.
+ *
+ * @function
+ * @param {HTMLInputElement} input - The password input field.
+ * @param {HTMLImageElement} icon - The icon element used to indicate password visibility.
+ * @description Switches the input type between "password" and "text" and updates the icon accordingly.
+ */
 function togglePasswordVisibility(input, icon) {
   if (!input.value) return;
   input.type = input.type === "password" ? "text" : "password";
@@ -248,14 +279,15 @@ async function addUserToContacts(name, email) {
   }
 }
 
-/**
- * Generates a unique ID.
- * @returns {string} - A unique ID.
- */
-// function generateUniqueId() {
-//   return "_" + Math.random().toString(36).substr(2, 9);
-// }
 
+/**
+ * Clears all input fields within a specified container.
+ *
+ * @function
+ * @param {string} containerId - The ID of the container element containing the inputs to be cleared.
+ * @description Resets text, checkbox, and radio inputs within the given container. 
+ *              Text inputs are cleared, and checkboxes/radio buttons are unchecked.
+ */
 function clearFormInputs(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -269,10 +301,23 @@ function clearFormInputs(containerId) {
   });
 }
 
+/**
+ * Clears all input fields in multiple form containers.
+ *
+ * @function
+ * @description Calls `clearFormInputs` for each predefined form container (`loginCard`, `signupCard`, `passwordResetCard`), resetting their inputs.
+ */
 function clearAllForms() {
   ["loginCard", "signupCard", "passwordResetCard"].forEach(clearFormInputs);
 }
 
+/**
+ * Clears all form inputs once the document content is fully loaded.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Calls the `clearAllForms` function to reset all forms as soon as the page's content has been loaded.
+ */
 document.addEventListener("DOMContentLoaded", clearAllForms);
 
 /**

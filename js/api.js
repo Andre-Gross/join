@@ -413,7 +413,16 @@ async function tryDeleteContactInDatabase(contactId) {
     alert("Contact successfully deleted.");
 }
 
-
+/**
+ * Updates the password of a user identified by their email.
+ *
+ * @async
+ * @function
+ * @param {string} email - The email of the user whose password needs to be updated.
+ * @param {string} newPassword - The new password to set for the user.
+ * @throws {Error} Throws an error if the user is not found or the update request fails.
+ * @returns {Promise<void>} A promise that resolves when the password is successfully updated.
+ */
 async function updateUserPassword(email, newPassword) {
     const response = await fetch(BASE_URL + 'users/logins.json');
     const users = await response.json();

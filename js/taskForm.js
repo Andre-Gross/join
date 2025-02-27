@@ -228,7 +228,6 @@ async function refreshChoosenContactCircles(preSelectedContacts = []) {
 }
 
 
-
 /**
  * Creates a contact name circle with a remove option and returns the HTML as a string.
  * 
@@ -257,7 +256,6 @@ async function createNameCircleWithRemove(id) {
 }
 
 
-
 /**
  * Toggles the visibility of a dropdown menu and updates related UI elements.
  *
@@ -284,9 +282,6 @@ function toggleDropdown(whichDropdown, displayMode = 'd-block', shallVisible = '
         input.classList.toggle('active-dropdown-input', shallVisible);
     }
 }
-
-
-
 
 
 /**

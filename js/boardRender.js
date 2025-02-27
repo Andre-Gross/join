@@ -1,3 +1,10 @@
+/**
+ * Updates the board header based on the screen width to optimize for mobile or desktop view.
+ *
+ * @function
+ * @description Dynamically modifies the board header's HTML structure depending on whether the viewport width is less than or equal to 1100 pixels.
+ * @throws {Error} Does not throw errors but exits early if the board header container is not found.
+ */
 function updateBoardHeader() {
   const boardHeaderContainer = document.querySelector(".board-header");
   if (!boardHeaderContainer) return;
@@ -40,7 +47,6 @@ function updateBoardHeader() {
 
 document.addEventListener("DOMContentLoaded", updateBoardHeader);
 window.addEventListener("resize", updateBoardHeader);
-
 
 
 /**

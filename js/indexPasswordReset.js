@@ -1,6 +1,14 @@
 window.resetPassword = resetPassword;
 let toastMessageReset = "<span>Password reset successfully</span>";
 
+/**
+ * Initializes event listeners for password reset functionality on page load.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Sets up event listeners for the "forgot password" and "back to login" links, 
+ *              as well as the password reset form submit event to trigger the appropriate actions.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   let forgotPasswordLink = document.getElementById("forgotPassword");
   let backToLoginLink = document.getElementById("backToLogin");

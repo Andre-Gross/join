@@ -1,6 +1,14 @@
 let currentTasks = [];
 let toastMessageNoResult = '<span>no result</span>';
 
+/**
+ * Scrolls smoothly to a specific task status container based on the URL parameter.
+ *
+ * @event DOMContentLoaded
+ * @listens document#DOMContentLoaded
+ * @description Checks the URL for a "status" parameter and scrolls to the corresponding task container.
+ * @throws {Error} Does not throw errors but silently fails if the element is not found.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const status = params.get("status");
