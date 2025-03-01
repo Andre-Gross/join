@@ -199,10 +199,10 @@ function moveTaskToCategory(event, taskId, newStatus) {
   event.stopPropagation();
   const taskCard = document.getElementById(taskId);
   if (!taskCard) return;
-  
+
   const newContainer = document.getElementById(getContainerIdByStatus(newStatus));
   if (!newContainer) return;
-  
+
   newContainer.appendChild(taskCard);
   updateTaskStatus(taskId, newStatus);
   sortTasksByPriority(newContainer);

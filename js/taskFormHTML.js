@@ -178,6 +178,13 @@ const formFooterPut = /*HTML*/`
     `
 
 
+    /**
+ * Renders the task form HTML.
+ * 
+ * @param {HTMLElement} element - The HTML element where the form will be rendered.
+ * @param {string} [method="post"] - The HTTP method (either "post" or "put").
+ * @param {string} [id] - The ID of the task if editing an existing task.
+ */
 function renderTaskForm(element, method = "post", id) {
     element.innerHTML = taskFormHTML;
 
@@ -206,6 +213,13 @@ function renderTaskForm(element, method = "post", id) {
 }
 
 
+/**
+ * Generates the HTML for a subtask.
+ * 
+ * @param {number} i - The index of the subtask.
+ * @param {string} singleSubtask - The text of the subtask.
+ * @returns {string} The HTML string for the subtask.
+ */
 function getSubtaskHTML(i, singleSubtask) {
     return `
         <div class="">

@@ -19,15 +19,15 @@ function getSearchTerm() {
 async function filterTasks(searchTerm) {
   let tasksAsArray = await getTasksAsArray();
   let searchTermLow = searchTerm.toLowerCase();
-  
+
   let titleMatches = tasksAsArray.filter((task) =>
     task.title.toLowerCase().includes(searchTermLow)
   );
-  
+
   let descriptionMatches = tasksAsArray.filter((task) =>
     task.description.toLowerCase().includes(searchTermLow)
   );
-  
+
   return { titleMatches, descriptionMatches };
 }
 
@@ -42,7 +42,7 @@ async function filterTasks(searchTerm) {
 function combineTasks(titleMatches, descriptionMatches) {
   let descriptionIds = new Set(descriptionMatches.map((task) => task.id));
   let uniqueTitleMatches = titleMatches.filter((task) => !descriptionIds.has(task.id));
-  
+
   let combined = {};
   for (let task of uniqueTitleMatches) {
     combined[task.id] = task;
@@ -50,7 +50,7 @@ function combineTasks(titleMatches, descriptionMatches) {
   for (let task of descriptionMatches) {
     combined[task.id] = task;
   }
-  
+
   return combined;
 }
 
@@ -80,7 +80,7 @@ async function handleSearchResults(filteredTasks) {
  */
 async function filterAndShowTask() {
   let searchTerm = getSearchTerm();
-  
+
   if (searchTerm.length >= 3) {
     const { titleMatches, descriptionMatches } = await filterTasks(searchTerm);
     const combinedResults = combineTasks(titleMatches, descriptionMatches);
@@ -91,31 +91,31 @@ async function filterAndShowTask() {
 }
 
 
-  /**
- * Clears all tasks from the board by emptying the content of each task container.
- * 
- * The function targets the containers for "To Do", "In Progress", "Feedback", and "Done" tasks.
- * 
- * @function clearTasksFromBoard
- */
+/**
+* Clears all tasks from the board by emptying the content of each task container.
+* 
+* The function targets the containers for "To Do", "In Progress", "Feedback", and "Done" tasks.
+* 
+* @function clearTasksFromBoard
+*/
 function clearTasksFromBoard() {
-    ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
-      document.getElementById(containerId).innerHTML = "";
-    });
-  }
+  ["todo-container", "progress-container", "feedback-container", "done-container"].forEach((containerId) => {
+    document.getElementById(containerId).innerHTML = "";
+  });
+}
 
 
-  /**
- * Truncates a description to a specified maximum length and appends an ellipsis if it exceeds the limit.
- * 
- * If the description is null or undefined, an empty string is returned.
- * 
- * @function truncateDescription
- * @param {string} description - The text to be truncated.
- * @param {number} [maxLength=50] - The maximum allowed length before truncation.
- * @returns {string} - The truncated description with an ellipsis if it exceeds the limit.
- */
+/**
+* Truncates a description to a specified maximum length and appends an ellipsis if it exceeds the limit.
+* 
+* If the description is null or undefined, an empty string is returned.
+* 
+* @function truncateDescription
+* @param {string} description - The text to be truncated.
+* @param {number} [maxLength=50] - The maximum allowed length before truncation.
+* @returns {string} - The truncated description with an ellipsis if it exceeds the limit.
+*/
 function truncateDescription(description, maxLength = 50) {
-    if (!description) return "";
-    return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
-  }
+  if (!description) return "";
+  return description.length > maxLength ? description.substring(0, maxLength) + "..." : description;
+}

@@ -94,9 +94,9 @@ function createTaskElement(taskId, task, contactsData) {
  * @returns {string} The HTML of the task
  */
 function getTaskHTML(taskId, task, contactsData) {
-  const categoryClass = task.category 
-      ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}` 
-      : "bc-category-label-unknown";
+  const categoryClass = task.category
+    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
 
   const assignedContactsHTML = renderLimitedAssignedContacts(task.assignedTo || [], contactsData);
 
@@ -248,15 +248,15 @@ async function deleteTaskOfModalCard(id) {
   try {
     await deleteTaskInDatabase(id);
     toggleDisplayModal();
-  
-    currentTasks = {}; 
-    
+
+    currentTasks = {};
+
     if (document.getElementById("idSearch").value.length >= 3) {
       await filterAndShowTask();
     } else {
       await boardRender();
     }
-  } catch {}
+  } catch { }
 }
 
 

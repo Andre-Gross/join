@@ -1,5 +1,8 @@
-// boardHTML.js
-
+/**
+ * Generates the mobile board header HTML.
+ * 
+ * @returns {string} The HTML string for the mobile board header.
+ */
 function getMobileBoardHeader() {
     return `
         <div class="top-row">
@@ -19,6 +22,11 @@ function getMobileBoardHeader() {
 }
 
 
+/**
+ * Generates the desktop board header HTML.
+ * 
+ * @returns {string} The HTML string for the desktop board header.
+ */
 function getDesktopBoardHeader() {
     return `
         <div class="title">
@@ -36,6 +44,15 @@ function getDesktopBoardHeader() {
 }
 
 
+/**
+ * Generates the HTML template for a task.
+ * 
+ * @param {string} categoryClass - The CSS class representing the task category.
+ * @param {Object} task - The task object containing task details.
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {string} assignedContactsHTML - The HTML string for assigned contacts.
+ * @returns {string} The HTML string for the task.
+ */
 function getTaskHTMLTemplate(categoryClass, task, taskId, assignedContactsHTML) {
     return `
         <div class="task-header">
@@ -56,6 +73,17 @@ function getTaskHTMLTemplate(categoryClass, task, taskId, assignedContactsHTML) 
 }
 
 
+/**
+ * Generates the HTML for a task element.
+ * 
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {Object} task - The task object containing task details.
+ * @param {string} categoryHTML - The HTML string representing the task category.
+ * @param {string} subtasksHTML - The HTML string for subtasks.
+ * @param {string} priorityImage - The HTML string for the task priority icon.
+ * @param {string} contactsHTML - The HTML string for assigned contacts.
+ * @returns {string} The HTML string for the task element.
+ */
 function getTaskElementHTML(taskId, task, categoryHTML, subtasksHTML, priorityImage, contactsHTML) {
     return `
       <div class="task-header">

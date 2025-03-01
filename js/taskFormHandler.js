@@ -115,7 +115,7 @@ function limitDateInput(inputElement) {
     let value = inputElement.value;
 
     if (value.length > 10) {
-    value = value.replace(/\D/g, '');
+        value = value.replace(/\D/g, '');
 
         let year = value.slice(0, 4);
         let month = value.slice(5, 7);
@@ -161,10 +161,10 @@ async function submitTaskForm(method = 'post', id = '') {
     const priority = document.querySelector('.btn-selected')?.id;
     const assignedTo = readAssignedTo();
 
-    const toastMessage = "The entered date is invalid or in the past."; 
+    const toastMessage = "The entered date is invalid or in the past.";
 
     if (!isValidDueDate(dueDate)) {
-        showToast(toastMessage); 
+        showToast(toastMessage);
         return;
     }
 

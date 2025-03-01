@@ -249,9 +249,9 @@ function saveEditContact(i) {
 
     let inputDiv = document.getElementById("idEditContact");
     if (inputDiv) {
-        inputDiv.remove();
+      inputDiv.remove();
     }
-    
+
     contactMain();
   }, 1000);
 }

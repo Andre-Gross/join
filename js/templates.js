@@ -143,6 +143,11 @@ function logOut() {
   }, 50);
 }
 
+
+/**
+ * Adds an event listener to the document that waits for the DOM to be fully loaded.
+ * Once loaded, it attaches a click event listener to the logout button if it exists.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   let logoutButton = document.querySelector(".logout-button");
   if (logoutButton) {

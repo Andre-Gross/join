@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           window.scrollTo({
             top: targetElement.offsetTop - 200,
-            behavior: "smooth", 
+            behavior: "smooth",
           });
         }, 200);
       }
@@ -88,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", adjustBoardSectionHeight);
   const observer = new MutationObserver(adjustBoardSectionHeight);
   observer.observe(document.querySelector('.container-fluid'), {
-      childList: true,
-      subtree: true,
+    childList: true,
+    subtree: true,
   });
 });
 
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 */
 document.addEventListener("click", () => {
   document.querySelectorAll(".d-menu").forEach(menu => {
-      menu.classList.add("dm-hidden");
+    menu.classList.add("dm-hidden");
   });
 });
 
@@ -108,11 +108,11 @@ document.addEventListener("click", () => {
 */
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".task").forEach(taskElement => {
-      taskElement.addEventListener("click", (event) => {
-          if (!event.target.closest('.dropdown-button-task')) {
-              openModal(taskElement.id);
-          }
-      });
+    taskElement.addEventListener("click", (event) => {
+      if (!event.target.closest('.dropdown-button-task')) {
+        openModal(taskElement.id);
+      }
+    });
   });
 });
 
