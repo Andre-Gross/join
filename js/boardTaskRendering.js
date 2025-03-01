@@ -1,104 +1,174 @@
 /**
- * Loads tasks and contacts from the Firebase database and renders them into the appropriate board sections.
+ * Fetches tasks and contacts data from Firebase.
  * 
- * Fetches tasks and contacts asynchronously, clears existing task containers, 
- * and dynamically creates and appends task elements with category labels, progress bars, 
- * assigned contacts, and priority indicators.
+ * @async
+ * @function fetchTasksAndContacts
+ * @returns {Object} Object containing tasks and contacts data
+ */
+async function fetchTasksAndContacts() {
+  const firebaseUrl = "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
+  
+  const [tasksResponse, contactsResponse] = await Promise.all([
+    fetch(`${firebaseUrl}/tasks.json`),
+    fetch(`${firebaseUrl}/users/contacts.json`),
+  ]);
+  
+  if (!tasksResponse.ok || !contactsResponse.ok) {
+    throw new Error("Error fetching data");
+  }
+  
+  const tasksData = await tasksResponse.json();
+  const contactsData = await contactsResponse.json();
+  
+  return { tasksData, contactsData };
+}
+
+/**
+ * Clears all task containers.
+ * 
+ * @function clearTaskContainers
+ */
+function clearTaskContainers() {
+  [
+    "todo-container",
+    "progress-container",
+    "feedback-container",
+    "done-container",
+  ].forEach((containerId) => {
+    document.getElementById(containerId).innerHTML = "";
+  });
+}
+
+/**
+ * Creates HTML for the category label.
+ * 
+ * @function createCategoryHTML
+ * @param {Object} task - The task object
+ * @returns {string} HTML string for the category
+ */
+function createCategoryHTML(task) {
+  const categoryClass = task.category
+    ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
+    : "bc-category-label-unknown";
+    
+  return `
+    <div class="category-label ${categoryClass}">
+      ${task.category || "No category"}
+    </div>`;
+}
+
+/**
+ * Creates HTML for the progress bar.
+ * 
+ * @function createProgressHTML
+ * @param {Object} task - The task object
+ * @returns {string} HTML string for the progress bar
+ */
+function createProgressHTML(task) {
+  if (!task.subtasks || task.subtasks.length === 0) return "";
+  
+  const completedSubtasks = task.subtasks.filter(subtask => subtask.isChecked).length;
+  const totalSubtasks = task.subtasks.length;
+  const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+  
+  return `
+    <div class="subtasks-progress-container d-flex align-items-center">
+      <div class="progress-bar-container">
+        <div class="progress-bar" style="width: ${progressPercentage}%;"></div>
+      </div>
+      <div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks</div>
+    </div>
+  `;
+}
+
+/**
+ * Creates a task element.
+ * 
+ * @function createTaskElement
+ * @param {string} taskId - The ID of the task
+ * @param {Object} task - The task object
+ * @param {Object} contactsData - The contacts data
+ * @returns {HTMLElement} The created task element
+ */
+function createTaskElement(taskId, task, contactsData) {
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.id = taskId;
+  taskElement.setAttribute("draggable", "true");
+  taskElement.setAttribute("onclick", `openModal('${taskId}')`);
+  
+  const categoryHTML = createCategoryHTML(task);
+  const progressHTML = createProgressHTML(task);
+  const priorityImage = priorityLabelHTML(task.priority);
+  const contactsHTML = renderAssignedContacts(task.assignedTo, contactsData);
+  
+  taskElement.innerHTML = createTaskHTML(task, categoryHTML, progressHTML, contactsHTML, priorityImage);
+  
+  return taskElement;
+}
+
+/**
+ * Creates the inner HTML for a task element.
+ * 
+ * @function createTaskHTML
+ * @param {Object} task - The task object
+ * @param {string} categoryHTML - HTML for the category
+ * @param {string} progressHTML - HTML for the progress bar
+ * @param {string} contactsHTML - HTML for the assigned contacts
+ * @param {string} priorityImage - HTML for the priority image
+ * @returns {string} The inner HTML for the task element
+ */
+function createTaskHTML(task, categoryHTML, progressHTML, contactsHTML, priorityImage) {
+  return `
+    <div class="task-header">
+      ${categoryHTML}
+    </div>
+    <h4>${task.title}</h4>
+    <p>${task.description}</p>
+    ${progressHTML}
+    <div class="task-footer">
+      ${contactsHTML}
+      <div class="task-priority">${priorityImage}</div>
+    </div>
+  `;
+}
+
+/**
+ * Adds task elements to their respective containers.
+ * 
+ * @function addTasksToContainers
+ * @param {Object} tasksData - The tasks data
+ * @param {Object} contactsData - The contacts data
+ */
+function addTasksToContainers(tasksData, contactsData) {
+  Object.entries(tasksData).forEach(([taskId, task]) => {
+    const containerId = getContainerIdByStatus(task.status);
+    if (!containerId) return;
+    
+    const taskElement = createTaskElement(taskId, task, contactsData);
+    document.getElementById(containerId).appendChild(taskElement);
+  });
+}
+
+/**
+ * Main function to load tasks from Firebase and display them.
  * 
  * @async
  * @function loadTasks
- * @throws {Error} Throws an error if fetching tasks or contacts fails.
  */
 async function loadTasks() {
-    const firebaseUrl =
-      "https://join-5b9f0-default-rtdb.europe-west1.firebasedatabase.app";
-  
-    try {
-      const [tasksResponse, contactsResponse] = await Promise.all([
-        fetch(`${firebaseUrl}/tasks.json`),
-        fetch(`${firebaseUrl}/users/contacts.json`),
-      ]);
-  
-      if (!tasksResponse.ok || !contactsResponse.ok) {
-        throw new Error("Error fetching data");
-      }
-  
-      const tasksData = await tasksResponse.json();
-      const contactsData = await contactsResponse.json();
-  
-      if (!tasksData) {
-        return;
-      }
-  
-      [
-        "todo-container",
-        "progress-container",
-        "feedback-container",
-        "done-container",
-      ].forEach((containerId) => {
-        document.getElementById(containerId).innerHTML = "";
-      });
-  
-      Object.entries(tasksData).forEach(([taskId, task]) => {
-        const containerId = getContainerIdByStatus(task.status);
-        if (!containerId) return;
-  
-        const taskElement = document.createElement("div");
-        taskElement.classList.add("task");
-        taskElement.id = taskId;
-        taskElement.setAttribute("draggable", "true");
-        taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-  
-        const categoryClass = task.category
-          ? `bc-category-label-${task.category.replace(/\s+/g, "").toLowerCase()}`
-          : "bc-category-label-unknown";
-        const categoryHTML = `
-          <div class="category-label ${categoryClass}">
-            ${task.category || "No category"}
-          </div>`;
-  
-        let progressHTML = "";
-        if (task.subtasks && task.subtasks.length > 0) {
-          const completedSubtasks = task.subtasks.filter(
-            (subtask) => subtask.isChecked
-          ).length;
-          const totalSubtasks = task.subtasks.length;
-          const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
-  
-          progressHTML = `
-            <div class="subtasks-progress-container d-flex align-items-center">
-              <div class="progress-bar-container">
-                <div class="progress-bar" style="width: ${progressPercentage}%;"></div>
-              </div>
-              <div class="subtasks-count">${completedSubtasks}/${totalSubtasks} Subtasks</div>
-            </div>
-          `;
-        }
-  
-        const priorityImage = priorityLabelHTML(task.priority);
-        const contactsHTML = renderAssignedContacts(task.assignedTo, contactsData);
-  
-        taskElement.innerHTML = `
-          <div class="task-header">
-            ${categoryHTML}
-          </div>
-          <h4>${task.title}</h4>
-          <p>${task.description}</p>
-          ${progressHTML}
-          <div class="task-footer">
-            ${contactsHTML}
-            <div class="task-priority">${priorityImage}</div>
-          </div>
-        `;
-  
-        document.getElementById(containerId).appendChild(taskElement);
-      });
-  
-      initializeDragAndDrop();
-    } catch (error) {
-      console.error("Error loading tasks:", error);
-    }
+  try {
+    const { tasksData, contactsData } = await fetchTasksAndContacts();
+    
+    if (!tasksData) return;
+    
+    clearTaskContainers();
+    addTasksToContainers(tasksData, contactsData);
+    initializeDragAndDrop();
+  } catch (error) {
+    console.error("Error loading tasks:", error);
   }
+}
 
 
   /**
