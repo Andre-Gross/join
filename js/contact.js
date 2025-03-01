@@ -246,6 +246,12 @@ function saveEditContact(i) {
     if (existingView) {
       existingView.remove();
     }
+
+    let inputDiv = document.getElementById("idEditContact");
+    if (inputDiv) {
+        inputDiv.remove();
+    }
+    
     contactMain();
   }, 1000);
 }
