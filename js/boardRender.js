@@ -9,41 +9,10 @@ function updateBoardHeader() {
   const boardHeaderContainer = document.querySelector(".board-header");
   if (!boardHeaderContainer) return;
   const isMobileView = window.innerWidth <= 1100;
-  let newBoardHeaderHTML = "";
 
-  if (isMobileView) {
-      newBoardHeaderHTML = `
-          <div class="top-row">
-              <div class="title">
-                  <h1 class="m-2 w-100">Board</h1>
-              </div>
-              <div class="AddTaskBtn" onclick="openAddTaskInBoard()">
-                  <p class="AddTaskBtnText">Add task</p>
-                  <img src="./assets/img/board/plus-button-white.svg" alt="plus">
-              </div>
-          </div>
-          <div class="searchBar">
-              <input class="search-container mt-3" id="idSearch" type="text" class="form-control"
-                  placeholder="Find Task" oninput="filterAndShowTask()">
-          </div>
-      `;
-  } else {
-      newBoardHeaderHTML = `
-          <div class="title">
-              <h1 class="m-2 w-100">Board</h1>
-          </div>
-          <div class="AddTaskBtn" onclick="openAddTaskInBoard()">
-              <p class="AddTaskBtnText">Add task</p>
-              <img src="./assets/img/board/plus-button-white.svg" alt="plus">
-          </div>
-          <div class="searchBar">
-              <input class="search-container mt-3" id="idSearch" type="text" class="form-control"
-                  placeholder="Find Task" oninput="filterAndShowTask()">
-          </div>
-      `;
-  }
-  boardHeaderContainer.innerHTML = newBoardHeaderHTML;
+  boardHeaderContainer.innerHTML = isMobileView ? getMobileBoardHeader() : getDesktopBoardHeader();
 }
+
 
 document.addEventListener("DOMContentLoaded", updateBoardHeader);
 window.addEventListener("resize", updateBoardHeader);
