@@ -15,26 +15,26 @@ function getContactMain(i) {
           </div>
       </div>
       `;
-  }
-  
-  
-  /**
-  * Generates HTML for the "Add Contact" button.
-  * @returns {string} - HTML string for the "Add Contact" button.
-  */
-  function getAddContactBtn() {
+}
+
+
+/**
+* Generates HTML for the "Add Contact" button.
+* @returns {string} - HTML string for the "Add Contact" button.
+*/
+function getAddContactBtn() {
     return `
       <div id="idAddContactBtn" onclick="addContact()">
       <img id="idImgAddContact" src="assets/img/contacts/person-add.svg" alt=""></div>
       `;
-  }
-  
-  
-  /**
-  * Generates HTML for the "Add Contact" form.
-  * @returns {string} - HTML string for the "Add Contact" form.
-  */
-  function getAddContact() {
+}
+
+
+/**
+* Generates HTML for the "Add Contact" form.
+* @returns {string} - HTML string for the "Add Contact" form.
+*/
+function getAddContact() {
     return `
   <div id="idAddContact">
       <img id="idXBtn" src="assets/img/contacts/close.svg" alt="x" onclick="closeAddContact()">
@@ -67,15 +67,15 @@ function getContactMain(i) {
       </div>
   </div>
   `;
-  }
-  
-  
-  /**
-  * Generates HTML for the contact view.
-  * @param {number} i - Index of the contact.
-  * @returns {string} - HTML string for the contact view.
-  */
-  function getContactView(i) {
+}
+
+
+/**
+* Generates HTML for the contact view.
+* @param {number} i - Index of the contact.
+* @returns {string} - HTML string for the contact view.
+*/
+function getContactView(i) {
     return `
   <div id="idViewContactCard">
       <div id="idHeadContactView">
@@ -84,22 +84,24 @@ function getContactMain(i) {
       </div>
       <h3 id="idTitle">Better with a team</h3>
       <div id="idBlueLine"></div>
-      <div id="idContactName">
-          <div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
-              <p id="idShortAlph" class="classShortAlph">${shortNames[i]}</p>
-          </div>
-          <h1 id="idH1Name">${names[i]}</h1>
-      </div>
-      <div id="idEditDeleteContainer">
-          <div id="idSideBySide" onclick="editContact(${i})">
-              <img src="assets/img/contacts/pen.svg" alt="pencil">
-              <p>Edit</p>
-          </div>
-          <div id="idSideBySide" onclick="deleteContact(${i})">
-              <img src="assets/img/contacts/bin.svg" alt="bin">
-              <p>Delete</p>
-          </div>
-      </div>
+<div id="idContactName">
+    <div id="idShortName" class="classShortName" style="background-color:${colors[i]}">
+        <p id="idShortAlph" class="classShortAlph">${shortNames[i]}</p>
+    </div>
+    <div id="idNameBtnColumn">
+        <h1 id="idH1Name">${names[i]}</h1>
+        <div id="idEditDeleteContainer">
+            <div id="idSideBySide" onclick="editContact(${i})">
+                <img src="assets/img/contacts/pen.svg" alt="pencil">
+                <p>Edit</p>
+            </div>
+            <div id="idSideBySide" onclick="deleteContact(${i})">
+                <img src="assets/img/contacts/bin.svg" alt="bin">
+                <p>Delete</p>
+            </div>
+        </div>
+    </div>
+</div>
       <div id="idContactInfoContainer">
           <h3 id="idH3Title">Contact Information</h3>
           <table>
@@ -137,15 +139,15 @@ function getContactMain(i) {
      
   </div>
     `;
-  }
-  
-  
-  /**
-  * Generates HTML for the edit contact form.
-  * @param {number} i - Index of the contact.
-  * @returns {string} - HTML string for the edit contact form.
-  */
-  function getEditContact(i) {
+}
+
+
+/**
+* Generates HTML for the edit contact form.
+* @param {number} i - Index of the contact.
+* @returns {string} - HTML string for the edit contact form.
+*/
+function getEditContact(i) {
     return `
   <img id="idXBtn" src="assets/img/contacts/close.svg" alt="close" onclick="closeEditContact()">
   <img id="idLogoCard" src="./assets/img/general/join-logo.svg" alt="logo">
@@ -173,15 +175,15 @@ function getContactMain(i) {
       </div>
   </div>
     `;
-  }
-  
-  
-  /**
-  * Generates HTML for the edit and delete buttons.
-  * @param {number} i - Index of the contact.
-  * @returns {string} - HTML string for the edit and delete buttons.
-  */
-  function getEditContactBtn(i) {
+}
+
+
+/**
+* Generates HTML for the edit and delete buttons.
+* @param {number} i - Index of the contact.
+* @returns {string} - HTML string for the edit and delete buttons.
+*/
+function getEditContactBtn(i) {
     return `
       <div>
           <div onclick="editContact(${i})">
@@ -194,4 +196,4 @@ function getContactMain(i) {
           </div>
       </div>
       `;
-  }
+}
