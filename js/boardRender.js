@@ -13,7 +13,6 @@ function updateBoardHeader() {
   boardHeaderContainer.innerHTML = isMobileView ? getMobileBoardHeader() : getDesktopBoardHeader();
 }
 
-
 document.addEventListener("DOMContentLoaded", updateBoardHeader);
 window.addEventListener("resize", updateBoardHeader);
 
@@ -69,6 +68,7 @@ function renderTasks(tasksData, contactsData) {
   });
 }
 
+
 /**
  * Erstellt ein Task-Element.
  * @param {string} taskId - Die ID der Aufgabe
@@ -87,11 +87,11 @@ function createTaskElement(taskId, task, contactsData) {
 }
 
 /**
- * Generiert das HTML für eine Aufgabe.
- * @param {string} taskId - Die ID der Aufgabe
- * @param {Object} task - Die Aufgabendaten
- * @param {Object} contactsData - Die geladenen Kontakte
- * @returns {string} Das HTML der Aufgabe
+ * Generates the HTML for a task.
+ * @param {string} taskId - The ID of the task
+ * @param {Object} task - The task data
+ * @param {Object} contactsData - The loaded contacts
+ * @returns {string} The HTML of the task
  */
 function getTaskHTML(taskId, task, contactsData) {
   const categoryClass = task.category 
@@ -100,24 +100,8 @@ function getTaskHTML(taskId, task, contactsData) {
 
   const assignedContactsHTML = renderLimitedAssignedContacts(task.assignedTo || [], contactsData);
 
-  return `
-      <div class="task-header">
-          <div class="category-label ${categoryClass}">${task.category || "No category"}</div>
-      </div>
-      <h4 class="task-title">${task.title}</h4>
-      <p class="task-description">${task.description}</p>
-      <div class="task-subtasks">${renderSubtasksHTML(taskId, task.subtasks || [])}</div>
-      <div class="task-footer d-flex justify-content-between align-items-center">
-          <div class="assigned-contacts d-flex">
-              ${assignedContactsHTML}
-          </div>
-          <div class="task-priority">
-              ${priorityLabelHTML(task.priority)}
-          </div>
-      </div>
-  `;
+  return getTaskHTMLTemplate(categoryClass, task, taskId, assignedContactsHTML);
 }
-
 
 
 /**
@@ -154,9 +138,6 @@ function renderSubtasksHTML(taskId, subtasks) {
     </div>
   `;
 }
-
-
-
 
 
 /**

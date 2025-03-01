@@ -217,46 +217,23 @@ function renderFilteredTasks(contactsData) {
  * @param {Object} contactsData - The contact data used for assigned contacts.
  * @returns {HTMLElement} The created task element.
  */
-function createTaskElement(taskId, task, contactsData) {
+  function createTaskElement(taskId, task, contactsData) {
     const taskElement = document.createElement("div");
     taskElement.classList.add("task");
     taskElement.id = taskId;
     taskElement.setAttribute("draggable", "true");
     taskElement.setAttribute("onclick", `openModal('${taskId}')`);
-  
+
     const categoryHTML = createCategoryHTML(task.category);
     const subtasksHTML = renderSubtasksHTML(taskId, task.subtasks || []);
     const priorityImage = priorityLabelHTML(task.priority);
     const contactsHTML = renderTaskContacts(task.assignedTo || [], contactsData);
-  
-    taskElement.innerHTML = `
-      <div class="task-header">
-        ${categoryHTML}
-        <div class="dropdown-button-task d-none" onclick="toggleTaskDropdown(event)">
-              <img src="./assets/img/board/dropdown_close.svg" alt="dropdown">
-              <div id="dropdownMenuTask" class="d-menu dm-hidden">
-              <p onclick="moveTaskToCategory(event, '${taskId}', 'To do')">To Do</p>
-              <p onclick="moveTaskToCategory(event, '${taskId}', 'In progress')">In Progress</p>
-              <p onclick="moveTaskToCategory(event, '${taskId}', 'Await feedback')">Await Feedback</p>
-              <p onclick="moveTaskToCategory(event, '${taskId}', 'Done')">Done</p>
-                  </div>
-            </div>
-      </div>
-      <h4 class="task-title">${task.title}</h4>
-      <p class="task-description">${truncateDescription(task.description)}</p>
-      <div class="task-subtasks">${subtasksHTML}</div>
-      <footer class="task-footer d-flex justify-content-between align-items-center">
-        <div class="assigned-contacts d-flex">
-          ${contactsHTML}
-        </div>
-        <div class="task-priority">
-          ${priorityImage}
-        </div>
-      </footer>
-    `;
-  
+
+    taskElement.innerHTML = getTaskElementHTML(taskId, task, categoryHTML, subtasksHTML, priorityImage, contactsHTML);
+
     return taskElement;
-  }
+}
+
 
 
   /**
