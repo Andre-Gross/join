@@ -169,7 +169,7 @@ body.dragging {
 
 .tasks-container {
     width: 100%;
-    min-height: 200px;
+    min-height: 200px !important;
     scrollbar-width: none;
     overflow-x: scroll;
 }
