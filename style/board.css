@@ -143,6 +143,7 @@ body.dragging {
     margin-left: 0;
     position: relative;
     max-height: fit-content;
+    overflow-y: hidden;
 }
 
 .board-section {
@@ -150,6 +151,7 @@ body.dragging {
     display: flex;
     flex-direction: column;
     max-height: fit-content;
+
 }
 
 .section-header {
@@ -164,7 +166,6 @@ body.dragging {
     margin: 0;
     font-size: 16px;
 }
-
 
 .tasks-container {
     width: 100%;
@@ -212,10 +213,6 @@ body.dragging {
     justify-content: center;
     align-items: center;
     line-height: 50px;
-}
-
-.task-container {
-    -webkit-overflow-scrolling: touch;
 }
 
 
