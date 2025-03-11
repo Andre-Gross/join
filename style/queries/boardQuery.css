@@ -53,20 +53,8 @@
 
 @media (max-width: 833px) {
 
-    * {
-        scrollbar-width: none;
-    }
-    
-    *::-webkit-scrollbar {
-        display: none;
-    }
-    
 
-    .container-fluid {
-        display: flex;
-        align-items: center;
-    }
-    
+        
     .board-section {
         width: 100%;
         display: flex;
@@ -77,13 +65,8 @@
     }
     
     .tasks-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
         width: 100%;
         max-width: 500px;
-        scrollbar-width: none;
-        overflow-x: auto;
     }
 
     .board-header {
@@ -137,13 +120,8 @@
     .container-fluid {
         padding-bottom: 80px;
         justify-content: flex-start;
-        overflow-y: auto;
-        padding-bottom: 80px;
     }
 
-    .task{
-        width: 230px
-    }
 }
 
 @media (max-width: 556px) {
