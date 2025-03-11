@@ -143,9 +143,6 @@ body.dragging {
     margin-left: 0;
     position: relative;
     max-height: fit-content;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #A8A8A8 transparent;
 }
 
 .board-section {
