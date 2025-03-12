@@ -29,18 +29,30 @@ function toggleTaskDropdown(event) {
 
   const taskCard = event.target.closest(".task");
   const dropdownMenu = taskCard.querySelector(".d-menu");
+  const dropdownCloseIcon = taskCard.querySelector("img[alt='dropdownClose']");
+  const dropdownOpenIcon = taskCard.querySelector("img[alt='dropdownOpen']");
 
   if (!dropdownMenu) return;
 
   document.querySelectorAll(".d-menu").forEach((menu) => {
     if (menu !== dropdownMenu) {
       menu.classList.add("dm-hidden");
+      const parentTask = menu.closest(".task");
+      if (parentTask) {
+        parentTask.querySelector("img[alt='dropdownClose']").style.display = "block";
+        parentTask.querySelector("img[alt='dropdownOpen']").style.display = "none";
+      }
     }
   });
 
-  dropdownMenu.classList.toggle("dm-hidden");
+  const isHidden = dropdownMenu.classList.toggle("dm-hidden");
+  
+  dropdownCloseIcon.style.display = isHidden ? "block" : "none";
+  dropdownOpenIcon.style.display = isHidden ? "none" : "block";
+
   dropdownMenu.addEventListener("click", (e) => e.stopPropagation());
 }
+
 
 /**
  * Scrolls to the task section based on the "status" parameter in the URL.

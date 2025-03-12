@@ -88,8 +88,9 @@ function getTaskElementHTML(taskId, task, categoryHTML, subtasksHTML, priorityIm
     return `
       <div class="task-header">
         ${categoryHTML}
-        <div class="dropdown-button-task d-none" onclick="toggleTaskDropdown(event)">
-              <img src="./assets/img/board/dropdown_close.svg" alt="dropdown">
+        <div class="dropdown-button-task" onclick="toggleTaskDropdown(event)">
+              <img src="./assets/img/board/dropdown_close.svg" alt="dropdownClose">
+              <img src="./assets/img/board/dropdown_open.svg" style="display: none" alt="dropdownOpen">
               <div id="dropdownMenuTask" class="d-menu dm-hidden">
                   <p onclick="moveTaskToCategory(event, '${taskId}', 'To do')">To Do</p>
                   <p onclick="moveTaskToCategory(event, '${taskId}', 'In progress')">In Progress</p>
